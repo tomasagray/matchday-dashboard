@@ -1,0 +1,82 @@
+@use "variables";
+@use "colors";
+
+@use "header";
+@use "side-nav";
+@use "content-stage";
+@use "home";
+@use "components";
+@use "animations";
+
+html {
+  margin: 0;
+  padding: 0;
+  color: colors.$defaultFontColor;
+}
+
+body {
+  overflow: hidden;
+}
+
+button {
+  cursor: pointer;
+}
+
+a {
+  color: colors.$defaultFontColor;
+  text-decoration: none;
+}
+
+.Nav-link {
+  border: 0;
+  width: variables.$navigationSquare;
+  height: variables.$navigationSquare;
+  opacity: .5;
+  background-color: transparent;
+  transition: opacity 250ms ease-in-out, background-color 250ms ease-in-out;
+
+  &:hover, &:active {
+    opacity: .95;
+    background-color: colors.$navButtonHover;
+  }
+
+  img {
+    max-height: 2rem;
+    max-width: 2rem;
+  }
+}
+
+.Scroll-wrapper {
+  position: relative;
+  top: variables.$navMenuPadding + variables.$navMenuPadding;
+  height: 100%;
+  width: 100%;
+}
+
+@mixin Poster {
+  box-sizing: content-box;
+  border: 1px solid transparent;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, .1);
+    border-color: rgba(200, 200, 200, .1);
+  }
+}
+
+.Item-poster {
+  @include Poster;
+  max-width: 10vw;
+}
+
+.Event-poster {
+  @include Poster;
+  max-width: variables.$eventPosterWidth;
+}
+
+.Event-title {
+  font-weight: bold;
+}
+
+.Event-date {
+  color: #aaa;
+}

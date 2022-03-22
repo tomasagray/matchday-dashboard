@@ -1,25 +1,42 @@
-import logo from './logo.svg';
-import './App.css';
+import './style/App.css';
+import './style/main.scss';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import React, {useContext} from "react";
+import {BrowserRouter as Router} from "react-router-dom";
+
+import HeaderNav from './components/HeaderNav';
+import SideNav from "./components/SideNav";
+import ContentStage from "./components/ContentStage";
+import {Preferences} from "./Preferences";
+
+
+export default function App() {
+    const prefs = useContext(Preferences);
+    // todo: pre-fetch initial data before rest of app loads
+    // fetchBaseRoutes(prefs);
+
+
+    return (
+        <Preferences.Provider value={prefs}>
+            <div className="App">
+                <Router> <HeaderNav/>
+                    <div className="Scroll-wrapper">
+                        <SideNav/> <ContentStage/>
+                    </div>
+                </Router>
+            </div>
+        </Preferences.Provider>
+    );
 }
 
-export default App;
+/*async function fetchBaseRoutes(prefs) {
+     await axios.get(prefs.url.baseUrl).then(result => {
+        let links = result.data._links;
+
+        prefs.url.events = links.events;
+        prefs.url.matches = links.matches;
+        prefs.url.highlights = links.highlights;
+        prefs.url.competitions = links.competitions;
+        prefs.url.teams = links.teams;
+    });
+}*/

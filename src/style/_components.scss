@@ -1,0 +1,79 @@
+@use "variables";
+
+.Content-bar-title {
+  text-align: left;
+}
+
+.Content-bar {
+  width: 100%;
+  margin: 1rem 0;
+  overflow-x: hidden;
+
+  .Content-bar-header {
+    display: flex;
+    justify-content: space-between;
+
+    .Content-bar-controls {
+      display: flex;
+    }
+  }
+}
+
+.Item-list {
+  list-style: none;
+  display: flex;
+  position: relative;
+  width: fit-content;
+
+  .Item-slide {
+    float: left;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin-right: 2rem;
+    max-width: variables.$eventPosterWidth;
+
+    div {
+      text-align: left;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      max-width: variables.$eventPosterWidth;
+      max-lines: 1;
+    }
+  }
+}
+
+.Full-page-display {
+  padding: variables.$navMenuHeight;
+}
+
+.Grid-list {
+  width: 100%;
+  list-style: none;
+  display: grid;
+  grid-template-columns: auto auto auto auto auto auto;
+  gap: 5vw;
+
+  .Grid-item {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+  }
+}
+
+.Detail-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+
+  .Detail-poster {
+    max-width: 15vw;
+    max-height: 40vh;
+  }
+
+  .Detail-title {
+    text-align: left;
+  }
+}
+

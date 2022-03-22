@@ -1,0 +1,23 @@
+@use "colors";
+@use "variables";
+
+.Side-nav {
+  background-color: colors.$sideMenuBg;
+  overflow: hidden;
+  width: variables.$navigationSquare;
+  height: 100vh;
+
+  li {
+    &:first-of-type {
+      background-color: colors.$currentNavItemBg;
+    }
+
+    button {
+      padding: variables.$navMenuPadding;
+
+      img {
+        height: variables.$navMenuHeight;
+      }
+    }
+  }
+}

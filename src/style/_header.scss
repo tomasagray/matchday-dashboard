@@ -1,0 +1,169 @@
+@use "variables";
+@use "colors";
+
+$searchToolAnimationDuration: .4s;
+
+.App-header {
+  .Main-nav {
+    z-index: 1;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+
+    background-color: colors.$navBackgroundColor;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    div {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
+
+    .Home-wrapper {
+      .Home-button {
+        :hover {
+          cursor: pointer;
+        }
+
+        padding: 0;
+        margin: 0;
+        border: 0;
+        box-sizing: content-box;
+        height: variables.$navigationSquare;
+        min-width: variables.$navigationSquare;
+
+        img {
+          height: variables.$navMenuHeight;
+          width: variables.$navMenuHeight;
+        }
+      }
+
+      .Current-location {
+        margin-left: variables.$navMenuPadding;
+      }
+
+      .Search-tool {
+        border-radius: .3rem;
+        background-color: rgba(20, 20, 20, .5);
+        padding: .6rem;
+        margin-left: 2rem;
+
+        &:hover input#q,
+        input#q:focus {
+          padding: 0 .4rem;
+          background-color: rgba(100, 100, 100, .5);
+          animation: unfurlSearchTool $searchToolAnimationDuration linear forwards;
+          animation-timing-function: ease-out;
+        }
+
+        form {
+          display: flex;
+
+          input#q {
+            width: 0;
+            padding: 0;
+            border: 0;
+            background-color: rgba(50, 50, 50, .5);
+            color: whitesmoke;
+            animation-name: furlSearchTool;
+            animation-duration: $searchToolAnimationDuration;
+            animation-timing-function: ease-out;
+
+            &:hover, &:focus {
+              margin-right: 1rem;
+            }
+          }
+
+          button {
+            display: flex;
+            justify-content: center;
+            border-radius: 15%;
+            border: 0;
+            background-color: rgba(120, 120, 120, .5);
+
+            &:hover {
+              background-color: colors.$navButtonHover;
+            }
+
+            img {
+              height: 1rem;
+              padding: .5rem;
+            }
+          }
+        }
+
+        @keyframes unfurlSearchTool {
+          from {
+            width: 0;
+          }
+          to {
+            width: 200px;
+          }
+        }
+
+        @keyframes furlSearchTool {
+          from {
+            width: 200px;
+          }
+          to {
+            width: 0;
+          }
+        }
+      }
+    }
+
+    .Admin-nav-menu-wrapper {
+      .Admin-nav-menu {
+        list-style: none;
+        display: flex;
+        overflow: hidden;
+        margin-right: variables.$navMenuHeight;
+
+        li {
+          height: variables.$navigationSquare;
+          width: variables.$navigationSquare;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          button {
+            border: 0;
+            padding: 1rem;
+
+            img {
+              height: variables.$navMenuHeight;
+            }
+          }
+        }
+
+        #User-menu-button-wrapper {
+          display: flex;
+          justify-content: center;
+
+          &::after {
+            content: "\25BC";
+            display: block;
+            font-size: 10pt;
+            position: relative;
+            right: .8rem;
+          }
+        }
+
+        .User-menu-wrapper {
+          position: fixed;
+          top: variables.$navigationSquare;
+          background-color: colors.$navBackgroundColor;
+          box-shadow: #282c34 -2px 3px 3px;
+
+          .User-menu {
+            list-style: none;
+
+          }
+        }
+      }
+    }
+  }
+}
