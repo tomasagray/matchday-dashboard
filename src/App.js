@@ -19,9 +19,11 @@ export default function App() {
     return (
         <Preferences.Provider value={prefs}>
             <div className="App">
-                <Router> <HeaderNav/>
+                <Router>
+                    <HeaderNav/>
                     <div className="Scroll-wrapper">
-                        <SideNav/> <ContentStage/>
+                        <SideNav/>
+                        <ContentStage/>
                     </div>
                 </Router>
             </div>

@@ -77,3 +77,33 @@
   }
 }
 
+.Plugin-button-tile {
+  max-width: 15vw;
+  padding: .8rem;
+  border: 1px solid #333;
+  border-radius: .6rem;
+  box-shadow: #222222 3px 3px 3px;
+
+  &.active {
+    background-color: #444;
+  }
+
+  &:hover {
+    cursor: pointer;
+    background-color: rgba(255, 255, 255, .2);
+  }
+
+  .Plugin-button-tile-title {
+    font-weight: bold;
+    font-size: 2rem;
+  }
+
+  .Plugin-button-tile-description {
+    line-height: 1.5em;
+    max-height: 6em;  /* max-height = line-height * num of lines */
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+  }
+}

@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from "react";
-import DataManager from "./DataManager";
+import DataManager from "../../components/DataManager";
 import {Route, useHistory, useRouteMatch} from "react-router-dom";
-import ContentBar from "./ContentBar";
-import GridList from "./GridList";
+import ContentBar from "../../components/ContentBar";
+import GridList from "../../components/GridList";
 
 export default function CompetitionDetail(props) {
     let matcher = useRouteMatch();

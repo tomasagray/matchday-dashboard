@@ -5,7 +5,7 @@ class SideNav extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            menuItems: ['Events', 'Competitions', 'Teams']  // defaults
+            menuItems: ['Events', 'Competitions', 'Teams', 'Datasources']  // defaults
         }
     }
 
@@ -31,6 +31,13 @@ class SideNav extends Component {
                         <Link to="/teams">
                             <button className="Data-section-link Nav-link">
                                 <img src={process.env.PUBLIC_URL + '/img/team-icon.png'} alt="Teams"/>
+                            </button>
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to="/datasources">
+                            <button className="Data-section-link Nav-link">
+                                <img src={process.env.PUBLIC_URL + '/img/datasource-icon.png'} alt="Datasources"/>
                             </button>
                         </Link>
                     </li>

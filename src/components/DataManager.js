@@ -1,13 +1,14 @@
-import EventTile from "./EventTile";
+import EventTile from "../features/events/EventTile";
 import React from "react";
 import {Preferences} from "../Preferences";
 import axios from "axios";
-import TeamTile from "./TeamTile";
-import CompetitionTile from "./CompetitionTile";
+import TeamTile from "../features/teams/TeamTile";
+import CompetitionTile from "../features/competitions/CompetitionTile";
 
 // todo: Make a singleton
 class DataManager {
 
+// todo - extract tile creation, make this data-agnostic
     async fetchEventTiles(url) {
         return axios.get(url)
             .then((result) => {
@@ -19,7 +20,7 @@ class DataManager {
                 }
             }, reason => {
                 // todo - handle data errors
-                console.log('Error fetching events data:', reason);
+                this.error('Error fetching events data:', reason);
             });
     }
 
@@ -33,7 +34,7 @@ class DataManager {
                     );
                 }
             }, reason => {
-                console.log('Could not fetch competition data from:', url, reason);
+                this.error('Could not fetch competition data from:', url, reason);
             });
     }
 
@@ -47,8 +48,22 @@ class DataManager {
                     );
                 }
             }, reason => {
-                console.log('Error fetching teams data:', reason);
+                this.error('Error fetching teams data:', reason);
             });
+    }
+
+    async fetchDataSourcePlugins(url) {
+        console.log("Fetching DataSources from: ", url);
+        return axios.get(url)
+            .then(result => {
+                return result.data._embedded;
+            }, reason => {
+                this.error("Could not fetch data source plugins from: " + url, reason);
+            })
+    }
+
+    error(...reasons) {
+        console.log(reasons);
     }
 }
 

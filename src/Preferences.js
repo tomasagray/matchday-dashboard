@@ -11,5 +11,6 @@ export const Preferences = React.createContext({
         highlights: baseUrl + '/highlights',
         competitions: baseUrl + '/competitions',
         teams: baseUrl + '/teams',
+        dataSourcePlugins: baseUrl + '/data-sources/plugin/all',
     },
 });
