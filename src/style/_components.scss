@@ -1,4 +1,6 @@
+@use "sass:math";
 @use "variables";
+@use "colors";
 
 .Content-bar-title {
   text-align: left;
@@ -45,7 +47,7 @@
 }
 
 .Full-page-display {
-  padding: variables.$navMenuHeight;
+  padding: variables.$navMenuHeight 6rem;
 }
 
 .Grid-list {
@@ -59,6 +61,46 @@
     display: flex;
     flex-direction: column;
     text-align: left;
+  }
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  color: whitesmoke;
+
+  & > * {
+    margin: 0 .8rem;
+    display: flex;
+    align-items: center;
+    align-content: center;
+  }
+
+  img {
+    max-height: 2rem;
+    opacity: .5;
+  }
+}
+
+// todo - separate layout from 'components'
+.Small-button {
+  padding: .5rem 1.2rem;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  background-color: #333;
+  color: #ccc;
+
+  &[disabled] {
+    cursor: not-allowed;
+    background-color: #666;
+    color: #333;
+    border-color: #333;
+  }
+
+  &:hover:not([disabled]) {
+    color: whitesmoke;
+    border-color: whitesmoke;
+    background-color: colors.$currentNavItemBg;
   }
 }
 
@@ -77,9 +119,71 @@
   }
 }
 
+.loading-box {
+  display: flex;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: 5rem;
+  width: 100%;
+}
+
+.Nav-link {
+  border: 0;
+  width: variables.$navigationSquare;
+  height: variables.$navigationSquare;
+  opacity: .5;
+  background-color: transparent;
+  transition: opacity 250ms ease-in-out, background-color 250ms ease-in-out;
+
+  &:hover, &:active {
+    opacity: .95;
+    background-color: colors.$navButtonHover;
+  }
+
+  img {
+    max-height: 2rem;
+    max-width: 2rem;
+  }
+}
+
+.Scroll-wrapper {
+  position: relative;
+  top: variables.$navMenuPadding + variables.$navMenuPadding;
+  height: 100%;
+  width: 100%;
+}
+
+@mixin Poster {
+  box-sizing: content-box;
+  border: 1px solid transparent;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, .1);
+    border-color: rgba(200, 200, 200, .1);
+  }
+}
+
+.Item-poster {
+  @include Poster;
+  max-width: 10vw;
+}
+
+.Event-poster {
+  @include Poster;
+  max-width: variables.$eventPosterWidth;
+}
+
+.Event-title {
+  font-weight: bold;
+}
+
+.Event-date {
+  color: #aaa;
+}
+
 .Plugin-button-tile {
-  max-width: 15vw;
-  padding: .8rem;
+  width: 20vw;
+  padding: 1.8rem;
   border: 1px solid #333;
   border-radius: .6rem;
   box-shadow: #222222 3px 3px 3px;
@@ -90,20 +194,123 @@
 
   &:hover {
     cursor: pointer;
-    background-color: rgba(255, 255, 255, .2);
+    background-color: rgba(255, 255, 255, .1);
   }
 
-  .Plugin-button-tile-title {
+  .Plugin-button-title {
     font-weight: bold;
-    font-size: 2rem;
+    //font-size: 1.6rem;
+    color: #aaa;
   }
 
-  .Plugin-button-tile-description {
-    line-height: 1.5em;
-    max-height: 6em;  /* max-height = line-height * num of lines */
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 4;
+  &.active .Plugin-button-title {
+    color: whitesmoke;
+  }
+
+  .Plugin-button-id {
+    font-size: 10pt;
+    margin: 4px;
+    color: #666;
+    strong {
+      color: #aaa;
+    }
+  }
+  &.active .Plugin-button-id {
+    color: #ccc;
+    strong {
+      color: whitesmoke;
+    }
+  }
+}
+
+.SettingsGroup {
+  margin: 4rem 0;
+  max-width: 75%;
+
+  .SettingContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: .6rem 1rem;
+    background-color: colors.$defaultComponentBg;
+    border-radius: 1rem;
+  }
+}
+
+.Toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 3.6rem;
+  height: 1.9rem;
+  cursor: pointer;
+
+  .slider {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: colors.$darkBg;
+    box-shadow: inset 0px -1px 10px black;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+
+  .slider:before, .slider > * {
+    position: absolute;
+    content: "";
+    height: variables.$sliderSize;
+    width: variables.$sliderSize;
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+
+  .slider > * {
+    -webkit-transition: .4s;
+    transition: .4s;
+    max-width: 100%;
+  }
+
+  &.Checked > .slider {
+    background-color: colors.$highlight;
+    box-shadow: none;
+  }
+
+  &.Transitioning > .slider {
+    background-color: #666;
+  }
+
+  &.Transitioning > .slider:before,
+  &.Transitioning > .slider > * {
+    -ms-transform: translateX(math.div(variables.$sliderSize, 2));
+    transform: translateX(math.div(variables.$sliderSize, 2));
+    background-color: #aaa;
+    cursor: wait;
+  }
+
+  &.Checked > .slider:before,
+  &.Checked > .slider > * {
+    -ms-transform: translateX(variables.$sliderSize);
+    transform: translateX(variables.$sliderSize);
+  }
+
+  & .spinner {
+    opacity: 0;
+  }
+
+  &.Transitioning .spinner {
+    opacity: 1;
+  }
+
+  /* Rounded sliders */
+  .slider.round {
+    border-radius: 2rem;
+  }
+
+  .slider.round:before {
+    border-radius: 50%;
   }
 }

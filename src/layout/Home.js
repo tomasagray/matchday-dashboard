@@ -1,12 +1,12 @@
 import React, {useContext, useEffect, useState} from "react";
 import {Preferences} from "../Preferences";
-import DataManager from "./DataManager";
-import ContentBar from "./ContentBar";
+import DataManager from "../components/DataManager";
+import ContentBar from "../components/ContentBar";
 
 
 const dataManager = new DataManager();
 
-export default function Home(props) {
+export default function Home() {
 
     const prefs = useContext(Preferences);
     let eventUrl = prefs.url.events;

@@ -1,5 +1,9 @@
-$navBackgroundColor: #333;
-$sideMenuBg: #222;
-$currentNavItemBg: rgba(255, 255, 255, .4);
-$navButtonHover: rgba(255, 255, 255, .3);
+$darkBg: #222;
 $defaultFontColor: whitesmoke;
+$defaultComponentBg: #333;
+$highlight: #089a4f;
+
+// navigation menu
+$navBackgroundColor: $defaultComponentBg;
+$navButtonHover: rgba(255, 255, 255, .3);
+$currentNavItemBg: rgba(255, 255, 255, .4);

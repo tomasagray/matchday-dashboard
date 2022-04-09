@@ -16,7 +16,7 @@ function HeaderNav() {
                     </Link>
                     <h4 className="Current-location">Current location </h4>
                     <div className="Search-tool">
-                        <form action="/search">
+                        <form>
                             <input type="text" id="q" name="q" maxLength={250}/>
                             <button type="submit">
                                 <img src={process.env.PUBLIC_URL + 'img/search-icon.png'} alt={"Search"}/>

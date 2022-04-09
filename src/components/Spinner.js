@@ -1,11 +1,13 @@
 import React from 'react'
 
-export const Spinner = ({text = '', size = '5em'}) => {
-    const header = text ? <h4>{text}</h4> : null
+export const Spinner = ({text = '', size = ''}) => {
+    const header = text ? <div style={{margin: '1rem'}}> <h4>{text}</h4> </div> : null
     return (
-        <div className="spinner">
+        <div className="spinner" style={{width: size, height: size}}>
             {header}
-            <div className="loader" style={{height: size, width: size}}/>
+            <div className="loader">
+                <img src={process.env.PUBLIC_URL + '/img/spinner/spinner_128.png'} alt="spinner"/>
+            </div>
         </div>
     )
 }

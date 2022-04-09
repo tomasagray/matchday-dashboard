@@ -7,7 +7,7 @@ import Competitions from "../features/competitions/Competitions";
 import Teams from "../features/teams/Teams";
 import Datasources from "../features/datasources/Datasources";
 import Settings from "./Settings";
-import Alerts from "./Alerts";
+import Alerts from "../components/Alerts";
 import Search from "./Search";
 import CompetitionDetail from "../features/competitions/CompetitionDetail";
 import TeamDetail from "../features/teams/TeamDetail";
