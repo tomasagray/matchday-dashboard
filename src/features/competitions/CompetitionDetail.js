@@ -21,7 +21,7 @@ export default function CompetitionDetail(props) {
 
 const dataManager = new DataManager();
 
-function Data(props) {
+function Data() {
     let [events, setEvents] = useState();
     let [teams, setTeams] = useState();
 
