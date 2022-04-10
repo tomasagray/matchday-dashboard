@@ -6,6 +6,7 @@ import PluginButtonTile from "./PluginButtonTile"
 import {useGetAllDataSourcePluginsQuery} from "../../app/apiSlice";
 import {pluginSelected} from "./dataSourcesSlice"
 import {PluginDisplay} from "./PluginDisplay";
+import {ErrorMessage} from "../../components/ErrorMessage";
 
 
 let DataSourcePluginTile = ({plugin}) => {
@@ -39,7 +40,7 @@ export default function Datasources() {
         let tiles = dataSourcePlugins.map(plugin => <DataSourcePluginTile plugin={plugin}/>)
         dataSourceList = <GridList items={tiles}/>
     } else if (isError) {
-        dataSourceList = <p>Error: {error.toString()}</p>
+        dataSourceList = <ErrorMessage message={error.error} code={error.status}/>
     }
 
     const selectedPlugin = useSelector(state => {
@@ -59,13 +60,14 @@ export default function Datasources() {
         console.log('refresh button clicked')
     }
 
+    let refreshDisabled = isLoading || isError;
     return (
         <>
             <div className="section-header">
                 <img src={process.env.PUBLIC_URL + '/img/plugin_128.png'} alt="Plugins"
                      style={{height: 'fit-content'}}/>
                 <h1>Plugins</h1>
-                <button className="Small-button" disabled={isLoading} onClick={onRefreshAllPlugins}>
+                <button className="Small-button" disabled={refreshDisabled} onClick={onRefreshAllPlugins}>
                     Refresh All
                 </button>
             </div>

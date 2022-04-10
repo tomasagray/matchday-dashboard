@@ -186,7 +186,7 @@
   padding: 1.8rem;
   border: 1px solid #333;
   border-radius: .6rem;
-  box-shadow: #222222 3px 3px 3px;
+  box-shadow: 3px 3px 3px colors.$shadow;
 
   &.active {
     background-color: #444;
@@ -211,12 +211,15 @@
     font-size: 10pt;
     margin: 4px;
     color: #666;
+
     strong {
       color: #aaa;
     }
   }
+
   &.active .Plugin-button-id {
     color: #ccc;
+
     strong {
       color: whitesmoke;
     }
@@ -251,7 +254,7 @@
     right: 0;
     bottom: 0;
     background-color: colors.$darkBg;
-    box-shadow: inset 0px -1px 10px black;
+    box-shadow: inset 0px -1px 10px colors.$shadow;
     -webkit-transition: .4s;
     transition: .4s;
   }
@@ -312,5 +315,41 @@
 
   .slider.round:before {
     border-radius: 50%;
+  }
+}
+
+.Error-message {
+  display: flex;
+  border: 1px solid #444;
+  box-shadow: 3px 3px 5px colors.$shadow;
+  padding: 2em;
+  width: fit-content;
+
+  .Error-message > img {
+    width: 8em;
+    height: 8em;
+    background: none;
+  }
+
+  .Error-description-container {
+    padding: 0 3em;
+
+    p {
+      margin: 10px 0;
+    }
+
+    .Error-title {
+      margin: 0;
+      text-align: start;
+      padding: 0;
+    }
+
+    .Error-description {
+      color: #ccc;
+    }
+
+    .Error-code {
+      color: #666;
+    }
   }
 }
