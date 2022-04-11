@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {Spinner} from "../../components/Spinner";
 import GridList from "../../components/GridList"
 import PluginButtonTile from "./PluginButtonTile"
-import {useGetAllDataSourcePluginsQuery} from "../../app/apiSlice";
+import {useGetAllDataSourcePluginsQuery, useRefreshAllDataSourcePluginsMutation} from "../../app/apiSlice";
 import {pluginSelected} from "./dataSourcesSlice"
 import {PluginDisplay} from "./PluginDisplay";
 import {ErrorMessage} from "../../components/ErrorMessage";
@@ -22,25 +22,35 @@ let DataSourcePluginTile = ({plugin}) => {
 export default function Datasources() {
     const {
         data: plugins,
-        isLoading,
-        isSuccess,
-        isError,
-        error
+        isLoading: pluginsLoading,
+        isSuccess: pluginLoaded,
+        isError: pluginLoadingError,
+        error: pluginError
     } = useGetAllDataSourcePluginsQuery()
 
+    const [
+        refreshAllPlugins,
+        {
+            data: refreshData,
+            isLoading: refreshing,
+            isSuccess: refreshSuccess,
+            isError: isRefreshError,
+            error: refreshError
+        }] = useRefreshAllDataSourcePluginsMutation()
+
     let dataSourceList
-    if (isLoading) {
+    if (pluginsLoading) {
         dataSourceList =
             <div className="loading-box">
                 <Spinner text="Loading..." size="2rem"/>
             </div>
-    } else if (isSuccess) {
+    } else if (pluginLoaded) {
         const {_embedded} = plugins;
         const {data_source_plugins: dataSourcePlugins} = _embedded
-        let tiles = dataSourcePlugins.map(plugin => <DataSourcePluginTile plugin={plugin}/>)
+        let tiles = dataSourcePlugins.map(plugin => <DataSourcePluginTile key={plugin.id} plugin={plugin}/>)
         dataSourceList = <GridList items={tiles}/>
-    } else if (isError) {
-        dataSourceList = <ErrorMessage message={error.error} code={error.status}/>
+    } else if (pluginLoadingError) {
+        dataSourceList = <ErrorMessage message={pluginError.error} code={pluginError.status}/>
     }
 
     const selectedPlugin = useSelector(state => {
@@ -52,22 +62,24 @@ export default function Datasources() {
     let pluginData
     if (selectedPlugin) {
         pluginData = <PluginDisplay plugin={selectedPlugin}/>
-    } else if (isSuccess) {
+    } else if (pluginLoaded) {
         pluginData = <p>Please select a Data Source plugin from above.</p>
     }
 
-    const onRefreshAllPlugins = () => {
-        console.log('refresh button clicked')
+    const onRefreshAllPlugins = async () => {
+        await refreshAllPlugins()
     }
 
-    let refreshDisabled = isLoading || isError;
+    let refreshDisabled = pluginsLoading || pluginLoadingError || refreshing;
+    let refreshButtonStyle = pluginsLoading || refreshing ? {cursor: 'wait'} : {}
     return (
         <>
             <div className="section-header">
                 <img src={process.env.PUBLIC_URL + '/img/plugin_128.png'} alt="Plugins"
                      style={{height: 'fit-content'}}/>
                 <h1>Plugins</h1>
-                <button className="Small-button" disabled={refreshDisabled} onClick={onRefreshAllPlugins}>
+                <button className="Small-button" style={refreshButtonStyle} disabled={refreshDisabled}
+                        onClick={onRefreshAllPlugins}>
                     Refresh All
                 </button>
             </div>

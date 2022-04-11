@@ -35,22 +35,42 @@ export const apiSlice = createApi({
                 headers: {
                     Accept: 'application/json',
                     'Content-Type': 'application/json'
-                }
+                },
             }),
             invalidatesTags: [dataSourcePlugin],
         }),
-        refreshAllPlugins: builder.query({
+        refreshAllDataSourcePlugins: builder.mutation({
             query: () => ({
                 url: '/data-sources/refresh/all',
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: getSnapshotRequest({}),
             })
         })
     })
 })
 
+const getSnapshotRequest = ({label = ''}) => {
+    return {
+        endDate: "",
+        startDate: "",
+        fetchBodies: true,
+        fetchImages: false,
+        maxResults: 50,
+        labels: [label],
+        orderBy: "",
+        pageToken: "",
+        status: ""
+    }
+}
+
 export const {
     useGetLatestEventsQuery,
     useGetAllDataSourcePluginsQuery,
-    useRefreshAllPluginsQuery,
+    useRefreshAllDataSourcePluginsMutation,
     useEnableDataSourcePluginMutation,
     useDisableDataSourcePluginMutation
 } = apiSlice
