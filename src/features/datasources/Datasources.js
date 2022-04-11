@@ -3,8 +3,11 @@ import {useDispatch, useSelector} from "react-redux";
 import {Spinner} from "../../components/Spinner";
 import GridList from "../../components/GridList"
 import PluginButtonTile from "./PluginButtonTile"
-import {useGetAllDataSourcePluginsQuery, useRefreshAllDataSourcePluginsMutation} from "../../app/apiSlice";
-import {pluginSelected} from "./dataSourcesSlice"
+import {
+    pluginSelected,
+    useGetAllDataSourcePluginsQuery,
+    useRefreshAllDataSourcePluginsMutation
+} from "./dataSourcesSlice";
 import {PluginDisplay} from "./PluginDisplay";
 import {ErrorMessage} from "../../components/ErrorMessage";
 
@@ -31,11 +34,11 @@ export default function Datasources() {
     const [
         refreshAllPlugins,
         {
-            data: refreshData,
+            // data: refreshData,
             isLoading: refreshing,
-            isSuccess: refreshSuccess,
-            isError: isRefreshError,
-            error: refreshError
+            // isSuccess: refreshSuccess,
+            // isError: isRefreshError,
+            // error: refreshError
         }] = useRefreshAllDataSourcePluginsMutation()
 
     let dataSourceList

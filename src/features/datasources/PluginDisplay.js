@@ -1,8 +1,12 @@
 import {Status, ToggleSwitch} from "../../components/ToggleSwitch";
 import React from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {useDisableDataSourcePluginMutation, useEnableDataSourcePluginMutation} from "../../app/apiSlice";
-import {disableSelectedPlugin, enableSelectedPlugin} from "./dataSourcesSlice";
+import {
+    disableSelectedPlugin,
+    enableSelectedPlugin,
+    useDisableDataSourcePluginMutation,
+    useEnableDataSourcePluginMutation
+} from "./dataSourcesSlice";
 import {SettingContainer} from "../../components/SettingContainer";
 import {SettingsGroup} from "../../components/SettingsGroup";
 
