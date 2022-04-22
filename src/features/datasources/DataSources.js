@@ -1,26 +1,14 @@
 import React from 'react'
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import {Spinner} from "../../components/Spinner";
 import GridList from "../../components/GridList"
-import PluginButtonTile from "./PluginButtonTile"
 import {
-    pluginSelected,
     useGetAllDataSourcePluginsQuery,
     useRefreshAllDataSourcePluginsMutation
 } from "./dataSourcesSlice";
 import {PluginDisplay} from "./PluginDisplay";
 import {ErrorMessage} from "../../components/ErrorMessage";
-
-
-let DataSourcePluginTile = ({plugin}) => {
-    const dispatch = useDispatch()
-    const onPluginTileClicked = () => {
-        dispatch(pluginSelected({plugin}))
-    }
-    return (
-        <PluginButtonTile key={plugin.id} datasource={plugin} clickHandler={onPluginTileClicked}/>
-    )
-}
+import {DataSourcePluginTile} from "./DataSourcePluginTile";
 
 export default function DataSources() {
     const {
@@ -41,6 +29,12 @@ export default function DataSources() {
             // error: refreshError
         }] = useRefreshAllDataSourcePluginsMutation()
 
+    const selectedPlugin = useSelector(state => {
+        const {dataSources} = state;
+        const {selectedPlugin: plugin} = dataSources;
+        return plugin;
+    })
+
     let dataSourceList
     if (pluginsLoading) {
         dataSourceList =
@@ -50,17 +44,14 @@ export default function DataSources() {
     } else if (pluginLoaded) {
         const {_embedded} = plugins;
         const {data_source_plugins: dataSourcePlugins} = _embedded
-        let tiles = dataSourcePlugins.map(plugin => <DataSourcePluginTile key={plugin.id} plugin={plugin}/>)
+        let tiles = dataSourcePlugins.map(plugin => {
+            let active = selectedPlugin && plugin.id === selectedPlugin.id
+            return <DataSourcePluginTile key={plugin.id} active={active} plugin={plugin}/>;
+        })
         dataSourceList = <GridList items={tiles}/>
     } else if (pluginLoadingError) {
         dataSourceList = <ErrorMessage message={pluginError.error} code={pluginError.status}/>
     }
-
-    const selectedPlugin = useSelector(state => {
-        const {dataSources} = state;
-        const {selectedPlugin: plugin} = dataSources;
-        return plugin;
-    })
 
     let pluginData
     if (selectedPlugin) {

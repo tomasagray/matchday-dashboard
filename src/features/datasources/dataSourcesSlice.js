@@ -40,6 +40,7 @@ export const dataSourceApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => ({
         getAllDataSourcePlugins: builder.query({
             query: () => '/data-sources/plugin/all',
+            keepUnusedDataFor: 3000,    // TODO: remove, subscribe in component
             // providesTags: [dataSourcePlugin],
         }),
         enableDataSourcePlugin: builder.mutation({

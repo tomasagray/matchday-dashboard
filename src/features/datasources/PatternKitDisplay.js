@@ -15,7 +15,7 @@ function getEntryRow(entry) {
 export const PatternKitDisplay = (props) => {
 
     const {patternKit} = props
-    const {fields, pattern} = patternKit;
+    const {id, fields, pattern} = patternKit;
     const patternLen = pattern !== null ? Math.min(pattern.length, 60) : 10
     const patternKitFields = Object.entries(fields).map(entry => getEntryRow(entry))
 
@@ -46,7 +46,7 @@ export const PatternKitDisplay = (props) => {
     useClickOutsideComponent(menu, onClickOutsideMenu)
 
     return (
-        <div className="Pattern-kit">
+        <div className="Pattern-kit" key={id}>
             <table className="Pattern-kit-editor">
                 <thead>
                 <tr className="Editor-bar">

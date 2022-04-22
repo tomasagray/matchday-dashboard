@@ -15,7 +15,11 @@ export const DataSourceDisplay = ({datasource = null}) => {
             Object.values(patternKitPack.patternKits)
                 .map(patternKitGroup => <PatternKitTypeGroup patternKits={patternKitGroup} />);
     } else {
-        patternKits = <p>No PatternKitPack</p>
+        patternKits =
+            <p>
+                There are currently no Pattern Kits for this Data Source. <br/>
+                Click below to add one.
+            </p>
     }
     let [baseUriVal, setBaseUriVal] = useState(baseUri)
     let [clazzVal, setClazzVal] = useState(clazz)
@@ -28,10 +32,13 @@ export const DataSourceDisplay = ({datasource = null}) => {
         console.log('clazz val changed', e, clazzVal)
         setClazzVal(e.target.value)
     }
+    const onAddNewPatternKit = () => {
+        console.log('add new pattern kit button clicked')
+    }
 
      return (
         <>
-            <CollapsableContainer title="TODO: Add title field to data sources">
+            <CollapsableContainer title="TODO: Add title field to data sources" key={datasource.dataSourceId}>
                 <form className="Data-source-field-list">
                     <div>
                         <label htmlFor="data-source-base-uri">Base URI:</label>
@@ -48,6 +55,9 @@ export const DataSourceDisplay = ({datasource = null}) => {
                         <div>{patternKits}</div>
                     </div>
                 </form>
+                <div style={{textAlign: 'right', padding: '2rem'}}>
+                    <button className="Small-button" onClick={onAddNewPatternKit}>Add Pattern Kit...</button>
+                </div>
             </CollapsableContainer>
         </>
     )

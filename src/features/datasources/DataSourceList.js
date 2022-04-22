@@ -25,13 +25,21 @@ export const DataSourceList = () => {
 
     const onAddNewDataSource = (e) => {
         console.log('button clicked:', e)
-    };
+    }
+
+    const getDataSourceComponentKey = (id) => {
+        let key = 0
+        for (let i = 0; i < id.length; i++) {
+            key += id.charCodeAt(i)
+        }
+        return key
+    }
 
     let dataSourceList
     if (isSuccess) {
         if (dataSources) {
             dataSourceList = dataSources.map(dataSource =>
-                <DataSourceDisplay key={dataSource.dataSourceId} datasource={dataSource}/>
+                <DataSourceDisplay key={getDataSourceComponentKey(dataSource.dataSourceId)} datasource={dataSource}/>
             )
         } else {
             dataSourceList = <p>There are currently no Data Sources for this plugin.<br/> Click above to add one</p>
@@ -57,7 +65,7 @@ export const DataSourceList = () => {
                 </div>
                 <div style={{display: 'flex', justifyContent: 'space-between'}}>
                     <h2>Data Sources</h2>
-                    <button onClick={onAddNewDataSource} className="Small-button">Add new...</button>
+                    <button onClick={onAddNewDataSource} className="Small-button">Add Data Source...</button>
                 </div>
                 <div>{dataSourceList}</div>
             </>
