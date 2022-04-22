@@ -4,7 +4,7 @@ export const SettingContainer = (props) => {
 
     return (
         <>
-            <div className="SettingContainer">
+            <div className={` ${props.className} Setting-container`}>
                 {props.children}
             </div>
         </>

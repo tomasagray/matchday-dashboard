@@ -82,6 +82,11 @@
   }
 }
 
+.Banner-title {
+  border-bottom: .5em solid colors.$darkBg;
+  margin-bottom: 3rem;
+}
+
 // todo - separate layout from 'components'
 .Small-button {
   padding: .5rem 1.2rem;
@@ -207,17 +212,8 @@
     color: whitesmoke;
   }
 
-  .Plugin-button-id {
-    font-size: 10pt;
-    margin: 4px;
-    color: #666;
 
-    strong {
-      color: #aaa;
-    }
-  }
-
-  &.active .Plugin-button-id {
+  &.active .Plugin-id {
     color: #ccc;
 
     strong {
@@ -226,17 +222,41 @@
   }
 }
 
-.SettingsGroup {
+.Plugin-id {
+  font-size: 10pt;
+  margin: 4px;
+  color: #666;
+
+  strong {
+    color: #aaa;
+  }
+}
+
+.Settings-group {
   margin: 4rem 0;
   max-width: 75%;
 
-  .SettingContainer {
+  .Setting-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: .6rem 1rem;
+    margin: 1rem 0;
     background-color: colors.$defaultComponentBg;
     border-radius: 1rem;
+  }
+
+  .Settings-link {
+
+    &:hover {
+      background-color: rgba(255, 255, 255, .2);
+      cursor: pointer;
+    }
+
+    .link-arrow {
+      max-height: 2rem;
+      opacity: .3;
+    }
   }
 }
 
@@ -325,10 +345,11 @@
   padding: 2em;
   width: fit-content;
 
-  .Error-message > img {
+  & > img {
     width: 8em;
     height: 8em;
-    background: none;
+    background-color: red;
+    border-radius: 100%;
   }
 
   .Error-description-container {
@@ -351,5 +372,251 @@
     .Error-code {
       color: #666;
     }
+  }
+}
+
+.Collapsable-container {
+
+  border: 2px solid #666;
+  border-radius: .5rem;
+  margin: 2rem 0;
+  overflow: hidden;
+
+  .Title-bar {
+    display: flex;
+    align-content: center;
+    justify-content: space-between;
+    background-color: colors.$darkBg;
+    padding: 1rem;
+
+    &:hover {
+      cursor: pointer;
+      background-color: colors.$defaultComponentBg;
+
+      & img {
+        opacity: .9;
+      }
+    }
+
+    & img {
+      height: 24px;
+      display: flex;
+      justify-content: right;
+      opacity: .5;
+      transform: rotate(90deg);
+      //animation: flipArrowCollapsed .5 linear;
+
+      &.expanded {
+        transform: rotate(-90deg);
+        animation: flipArrowExpanded .5s linear;
+      }
+    }
+  }
+
+  .Content-area {
+    height: 0;
+    display: none;
+    animation: collapseContainer .5s linear;
+    background-color: colors.$defaultComponentBg;
+
+    &.expanded {
+      height: revert;
+      display: block;
+      animation: expandContainer .5s linear;
+    }
+  }
+
+  @keyframes flipArrowExpanded {
+    from {
+      transform: rotate(90deg);
+    }
+    to {
+      transform: rotate(-90deg);
+    }
+  }
+
+  @keyframes flipArrowCollapsed {
+    from {
+      transform: rotate(-90deg);
+    }
+    to {
+      transform: rotate(90deg);
+    }
+  }
+
+  @keyframes expandContainer {
+    0% {
+      height: 0;
+      display: none;
+    }
+    100% {
+      height: revert;
+      display: block;
+    }
+  }
+
+  @keyframes collapseContainer {
+    0% {
+      height: revert;
+    }
+    100% {
+      height: 0;
+    }
+  }
+}
+
+.Data-source-field-list {
+
+  padding: 1rem 2rem;
+
+  & > div {
+    margin: 1rem 0;
+  }
+
+  label {
+    font-size: 1.3rem;
+    margin-right: 1rem;
+  }
+
+  input {
+    border: 1px solid #333;
+    background-color: colors.$darkBg;
+    color: #ccc;
+    border-radius: 3px;
+    padding: 1em;
+  }
+}
+
+.Pattern-kit-display {
+  margin: 2rem 0;
+  background-color: colors.$darkBg;
+  border: 1px solid #666;
+  border-radius: .5rem;
+  overflow: hidden;
+
+  label:after {
+    content: ':'
+  }
+
+  .Pattern-kit-type {
+    padding: .75rem;
+    border-bottom: 1px solid #333;
+
+    input[type=text] {
+      width: fit-content;
+    }
+  }
+
+  .Pattern-kit {
+    background-color: colors.$defaultComponentBg;
+
+    .Pattern-kit-editor {
+      border-collapse: collapse;
+      border-radius: 1rem;
+      width: 100%;
+
+      .Editor-bar {
+        text-align: right;
+        background-color: colors.$darkBg;
+
+        th:nth-child(even) {
+          display: flex;
+          justify-content: right;
+
+          a {
+            $buttonSize: 1.2rem;
+            padding: 1.2rem;
+            display: flex;
+            justify-content: center;
+            width: $buttonSize;
+            height: $buttonSize;
+
+            &:hover {
+              background-color: rgba(255, 255, 255, .2);
+            }
+          }
+        }
+      }
+
+      td {
+        border: 1px solid #888;
+        padding: 2rem;
+        vertical-align: top;
+      }
+    }
+
+    input[type=text] {
+      width: fit-content;
+    }
+
+    .Field-list {
+      border-collapse: collapse;
+
+      th {
+        font-size: 1.2rem;
+        text-align: left;
+        padding: 1rem;
+        background-color: rgba(0, 0, 0, .3);
+      }
+
+      td {
+        padding: 1rem;
+      }
+
+      td:nth-child(1) {
+        text-align: center;
+      }
+
+      td:nth-child(even) {
+        background-color: rgba(10, 10, 10, .2);
+      }
+
+      tr:nth-child(even) {
+        background-color: rgba(10, 10, 10, .4);
+      }
+    }
+  }
+}
+
+.Floating-menu {
+  background-color: #333;
+  padding: 0;
+  border: 1px solid #222;
+  position: absolute;
+  transform: translate(2rem, 3rem);
+  box-shadow: 3px 3px 3px colors.$shadow;
+
+  &.hidden {
+    display: none;
+  }
+
+  ul {
+    list-style: none;
+  }
+}
+
+.Menu-item {
+  padding: .5rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  &:hover {
+    background-color: #888;
+    cursor: pointer;
+  }
+
+  img {
+    width: 1rem;
+    float: right;
+    vertical-align: top;
+    display: inline;
+    height: 1rem;
+    margin-left: 1.5rem;
+    opacity: .5;
+  }
+
+  &:hover img {
+    opacity: .9;
   }
 }

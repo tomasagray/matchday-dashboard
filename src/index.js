@@ -10,12 +10,13 @@ import Home from "./layout/Home";
 import Events from "./features/events/Events";
 import Competitions from "./features/competitions/Competitions";
 import Teams from "./features/teams/Teams";
-import Datasources from "./features/datasources/Datasources";
+import DataSources from "./features/datasources/DataSources";
 import Settings from "./layout/Settings";
 import Alerts from "./components/Alerts";
 import Search from "./layout/Search";
 import TeamDetail from "./features/teams/TeamDetail";
-import {DataSourceDisplay} from "./features/datasources/DataSourceDisplay";
+import CompetitionDetail from "./features/competitions/CompetitionDetail";
+import {DataSourceList} from "./features/datasources/DataSourceList";
 
 const container = document.getElementById('root');
 ReactDOM.render(
@@ -25,19 +26,18 @@ ReactDOM.render(
               <Routes>
                 <Route path="/" element={<App/>}>
                     {/* Top level */}
-                    <Route exact path="/" element={<Home/>}/>
-                    <Route path="events" element={<Events/>}/>
-                    <Route path="competitions" element={<Competitions/>}/>
-                    <Route path="teams" element={<Teams/>}/>
-                    <Route path="datasources" element={<Datasources/>}>
-                    </Route>
-                    <Route path="settings" element={<Settings/>}/>
-                    <Route path="alerts" element={<Alerts/>}/>
-                    <Route path="search" element={<Search/>}/>
+                    <Route exact path="/" element={<Home/>} />
+                    <Route path="events" element={<Events/>} />
+                    <Route path="competitions" element={<Competitions/>} />
+                    <Route path="teams" element={<Teams/>} />
+                    <Route path="data-sources" element={<DataSources/>} />
+                    <Route path="settings" element={<Settings/>} />
+                    <Route path="alerts" element={<Alerts/>} />
+                    <Route path="search" element={<Search/>} />
                     {/* Second level */}
-                    <Route path="competition" element=<CompetitionDetail/>/>
-                    <Route path="team" element={<TeamDetail/>}/>
-                    <Route path="datasource" element={<DataSourceDisplay/>}/>
+                    <Route path="competition" element={<CompetitionDetail/>} />
+                    <Route path="team" element={<TeamDetail/>} />
+                    <Route path="datasource/:pluginId" element={<DataSourceList/>} />
                 </Route>
               </Routes>
           </BrowserRouter>

@@ -1,4 +1,4 @@
-import {Route, useRouteMatch} from "react-router-dom";
+import {Route, useMatch} from "react-router-dom";
 import ContentBar from "../../components/ContentBar";
 import {useEffect, useState} from "react";
 import DataManager from "../../components/DataManager";
@@ -6,7 +6,7 @@ import DataManager from "../../components/DataManager";
 const dataManager = new DataManager();
 
 export default function TeamDetail(props) {
-    let matcher = useRouteMatch();
+    let matcher = useMatch();
 
     return (
         <>

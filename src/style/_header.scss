@@ -71,10 +71,12 @@ $searchToolAnimationDuration: .4s;
             animation-name: furlSearchTool;
             animation-duration: $searchToolAnimationDuration;
             animation-timing-function: ease-out;
+          }
 
-            &:hover, &:focus {
-              margin-right: 1rem;
-            }
+          &:hover input#q,
+          &:focus input#q,
+          input#q:focus {
+            margin-right: 1rem;
           }
 
           button {

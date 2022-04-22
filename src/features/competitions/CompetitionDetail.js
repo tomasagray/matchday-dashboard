@@ -1,15 +1,15 @@
 import React, {useEffect, useState} from "react";
 import DataManager from "../../components/DataManager";
-import {Route, useHistory, useRouteMatch} from "react-router-dom";
+import {Route, useMatch} from "react-router-dom";
 import ContentBar from "../../components/ContentBar";
 import GridList from "../../components/GridList";
 
 export default function CompetitionDetail(props) {
-    let matcher = useRouteMatch();
+    let matcher = useMatch();
 
-    let history = useHistory();
-    console.log('history', history)
-    let competition = history.location.competition;
+    // let history = useHistory();
+    // console.log('history', history)
+    let competition = null //history.location.competition;
     console.log('competition', competition);
 
     return (
@@ -26,19 +26,19 @@ function Data() {
     let [teams, setTeams] = useState();
 
 
-    let history = useHistory();
+    // let history = useHistory();
     // console.log('history', history)
-    let competition = history.location.competition;
+    let competition = null //history.location.competition;
     // console.log('competition', competition);
 
     // get most recent events for competition
-    let eventsUrl = competition._links.events.href;
+    let eventsUrl = null //competition._links.events.href;
     useEffect(() => {
         dataManager.fetchEventTiles(eventsUrl).then(events => setEvents(events))
     }, [eventsUrl]);
 
     // get teams for competition
-    let teamsUrl = competition._links.teams.href;
+    let teamsUrl = null //competition._links.teams.href;
     useEffect(() => {
         dataManager.fetchTeamTiles(teamsUrl).then(teams => setTeams(teams))
     }, [teamsUrl]);
@@ -46,9 +46,9 @@ function Data() {
     return (
         <div className="Content-container">
             <div className="Detail-header">
-                <img src={competition._links.emblem.href} alt={competition.name} className="Detail-poster"/>
+                <img src={''} alt={''} className="Detail-poster"/>
                 <div className="Detail-data">
-                    <h1 className="Detail-title">{competition.name}</h1>
+                    <h1 className="Detail-title">competition name</h1>
                     <select id="language-selector">
                         {/* todo - get languages from server */}
                         <option name="default" value="default">Default language</option>

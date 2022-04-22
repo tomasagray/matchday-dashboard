@@ -3,7 +3,7 @@ import React from 'react'
 export const SettingsGroup = (props) => {
     return (
         <>
-            <div className="SettingsGroup">
+            <div className="Settings-group">
                 {props.children}
             </div>
         </>

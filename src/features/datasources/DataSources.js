@@ -22,7 +22,7 @@ let DataSourcePluginTile = ({plugin}) => {
     )
 }
 
-export default function Datasources() {
+export default function DataSources() {
     const {
         data: plugins,
         isLoading: pluginsLoading,
@@ -57,8 +57,8 @@ export default function Datasources() {
     }
 
     const selectedPlugin = useSelector(state => {
-        const {datasources} = state;
-        const {selectedPlugin: plugin} = datasources;
+        const {dataSources} = state;
+        const {selectedPlugin: plugin} = dataSources;
         return plugin;
     })
 

@@ -1,8 +1,8 @@
 import UserMenu from "./UserMenu";
 import {Link} from "react-router-dom";
 
-function HeaderNav() {
-    let PLACEHOLDER_IMG = process.env.PUBLIC_URL + '_tmp.png';  // todo: use real images
+export const HeaderNav = () => {
+    let PLACEHOLDER_IMG = process.env.PUBLIC_URL + '/img/_tmp.png';  // todo: use real images
 
     return (
         <header className="App-header">
@@ -19,7 +19,7 @@ function HeaderNav() {
                         <form>
                             <input type="text" id="q" name="q" maxLength={250}/>
                             <button type="submit">
-                                <img src={process.env.PUBLIC_URL + 'img/search-icon.png'} alt={"Search"}/>
+                                <img src={process.env.PUBLIC_URL + '/img/search-icon.png'} alt={"Search"}/>
                             </button>
                         </form>
                     </div>
@@ -29,14 +29,14 @@ function HeaderNav() {
                         <li>
                             <Link to="/settings">
                                 <button className="Nav-link">
-                                    <img src={process.env.PUBLIC_URL + 'img/config-icon.png'} alt="Config"/>
+                                    <img src={process.env.PUBLIC_URL + '/img/config-icon.png'} alt="Config"/>
                                 </button>
                             </Link>
                         </li>
                         <li>
                             <Link to="/alerts">
                                 <button className="Nav-link">
-                                    <img src={process.env.PUBLIC_URL + 'img/alert-icon.png'} alt="Alerts"/>
+                                    <img src={process.env.PUBLIC_URL + '/img/alert-icon.png'} alt="Alerts"/>
                                 </button>
                             </Link>
                         </li>
@@ -49,6 +49,3 @@ function HeaderNav() {
         </header>
     );
 }
-
-
-export default HeaderNav;

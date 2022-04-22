@@ -9,11 +9,12 @@ import {
 } from "./dataSourcesSlice";
 import {SettingContainer} from "../../components/SettingContainer";
 import {SettingsGroup} from "../../components/SettingsGroup";
+import {SettingsLink} from "../../components/SettingsLink";
 
 export const PluginDisplay = () => {
     const [enablePlugin, {isLoading: enableIsLoading}] = useEnableDataSourcePluginMutation()
     const [disablePlugin, {isLoading: disableIsLoading}] = useDisableDataSourcePluginMutation()
-    const plugin = useSelector(state => state.datasources.selectedPlugin)
+    const plugin = useSelector(state => state.dataSources.selectedPlugin)
     const dispatch = useDispatch()
     let toggle = Status().Unchecked
 
@@ -63,9 +64,10 @@ export const PluginDisplay = () => {
             <SettingsGroup>
                 <p style={{margin: '2rem 0'}}>{plugin.description}</p>
                 <SettingContainer>
-                    <p><strong>Enabled</strong></p>
+                    <p>Enabled</p>
                     <ToggleSwitch status={toggle} onclick={onEnabledToggle}/>
                 </SettingContainer>
+                <SettingsLink title="Data Sources" location={"/datasource/" + plugin.id}/>
             </SettingsGroup>
         </>
     )
