@@ -1,12 +1,10 @@
 @use "variables";
 @use "colors";
 
-@use "header";
-@use "side-nav";
-@use "content-stage";
-@use "home";
-@use "components";
 @use "animations";
+@use "layout";
+@use "components";
+@use "features";
 @use "spinner";
 
 html {

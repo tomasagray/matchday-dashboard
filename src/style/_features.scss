@@ -1,0 +1,189 @@
+@use "colors";
+@use "variables";
+
+@mixin Poster {
+  box-sizing: content-box;
+  border: 1px solid transparent;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, .1);
+    border-color: rgba(200, 200, 200, .1);
+  }
+}
+
+.Item-poster {
+  @include Poster;
+  max-width: 10vw;
+}
+
+.Event-poster {
+  @include Poster;
+  max-width: variables.$eventPosterWidth;
+}
+
+.Event-title {
+  font-weight: bold;
+}
+
+.Event-date {
+  color: #aaa;
+}
+
+.Plugin-button-tile {
+  width: 20vw;
+  padding: 1.8rem;
+  border: 1px solid #333;
+  border-radius: .6rem;
+  box-shadow: 3px 3px 3px colors.$shadow;
+
+  &.active {
+    background-color: #444;
+  }
+
+  &:hover {
+    cursor: pointer;
+    background-color: rgba(255, 255, 255, .1);
+  }
+
+  .Plugin-button-title {
+    font-weight: bold;
+    //font-size: 1.6rem;
+    color: #aaa;
+  }
+
+  &.active .Plugin-button-title {
+    color: whitesmoke;
+  }
+
+
+  &.active .Plugin-id {
+    color: #ccc;
+
+    strong {
+      color: whitesmoke;
+    }
+  }
+}
+
+.Plugin-id {
+  font-size: 10pt;
+  margin: 4px;
+  color: #666;
+
+  strong {
+    color: #aaa;
+  }
+}
+
+.Data-source-field-list {
+
+  padding: 1rem 2rem;
+
+  & > div {
+    margin: 1rem 0;
+  }
+
+  label {
+    font-size: 1.3rem;
+    margin-right: 1rem;
+  }
+
+  input {
+    border: 1px solid #333;
+    background-color: colors.$darkBg;
+    color: #ccc;
+    border-radius: 3px;
+    padding: 1em;
+  }
+}
+
+.Pattern-kit-display {
+  margin: 2rem 0;
+  background-color: colors.$darkBg;
+  border: 1px solid #666;
+  border-radius: .5rem;
+  overflow: hidden;
+
+  label:after {
+    content: ':'
+  }
+
+  .Pattern-kit-type {
+    padding: .75rem;
+    border-bottom: 1px solid #333;
+
+    input[type=text] {
+      width: fit-content;
+    }
+  }
+
+  .Pattern-kit {
+    background-color: colors.$defaultComponentBg;
+
+    .Pattern-kit-editor {
+      border-collapse: collapse;
+      border-radius: 1rem;
+      width: 100%;
+
+      .Editor-bar {
+        text-align: right;
+        background-color: colors.$darkBg;
+
+        th:nth-child(even) {
+          display: flex;
+          justify-content: right;
+
+          a {
+            $buttonSize: 1.2rem;
+            padding: 1.2rem;
+            display: flex;
+            justify-content: center;
+            width: $buttonSize;
+            height: $buttonSize;
+
+            &:hover {
+              background-color: rgba(255, 255, 255, .2);
+            }
+          }
+        }
+      }
+
+      td {
+        border: 1px solid #888;
+        padding: 2rem;
+        vertical-align: top;
+      }
+    }
+
+    input[type=text] {
+      width: fit-content;
+    }
+
+    .Field-list {
+      border-collapse: collapse;
+
+      th {
+        font-size: 1.2rem;
+        text-align: left;
+        padding: 1rem;
+        background-color: rgba(0, 0, 0, .3);
+      }
+
+      td {
+        padding: 1rem;
+      }
+
+      td:nth-child(1) {
+        text-align: center;
+      }
+
+      td:nth-child(even) {
+        background-color: rgba(10, 10, 10, .2);
+      }
+
+      tr:nth-child(even) {
+        background-color: rgba(10, 10, 10, .4);
+      }
+    }
+  }
+}
