@@ -38,17 +38,20 @@ export const DataSourceDisplay = ({datasource = null}) => {
 
      return (
         <>
-            <CollapsableContainer title="TODO: Add title field to data sources" key={datasource.dataSourceId}>
+            <CollapsableContainer title="TODO: Add title field to data sources">
                 <form className="Data-source-field-list">
                     <div>
-                        <label htmlFor="data-source-base-uri">Base URI:</label>
-                        <input type="text" name="data-source-base-uri" value={baseUri}
-                               onChange={onBaseUriValChanged} size={baseUri.length} disabled />
+                        <label htmlFor="data-source-base-uri">Base URI:</label> <input type="text"
+                                                                                       name="data-source-base-uri"
+                                                                                       value={baseUri}
+                                                                                       onChange={onBaseUriValChanged}
+                                                                                       size={baseUri.length} disabled/>
                     </div>
                     <div>
-                        <label htmlFor="data-source-clazz">Type:</label>
-                        <input type="text" name="data-source-clazz" value={clazz}
-                               onChange={onClazzValChanged} size={clazz.length} disabled />
+                        <label htmlFor="data-source-clazz">Type:</label> <input type="text" name="data-source-clazz"
+                                                                                value={clazz}
+                                                                                onChange={onClazzValChanged}
+                                                                                size={clazz.length} disabled/>
                     </div>
                     <div>
                         <label>Pattern Kits:</label>

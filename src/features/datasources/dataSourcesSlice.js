@@ -78,8 +78,15 @@ export const dataSourceApiSlice = apiSlice.injectEndpoints({
         }),
         getDataSourcesForPlugin: builder.query({
             query: (pluginId) => ({url: `/data-sources/plugin/${pluginId}/sources`}),
-            transformResponse: (response, meta, arg) =>
-                response._embedded.data_source // todo - check for errors
+            transformResponse: (response, meta, arg) => {
+                console.log('[getDataSourcesForPlugin] Got response:', response, meta, arg)
+                let {_embedded} = response
+                if (_embedded) {
+                    let {data_source} = _embedded
+                    return data_source
+                }
+                return response
+            }
         }),
     })
 })

@@ -27,8 +27,9 @@ export const DataSourceList = () => {
         console.log('button clicked:', e)
     }
 
-    const getDataSourceComponentKey = (id) => {
+    const getDataSourceComponentKey = (dataSource) => {
         let key = 0
+        let {dataSourceId: id} = dataSource
         for (let i = 0; i < id.length; i++) {
             key += id.charCodeAt(i)
         }
@@ -39,7 +40,7 @@ export const DataSourceList = () => {
     if (isSuccess) {
         if (dataSources) {
             dataSourceList = dataSources.map(dataSource =>
-                <DataSourceDisplay key={getDataSourceComponentKey(dataSource.dataSourceId)} datasource={dataSource}/>
+                <DataSourceDisplay key={getDataSourceComponentKey(dataSource)} datasource={dataSource}/>
             )
         } else {
             dataSourceList = <p>There are currently no Data Sources for this plugin.<br/> Click above to add one</p>

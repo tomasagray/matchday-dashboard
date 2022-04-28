@@ -28,16 +28,17 @@ export const PatternKitDisplay = (props) => {
         setPatternVal(e.target.value)
     }
     const onMenuButtonClick = (e) => {
+        e.preventDefault()
         setEditMenuHidden(false)
     }
     const onClickOutsideMenu = () => {
         setEditMenuHidden(true)
     }
-    const onClickEditButton = (e) => {
+    const onClickEditButton = () => {
         console.log('edit button clicked')
         setEditMenuHidden(true)
     }
-    const onClickDeleteButton = (e) => {
+    const onClickDeleteButton = () => {
         console.log('delete button clicked')
         setEditMenuHidden(true)
     }
@@ -52,16 +53,12 @@ export const PatternKitDisplay = (props) => {
                 <tr className="Editor-bar">
                     <th>&nbsp;</th>
                     <th ref={menu}>
-                        <a href="#" onClick={onMenuButtonClick}>&#8942;</a>
-                        <FloatingMenu hidden={editMenuHidden}>
-                            <MenuItem onClick={onClickEditButton} backgroundColor="green">
-                                Edit
-                                <img src={process.env.PUBLIC_URL + '/img/edit-pencil/edit-pencil_32.png'} alt="Edit"/>
-                            </MenuItem>
-                            <MenuItem onClick={onClickDeleteButton} backgroundColor="darkred">
-                                Delete
-                                <img src={process.env.PUBLIC_URL + '/img/delete/delete_32.png'} alt="Delete" />
-                            </MenuItem>
+                        <button onClick={onMenuButtonClick}>&#8942;</button>
+                        <FloatingMenu hidden={editMenuHidden}> <MenuItem onClick={onClickEditButton}
+                                                                         backgroundColor="green"> Edit <img
+                            src={process.env.PUBLIC_URL + '/img/edit-pencil/edit-pencil_32.png'} alt="Edit"/>
+                        </MenuItem> <MenuItem onClick={onClickDeleteButton} backgroundColor="darkred"> Delete <img
+                            src={process.env.PUBLIC_URL + '/img/delete/delete_32.png'} alt="Delete"/> </MenuItem>
                         </FloatingMenu>
                     </th>
                 </tr>
