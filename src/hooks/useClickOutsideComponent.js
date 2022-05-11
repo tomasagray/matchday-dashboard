@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import {useEffect} from "react";
 
 export const useClickOutsideComponent = (ref, action) => {
     useEffect(() => {
@@ -11,5 +11,5 @@ export const useClickOutsideComponent = (ref, action) => {
 
         document.addEventListener("mousedown", handleClick)
         return () => document.removeEventListener("mousedown", handleClick)
-    }, [ref])
+    }, [ref, action])
 }

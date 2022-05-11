@@ -1,5 +1,4 @@
-import React, {Component, useRef, useState} from 'react'
-import {useClickOutsideComponent} from "../hooks/useClickOutsideComponent";
+import React from 'react'
 
 export const FloatingMenu = (props) => {
 
