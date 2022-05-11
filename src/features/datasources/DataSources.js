@@ -10,7 +10,7 @@ import {PluginDisplay} from "./PluginDisplay";
 import {ErrorMessage} from "../../components/ErrorMessage";
 import {DataSourcePluginTile} from "./DataSourcePluginTile";
 
-export default function DataSources() {
+export const DataSources = () => {
     const {
         data: plugins,
         isLoading: pluginsLoading,

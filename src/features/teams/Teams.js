@@ -5,7 +5,7 @@ import DataManager from "../../components/DataManager";
 
 const dataManager = new DataManager();
 
-export default function Teams(props) {
+export const Teams = (props) => {
 
     let preferences = useContext(Preferences);
     let teamsUrl = preferences.url.teams;

@@ -5,7 +5,7 @@ import {Preferences} from "../../Preferences";
 
 const dataManager = new DataManager();
 
-export default function Competitions(props) {
+export const Competitions = (props) => {
 
     let preferences = useContext(Preferences);
     let competitionUrl = preferences.url.competitions;

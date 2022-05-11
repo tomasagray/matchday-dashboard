@@ -5,7 +5,7 @@ import DataManager from "../../components/DataManager";
 
 const dataManager = new DataManager();
 
-export default function TeamDetail(props) {
+export const TeamDetail = (props) => {
     let matcher = useMatch();
 
     return (

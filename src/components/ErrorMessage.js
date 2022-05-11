@@ -1,7 +1,9 @@
 import React from 'react'
 
-export const ErrorMessage = ({message, code}) => {
+export const ErrorMessage = (props) => {
 
+    let message = props.message
+    let code = props.code
     return (
         <div className="Error-message">
             <img src={process.env.PUBLIC_URL + '/img/error_128.png'} alt="ERROR"/>

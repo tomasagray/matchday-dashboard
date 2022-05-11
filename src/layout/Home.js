@@ -6,7 +6,7 @@ import ContentBar from "../components/ContentBar";
 
 const dataManager = new DataManager();
 
-export default function Home() {
+export const Home = () => {
 
     const prefs = useContext(Preferences);
     let eventUrl = prefs.url.events;

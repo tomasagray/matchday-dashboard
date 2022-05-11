@@ -4,7 +4,7 @@ import {Route, useMatch} from "react-router-dom";
 import ContentBar from "../../components/ContentBar";
 import GridList from "../../components/GridList";
 
-export default function CompetitionDetail(props) {
+export const CompetitionDetail = (props) => {
     let matcher = useMatch();
 
     // let history = useHistory();
