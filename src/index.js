@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import './style/index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
@@ -17,9 +16,11 @@ import {Search} from "./layout/Search";
 import {TeamDetail} from "./features/teams/TeamDetail";
 import {CompetitionDetail} from "./features/competitions/CompetitionDetail";
 import {DataSourceList} from "./features/datasources/DataSourceList";
+import {createRoot} from "react-dom/client";
 
 const container = document.getElementById('root');
-ReactDOM.render(
+const root = createRoot(container)
+root.render(
   <React.StrictMode>
       <Provider store={store}>
           <BrowserRouter>
@@ -42,11 +43,11 @@ ReactDOM.render(
               </Routes>
           </BrowserRouter>
       </Provider>
-  </React.StrictMode>,
-  container
+  </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+// todo - decide what to do with vitals
 reportWebVitals();
