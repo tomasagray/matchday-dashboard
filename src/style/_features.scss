@@ -47,14 +47,12 @@
 
   .Plugin-button-title {
     font-weight: bold;
-    //font-size: 1.6rem;
-    color: #aaa;
+    color: #777;
   }
 
   &.active .Plugin-button-title {
     color: whitesmoke;
   }
-
 
   &.active .Plugin-id {
     color: #ccc;
@@ -109,56 +107,47 @@
   }
 
   .Pattern-kit-type {
-    padding: .75rem;
     border-bottom: 1px solid #333;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
     input[type=text] {
       width: fit-content;
     }
   }
 
+  .edit-menu-button {
+    $buttonSize: 1.2rem;
+    width: $buttonSize;
+    height: 100%;
+    border: 0;
+    background: none;
+    color: colors.$defaultFontColor;
+    padding: 1.2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, .2);
+    }
+  }
+
+  .Pattern-kit-editor {
+    border-collapse: collapse;
+    border-radius: 1rem;
+    width: 100%;
+
+    td {
+      border: 1px solid #888;
+      padding: 2rem;
+      vertical-align: top;
+    }
+  }
+
   .Pattern-kit {
     background-color: colors.$defaultComponentBg;
-
-    .Pattern-kit-editor {
-      border-collapse: collapse;
-      border-radius: 1rem;
-      width: 100%;
-
-      .Editor-bar {
-        text-align: right;
-        background-color: colors.$darkBg;
-
-        th:nth-child(even) {
-          display: flex;
-          justify-content: right;
-
-          button {
-            $buttonSize: 1.2rem;
-            width: $buttonSize;
-            height: $buttonSize;
-            border: 0;
-            background: none;
-            color: colors.$defaultFontColor;
-            padding: 1.2rem;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-
-            &:hover {
-              background-color: rgba(255, 255, 255, .2);
-            }
-          }
-        }
-      }
-
-      td {
-        border: 1px solid #888;
-        padding: 2rem;
-        vertical-align: top;
-      }
-    }
-
     input[type=text] {
       width: fit-content;
     }

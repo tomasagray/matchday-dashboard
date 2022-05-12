@@ -67,7 +67,7 @@ export const PluginDisplay = () => {
                     <p>Enabled</p>
                     <ToggleSwitch status={toggle} onclick={onEnabledToggle}/>
                 </SettingContainer>
-                <SettingsLink title="Data Sources" location={"/datasource/" + plugin.id}/>
+                <SettingsLink title="Data Sources" location={"/dataSource/" + plugin.id}/>
             </SettingsGroup>
         </>
     )

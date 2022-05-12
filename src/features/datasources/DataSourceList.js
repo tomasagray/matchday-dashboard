@@ -1,7 +1,7 @@
 import React from 'react'
 import {useParams} from "react-router-dom";
 import {
-    selectDataSourcePluginById,
+    selectDataSourcePluginById, useAddDataSourceMutation,
     useGetDataSourcesForPluginQuery
 } from "./dataSourcesSlice";
 import {useSelector} from "react-redux";
@@ -10,11 +10,9 @@ import {Spinner} from "../../components/Spinner";
 import {ErrorMessage} from "../../components/ErrorMessage";
 import {DataSourceDisplay} from "./DataSourceDisplay";
 
-export const DataSourceList = () => {
+const DataSources = (props)=> {
 
-    let params = useParams()
-    const {pluginId} = params;
-    let plugin = useSelector(state => selectDataSourcePluginById(state, pluginId))
+    let {pluginId} = props
     const {
         data: dataSources,
         isLoading,
@@ -22,10 +20,6 @@ export const DataSourceList = () => {
         isError,
         error
     } = useGetDataSourcesForPluginQuery(pluginId)
-
-    const onAddNewDataSource = (e) => {
-        console.log('button clicked:', e)
-    }
 
     const getDataSourceComponentKey = (dataSource) => {
         let key = 0
@@ -40,7 +34,7 @@ export const DataSourceList = () => {
     if (isSuccess) {
         if (dataSources) {
             dataSourceList = dataSources.map(dataSource =>
-                <DataSourceDisplay key={getDataSourceComponentKey(dataSource)} datasource={dataSource}/>
+                <DataSourceDisplay key={getDataSourceComponentKey(dataSource)} dataSource={dataSource}/>
             )
         } else {
             dataSourceList = <p>There are currently no Data Sources for this plugin.<br/> Click above to add one</p>
@@ -55,6 +49,18 @@ export const DataSourceList = () => {
     if (isError) {
         dataSourceList = <ErrorMessage message={error}/>
     }
+    return (dataSourceList)
+}
+
+export const DataSourceList = () => {
+
+    let params = useParams()
+    const {pluginId} = params;
+    let plugin = useSelector(state => selectDataSourcePluginById(state, pluginId))
+
+    const onAddNewDataSource = (e) => {
+        console.log('button clicked:', e)
+    }
 
     let pluginDisplay
     if (plugin) {
@@ -68,7 +74,9 @@ export const DataSourceList = () => {
                     <h2>Data Sources</h2>
                     <button onClick={onAddNewDataSource} className="Small-button">Add Data Source...</button>
                 </div>
-                <div>{dataSourceList}</div>
+                <div>
+                    <DataSources pluginId={pluginId}/>
+                </div>
             </>
         )
     } else {

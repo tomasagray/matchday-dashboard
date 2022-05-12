@@ -37,7 +37,7 @@ class SideNav extends Component {
                     <li>
                         <Link to="/data-sources">
                             <button className="Data-section-link Nav-link">
-                                <img src={process.env.PUBLIC_URL + '/img/datasource-icon.png'} alt="Data Sources"/>
+                                <img src={process.env.PUBLIC_URL + '/img/dataSource-icon.png'} alt="Data Sources"/>
                             </button>
                         </Link>
                     </li>

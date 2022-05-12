@@ -1,19 +1,21 @@
 import React, {useState} from "react";
 import {CollapsableContainer} from "../../components/CollapsableContainer";
 import {PatternKitTypeGroup} from "./PatternKitTypeGroup";
+import {useAddDataSourceMutation} from "./dataSourcesSlice";
 
-export const DataSourceDisplay = ({datasource = null}) => {
+export const DataSourceDisplay = ({dataSource = null}) => {
 
     const {
+        dataSourceId,
         baseUri,
         clazz,
         patternKitPack
-    } = datasource
+    } = dataSource
     let patternKits
     if (patternKitPack) {
         patternKits =
             Object.values(patternKitPack.patternKits)
-                .map(patternKitGroup => <PatternKitTypeGroup patternKits={patternKitGroup} />);
+                .map(patternKitGroup => <PatternKitTypeGroup patternKits={patternKitGroup}/>);
     } else {
         patternKits =
             <p>
@@ -36,22 +38,30 @@ export const DataSourceDisplay = ({datasource = null}) => {
         console.log('add new pattern kit button clicked')
     }
 
-     return (
-        <>
-            <CollapsableContainer title="TODO: Add title field to data sources">
+    const [updateDataSource, {isLoading}] = useAddDataSourceMutation()
+
+    const onSaveDataSource = async (e) => {
+        console.log('saving data source', e, dataSource)
+        await updateDataSource({dataSource})
+        console.log("updated")
+    }
+
+    return (
+            <CollapsableContainer key={dataSourceId} title="TODO: Add title field to data sources">
                 <form className="Data-source-field-list">
                     <div>
-                        <label htmlFor="data-source-base-uri">Base URI:</label> <input type="text"
-                                                                                       name="data-source-base-uri"
-                                                                                       value={baseUri}
-                                                                                       onChange={onBaseUriValChanged}
-                                                                                       size={baseUri.length} disabled/>
+                        <label htmlFor="data-source-base-uri">Base URI:</label>
+                        <input type="text" name="data-source-base-uri"
+                               value={baseUri}
+                               onChange={onBaseUriValChanged}
+                               size={baseUri.length} disabled/>
                     </div>
                     <div>
-                        <label htmlFor="data-source-clazz">Type:</label> <input type="text" name="data-source-clazz"
-                                                                                value={clazz}
-                                                                                onChange={onClazzValChanged}
-                                                                                size={clazz.length} disabled/>
+                        <label htmlFor="data-source-clazz">Type:</label>
+                        <input type="text" name="data-source-clazz"
+                               value={clazz}
+                               onChange={onClazzValChanged}
+                               size={clazz.length} disabled/>
                     </div>
                     <div>
                         <label>Pattern Kits:</label>
@@ -61,7 +71,9 @@ export const DataSourceDisplay = ({datasource = null}) => {
                 <div style={{textAlign: 'right', padding: '2rem'}}>
                     <button className="Small-button" onClick={onAddNewPatternKit}>Add Pattern Kit...</button>
                 </div>
+                <div>
+                    <button onClick={onSaveDataSource} className={"Small-button"}>Save</button>
+                </div>
             </CollapsableContainer>
-        </>
     )
 }
