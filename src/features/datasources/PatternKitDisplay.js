@@ -3,10 +3,12 @@ import {useDispatch} from "react-redux";
 import {patternKitUpdated} from "./dataSourcesSlice";
 
 function getEntryRow(entry) {
+    let groupId = entry[0];
+    let fieldName = entry[1];
     return (
-        <tr>
-            <td>{entry[0]}</td>
-            <td>{entry[1]}</td>
+        <tr key={groupId}>
+            <td>{groupId}</td>
+            <td>{fieldName}</td>
         </tr>
     )
 }

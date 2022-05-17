@@ -1,6 +1,6 @@
 import React from 'react';
 import './style/index.css';
-import App from './App';
+import App from './app/App';
 import reportWebVitals from './reportWebVitals';
 import store from "./app/store";
 import {Provider} from "react-redux";
@@ -9,13 +9,13 @@ import {Home} from "./layout/Home";
 import {Events} from "./features/events/Events";
 import {Competitions} from "./features/competitions/Competitions";
 import {Teams} from "./features/teams/Teams";
-import {DataSources} from "./features/datasources/DataSources";
+import {DataSourcePluginsList} from "./features/datasources/DataSourcePluginsList";
 import {Settings} from "./layout/Settings";
 import {Alerts} from "./components/Alerts";
 import {Search} from "./layout/Search";
 import {TeamDetail} from "./features/teams/TeamDetail";
 import {CompetitionDetail} from "./features/competitions/CompetitionDetail";
-import {DataSourceList} from "./features/datasources/DataSourceList";
+import {PluginDataSourceList} from "./features/datasources/PluginDataSourceList";
 import {createRoot} from "react-dom/client";
 
 const container = document.getElementById('root');
@@ -31,14 +31,14 @@ root.render(
                     <Route path="events" element={<Events/>} />
                     <Route path="competitions" element={<Competitions/>} />
                     <Route path="teams" element={<Teams/>} />
-                    <Route path="data-sources" element={<DataSources/>} />
+                    <Route path="data-sources" element={<DataSourcePluginsList/>} />
                     <Route path="settings" element={<Settings/>} />
                     <Route path="alerts" element={<Alerts/>} />
                     <Route path="search" element={<Search/>} />
                     {/* Second level */}
                     <Route path="competition" element={<CompetitionDetail/>} />
                     <Route path="team" element={<TeamDetail/>} />
-                    <Route path="datasource/:pluginId" element={<DataSourceList/>} />
+                    <Route path="datasource/:pluginId" element={<PluginDataSourceList/>} />
                 </Route>
               </Routes>
           </BrowserRouter>

@@ -1,16 +1,12 @@
-import React from 'react'
+import React, {useMemo} from 'react'
 import {useParams} from "react-router-dom";
-import {
-    selectDataSourcePluginById, useAddDataSourceMutation,
-    useGetDataSourcesForPluginQuery
-} from "./dataSourcesSlice";
-import {useSelector} from "react-redux";
+import {useGetAllDataSourcePluginsQuery, useGetDataSourcesForPluginQuery} from "./dataSourcesSlice";
 import {PluginId} from "./PluginId";
 import {Spinner} from "../../components/Spinner";
 import {ErrorMessage} from "../../components/ErrorMessage";
 import {DataSourceDisplay} from "./DataSourceDisplay";
 
-const DataSources = (props)=> {
+const DataSources = (props) => {
 
     let {pluginId} = props
     const {
@@ -21,20 +17,11 @@ const DataSources = (props)=> {
         error
     } = useGetDataSourcesForPluginQuery(pluginId)
 
-    const getDataSourceComponentKey = (dataSource) => {
-        let key = 0
-        let {dataSourceId: id} = dataSource
-        for (let i = 0; i < id.length; i++) {
-            key += id.charCodeAt(i)
-        }
-        return key
-    }
-
     let dataSourceList
     if (isSuccess) {
         if (dataSources) {
             dataSourceList = dataSources.map(dataSource =>
-                <DataSourceDisplay key={getDataSourceComponentKey(dataSource)} dataSource={dataSource}/>
+                <DataSourceDisplay key={dataSource.dataSourceId} dataSource={dataSource}/>
             )
         } else {
             dataSourceList = <p>There are currently no Data Sources for this plugin.<br/> Click above to add one</p>
@@ -52,19 +39,33 @@ const DataSources = (props)=> {
     return (dataSourceList)
 }
 
-export const DataSourceList = () => {
+export const PluginDataSourceList = () => {
 
     let params = useParams()
     const {pluginId} = params;
-    let plugin = useSelector(state => selectDataSourcePluginById(state, pluginId))
+    const {
+        data: plugins = [],
+        isLoading,
+        isSuccess,
+        isError,
+        error
+    } = useGetAllDataSourcePluginsQuery()
+    const plugin = useMemo(() =>
+            plugins.find(plugin => plugin.id === pluginId),
+        [plugins, pluginId])
 
     const onAddNewDataSource = (e) => {
         console.log('button clicked:', e)
     }
 
-    let pluginDisplay
-    if (plugin) {
-        pluginDisplay = (
+    if (isError) {
+        return <ErrorMessage message={error}/>
+    }
+    if (isLoading) {
+        return <Spinner size={64}/>;
+    }
+    if (isSuccess) {
+        return (
             <>
                 <div className="Banner-title">
                     <h1>{plugin.title}</h1>
@@ -78,14 +79,6 @@ export const DataSourceList = () => {
                     <DataSources pluginId={pluginId}/>
                 </div>
             </>
-        )
-    } else {
-        pluginDisplay = <p>No plugin data supplied</p>
+        );
     }
-
-    return (
-        <>
-            {pluginDisplay}
-        </>
-    );
 }

@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from "react";
 import GridList from "../../components/GridList";
-import {Preferences} from "../../Preferences";
+import {Preferences} from "../../app/Preferences";
 import DataManager from "../../components/DataManager";
 
 const dataManager = new DataManager();

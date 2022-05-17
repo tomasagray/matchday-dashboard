@@ -1,17 +1,29 @@
-import {createSelector, createSlice} from "@reduxjs/toolkit";
+import {createEntityAdapter, createSlice} from "@reduxjs/toolkit";
 import {apiSlice, dataSourcePlugin} from "../../app/apiSlice";
 
+const dataSourcePluginTag = 'DataSourcePlugin'
 const dataSourceTag = 'DataSource'
 
 const jsonHeaders = {
     Accept: 'application/json',
     'Content-Type': 'application/json',
 }
-
-const initialState = {
-    plugins: [],
-    selectedPlugin: null,
+const getSnapshotRequest = ({label = ''}) => {
+    return {
+        endDate: "",
+        startDate: "",
+        fetchBodies: true,
+        fetchImages: false,
+        maxResults: 50,
+        labels: [label],
+        orderBy: "",
+        pageToken: "",
+        status: ""
+    }
 }
+
+const dataSourcesAdapter = createEntityAdapter()
+const initialState = dataSourcesAdapter.getInitialState()
 
 const dataSourcesSlice = createSlice({
     name: 'dataSources',
@@ -35,27 +47,17 @@ const dataSourcesSlice = createSlice({
     }
 })
 
-const getSnapshotRequest = ({label = ''}) => {
-    return {
-        endDate: "",
-        startDate: "",
-        fetchBodies: true,
-        fetchImages: false,
-        maxResults: 50,
-        labels: [label],
-        orderBy: "",
-        pageToken: "",
-        status: ""
-    }
-}
-
 export const dataSourceApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => {
         return ({
             getAllDataSourcePlugins: builder.query({
                 query: () => '/data-sources/plugin/all',
-                keepUnusedDataFor: 3000,    // TODO: remove, subscribe in component, setup tag invalidation
-                // providesTags: [dataSourcePlugin],
+                providesTags: [dataSourcePluginTag],
+                transformResponse: (response, meta, arg) => {
+                    let {_embedded} = response
+                    let {data_source_plugins} = _embedded
+                    return data_source_plugins
+                }
             }),
             enableDataSourcePlugin: builder.mutation({
                 query: pluginId => ({
@@ -90,13 +92,9 @@ export const dataSourceApiSlice = apiSlice.injectEndpoints({
             getDataSourcesForPlugin: builder.query({
                 query: (pluginId) => ({url: `/data-sources/plugin/${pluginId}/sources`}),
                 transformResponse: (response, meta, arg) => {
-                    console.log('[getDataSourcesForPlugin] Got response:', response, meta, arg)
                     let {_embedded} = response
-                    if (_embedded) {
-                        let {data_source} = _embedded
-                        return data_source
-                    }
-                    return response
+                    let {data_source} = _embedded
+                    return data_source
                 }
             }),
             addDataSource: builder.mutation({
@@ -114,7 +112,12 @@ export const dataSourceApiSlice = apiSlice.injectEndpoints({
     }
 })
 
-export const {pluginSelected, enableSelectedPlugin, disableSelectedPlugin, patternKitUpdated} = dataSourcesSlice.actions
+export const {
+    pluginSelected,
+    enableSelectedPlugin,
+    disableSelectedPlugin,
+    patternKitUpdated
+} = dataSourcesSlice.actions
 
 export const {
     useGetAllDataSourcePluginsQuery,
@@ -124,35 +127,5 @@ export const {
     useGetDataSourcesForPluginQuery,
     useAddDataSourceMutation,
 } = dataSourceApiSlice
-
-export const selectDataSourcePluginsResult = dataSourceApiSlice.endpoints.getAllDataSourcePlugins.select()
-
-export const selectAllDataSourcePlugins = createSelector(
-    selectDataSourcePluginsResult,
-    pluginsResult => pluginsResult?.data ?? []
-)
-
-export const selectDataSourcePluginById = createSelector(
-    selectAllDataSourcePlugins,
-    (state, pluginId) => pluginId,
-    (plugins, pluginId) => {
-        const {_embedded} = plugins;
-        if (_embedded) {
-            const {data_source_plugins} = _embedded
-            return data_source_plugins.find(plugin => plugin.id === pluginId)
-        }
-    }
-)
-
-// todo - use these
-export const selectDataSourcesForPluginResult = (pluginId) =>
-    dataSourceApiSlice.endpoints.getDataSourcesForPlugin.select(pluginId)
-
-export const selectDataSourcesForPlugin = createSelector(
-    selectDataSourcePluginsResult,
-    (state) => state.dataSources.selectedPlugin.id,
-    selectDataSourcesForPluginResult,
-    (result, b) => result?.data ?? []
-)
 
 export default dataSourcesSlice.reducer

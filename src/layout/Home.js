@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from "react";
-import {Preferences} from "../Preferences";
+import {Preferences} from "../app/Preferences";
 import DataManager from "../components/DataManager";
 import ContentBar from "../components/ContentBar";
 

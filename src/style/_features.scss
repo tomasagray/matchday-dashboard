@@ -107,10 +107,11 @@
   }
 
   .Pattern-kit-type {
-    border-bottom: 1px solid #333;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    border-bottom: 1px solid #333;
+    padding-left: 1rem;
 
     input[type=text] {
       width: fit-content;

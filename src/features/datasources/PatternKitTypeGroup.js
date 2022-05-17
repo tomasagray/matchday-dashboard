@@ -6,9 +6,7 @@ import {useClickOutsideComponent} from "../../hooks/useClickOutsideComponent";
 
 export const PatternKitTypeGroup = (props) => {
 
-    const {
-        patternKits
-    } = props
+    const {patternKits} = props
     const {clazz} = patternKits;
     const patternKitItems =
         patternKits.patternKits.map(patternKit => <PatternKitDisplay key={patternKit.id} patternKit={patternKit}/>);

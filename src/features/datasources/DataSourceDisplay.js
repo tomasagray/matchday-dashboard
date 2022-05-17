@@ -15,7 +15,7 @@ export const DataSourceDisplay = ({dataSource = null}) => {
     if (patternKitPack) {
         patternKits =
             Object.values(patternKitPack.patternKits)
-                .map(patternKitGroup => <PatternKitTypeGroup patternKits={patternKitGroup}/>);
+                .map(patternKitGroup => <PatternKitTypeGroup key={patternKitGroup.id} patternKits={patternKitGroup}/>);
     } else {
         patternKits =
             <p>
@@ -47,7 +47,7 @@ export const DataSourceDisplay = ({dataSource = null}) => {
     }
 
     return (
-            <CollapsableContainer key={dataSourceId} title="TODO: Add title field to data sources">
+            <CollapsableContainer _key={dataSourceId} title="TODO: Add title field to data sources">
                 <form className="Data-source-field-list">
                     <div>
                         <label htmlFor="data-source-base-uri">Base URI:</label>

@@ -1,6 +1,6 @@
 import EventTile from "../features/events/EventTile";
 import React from "react";
-import {Preferences} from "../Preferences";
+import {Preferences} from "../app/Preferences";
 import axios from "axios";
 import TeamTile from "../features/teams/TeamTile";
 import CompetitionTile from "../features/competitions/CompetitionTile";
@@ -53,7 +53,7 @@ class DataManager {
     }
 
     async fetchDataSourcePlugins(url) {
-        console.log("Fetching DataSources from: ", url);
+        console.log("Fetching DataSourcePluginsList from: ", url);
         return axios.get(url)
             .then(result => {
                 return result.data._embedded;

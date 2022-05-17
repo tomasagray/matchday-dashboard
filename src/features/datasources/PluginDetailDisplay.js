@@ -11,7 +11,7 @@ import {SettingContainer} from "../../components/SettingContainer";
 import {SettingsGroup} from "../../components/SettingsGroup";
 import {SettingsLink} from "../../components/SettingsLink";
 
-export const PluginDisplay = () => {
+export const PluginDetailDisplay = () => {
     const [enablePlugin, {isLoading: enableIsLoading}] = useEnableDataSourcePluginMutation()
     const [disablePlugin, {isLoading: disableIsLoading}] = useDisableDataSourcePluginMutation()
     const plugin = useSelector(state => state.dataSources.selectedPlugin)

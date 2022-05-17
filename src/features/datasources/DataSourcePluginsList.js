@@ -6,28 +6,20 @@ import {
     useGetAllDataSourcePluginsQuery,
     useRefreshAllDataSourcePluginsMutation
 } from "./dataSourcesSlice";
-import {PluginDisplay} from "./PluginDisplay";
+import {PluginDetailDisplay} from "./PluginDetailDisplay";
 import {ErrorMessage} from "../../components/ErrorMessage";
 import {DataSourcePluginTile} from "./DataSourcePluginTile";
 
-export const DataSources = () => {
+export const DataSourcePluginsList = () => {
     const {
-        data: plugins,
+        data: dataSourcePlugins,
         isLoading: pluginsLoading,
         isSuccess: pluginLoaded,
         isError: pluginLoadingError,
         error: pluginError
     } = useGetAllDataSourcePluginsQuery()
 
-    const [
-        refreshAllPlugins,
-        {
-            // data: refreshData,
-            isLoading: refreshing,
-            // isSuccess: refreshSuccess,
-            // isError: isRefreshError,
-            // error: refreshError
-        }] = useRefreshAllDataSourcePluginsMutation()
+    const [refreshAllPlugins, {isLoading: refreshing}] = useRefreshAllDataSourcePluginsMutation()
 
     const selectedPlugin = useSelector(state => {
         const {dataSources} = state;
@@ -42,8 +34,6 @@ export const DataSources = () => {
                 <Spinner text="Loading..." size="2rem"/>
             </div>
     } else if (pluginLoaded) {
-        const {_embedded} = plugins;
-        const {data_source_plugins: dataSourcePlugins} = _embedded
         let tiles = dataSourcePlugins.map(plugin => {
             let active = selectedPlugin && plugin.id === selectedPlugin.id
             return <DataSourcePluginTile key={plugin.id} active={active} plugin={plugin}/>;
@@ -55,7 +45,7 @@ export const DataSources = () => {
 
     let pluginData
     if (selectedPlugin) {
-        pluginData = <PluginDisplay plugin={selectedPlugin}/>
+        pluginData = <PluginDetailDisplay plugin={selectedPlugin}/>
     } else if (pluginLoaded) {
         pluginData = <p>Please select a Data Source plugin from above.</p>
     }
