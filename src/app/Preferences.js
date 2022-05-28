@@ -1,7 +1,7 @@
-// create app prefs
-import React from "react";
+import React from "react"
+import properties from "./properties"
 
-export const baseUrl = 'http://localhost:8080';
+const {baseUrl} = properties
 
 export const Preferences = React.createContext({
     url: {

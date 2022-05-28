@@ -9,7 +9,7 @@ import {Home} from "./layout/Home";
 import {Events} from "./features/events/Events";
 import {Competitions} from "./features/competitions/Competitions";
 import {Teams} from "./features/teams/Teams";
-import {DataSourcePluginsList} from "./features/datasources/DataSourcePluginsList";
+import {DataSourcePluginsList} from "./features/datasource-plugins/DataSourcePluginsList";
 import {Settings} from "./layout/Settings";
 import {Alerts} from "./components/Alerts";
 import {Search} from "./layout/Search";

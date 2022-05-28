@@ -1,13 +1,13 @@
 import {configureStore} from "@reduxjs/toolkit";
-import eventsReducer from "../features/events/eventsSlice"
-import dataSourcesReducer from "../features/datasources/dataSourcesSlice"
+import dataSourceReducer from "../features/datasources/dataSourceSlice"
+import dataSourcePluginReducer from "../features/datasource-plugins/dataSourcePluginSlice"
 import {apiSlice} from "./apiSlice";
-
 
 export default configureStore({
     reducer: {
-        events: eventsReducer,
-        dataSources: dataSourcesReducer,
+        // events: eventsReducer,
+        dataSources: dataSourceReducer,
+        dataSourcePlugins: dataSourcePluginReducer,
         [apiSlice.reducerPath]: apiSlice.reducer
     },
     middleware: getDefaultMiddleware => getDefaultMiddleware().concat(apiSlice.middleware)

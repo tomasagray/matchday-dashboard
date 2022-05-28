@@ -5,7 +5,7 @@ import GridList from "../../components/GridList"
 import {
     useGetAllDataSourcePluginsQuery,
     useRefreshAllDataSourcePluginsMutation
-} from "./dataSourcesSlice";
+} from "./dataSourcePluginApiSlice";
 import {PluginDetailDisplay} from "./PluginDetailDisplay";
 import {ErrorMessage} from "../../components/ErrorMessage";
 import {DataSourcePluginTile} from "./DataSourcePluginTile";
@@ -20,12 +20,7 @@ export const DataSourcePluginsList = () => {
     } = useGetAllDataSourcePluginsQuery()
 
     const [refreshAllPlugins, {isLoading: refreshing}] = useRefreshAllDataSourcePluginsMutation()
-
-    const selectedPlugin = useSelector(state => {
-        const {dataSources} = state;
-        const {selectedPlugin: plugin} = dataSources;
-        return plugin;
-    })
+    const selectedPluginId = useSelector(state => state.dataSourcePlugins.selectedPluginId)
 
     let dataSourceList
     if (pluginsLoading) {
@@ -34,9 +29,11 @@ export const DataSourcePluginsList = () => {
                 <Spinner text="Loading..." size="2rem"/>
             </div>
     } else if (pluginLoaded) {
-        let tiles = dataSourcePlugins.map(plugin => {
-            let active = selectedPlugin && plugin.id === selectedPlugin.id
-            return <DataSourcePluginTile key={plugin.id} active={active} plugin={plugin}/>;
+        console.log('data source plugins', dataSourcePlugins)
+        console.log('selected id', selectedPluginId)
+        let tiles = dataSourcePlugins.ids.map(pluginId => {
+            let active = selectedPluginId !== null && pluginId === selectedPluginId
+            return <DataSourcePluginTile key={pluginId} active={active} pluginId={pluginId}/>;
         })
         dataSourceList = <GridList items={tiles}/>
     } else if (pluginLoadingError) {
@@ -44,8 +41,8 @@ export const DataSourcePluginsList = () => {
     }
 
     let pluginData
-    if (selectedPlugin) {
-        pluginData = <PluginDetailDisplay plugin={selectedPlugin}/>
+    if (selectedPluginId) {
+        pluginData = <PluginDetailDisplay plugin={selectedPluginId}/>
     } else if (pluginLoaded) {
         pluginData = <p>Please select a Data Source plugin from above.</p>
     }

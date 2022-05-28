@@ -1,20 +1,12 @@
-import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/dist/query/react";
+import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/dist/query/react"
+import properties from "./properties"
 
-const baseUrl = "http://localhost:8080/"
-export const dataSourcePlugin = 'DataSourcePlugin'
+const {baseUrl} = properties
+export const dataSourceTag = 'DataSource'
+export const dataSourcePluginTag = 'DataSourcePlugin'
 
 export const apiSlice = createApi({
-    reducerPath: "api",
     baseQuery: fetchBaseQuery({baseUrl: baseUrl}),
-    endpoints: (builder) => ({
-        getLatestEvents: builder.query({
-            query: () => '/events/'
-        }),
-        // ... etc. ...
-    })
+    tagTypes: [dataSourceTag, dataSourcePluginTag],
+    endpoints: () => ({})
 })
-
-
-export const {
-    useGetLatestEventsQuery,
-} = apiSlice

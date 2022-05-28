@@ -1,21 +1,21 @@
 import {Status, ToggleSwitch} from "../../components/ToggleSwitch";
 import React from "react";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import {
-    disableSelectedPlugin,
-    enableSelectedPlugin,
     useDisableDataSourcePluginMutation,
     useEnableDataSourcePluginMutation
-} from "./dataSourcesSlice";
+} from "./dataSourcePluginApiSlice";
+import {selectDataSourcePluginById} from "./dataSourcePluginSlice";
 import {SettingContainer} from "../../components/SettingContainer";
 import {SettingsGroup} from "../../components/SettingsGroup";
 import {SettingsLink} from "../../components/SettingsLink";
 
 export const PluginDetailDisplay = () => {
+
     const [enablePlugin, {isLoading: enableIsLoading}] = useEnableDataSourcePluginMutation()
     const [disablePlugin, {isLoading: disableIsLoading}] = useDisableDataSourcePluginMutation()
-    const plugin = useSelector(state => state.dataSources.selectedPlugin)
-    const dispatch = useDispatch()
+    const selectedPluginId = useSelector(state => state.dataSourcePlugins.selectedPluginId)
+    const plugin = useSelector(state => selectDataSourcePluginById(state, selectedPluginId))
     let toggle = Status().Unchecked
 
     // handle toggle switch rendering
@@ -30,21 +30,11 @@ export const PluginDetailDisplay = () => {
     }
 
     const showEnabled = async (plugin) => {
-        let result = await enablePlugin(plugin.id)
-        if (!result.error) {
-            dispatch(enableSelectedPlugin(plugin))
-        }
-        return result
+        return await enablePlugin(plugin.id)
     };
-
     const showDisabled = async (plugin) => {
-        let result = await disablePlugin(plugin.id)
-        if (!result.error) {
-            dispatch(disableSelectedPlugin(plugin))
-        }
-        return result
+        return await disablePlugin(plugin.id)
     }
-
     const onEnabledToggle = async () => {
         if (plugin && !enableIsLoading && !disableIsLoading) {
             let result
@@ -59,6 +49,7 @@ export const PluginDetailDisplay = () => {
             }
         }
     }
+
     return (
         <>
             <SettingsGroup>

@@ -1,8 +1,7 @@
 import React, {useState} from "react";
 import {useDispatch} from "react-redux";
-import {patternKitUpdated} from "./dataSourcesSlice";
 
-function getEntryRow(entry) {
+function EntryRow(entry) {
     let groupId = entry[0];
     let fieldName = entry[1];
     return (
@@ -18,7 +17,7 @@ export const PatternKitDisplay = (props) => {
     const {patternKit} = props
     const {id, fields, pattern} = patternKit;
     const patternLen = pattern !== null ? Math.min(pattern.length, 60) : 10
-    const patternKitFields = Object.entries(fields).map(entry => getEntryRow(entry))
+    const patternKitFields = Object.entries(fields).map(entry => EntryRow(entry))
 
     let [patternVal, setPatternVal] = useState(pattern ?? '')
     const dispatch = useDispatch()
@@ -29,7 +28,7 @@ export const PatternKitDisplay = (props) => {
         console.log('pattern val changed', e.target.value)
         console.log('patternKit:', patternKit)
         setPatternVal(e.target.value)
-        dispatch(patternKitUpdated({id: id, pattern: e.target.value}))
+        // dispatch(patternKitUpdated({id: id, pattern: e.target.value}))
     }
 
     return (
