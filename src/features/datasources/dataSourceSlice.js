@@ -5,24 +5,42 @@ export const dataSourceAdapter = createEntityAdapter({
     selectId: dataSource => dataSource.dataSourceId
 })
 
+let initialState = dataSourceAdapter.getInitialState();
 export const dataSourceSlice = createSlice({
     name: 'dataSources',
-    initialState: dataSourceAdapter.getInitialState(),
+    initialState: {
+        clean: initialState,
+        dirty: initialState,
+    },
     tagTypes: [dataSourceTag],
     reducers: {
-        allDataSourcesLoaded: dataSourceAdapter.setAll,
-        dataSourcesLoaded: dataSourceAdapter.setMany,
-        dataSourceUpdated: dataSourceAdapter.updateOne,
+        allDataSourcesLoaded(state, action) {
+            dataSourceAdapter.setAll(state.clean, action)
+            dataSourceAdapter.setAll(state.dirty, action)
+        },
+        dataSourcesLoaded(state, action) {
+            dataSourceAdapter.setMany(state.clean, action)
+            dataSourceAdapter.setMany(state.dirty, action)
+        },
+        dataSourceUpdated(state, action) {
+            dataSourceAdapter.updateOne(state.dirty, action)
+        },
         patternKitUpdated(state, action) {
             // console.log('state in reducer for data sources is', JSON.stringify(state,null,1))
             let {patternKitId, pattern: updatedPattern} = action.payload
-            Object.values(state.entities)
+            Object.values(state.dirty.entities)
                 .flatMap(dataSource => dataSource.patternKits)
                 .forEach(patternKit => {
                     if (patternKit.id === patternKitId) {
                         patternKit.pattern = updatedPattern
                     }
                 })
+        },
+        dataSourceReset(state, action) {
+            let {dataSourceId} = action.payload
+            let cleanDataSource =
+                Object.values(state.clean.entities).find(dataSource => dataSource.dataSourceId === dataSourceId)
+            dataSourceAdapter.setOne(state.dirty, cleanDataSource)
         },
     }
 })
@@ -32,12 +50,13 @@ export const {
     dataSourcesLoaded,
     dataSourceUpdated,
     patternKitUpdated,
+    dataSourceReset,
 } = dataSourceSlice.actions
 
 export const {
     selectById: selectDataSourceById,
     selectAll: selectAllDataSources
-} = dataSourceAdapter.getSelectors((state) => state.dataSources ?? dataSourceAdapter.getInitialState)
+} = dataSourceAdapter.getSelectors((state) => state.dataSources.dirty ?? dataSourceAdapter.getInitialState)
 
 export const selectDataSourceBaseUri = createSelector(
     (state, dataSourceId) => dataSourceId,

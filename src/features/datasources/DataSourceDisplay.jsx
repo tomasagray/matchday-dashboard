@@ -1,7 +1,7 @@
 import React from "react";
 import {CollapsableContainer} from "../../components/CollapsableContainer";
 import {PatternKitTypeGroup} from "./PatternKitTypeGroup";
-import {dataSourceUpdated, selectDataSourceById} from "./dataSourceSlice";
+import {dataSourceReset, dataSourceUpdated, selectDataSourceById} from "./dataSourceSlice";
 import {useDispatch, useSelector} from "react-redux";
 import {getClassName} from "../../Utils";
 import {InfoMessage} from "../../components/InfoMessage";
@@ -30,8 +30,8 @@ export const DataSourceDisplay = (props) => {
         console.log("updated")
     }
     const onResetDataSource = () => {
-        console.log('resetting...')
-
+        console.log('resetting...', dataSourceId)
+        dispatch(dataSourceReset({dataSourceId: dataSourceId}))
     }
 
     let {dataSourceId} = props
