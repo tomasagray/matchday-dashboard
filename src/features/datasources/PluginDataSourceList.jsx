@@ -8,6 +8,7 @@ import {PluginId} from "../datasource-plugins/PluginId";
 import {Spinner} from "../../components/Spinner";
 import {ErrorMessage} from "../../components/ErrorMessage";
 import {DataSourceDisplay} from "./DataSourceDisplay";
+import {InfoMessage} from "../../components/InfoMessage";
 
 const DataSources = (props) => {
 
@@ -23,13 +24,15 @@ const DataSources = (props) => {
     let dataSourceList
     if (isSuccess) {
         if (dataSources) {
-            console.log('dataSources', dataSources)
             dataSourceList =
                 dataSources.ids.map(dataSourceId =>
                         <DataSourceDisplay key={dataSourceId} dataSourceId={dataSourceId}/>
                 )
         } else {
-            dataSourceList = <p>There are currently no Data Sources for this plugin.<br/> Click above to add one</p>
+            dataSourceList =
+                <InfoMessage>
+                    There are currently no Data Sources for this plugin.<br/> Click above to add one
+                </InfoMessage>
         }
     }
     if (isLoading) {
@@ -39,7 +42,7 @@ const DataSources = (props) => {
             </div>
     }
     if (isError) {
-        dataSourceList = <ErrorMessage message={error}/>
+        dataSourceList = <ErrorMessage code={error.status}>{error}</ErrorMessage>
     }
     return (dataSourceList)
 }
@@ -53,8 +56,7 @@ export const PluginDataSourceList = () => {
     let {isLoading: pluginLoading, isSuccess: pluginSuccess} = useGetAllDataSourcePluginsQuery()
     let plugin = useSelector(state => {
         if (pluginSuccess) {
-            console.log('selecting plugin by id', state, pluginId)
-            return selectDataSourcePluginById(state, pluginId);
+            return selectDataSourcePluginById(state, pluginId)
         }
     })
     let pluginContent
@@ -72,7 +74,8 @@ export const PluginDataSourceList = () => {
     return (
         <>
             <div className="Banner-title">
-                {pluginContent} <PluginId id={pluginId}/>
+                {pluginContent}
+                <PluginId id={pluginId}/>
             </div>
             <div style={{display: 'flex', justifyContent: 'space-between'}}>
                 <h2>Data Sources</h2>

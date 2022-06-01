@@ -1,4 +1,4 @@
-import {formatDate} from "../../app/Utils";
+import {formatDate} from "../../Utils";
 import {Link} from "react-router-dom";
 
 export default function EventTile(props) {

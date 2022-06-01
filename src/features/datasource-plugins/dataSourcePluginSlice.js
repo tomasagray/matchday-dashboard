@@ -1,6 +1,5 @@
 import {createEntityAdapter, createSlice} from "@reduxjs/toolkit";
 import {dataSourcePluginTag} from "../../app/apiSlice";
-import {selectPluginsData} from "./dataSourcePluginApiSlice";
 
 export const pluginAdapter = createEntityAdapter()
 
@@ -11,10 +10,7 @@ const initialState = pluginAdapter.getInitialState({
 export const {
     selectAll: selectAllDataSourcePlugins,
     selectById: selectDataSourcePluginById
-} = pluginAdapter.getSelectors(state => {
-    console.log('comeplete state', state)
-    return state.dataSourcePlugins ?? initialState
-})
+} = pluginAdapter.getSelectors(state => state.dataSourcePlugins ?? initialState)
 
 export const dataSourcePluginSlice = createSlice({
     name: 'dataSourcePlugins',

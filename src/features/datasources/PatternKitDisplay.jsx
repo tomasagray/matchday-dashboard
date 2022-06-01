@@ -1,7 +1,8 @@
-import React, {useState} from "react";
-import {useDispatch} from "react-redux";
+import React from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {patternKitUpdated, selectPatternKitById} from "./dataSourceSlice";
 
-function EntryRow(entry) {
+const EntryRow = (entry) => {
     let groupId = entry[0];
     let fieldName = entry[1];
     return (
@@ -14,25 +15,21 @@ function EntryRow(entry) {
 
 export const PatternKitDisplay = (props) => {
 
-    const {patternKit} = props
-    const {id, fields, pattern} = patternKit;
-    const patternLen = pattern !== null ? Math.min(pattern.length, 60) : 10
-    const patternKitFields = Object.entries(fields).map(entry => EntryRow(entry))
-
-    let [patternVal, setPatternVal] = useState(pattern ?? '')
     const dispatch = useDispatch()
 
     // event handlers
     const onPatternValChanged = (e) => {
-        console.log('pattern kit id', id)
-        console.log('pattern val changed', e.target.value)
-        console.log('patternKit:', patternKit)
-        setPatternVal(e.target.value)
-        // dispatch(patternKitUpdated({id: id, pattern: e.target.value}))
+        dispatch(patternKitUpdated({patternKitId: patternKitId, pattern: e.target.value}))
     }
 
+    let {patternKitId} = props
+    let patternKit = useSelector(state => selectPatternKitById(state, patternKitId))
+    const {fields, pattern} = patternKit
+    const patternLen = pattern !== null ? Math.min(pattern.length, 60) : 10
+    const patternKitFields = Object.entries(fields).map(entry => EntryRow(entry))
+
     return (
-        <div className="Pattern-kit" key={id}>
+        <div className="Pattern-kit" key={patternKitId}>
             <table className="Pattern-kit-editor">
                 <tbody>
                 <tr>
@@ -40,7 +37,7 @@ export const PatternKitDisplay = (props) => {
                         <label htmlFor="pattern-kit-pattern">Pattern</label>
                     </td>
                     <td>
-                        <input type="text" name="pattern-kit-pattern" value={patternVal} size={patternLen}
+                        <input type="text" name="pattern-kit-pattern" value={pattern != null ? pattern : ""} size={patternLen}
                                onChange={onPatternValChanged}/>
                     </td>
                 </tr>

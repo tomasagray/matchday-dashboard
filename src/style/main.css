@@ -398,34 +398,34 @@
   border-radius: 50%;
 }
 
-.Error-message {
+.Message {
   display: flex;
   border: 1px solid #444;
   box-shadow: 3px 3px 5px #222;
   padding: 2em;
   width: fit-content;
 }
-.Error-message > img {
+.Message > img {
   width: 8em;
   height: 8em;
   background-color: red;
   border-radius: 100%;
 }
-.Error-message .Error-description-container {
+.Message .Message-description-container {
   padding: 0 3em;
 }
-.Error-message .Error-description-container p {
+.Message .Message-description-container p {
   margin: 10px 0;
 }
-.Error-message .Error-description-container .Error-title {
+.Message .Message-description-container .Message-title {
   margin: 0;
   text-align: start;
   padding: 0;
 }
-.Error-message .Error-description-container .Error-description {
+.Message .Message-description-container .Message-description {
   color: #ccc;
 }
-.Error-message .Error-description-container .Error-code {
+.Message .Message-description-container .Message-code {
   color: #666;
 }
 

@@ -2,10 +2,7 @@ import React from 'react'
 import {useSelector} from "react-redux";
 import {Spinner} from "../../components/Spinner";
 import GridList from "../../components/GridList"
-import {
-    useGetAllDataSourcePluginsQuery,
-    useRefreshAllDataSourcePluginsMutation
-} from "./dataSourcePluginApiSlice";
+import {useGetAllDataSourcePluginsQuery, useRefreshAllDataSourcePluginsMutation} from "./dataSourcePluginApiSlice";
 import {PluginDetailDisplay} from "./PluginDetailDisplay";
 import {ErrorMessage} from "../../components/ErrorMessage";
 import {DataSourcePluginTile} from "./DataSourcePluginTile";
@@ -37,7 +34,7 @@ export const DataSourcePluginsList = () => {
         })
         dataSourceList = <GridList items={tiles}/>
     } else if (pluginLoadingError) {
-        dataSourceList = <ErrorMessage message={pluginError.error} code={pluginError.status}/>
+        dataSourceList = <ErrorMessage code={pluginError.status}>{pluginError.error}</ErrorMessage>
     }
 
     let pluginData

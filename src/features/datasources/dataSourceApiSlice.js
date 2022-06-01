@@ -1,7 +1,9 @@
 import {apiSlice, dataSourceTag} from "../../app/apiSlice";
 import store from "../../app/store";
 import {JsonHeaders} from "../../app/constants";
-import {dataSourceAdapter, dataSourceSlice} from "./dataSourceSlice";
+import {allDataSourcesLoaded, dataSourceAdapter, dataSourcesLoaded} from "./dataSourceSlice";
+
+let initialState = dataSourceAdapter.getInitialState()
 
 export const dataSourceApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => {
@@ -11,8 +13,8 @@ export const dataSourceApiSlice = apiSlice.injectEndpoints({
                 transformResponse: (response) => {
                     let {_embedded} = response
                     let {data_source} = _embedded
-                    store.dispatch(dataSourceSlice.actions.allDataSourcesLoaded(data_source))
-                    return dataSourceAdapter.setAll(dataSourceAdapter.getInitialState(), data_source)
+                    store.dispatch(allDataSourcesLoaded(data_source))
+                    return dataSourceAdapter.setAll(initialState, data_source)
                 },
                 providesTags: [dataSourceTag]
             }),
@@ -21,8 +23,8 @@ export const dataSourceApiSlice = apiSlice.injectEndpoints({
                 transformResponse: (response) => {
                     let {_embedded} = response
                     let {data_source} = _embedded
-                    store.dispatch(dataSourceSlice.actions.dataSourcesLoaded(data_source))
-                    return dataSourceAdapter.setMany(store.getState().dataSources, data_source)
+                    store.dispatch(dataSourcesLoaded(data_source))
+                    return dataSourceAdapter.setMany(initialState, data_source)
                 },
                 providesTags: (result, error, id) =>
                     [{type: dataSourceTag, id}],
@@ -75,7 +77,7 @@ export const dataSourceApiSlice = apiSlice.injectEndpoints({
                     {type: dataSourceTag, id: arg.dataSourceId}
                 ]
             }),
-        };
+        }
     }
 })
 
