@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {CollapsableContainer} from "../../components/CollapsableContainer";
 import {PatternKitTypeGroup} from "./PatternKitTypeGroup";
 import {dataSourceReset, dataSourceUpdated, selectDataSourceById} from "./dataSourceSlice";
@@ -6,11 +6,13 @@ import {useDispatch, useSelector} from "react-redux";
 import {getClassName} from "../../Utils";
 import {InfoMessage} from "../../components/InfoMessage";
 import {PatternKitDisplay} from "./PatternKitDisplay";
+import Modal, {Body, Footer, Header} from "../../components/Modal";
 
 
 export const DataSourceDisplay = (props) => {
 
     const DEFAULT_FIELD_SIZE = 25
+    let [showResetModal, setShowResetModal] = useState(false)
 
     const dispatch = useDispatch()
     const onBaseUriValChanged = (e) => {
@@ -29,9 +31,16 @@ export const DataSourceDisplay = (props) => {
         // await updateDataSource({dataSource})
         console.log("updated")
     }
-    const onResetDataSource = () => {
-        console.log('resetting...', dataSourceId)
-        dispatch(dataSourceReset({dataSourceId: dataSourceId}))
+    const handleShowResetWarning = () => {
+        setShowResetModal(true)
+    }
+    const handleCloseResetWarning = () => {
+        setShowResetModal(false)
+    }
+    const handleResetDataSource = () => {
+        let action = dataSourceReset({dataSourceId: dataSourceId})
+        dispatch(action)
+        setShowResetModal(false)
     }
 
     let {dataSourceId} = props
@@ -78,6 +87,18 @@ export const DataSourceDisplay = (props) => {
         let type = getClassName(clazz)
         return (
             <CollapsableContainer _key={dataSourceId} title="TODO: Add title field to data sources">
+                <Modal show={showResetModal}>
+                    <Header onHide={handleCloseResetWarning}>Reset changes to Data Source?</Header>
+                    <Body>
+                        <p>Are you sure you want to reset all changes to this Data Source?</p>
+                        <strong>This cannot be undone.</strong>
+                    </Body>
+                    <Footer>
+                        <button className={"Cancel-button"} onClick={handleCloseResetWarning}>Cancel</button>
+                        <button className={"OK-button"} onClick={handleResetDataSource}>RESET</button>
+                    </Footer>
+                </Modal>
+
                 <form className="Data-source-field-list">
                     <div>
                         <label htmlFor="data-source-clazz">Type:</label>
@@ -101,7 +122,7 @@ export const DataSourceDisplay = (props) => {
                     <button className="Small-button" onClick={onAddNewPatternKit}>Add Pattern Kit...</button>
                 </div>
                 <div>
-                    <button onClick={onResetDataSource} className={"Small-button "}>Reset</button>
+                    <button onClick={handleShowResetWarning} className={"Small-button "}>Reset</button>
                     <button onClick={onSaveDataSource} className={"Small-button"}>Save</button>
                 </div>
             </CollapsableContainer>

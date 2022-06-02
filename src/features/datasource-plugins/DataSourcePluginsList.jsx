@@ -26,8 +26,6 @@ export const DataSourcePluginsList = () => {
                 <Spinner text="Loading..." size="2rem"/>
             </div>
     } else if (pluginLoaded) {
-        console.log('data source plugins', dataSourcePlugins)
-        console.log('selected id', selectedPluginId)
         let tiles = dataSourcePlugins.ids.map(pluginId => {
             let active = selectedPluginId !== null && pluginId === selectedPluginId
             return <DataSourcePluginTile key={pluginId} active={active} pluginId={pluginId}/>;
