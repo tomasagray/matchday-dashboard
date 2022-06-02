@@ -70,5 +70,5 @@ export const selectPatternKitById = createSelector(
     (dataSources, patternKitId) =>
         dataSources
             .flatMap(dataSource => dataSource.patternKits)
-            .find(patternKit => patternKit.id === patternKitId)
+            .find(patternKit => patternKit ? patternKit.id === patternKitId : false)
 )

@@ -1,4 +1,5 @@
 @use "variables";
+@use "colors";
 @use "header";
 @use "side-nav";
 @use "content-stage";
@@ -80,6 +81,103 @@
       white-space: nowrap;
       max-width: variables.$eventPosterWidth;
       max-lines: 1;
+    }
+  }
+}
+
+.Scroll-wrapper {
+  position: relative;
+  top: variables.$navMenuPadding + variables.$navMenuPadding;
+  height: 100%;
+  width: 100%;
+}
+
+.Collapsable-container {
+
+  border: 2px solid #666;
+  border-radius: .5rem;
+  margin: 2rem 0;
+  overflow: hidden;
+
+  .Title-bar {
+    display: flex;
+    align-content: center;
+    justify-content: space-between;
+    background-color: colors.$darkBg;
+    padding: 1rem;
+
+    &:hover {
+      cursor: pointer;
+      background-color: colors.$defaultComponentBg;
+
+      & img {
+        opacity: .9;
+      }
+    }
+
+    & img {
+      height: 24px;
+      display: flex;
+      justify-content: right;
+      opacity: .5;
+      transform: rotate(90deg);
+      //animation: flipArrowCollapsed .5 linear;
+
+      &.expanded {
+        transform: rotate(-90deg);
+        animation: flipArrowExpanded .5s linear;
+      }
+    }
+  }
+
+  .Content-area {
+    height: 0;
+    display: none;
+    animation: collapseContainer .5s linear;
+    background-color: colors.$defaultComponentBg;
+
+    &.expanded {
+      height: revert;
+      display: block;
+      animation: expandContainer .5s linear;
+    }
+  }
+
+  @keyframes flipArrowExpanded {
+    from {
+      transform: rotate(90deg);
+    }
+    to {
+      transform: rotate(-90deg);
+    }
+  }
+
+  @keyframes flipArrowCollapsed {
+    from {
+      transform: rotate(-90deg);
+    }
+    to {
+      transform: rotate(90deg);
+    }
+  }
+
+  @keyframes expandContainer {
+    0% {
+      height: 0;
+      display: none;
+    }
+    100% {
+      height: revert;
+      display: block;
+    }
+  }
+
+  @keyframes collapseContainer {
+    0% {
+      height: revert;
+    }
+    100% {
+      height: 0;
     }
   }
 }

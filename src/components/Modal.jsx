@@ -54,7 +54,7 @@ export const Footer = (props) => {
 
     return (
         <div className={"Modal-footer"}>
-            <div className={"button-container"}>
+            <div className={"Button-container"}>
                 {props.children}
             </div>
         </div>

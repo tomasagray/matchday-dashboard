@@ -7,6 +7,8 @@ import {getClassName} from "../../Utils";
 import {InfoMessage} from "../../components/InfoMessage";
 import {PatternKitDisplay} from "./PatternKitDisplay";
 import Modal, {Body, Footer, Header} from "../../components/Modal";
+import {CancelButton} from "../../components/CancelButton";
+import {OKButton} from "../../components/OKButton";
 
 
 export const DataSourceDisplay = (props) => {
@@ -94,8 +96,8 @@ export const DataSourceDisplay = (props) => {
                         <strong>This cannot be undone.</strong>
                     </Body>
                     <Footer>
-                        <button className={"Cancel-button"} onClick={handleCloseResetWarning}>Cancel</button>
-                        <button className={"OK-button"} onClick={handleResetDataSource}>RESET</button>
+                        <CancelButton clickHandler={handleCloseResetWarning}/>
+                        <OKButton clickHandler={handleResetDataSource}>RESET</OKButton>
                     </Footer>
                 </Modal>
 
@@ -121,9 +123,9 @@ export const DataSourceDisplay = (props) => {
                 <div style={{textAlign: 'right', padding: '2rem'}}>
                     <button className="Small-button" onClick={onAddNewPatternKit}>Add Pattern Kit...</button>
                 </div>
-                <div>
-                    <button onClick={handleShowResetWarning} className={"Small-button "}>Reset</button>
-                    <button onClick={onSaveDataSource} className={"Small-button"}>Save</button>
+                <div className={"Button-container"} style={{padding: '2rem'}}>
+                    <CancelButton clickHandler={handleShowResetWarning}>Reset</CancelButton>
+                    <OKButton clickHandler={onSaveDataSource}>Save</OKButton>
                 </div>
             </CollapsableContainer>
         )
