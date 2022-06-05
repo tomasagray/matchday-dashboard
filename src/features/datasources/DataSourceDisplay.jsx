@@ -60,7 +60,7 @@ export const DataSourceDisplay = (props) => {
         } = dataSource
 
         let patternKitsDisplay
-        if (patternKits) {
+        if (patternKits && patternKits.length > 0) {
             let groupedPatternKits = patternKits.reduce((reducer, patternKit) => {
                 // todo - make this an object instead of array
                 reducer[patternKit.clazz] = reducer[patternKit.clazz] || []

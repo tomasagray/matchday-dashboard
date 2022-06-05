@@ -66,9 +66,9 @@ export const dataSourceApiSlice = apiSlice.injectEndpoints({
                 }),
                 invalidatesTags: [dataSourceTag]
             }),
-            editDataSource: builder.mutation({
+            updateDataSource: builder.mutation({
                 query: dataSource => ({
-                    url: `/data-sources/${dataSource.dataSourceId}/edit`,
+                    url: `/data-sources/data-source/${dataSource.dataSourceId}/update`,
                     method: 'PATCH',
                     headers: JsonHeaders,
                     body: {dataSource}

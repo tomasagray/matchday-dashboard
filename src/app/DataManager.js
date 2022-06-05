@@ -1,6 +1,6 @@
 import EventTile from "../features/events/EventTile";
 import React from "react";
-import {Preferences} from "../app/Preferences";
+import {Preferences} from "./Preferences";
 import axios from "axios";
 import TeamTile from "../features/teams/TeamTile";
 import CompetitionTile from "../features/competitions/CompetitionTile";
@@ -12,9 +12,9 @@ class DataManager {
     async fetchEventTiles(url) {
         return axios.get(url)
             .then((result) => {
-                let data = result.data._embedded;
-                if (data !== undefined) {
-                    return data.events.map(event =>
+                let matches = result.data.matches;
+                if (matches !== undefined) {
+                    return matches.map(event =>
                         <EventTile key={event.eventId} event={event}/>
                     );
                 }

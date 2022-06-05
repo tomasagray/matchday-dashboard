@@ -1,7 +1,7 @@
 import {Route, useMatch} from "react-router-dom";
 import ContentBar from "../../components/ContentBar";
 import {useEffect, useState} from "react";
-import DataManager from "../../components/DataManager";
+import DataManager from "../../app/DataManager";
 
 const dataManager = new DataManager();
 

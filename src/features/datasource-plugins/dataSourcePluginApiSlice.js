@@ -32,7 +32,7 @@ export const dataSourcePluginApiSlice = apiSlice.injectEndpoints({
         }),
         enableDataSourcePlugin: builder.mutation({
             query: pluginId => ({
-                url: `/data-sources/plugin/${pluginId}/enable`,
+                url: `/data-source-plugins/plugin/${pluginId}/enable`,
                 method: 'POST',
                 headers: {
                     Accept: 'application/json',
@@ -43,7 +43,7 @@ export const dataSourcePluginApiSlice = apiSlice.injectEndpoints({
         }),
         disableDataSourcePlugin: builder.mutation({
             query: pluginId => ({
-                url: `/data-sources/plugin/${pluginId}/disable`,
+                url: `/data-source-plugins/plugin/${pluginId}/disable`,
                 method: 'POST',
                 headers: {
                     Accept: 'application/json',

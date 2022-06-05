@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from "react";
 import {Preferences} from "../app/Preferences";
-import DataManager from "../components/DataManager";
+import DataManager from "../app/DataManager";
 import ContentBar from "../components/ContentBar";
 
 
