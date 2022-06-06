@@ -25,6 +25,12 @@ export const dataSourceSlice = createSlice({
         dataSourceUpdated(state, action) {
             dataSourceAdapter.updateOne(state.dirty, action)
         },
+        dataSourceReset(state, action) {
+            let {dataSourceId} = action.payload
+            let cleanDataSource =
+                Object.values(state.clean.entities).find(dataSource => dataSource.dataSourceId === dataSourceId)
+            dataSourceAdapter.setOne(state.dirty, cleanDataSource)
+        },
         patternKitUpdated(state, action) {
             // console.log('state in reducer for data sources is', JSON.stringify(state,null,1))
             let {patternKitId, pattern: updatedPattern} = action.payload
@@ -35,12 +41,6 @@ export const dataSourceSlice = createSlice({
                         patternKit.pattern = updatedPattern
                     }
                 })
-        },
-        dataSourceReset(state, action) {
-            let {dataSourceId} = action.payload
-            let cleanDataSource =
-                Object.values(state.clean.entities).find(dataSource => dataSource.dataSourceId === dataSourceId)
-            dataSourceAdapter.setOne(state.dirty, cleanDataSource)
         },
     }
 })

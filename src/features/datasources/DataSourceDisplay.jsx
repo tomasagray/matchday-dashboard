@@ -9,14 +9,19 @@ import {PatternKitDisplay} from "./PatternKitDisplay";
 import Modal, {Body, Footer, Header} from "../../components/Modal";
 import {CancelButton} from "../../components/CancelButton";
 import {OKButton} from "../../components/OKButton";
+import {useUpdateDataSourceMutation} from "./dataSourceApiSlice";
 
 
 export const DataSourceDisplay = (props) => {
 
     const DEFAULT_FIELD_SIZE = 25
     let [showResetModal, setShowResetModal] = useState(false)
+    const [updateDataSource, {isLoading: isUpdating}] = useUpdateDataSourceMutation()
+    if (isUpdating) {
+        console.log('updating...')
+    }
 
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
     const onBaseUriValChanged = (e) => {
         let baseUriVal = e.target.value
         let updatedDataSource = {
@@ -29,8 +34,8 @@ export const DataSourceDisplay = (props) => {
         console.log('add new pattern kit button clicked')
     }
     const onSaveDataSource = async () => {
-        // console.log('saving data source', e, dataSource)
-        // await updateDataSource({dataSource})
+        console.log('saving data source', dataSource)
+        await updateDataSource(dataSource)
         console.log("updated")
     }
     const handleShowResetWarning = () => {

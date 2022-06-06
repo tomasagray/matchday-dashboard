@@ -16,7 +16,11 @@ export const dataSourceApiSlice = apiSlice.injectEndpoints({
                     store.dispatch(allDataSourcesLoaded(data_source))
                     return dataSourceAdapter.setAll(initialState, data_source)
                 },
-                providesTags: [dataSourceTag]
+                providesTags: (result) =>
+                    result.ids.map(dataSourceId => ({
+                        type: dataSourceTag,
+                        id: dataSourceId
+                    }))
             }),
             getDataSourcesForPlugin: builder.query({
                 query: (pluginId) => ({url: `/data-sources/plugin/${pluginId}`}),
@@ -26,36 +30,11 @@ export const dataSourceApiSlice = apiSlice.injectEndpoints({
                     store.dispatch(dataSourcesLoaded(data_source))
                     return dataSourceAdapter.setMany(initialState, data_source)
                 },
-                providesTags: (result, error, id) =>
-                    [{type: dataSourceTag, id}],
-                // The 2nd parameter is the destructured `QueryCacheLifecycleApi`
-                async onQueryStarted(
-                    arg,
-                    {
-                        dispatch,
-                        getState,
-                        extra,
-                        requestId,
-                        queryFulfilled,
-                        getCacheEntry,
-                        updateCachedData,
-                    }
-                ) {
-                },
-                async onCacheEntryAdded(
-                    arg,
-                    {
-                        dispatch,
-                        getState,
-                        extra,
-                        requestId,
-                        cacheEntryRemoved,
-                        cacheDataLoaded,
-                        getCacheEntry,
-                        updateCachedData,
-                    }
-                ) {
-                },
+                providesTags: (result) =>
+                    result.ids.map(dataSourceId => ({
+                        type: dataSourceTag,
+                        id: dataSourceId
+                    }))
             }),
             addDataSource: builder.mutation({
                 query: ({dataSource}) => ({
@@ -71,7 +50,7 @@ export const dataSourceApiSlice = apiSlice.injectEndpoints({
                     url: `/data-sources/data-source/${dataSource.dataSourceId}/update`,
                     method: 'PATCH',
                     headers: JsonHeaders,
-                    body: {dataSource}
+                    body: dataSource,
                 }),
                 invalidatesTags: (result, error, arg) => [
                     {type: dataSourceTag, id: arg.dataSourceId}
@@ -83,10 +62,11 @@ export const dataSourceApiSlice = apiSlice.injectEndpoints({
 
 export const selectAllDataSourcesResult = dataSourceApiSlice.endpoints.getAllDataSources.select()
 export const selectDataSourcesForPluginResult =
-        pluginId => dataSourceApiSlice.endpoints.getDataSourcesForPlugin.select(pluginId)
+    pluginId => dataSourceApiSlice.endpoints.getDataSourcesForPlugin.select(pluginId)
 
 export const {
     useGetAllDataSourcesQuery,
     useGetDataSourcesForPluginQuery,
     useAddDataSourceMutation,
+    useUpdateDataSourceMutation,
 } = dataSourceApiSlice

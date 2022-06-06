@@ -2,6 +2,8 @@ import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/dist/query/react"
 import properties from "./properties"
 
 const {baseUrl} = properties
+
+// cache invalidation tags
 export const dataSourceTag = 'DataSource'
 export const dataSourcePluginTag = 'DataSourcePlugin'
 
