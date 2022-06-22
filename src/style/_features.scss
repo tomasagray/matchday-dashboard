@@ -1,6 +1,7 @@
 @use "colors";
 @use "variables";
 
+// Events
 @mixin Poster {
   box-sizing: content-box;
   border: 1px solid transparent;
@@ -29,6 +30,7 @@
   color: #aaa;
 }
 
+// Plugins
 .Plugin-button-tile {
   width: 20vw;
   padding: 1.8rem;
@@ -73,7 +75,11 @@
   }
 }
 
-.Data-source-field-list {
+// Data Sources
+$dataSourceExtBorder: 1px solid #ccc;
+$dataSourceIntBorder: 1px solid #666;
+
+.Data-source-display {
 
   padding: 1rem 2rem;
 
@@ -85,26 +91,37 @@
     font-size: 1.3rem;
     margin-right: 1rem;
   }
+}
 
-  input {
-    border: 1px solid #333;
-    background-color: colors.$darkBg;
-    color: #ccc;
-    border-radius: 3px;
-    padding: 1em;
+.Type-header {
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1.25rem;
+  border-top: $dataSourceExtBorder;
+  border-right: $dataSourceExtBorder;
+
+  &:first-child {
+    border-left: $dataSourceExtBorder;
+  }
+
+  &:hover {
+    background-color: rgba(200, 200, 200, .2);
+    cursor: pointer;
+  }
+
+  &.selected {
+    background-color: colors.$selected;
   }
 }
 
 .Pattern-kit-display {
-  margin: 2rem 0;
   background-color: colors.$darkBg;
-  border: 1px solid #666;
-  border-radius: .5rem;
+  border: $dataSourceExtBorder;
+  border-radius: 0 0 .5rem .5rem;
   overflow: hidden;
-
-  label:after {
-    content: ':'
-  }
+  padding: 1rem;
 
   .Pattern-kit-type {
     display: flex;
@@ -118,66 +135,70 @@
     }
   }
 
-  .edit-menu-button {
-    $buttonSize: 1.2rem;
-    width: $buttonSize;
-    height: 100%;
-    border: 0;
-    background: none;
-    color: colors.$defaultFontColor;
-    padding: 1.2rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    &:hover {
-      background-color: rgba(255, 255, 255, .2);
-    }
-  }
-
   .Pattern-kit-editor {
     border-collapse: collapse;
     border-radius: 1rem;
     width: 100%;
 
+    tr:not(:last-child) {
+      td {
+        border-bottom: $dataSourceIntBorder;
+      }
+    }
+
     td {
-      border: 1px solid #888;
       padding: 2rem;
       vertical-align: top;
     }
-  }
 
-  .Pattern-kit {
-    background-color: colors.$defaultComponentBg;
-    input[type=text] {
-      width: fit-content;
-    }
-
-    .Field-list {
-      border-collapse: collapse;
-
-      th {
-        font-size: 1.2rem;
-        text-align: left;
-        padding: 1rem;
-        background-color: rgba(0, 0, 0, .3);
-      }
-
-      td {
-        padding: 1rem;
-      }
-
-      td:nth-child(1) {
-        text-align: center;
-      }
-
-      td:nth-child(even) {
-        background-color: rgba(10, 10, 10, .2);
-      }
-
-      tr:nth-child(even) {
-        background-color: rgba(10, 10, 10, .4);
-      }
+    td:first-child {
+      border-right: $dataSourceIntBorder;
     }
   }
+
+}
+
+.Pattern-kit {
+  margin: 2rem 0;
+
+  &:not(:last-child):after {
+    content: "\00a0\00a0";
+    width: 100%;
+    border-bottom: $dataSourceExtBorder;
+    display: flex;
+    margin: 1rem 0;
+  }
+
+  input[type=text] {
+    width: fit-content;
+  }
+}
+
+.Field-list {
+  border-collapse: collapse;
+  width: 100%;
+
+  td {
+    padding: 1rem;
+  }
+
+  .Field-name-heading > th {
+    font-size: x-large;
+    text-align: left;
+    padding: 1rem;
+    background-color: rgba(0, 0, 0, .3) !important;
+  }
+
+  td:nth-of-type(2n+2) {
+    background-color: rgba(10, 10, 10, .2);
+  }
+
+  tr:nth-of-type(2n+2) {
+    background-color: rgba(10, 10, 10, .4);
+  }
+}
+
+.data-source-form td {
+  width: 100%;
+  padding: 1rem;
 }

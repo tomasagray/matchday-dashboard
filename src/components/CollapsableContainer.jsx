@@ -2,7 +2,7 @@ import React, {useState} from "react";
 
 export const CollapsableContainer = (props) => {
 
-    let [expanded, setExpanded] = useState(true)
+    let [expanded, setExpanded] = useState(false)
     const onClickTitleBar = () => {
         setExpanded(!expanded)
     }

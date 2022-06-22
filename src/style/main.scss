@@ -2,9 +2,10 @@
 @use "colors";
 
 @use "animations";
-@use "layout";
-@use "components";
+@use "buttons";
 @use "features";
+@use "components";
+@use "layout";
 @use "spinner";
 
 html {
@@ -32,4 +33,51 @@ p {
 a {
   color: colors.$defaultFontColor;
   text-decoration: none;
+}
+
+code {
+  font-family: ui-monospace, "Cascadia Mono", "Segoe UI Mono", "Liberation Mono",
+  Menlo, Monaco, Consolas, monospace;
+}
+
+@mixin disabledInput {
+  background-color: colors.$defaultComponentBg;
+  border: 1px solid #888;
+  color: #888;
+}
+
+input[type=text],
+input[type=url] {
+  border: 1px solid #333;
+  background-color: colors.$darkBg;
+  color: #ccc;
+  border-radius: 3px;
+  padding: 1em;
+
+  &:disabled {
+    @include disabledInput;
+  }
+}
+
+select {
+  background: none;
+  padding: .5em;
+  color: colors.$defaultFontColor;
+}
+
+option {
+  background-color: colors.$defaultComponentBg;
+  padding: .25em;
+  color: colors.$defaultFontColor;
+  border: 1px solid #888;
+  font-size: 11pt;
+
+  &:hover {
+    cursor: pointer;
+    background-color: colors.$highlight;
+  }
+}
+
+li {
+  list-style: none;
 }

@@ -1,88 +1,118 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {useParams} from "react-router-dom";
-import {useSelector} from "react-redux";
-import {useGetDataSourcesForPluginQuery} from "./dataSourceApiSlice";
+import {useDispatch, useSelector} from "react-redux";
+import {useAddDataSourceMutation} from "./dataSourceApiSlice";
 import {selectDataSourcePluginById} from "../datasource-plugins/dataSourcePluginSlice";
 import {useGetAllDataSourcePluginsQuery} from "../datasource-plugins/dataSourcePluginApiSlice";
 import {PluginId} from "../datasource-plugins/PluginId";
 import {Spinner} from "../../components/Spinner";
-import {ErrorMessage} from "../../components/ErrorMessage";
-import {DataSourceDisplay} from "./DataSourceDisplay";
-import {InfoMessage} from "../../components/InfoMessage";
-
-const DataSources = (props) => {
-
-    let {pluginId} = props
-    const {
-        data: dataSources,
-        isLoading,
-        isSuccess,
-        isError,
-        error
-    } = useGetDataSourcesForPluginQuery(pluginId)
-
-    let dataSourceList
-    if (isSuccess) {
-        if (dataSources) {
-            dataSourceList =
-                dataSources.ids.map(dataSourceId =>
-                        <DataSourceDisplay key={dataSourceId} dataSourceId={dataSourceId}/>
-                )
-        } else {
-            dataSourceList =
-                <InfoMessage>
-                    There are currently no Data Sources for this plugin.<br/> Click above to add one
-                </InfoMessage>
-        }
-    }
-    if (isLoading) {
-        dataSourceList =
-            <div className="loading-box">
-                <Spinner text="Loading..."/>
-            </div>
-    }
-    if (isError) {
-        dataSourceList = <ErrorMessage code={error.status}>{error}</ErrorMessage>
-    }
-    return (dataSourceList)
-}
+import Modal, {Body, Footer, Header} from "../../components/Modal";
+import {CancelButton} from "../../components/CancelButton";
+import {OKButton} from "../../components/OKButton";
+import {AddDataSourceForm} from "./AddDataSourceForm";
+import {clearNewDataSource, selectIsNewDataSourceValid, selectNewDataSource} from "./dataSourceSlice";
+import {DataSourceList} from "./DataSourceList";
 
 export const PluginDataSourceList = () => {
 
-    let params = useParams()
-    const {pluginId} = params;
+    const dispatch = useDispatch()
+    const onAddDataSource = () => {
+        setShowAddDataSourceModal(true)
+    }
+    const onHideAddDataSourceModal = () => {
+        dispatch(clearNewDataSource({}))
+        setShowAddDataSourceModal(false)
+    }
+    const onSaveNewDataSource = async () => {
+        // transform form data into DataSource
+        let dataSource = {
+            dataSourceId: null,
+            clazz: newDataSource.type.value,
+            title: newDataSource.title.value,
+            baseUri: newDataSource.baseUri.value,
+            pluginId: pluginId,
+            patternKits: [],
+        }
+        console.log('saving:', dataSource)
+        await addDataSource(dataSource)
+        dispatch(clearNewDataSource({}))
+        setShowAddDataSourceModal(false)
+    }
+    let [addDataSource, {
+        isLoading: isDataSourceSaving,
+        isSuccess: isDataSourceSaveSuccess,
+        isError: isSaveDataSourceError,
+        error: saveDataSourceError
+    }] = useAddDataSourceMutation()
 
+
+    const params = useParams()
+    let {pluginId} = params;
+    let newDataSource = useSelector(state => selectNewDataSource(state))
+    let [showAddDataSourceModal, setShowAddDataSourceModal] = useState(false)
     // ensure data is loaded into store
-    let {isLoading: pluginLoading, isSuccess: pluginSuccess} = useGetAllDataSourcePluginsQuery()
+    let {
+        isLoading: pluginLoading,
+        isSuccess: pluginSuccess,
+        isFetching: isPluginRefetching,
+    } = useGetAllDataSourcePluginsQuery()
     let plugin = useSelector(state => {
         if (pluginSuccess) {
             return selectDataSourcePluginById(state, pluginId)
         }
     })
-    let pluginContent
-    if (pluginSuccess) {
-        pluginContent = <h1>{plugin.title}</h1>
+    let isFormValid = useSelector(state => {
+        if (pluginSuccess) {
+            return selectIsNewDataSourceValid(state)
+        }
+    })
+
+    // todo - handle these
+    if (isSaveDataSourceError) {
+        console.log('error', saveDataSourceError)
     }
-    if (pluginLoading) {
-        pluginContent = <Spinner size={32}/>
+    if (isDataSourceSaving) {
+        console.log('saving saving saving.')
+    }
+    if (isDataSourceSaveSuccess) {
+        console.log('saving was successful')
     }
 
-    const onAddNewDataSource = (e) => {
-        console.log('button clicked:', e)
-    };
+
+    let pluginTitle
+    let isDataFetching = pluginLoading || isPluginRefetching;
+    if (pluginSuccess) {
+        pluginTitle = <h1>{plugin.title}</h1>
+    }
+    if (isDataFetching) {
+        pluginTitle = <Spinner size={32} text={''} />
+    }
 
     return (
         <>
+            <Modal show={showAddDataSourceModal}>
+                <Header onHide={onHideAddDataSourceModal}>Add New Data Source</Header>
+                <Body>
+                    <AddDataSourceForm pluginId={pluginId} disabled={isDataSourceSaving} />
+                </Body>
+                <Footer>
+                    <CancelButton clickHandler={onHideAddDataSourceModal} disabled={isDataSourceSaving}>Discard</CancelButton>
+                    <OKButton clickHandler={onSaveNewDataSource} disabled={!isFormValid || isDataSourceSaving}>Save</OKButton>
+                </Footer>
+            </Modal>
+
             <div className="Banner-title">
-                {pluginContent}
+                {pluginTitle}
                 <PluginId id={pluginId}/>
             </div>
             <div style={{display: 'flex', justifyContent: 'space-between'}}>
                 <h2>Data Sources</h2>
-                <button onClick={onAddNewDataSource} className="Small-button">Add Data Source...</button>
+                <button onClick={onAddDataSource} className="Small-button" disabled={isDataFetching}>
+                    Add Data Source...
+                </button>
             </div>
             <div>
-                <DataSources pluginId={pluginId}/>
+                <DataSourceList pluginId={pluginId}/>
             </div>
         </>
     );

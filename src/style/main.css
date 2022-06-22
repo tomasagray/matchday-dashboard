@@ -609,17 +609,17 @@
   color: #aaa;
 }
 
-.Data-source-field-list {
+.Data-source-display {
   padding: 1rem 2rem;
 }
-.Data-source-field-list > div {
+.Data-source-display > div {
   margin: 1rem 0;
 }
-.Data-source-field-list label {
+.Data-source-display label {
   font-size: 1.3rem;
   margin-right: 1rem;
 }
-.Data-source-field-list input {
+.Data-source-display input {
   border: 1px solid #333;
   background-color: #222;
   color: #ccc;

@@ -7,6 +7,7 @@ export function formatDate(date) {
 }
 
 export const getClassName = (clazz) => {
+    if (!clazz) return null
     if (clazz.includes('.')) {
         let packages = clazz.split('.')
         let className = packages[packages.length -1]

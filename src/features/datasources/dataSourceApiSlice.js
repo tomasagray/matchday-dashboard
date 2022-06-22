@@ -37,11 +37,11 @@ export const dataSourceApiSlice = apiSlice.injectEndpoints({
                     }))
             }),
             addDataSource: builder.mutation({
-                query: ({dataSource}) => ({
-                    url: '/data-sources/add-data-source',
+                query: (dataSource) => ({
+                    url: '/data-sources/data-source/add',
                     method: 'POST',
                     headers: JsonHeaders,
-                    body: {dataSource},
+                    body: dataSource,
                 }),
                 invalidatesTags: [dataSourceTag]
             }),
@@ -56,6 +56,13 @@ export const dataSourceApiSlice = apiSlice.injectEndpoints({
                     {type: dataSourceTag, id: arg.dataSourceId}
                 ]
             }),
+            deleteDataSource: builder.mutation({
+                query: dataSourceId => ({
+                    url: `/data-sources/data-source/${dataSourceId}/delete`,
+                    method: 'DELETE',
+                }),
+                invalidatesTags: [dataSourceTag]
+            })
         }
     }
 })
@@ -69,4 +76,5 @@ export const {
     useGetDataSourcesForPluginQuery,
     useAddDataSourceMutation,
     useUpdateDataSourceMutation,
+    useDeleteDataSourceMutation,
 } = dataSourceApiSlice

@@ -9,19 +9,24 @@ import {PatternKitDisplay} from "./PatternKitDisplay";
 import Modal, {Body, Footer, Header} from "../../components/Modal";
 import {CancelButton} from "../../components/CancelButton";
 import {OKButton} from "../../components/OKButton";
-import {useUpdateDataSourceMutation} from "./dataSourceApiSlice";
+import {useDeleteDataSourceMutation, useUpdateDataSourceMutation} from "./dataSourceApiSlice";
+import {AddPatternKitForm} from "./AddPatternKitForm";
+import {clearNewPatternKit, selectIsNewPatternKitValid, selectNewPatternKitForUpload} from "./patternKitSlice";
 
 
 export const DataSourceDisplay = (props) => {
 
     const DEFAULT_FIELD_SIZE = 25
-    let [showResetModal, setShowResetModal] = useState(false)
     const [updateDataSource, {isLoading: isUpdating}] = useUpdateDataSourceMutation()
-    if (isUpdating) {
-        console.log('updating...')
-    }
+    const [deleteDataSource, {isLoading: isDeleting}] = useDeleteDataSourceMutation()
 
-    const dispatch = useDispatch();
+    let [selectedType, setSelectedType] = useState('')
+    // modal controls
+    let [showResetModal, setShowResetModal] = useState(false)
+    let [showAddPatternKitModal, setShowAddPatternKitModal] = useState(false)
+    let [showDeleteDataSourceModal, setShowDeleteDataSourceModal] = useState(false)
+
+    const dispatch = useDispatch()
     const onBaseUriValChanged = (e) => {
         let baseUriVal = e.target.value
         let updatedDataSource = {
@@ -30,24 +35,97 @@ export const DataSourceDisplay = (props) => {
         }
         dispatch(dataSourceUpdated({id: dataSourceId, changes: updatedDataSource}))
     }
-    const onAddNewPatternKit = () => {
-        console.log('add new pattern kit button clicked')
+    const onSetSelectedPatternKitType = (e, type) => {
+        setSelectedType(type)
     }
-    const onSaveDataSource = async () => {
-        console.log('saving data source', dataSource)
-        await updateDataSource(dataSource)
-        console.log("updated")
-    }
-    const handleShowResetWarning = () => {
+    const onShowResetWarning = () => {
         setShowResetModal(true)
     }
-    const handleCloseResetWarning = () => {
+    const onCloseResetWarning = () => {
         setShowResetModal(false)
     }
-    const handleResetDataSource = () => {
-        let action = dataSourceReset({dataSourceId: dataSourceId})
-        dispatch(action)
+    const onResetDataSource = () => {
+        dispatch( dataSourceReset({dataSourceId: dataSourceId}) )
         setShowResetModal(false)
+    }
+    const onSaveDataSource = async () => {
+        console.log('updating data source', dataSource.dataSourceId)
+        await updateDataSource(dataSource)
+        console.log('... updated')
+    }
+
+    const onShowAddPatternKitModal = () => {
+        setShowAddPatternKitModal(true)
+    }
+    const onHideAddPatternKitModal = () => {
+        dispatch(clearNewPatternKit({}))
+        setShowAddPatternKitModal(false)
+    }
+    const onAddPatternKit = () => {
+        let updatedDataSource = {
+            ...dataSource,
+            patternKits: [
+                ...dataSource.patternKits,
+                newPatternKit,
+            ]
+        }
+        dispatch(dataSourceUpdated({id: dataSourceId, changes: updatedDataSource}))
+        onHideAddPatternKitModal()
+    }
+
+    const onShowDeleteDataSourceModal = (e) => {
+        e.preventDefault()
+        setShowDeleteDataSourceModal(true)
+    }
+    const onHideDeleteDataSourceModal = () => {
+        setShowDeleteDataSourceModal(false)
+    }
+    const onDeleteDataSource = async () => {
+        console.log('deleting data source with ID:', dataSourceId)
+        await deleteDataSource(dataSourceId)
+        onHideDeleteDataSourceModal()
+        console.log(`data source: ${dataSourceId} deleted`)
+    }
+
+    const groupPatternKits = (patternKits) => {
+        return patternKits.reduce((reducer, patternKit) => {
+            let {clazz} = patternKit
+            let className = getClassName(clazz)
+            reducer[className] = reducer[className] || []
+            reducer[className].push(patternKit)
+            return reducer
+        }, Object.create(null));
+    }
+    const getTypeGroupHeader = (types) => {
+        return types.map(clazz => getClassName(clazz))
+            .map(typeName => {
+                let selected = typeName === selectedType ? " selected" : ""
+                return (
+                    <div className={"Type-header" + selected} key={typeName} onClick={(e) => {
+                        onSetSelectedPatternKitType(e, typeName)
+                    }}>
+                        {typeName}
+                    </div>
+                )
+            });
+    }
+    const getPatternKitDisplays = (groupedPatternKits) => {
+        return Object.entries(groupedPatternKits).map((patternKitGroup) => {
+            let type = patternKitGroup[0]
+            let patternKits = patternKitGroup[1]
+            return {
+                type: type,
+                data: (
+                    <PatternKitTypeGroup key={type} type={type}>
+                        {
+                            patternKits.map(patternKit =>
+                                <PatternKitDisplay key={patternKit.id} patternKitId={patternKit.id}/>
+                            )
+                        }
+                    </PatternKitTypeGroup>
+                )
+            }
+        })
     }
 
     let {dataSourceId} = props
@@ -56,83 +134,125 @@ export const DataSourceDisplay = (props) => {
             return selectDataSourceById(state, dataSourceId)
         }
     })
+    let {
+        clazz,
+        title,
+        baseUri,
+        patternKits,
+    } = dataSource
+    let newPatternKit = useSelector(state => selectNewPatternKitForUpload(state))
+    let isNewPatternKitValid = useSelector(state => selectIsNewPatternKitValid(state))
 
-    if (dataSource) {
-        let {
-            patternKits,
-            baseUri,
-            clazz,
-        } = dataSource
+    let typeGroupHeader
+    let patternKitDisplays
+    let patternKitData
 
-        let patternKitsDisplay
+    if (patternKits && patternKits.length > 0) {
+        let groupedPatternKits = groupPatternKits(patternKits)
+        let types = Object.keys(groupedPatternKits)
+        typeGroupHeader = getTypeGroupHeader(types)
+        patternKitDisplays = getPatternKitDisplays(groupedPatternKits)
+    }
+    if (selectedType) {
+        patternKitData = patternKitDisplays.find(patternKits => patternKits.type === selectedType)?.data
+    } else {
+        let message
         if (patternKits && patternKits.length > 0) {
-            let groupedPatternKits = patternKits.reduce((reducer, patternKit) => {
-                // todo - make this an object instead of array
-                reducer[patternKit.clazz] = reducer[patternKit.clazz] || []
-                reducer[patternKit.clazz].push(patternKit)
-                return reducer
-            }, Object.create(null))
-            patternKitsDisplay = Object.entries(groupedPatternKits).map(( patternKitGroup) => {
-                let fqName = patternKitGroup[0];
-                let type = getClassName(fqName)
-                let patternKits = patternKitGroup[1];
-                return (
-                    <PatternKitTypeGroup key={type} type={type}>
-                        {
-                            patternKits.map(patternKit => <PatternKitDisplay key={patternKit.id} patternKitId={patternKit.id} />)
-                        }
-                    </PatternKitTypeGroup>
-                )
-            })
+            message = <InfoMessage>Please select a <strong>Type</strong> from above.</InfoMessage>
         } else {
-            patternKitsDisplay =
+            message =
                 <InfoMessage>
-                    There are currently no Pattern Kits for this Data Source. <br/> Click below to add one.
+                    There are currently no Pattern Kits of the selected <strong>Type</strong> for this Data Source. <br/>
+                    Click below to add one.
                 </InfoMessage>
         }
+        patternKitData = <div style={{padding: "2rem 0"}}> {message} </div>
+    }
 
-        let type = getClassName(clazz)
-        return (
-            <CollapsableContainer _key={dataSourceId} title="TODO: Add title field to data sources">
+    let type = getClassName(clazz)
+    return (
+        <CollapsableContainer _key={dataSourceId} title={title}>
+            <div id="modal-container">
                 <Modal show={showResetModal}>
-                    <Header onHide={handleCloseResetWarning}>Reset changes to Data Source?</Header>
+                    <Header onHide={onCloseResetWarning}>Reset changes to Data Source?</Header>
                     <Body>
                         <p>Are you sure you want to reset all changes to this Data Source?</p>
                         <strong>This cannot be undone.</strong>
                     </Body>
                     <Footer>
-                        <CancelButton clickHandler={handleCloseResetWarning}/>
-                        <OKButton clickHandler={handleResetDataSource}>RESET</OKButton>
+                        <CancelButton clickHandler={onCloseResetWarning}/>
+                        <OKButton clickHandler={onResetDataSource}>RESET</OKButton>
                     </Footer>
                 </Modal>
+                <Modal show={showAddPatternKitModal}>
+                    <Header onHide={onHideAddPatternKitModal}>Add new Pattern Kit</Header>
+                    <Body>
+                        <AddPatternKitForm dataSourceType={type} dataSourceId={dataSourceId}/>
+                    </Body>
+                    <Footer>
+                        <CancelButton clickHandler={onHideAddPatternKitModal}>Discard</CancelButton>
+                        <OKButton clickHandler={onAddPatternKit} disabled={!isNewPatternKitValid}>Add</OKButton>
+                    </Footer>
+                </Modal>
+                <Modal show={showDeleteDataSourceModal}>
+                    <Header onHide={onHideDeleteDataSourceModal}>CONFIRM: Delete Data Source?</Header>
+                    <Body>
+                        <p>
+                            Are you sure you want to <strong style={{color: 'red', fontWeight: 'bold'}}>PERMANENTLY DELETE</strong>
+                            this Data Source?
+                        </p>
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td>Title</td>
+                                <td>{title}</td>
+                                <td>Type</td>
+                                <td>{type}</td>
+                                <td>Base URI</td>
+                                <td>{baseUri}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </Body>
+                    <Footer>
+                        <CancelButton clickHandler={onHideDeleteDataSourceModal} disabled={isDeleting}/>
+                        <OKButton clickHandler={onDeleteDataSource} disabled={isDeleting}>DELETE</OKButton>
+                    </Footer>
+                </Modal>
+            </div>
 
-                <form className="Data-source-field-list">
-                    <div>
-                        <label htmlFor="data-source-clazz">Type:</label>
-                        <input type="text" name="data-source-clazz" value={type}
-                               size={type != null ? type.length : DEFAULT_FIELD_SIZE} disabled />
-                    </div>
-                    <div>
-                        <label htmlFor="data-source-base-uri">Base URI:</label>
-                        <input type="text" name="data-source-base-uri"
-                               value={baseUri} onChange={onBaseUriValChanged}
-                               size={baseUri != null ? baseUri.length : DEFAULT_FIELD_SIZE} />
-                    </div>
-                    <div>
-                        <label>Pattern Kits:</label>
-                        <div style={{padding: '1rem'}}>
-                            {patternKitsDisplay}
-                        </div>
-                    </div>
-                </form>
-                <div style={{textAlign: 'right', padding: '2rem'}}>
-                    <button className="Small-button" onClick={onAddNewPatternKit}>Add Pattern Kit...</button>
+            <form className="Data-source-display">
+                <div style={{textAlign: 'right'}}>
+                    <button className={"Small-button"} onClick={onShowDeleteDataSourceModal}>
+                        <img src={process.env.PUBLIC_URL + '/img/delete/delete_32.png'} alt={'Delete'}/> Delete
+                    </button>
                 </div>
-                <div className={"Button-container"} style={{padding: '2rem'}}>
-                    <CancelButton clickHandler={handleShowResetWarning}>Reset</CancelButton>
-                    <OKButton clickHandler={onSaveDataSource}>Save</OKButton>
+                <div>
+                    <h3>Type: {type}</h3>
                 </div>
-            </CollapsableContainer>
-        )
-    }
+                <div>
+                    <label htmlFor="data-source-base-uri">Base URI:</label>
+                    <input type="text" name="data-source-base-uri"
+                           value={baseUri} onChange={onBaseUriValChanged}
+                           size={baseUri != null ? baseUri.length : DEFAULT_FIELD_SIZE} />
+                </div>
+                <div>
+                    <label>Pattern Kits</label>
+                    <div className={"Type-header-container"}>
+                        {typeGroupHeader}
+                    </div>
+                    <div>
+                        {patternKitData}
+                    </div>
+                </div>
+            </form>
+            <div style={{textAlign: 'right', padding: '2rem'}}>
+                <button className="Small-button" onClick={onShowAddPatternKitModal} disabled={isUpdating}>Add Pattern Kit...</button>
+            </div>
+            <div className={"Button-container"} style={{padding: '2rem'}}>
+                <CancelButton clickHandler={onShowResetWarning} disabled={isUpdating}>Reset</CancelButton>
+                <OKButton clickHandler={onSaveDataSource} disabled={isUpdating}>Save</OKButton>
+            </div>
+        </CollapsableContainer>
+    )
 }

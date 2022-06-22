@@ -7,18 +7,15 @@ export const MenuItem = (props) => {
     const onMouseEnter = () => {
         setIsHover(true)
     }
-
     const onMouseLeave = () => {
         setIsHover(false)
     }
 
-    let style = isHover ? {backgroundColor: props.backgroundColor} : {};
+    let style = isHover ? {backgroundColor: props.backgroundColor} : {}
     return (
-        <>
-            <li className="Menu-item" style={style} onClick={props.onClick} onMouseEnter={onMouseEnter}
-                onMouseLeave={onMouseLeave}>
-                {props.children}
-            </li>
-        </>
+        <li className="Menu-item" style={style} onClick={props.onClick} onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}>
+            {props.children}
+        </li>
     )
 }
