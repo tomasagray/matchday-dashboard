@@ -4,7 +4,6 @@ import {
     newPatternKitTypeSelected,
     newPatternKitUpdated,
     selectNewPatternKit,
-    useGetTemplateForTypeQuery
 } from "./patternKitSlice";
 import {useDispatch, useSelector} from "react-redux";
 import {PatternKitFieldEditor} from "./PatternKitFieldEditor";
@@ -12,6 +11,7 @@ import {Spinner} from "../../components/Spinner";
 import Select from "../../components/Select";
 import {Option} from "../../components/Option";
 import {InfoMessage} from "../../components/InfoMessage";
+import {useGetTemplateForTypeQuery} from "./patternKitTemplateApiSlice";
 
 export const AddPatternKitForm = (props) => {
 
@@ -64,19 +64,21 @@ export const AddPatternKitForm = (props) => {
             type.value !== 'placeholder' ?
                 <PatternKitFieldEditor type={type.value} pattern={pattern.value} fields={fields.value}
                                        patternHandler={onChangePattern} fieldHandler={onChangeField} /> :
-                <InfoMessage>Please select a type from above.</InfoMessage>
+                <div style={{padding: '2rem'}}>
+                    <InfoMessage>Please select a type from above.</InfoMessage>
+                </div>
 
     return (
         <form>
-            <table className={"data-source-form"}>
+            <table className={"Add-pattern-kit-form"}>
                 <tbody>
                 <tr>
                     <td>
-                        <label htmlFor={patternKitTypeElement}>Type</label>
+                        <h3>Type</h3>
                     </td>
                     <td>
                         <Select name={patternKitTypeElement} placeholder={'Select Pattern Kit type...'}
-                                disabled={isLoading} onChange={onSelectType} selectedItem={typeIndex}>
+                                disabled={isLoading} onChange={onSelectType} selectedIndex={typeIndex}>
                             {typeOptions}
                         </Select>
                     </td>

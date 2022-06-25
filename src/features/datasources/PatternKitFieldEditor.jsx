@@ -1,17 +1,22 @@
 import React from "react";
-import {useGetTemplateForTypeQuery} from "./patternKitSlice";
 import {getClassName} from "../../Utils";
 import {InfoMessage} from "../../components/InfoMessage";
 import {Spinner} from "../../components/Spinner";
 import {PatternKitFieldRow} from "./PatternKitFieldRow";
+import {useGetTemplateForTypeQuery} from "./patternKitTemplateApiSlice";
 
 export const PatternKitFieldEditor = (props) => {
 
     const patternContainerStyle = {
         display: 'flex',
         alignItems: 'center',
-        padding: '1rem 0'
+        padding: '1rem 0',
+        marginBottom: '2rem',
     }
+    const helpMessage =
+        <div style={{display: 'flex', justifyContent: 'center', padding: '2rem', width: '100%'}}>
+            <InfoMessage>Select a type from above</InfoMessage>
+        </div>
 
     const onFieldChange = (e, field) => {
         let value
@@ -40,7 +45,7 @@ export const PatternKitFieldEditor = (props) => {
     }
 
     let {pattern, type, fields, patternHandler, fieldHandler} = props
-    let patternLen = pattern !== null ? Math.min(pattern.length, 55) : 20
+    let patternLen = pattern !== null ? Math.min(pattern.length, 35) : 20
     let typeName = getClassName(type)
     let {data: template, isLoading, isFetching} =
         useGetTemplateForTypeQuery(typeName, {skip: typeName === null})
@@ -57,14 +62,12 @@ export const PatternKitFieldEditor = (props) => {
                                             fieldHandler={onFieldChange} key={field[0]}/>
                     ) :
                 <tr>
-                    <td colSpan={2}>
-                        <InfoMessage>Select a type from above</InfoMessage>
-                    </td>
+                    <td colSpan={2}> {helpMessage} </td>
                 </tr>
             editor = (
                 <>
                     <div style={patternContainerStyle}>
-                        <h2 style={{paddingRight: '2rem'}}>Pattern</h2>
+                        <h3 style={{paddingRight: '3.75rem'}}>Pattern</h3>
                         <input type="text" name="pattern-kit-pattern" value={pattern != null ? pattern : ""}
                                size={patternLen} onChange={onPatternChange} placeholder={"Enter a regular expression"}/>
                     </div>
@@ -94,10 +97,13 @@ export const PatternKitFieldEditor = (props) => {
                 </>
             )
         } else {
-            editor = <Spinner size={64} text={'Loading...'}/>
+            editor =
+                <div style={{padding: '2rem'}}>
+                    <Spinner size={64} text={'Loading...'}/>
+                </div>
         }
     } else {
-        editor = <InfoMessage>Select a type from above</InfoMessage>
+        editor = helpMessage
     }
     return (
         <> {editor} </>

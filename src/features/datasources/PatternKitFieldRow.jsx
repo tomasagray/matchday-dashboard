@@ -41,7 +41,7 @@ export const PatternKitFieldRow = (props) => {
                 <code>{fieldName}</code>
             </td>
             <td>
-                <Select disabled={isDisabled} placeholder={'Select a regex group'} selectedItem={selectedItem}
+                <Select disabled={isDisabled} placeholder={'Select a regex group'} selectedIndex={selectedItem}
                         onChange={onChange}>
                     {options}
                 </Select>

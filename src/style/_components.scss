@@ -70,13 +70,14 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: .6rem 1rem;
-    margin: 1rem 0;
+    padding: 1rem 1rem;
+    margin: 1.6rem 0;
     background-color: colors.$defaultComponentBg;
     border-radius: 1rem;
   }
 
   .Settings-link {
+    font-size: medium;
 
     &:hover {
       background-color: rgba(255, 255, 255, .2);
@@ -84,7 +85,7 @@
     }
 
     .link-arrow {
-      max-height: 2rem;
+      max-height: 1rem;
       opacity: .3;
     }
   }
@@ -180,60 +181,66 @@
   }
 }
 
-.Modal {
-  $modalPadding: 1rem;
-
-  padding: 5rem;
-  box-sizing: content-box;
-  background-color: rgba(0, 0, 0, .4);
-  width: 100%;
-  height: 100%;
+.Modal-container {
+  height: 100vh;
+  width: 103vw;
+  overflow-y: scroll;
   position: fixed;
   top: 0;
   left: 0;
-  z-index: variables.$modalIndex;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow-y: scroll;
+  z-index: variables.$modalIndex - 1;
 
   &.hidden {
     display: none;
   }
 
-  .Dialog {
-    width: 45vw;
-    min-height: 25vh;
-    background-color: colors.$defaultComponentBg;
-    border: 1px solid colors.$border;
-    border-radius: .4rem;
-    color: whitesmoke;
-    box-shadow: 3px 4px 7px black;
-  }
+  .Modal {
+    $modalPadding: 1rem;
 
-  .Modal-header {
+    background-color: rgba(0, 0, 0, .4);
+    width: 100vw;
+    min-height: 100vh;
+    top: 0;
+    left: 0;
+    z-index: variables.$modalIndex;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    border-bottom: 1px solid colors.$border;
-    padding: $modalPadding;
+
+    &.hidden {
+      display: none;
+    }
+
+    .Dialog {
+      margin: 5rem;
+      width: 45vw;
+      min-height: 25vh;
+      background-color: colors.$defaultComponentBg;
+      border: 1px solid colors.$border;
+      border-radius: .4rem;
+      color: whitesmoke;
+      box-shadow: 3px 4px 7px black;
+    }
+
+    .Modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid colors.$border;
+      padding: $modalPadding;
+    }
+
+    .Modal-body {
+      padding: 3rem 2rem;
+    }
+
+    .Modal-footer {
+      border-top: 1px solid colors.$border;
+      padding: $modalPadding;
+      height: fit-content;
+
+    }
   }
-
-  .Modal-body {
-    padding: $modalPadding;
-  }
-
-  .Modal-footer {
-    border-top: 1px solid colors.$border;
-    padding: $modalPadding;
-    height: fit-content;
-
-  }
-}
-
-.Type-header-container {
-  display: flex;
-  width: fit-content;
 }
 
 .Select {

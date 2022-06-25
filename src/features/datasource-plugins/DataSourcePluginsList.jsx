@@ -23,7 +23,7 @@ export const DataSourcePluginsList = () => {
     if (pluginsLoading) {
         dataSourceList =
             <div className="loading-box">
-                <Spinner text="Loading..." size="2rem"/>
+                <Spinner/>
             </div>
     } else if (pluginLoaded) {
         let tiles = dataSourcePlugins.ids.map(pluginId => {

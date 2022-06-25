@@ -3,7 +3,7 @@ import {FloatingMenu} from "./FloatingMenu";
 
 export const Select = (props) => {
 
-    let {disabled: isDisabled, selectedItem: selectedIndex} = props
+    let {disabled: isDisabled, selectedIndex} = props
     let [isFocused, setIsFocused] = useState(false)
     let [menuHidden, setMenuHidden] = useState(true)
 

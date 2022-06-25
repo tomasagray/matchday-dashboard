@@ -1,4 +1,3 @@
-import {apiSlice} from "../../app/apiSlice"
 import {createSelector, createSlice} from "@reduxjs/toolkit";
 
 const initialNewPatternKit = {
@@ -65,7 +64,10 @@ export const patternKitSlice = createSlice({
             let newPatternKit = state.newPatternKit
             let payload = action.payload
             let fields = payload.value
-            let fieldCount = Object.keys(fields).filter(field => field !== null).length
+            let fieldCount = Object.values(fields).filter(field => {
+                console.log('field is', field)
+                return field !== null
+            }).length
             state.newPatternKit = {
                 ...newPatternKit,
                 fields: {
@@ -115,25 +117,3 @@ export const selectNewPatternKitForUpload = createSelector(
         }
     }
 )
-
-export const patternKitTemplateApiSlice = apiSlice.injectEndpoints({
-    endpoints: builder => {
-        return {
-            getAllTemplates: builder.query({
-                query: () => '/pattern-kit-templates/all',
-                transformResponse(result) {
-                    let {_embedded: embedded} = result
-                    return embedded.templates
-                }
-            }),
-            getTemplateForType: builder.query({
-                query: (type) => `/pattern-kit-templates/type/${type}`,
-            })
-        }
-    }
-})
-
-export const {
-    useGetAllTemplatesQuery,
-    useGetTemplateForTypeQuery
-} = patternKitTemplateApiSlice

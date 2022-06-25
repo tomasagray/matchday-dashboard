@@ -3,15 +3,20 @@ import React from "react"
 
 export const Modal = (props) => {
 
-    let className = "Modal"
+    let modalClass = "Modal"
+    let containerClass = "Modal-container"
     if (!props.show) {
-        className += " hidden"
+        modalClass += " hidden"
+        containerClass += " hidden"
     }
+
     return (
-        <div className={className}>
-            <Dialog>
-                {props.children}
-            </Dialog>
+        <div className={containerClass}>
+            <div className={modalClass}>
+                <Dialog>
+                    {props.children}
+                </Dialog>
+            </div>
         </div>
     );
 }

@@ -123,6 +123,13 @@ export const {
     selectAll: selectAllDataSources
 } = dataSourceAdapter.getSelectors((state) => state.dataSources.dirty ?? dataSourceAdapter.getInitialState)
 
+export const selectCleanDataSourceById = createSelector(
+    (state) => state.dataSources,
+    (state, dataSourceId) => dataSourceId,
+    (state, dataSourceId) =>
+        Object.values(state.clean.entities).find(dataSource => dataSource.dataSourceId === dataSourceId)
+)
+
 export const selectNewDataSource = createSelector(
     (state) => state.dataSources,
     (state) => state.newDataSource

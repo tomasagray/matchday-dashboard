@@ -1,12 +1,11 @@
 import React, {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {patternKitDeleted, patternKitUpdated, selectPatternKitById} from "./dataSourceSlice";
-import {FloatingMenu} from "../../components/FloatingMenu";
-import {MenuItem} from "../../components/MenuItem";
 import {PatternKitFieldEditor} from "./PatternKitFieldEditor";
-import Modal, {Body, Dialog, Footer, Header} from "../../components/Modal";
+import Modal, {Body, Footer, Header} from "../../components/Modal";
 import {CancelButton} from "../../components/CancelButton";
-import {OKButton} from "../../components/OKButton";
+import {getClassName} from "../../Utils";
+import {DeleteButton} from "../../components/DeleteButton";
 
 export const PatternKitDisplay = (props) => {
 
@@ -25,23 +24,17 @@ export const PatternKitDisplay = (props) => {
         }
         dispatch(patternKitUpdated({patternKitId, data}))
     }
-    const onMenuButtonClick = (e) => {
+
+    const onClickDeleteButton = (e) => {
         e.preventDefault()
-        setEditMenuHidden(false)
-    }
-    const onClickEditButton = () => {
-        console.log('edit button clicked')
-        setEditMenuHidden(true)
-    }
-    const onClickDeleteButton = () => {
         setShowDeleteConfirmModal(true)
-        setEditMenuHidden(true)
     }
     const onHideDeleteConfirmModal = (e) => {
         e.preventDefault()
         setShowDeleteConfirmModal(false)
     }
-    const onDeletePatternKit = () => {
+    const deletePatternKit = (e) => {
+        e.preventDefault()
         setShowDeleteConfirmModal(false)
         dispatch(patternKitDeleted({patternKitId}))
     }
@@ -49,39 +42,39 @@ export const PatternKitDisplay = (props) => {
     let {patternKitId} = props
     let patternKit = useSelector(state => selectPatternKitById(state, patternKitId))
     let {fields, pattern, clazz} = patternKit
+    let type = getClassName(clazz)
     // state
-    let [editMenuHidden, setEditMenuHidden] = useState(true)
     let [showDeleteConfirmModal, setShowDeleteConfirmModal] = useState(false)
 
     return (
         <>
             <Modal show={showDeleteConfirmModal}>
-                <Dialog>
-                    <Header onHide={onHideDeleteConfirmModal}>CONFIRM: Delete Pattern Kit?</Header>
-                    <Body>
-                        Are you sure you want to <strong style={{color: 'red'}}>PERMANENTLY DELETE</strong>&nbsp;
-                        this Pattern Kit?
-                    </Body>
-                    <Footer>
-                        <CancelButton clickHandler={onHideDeleteConfirmModal}/>
-                        <OKButton clickHandler={onDeletePatternKit}>DELETE</OKButton>
-                    </Footer>
-                </Dialog>
+                <Header onHide={onHideDeleteConfirmModal}>
+                    CONFIRM: <span style={{color: '#aaa'}}>Delete Pattern Kit?</span>
+                </Header>
+                <Body>
+                    Are you sure you want to <strong style={{color: 'red'}}>PERMANENTLY DELETE</strong>&nbsp;
+                    this Pattern Kit?
+                </Body>
+                <Footer>
+                    <CancelButton clickHandler={onHideDeleteConfirmModal}/>
+                    <DeleteButton onClick={deletePatternKit} />
+                </Footer>
             </Modal>
-            <div>
-                <button onClick={onMenuButtonClick} className="Edit-menu-button">&#8942;</button>
-                <FloatingMenu hidden={editMenuHidden} onClickOutside={setEditMenuHidden}>
-                    <MenuItem onClick={onClickEditButton} backgroundColor="green">
-                        <p>Edit</p>
-                        <img src={process.env.PUBLIC_URL + '/img/edit-pencil/edit-pencil_32.png'} alt="Edit"/>
-                    </MenuItem>
-                    <MenuItem onClick={onClickDeleteButton} backgroundColor="darkred">
-                        <p>Delete</p>
-                        <img src={process.env.PUBLIC_URL + '/img/delete/delete_32.png'} alt="Delete"/>
-                    </MenuItem>
-                </FloatingMenu>
-            </div>
+
             <div className="Pattern-kit" key={patternKitId}>
+                <div className={"Pattern-kit-header"}>
+                    <p>
+                        <strong>PKID</strong> : <span style={{color: '#ccc'}}>{patternKitId}</span>
+                    </p>
+                    <p>
+                        <strong>Type</strong> : <span style={{color: '#ccc'}}>{type}</span>
+                    </p>
+                    <button className={"Pattern-kit-delete-button"} onClick={onClickDeleteButton}>
+                        <img src={process.env.PUBLIC_URL + '/img/delete/delete_16.png'} alt={'Delete'}/>
+                        Delete
+                    </button>
+                </div>
                 <PatternKitFieldEditor pattern={pattern} type={clazz} fields={fields}
                                        patternHandler={onPatternValChanged} fieldHandler={onFieldValueChanged}/>
             </div>

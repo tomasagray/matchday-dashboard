@@ -67,10 +67,6 @@ export const dataSourceApiSlice = apiSlice.injectEndpoints({
     }
 })
 
-export const selectAllDataSourcesResult = dataSourceApiSlice.endpoints.getAllDataSources.select()
-export const selectDataSourcesForPluginResult =
-    pluginId => dataSourceApiSlice.endpoints.getDataSourcesForPlugin.select(pluginId)
-
 export const {
     useGetAllDataSourcesQuery,
     useGetDataSourcesForPluginQuery,

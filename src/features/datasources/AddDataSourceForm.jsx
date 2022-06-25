@@ -1,18 +1,16 @@
 import React from "react";
-import {useGetAllTemplatesQuery} from "./patternKitSlice";
 import {useDispatch, useSelector} from "react-redux";
 import {newDataSourceUpdated, selectNewDataSource} from "./dataSourceSlice";
+import {useGetAllTemplatesQuery} from "./patternKitTemplateApiSlice";
+import Select from "../../components/Select";
+import {Option} from "../../components/Option";
 
 export const AddDataSourceForm = (props) => {
 
-    const dataSourceTypeElement = "data-source-type"
-    const dataSourceTitleElement = "data-source-title"
-    const dataSourceBaseUriElement = "data-source-base-uri"
-
     let dispatch = useDispatch()
-    const onSelectType = (e) => {
-        let value = e.target.value
-        dispatch(newDataSourceUpdated({field: 'type', value}))
+    const onSelectType = (e, type) => {
+        console.log('selecting type', type)
+        dispatch(newDataSourceUpdated({field: 'type', value: type}))
     }
     const onChangeDataSourceTitle = (e) => {
         let value = e.target.value
@@ -24,34 +22,42 @@ export const AddDataSourceForm = (props) => {
     }
 
     let {pluginId, disabled} = props
-    let {data: templates, isLoading} = useGetAllTemplatesQuery()
-    let templateOptions =
-        templates?.map(template => <option value={template.type} key={template.id}>{template.name}</option> ) ?? []
     let newDataSource = useSelector( state =>  selectNewDataSource(state))
     let {type, title, baseUri} = newDataSource
+    let {data: templates, isLoading} = useGetAllTemplatesQuery()
+    let selectedIndex
+    let templateOptions = []
+    for (let i = 0; i < templates?.length ?? 0; i++) {
+        let template = templates[i]
+        if (template.type === type.value) {
+            selectedIndex = i
+        }
+        templateOptions.push(
+            <Option value={template.type} key={template.id}>{template.name}</Option>
+        )
+    }
 
     return (
         <form>
-            <table className={"data-source-form"}>
+            <table className={"Add-data-source-form"}>
                 <tbody>
                 <tr>
                     <td>
-                        <label htmlFor={dataSourceTypeElement}>Type</label>
+                        <h3>Type</h3>
                     </td>
                     <td>
-                        <select name={dataSourceTypeElement} disabled={isLoading || disabled}
-                                onChange={onSelectType} value={type.value} >
-                            <option value="placeholder" disabled hidden>Select Data Source type...</option>
+                        <Select disabled={isLoading || disabled} placeholder={'Select Data Source type...'}
+                                onChange={onSelectType} selectedIndex={selectedIndex} >
                             {templateOptions}
-                        </select>
+                        </Select>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <label htmlFor={dataSourceTitleElement}>Title</label>
+                        <h3>Title</h3>
                     </td>
                     <td>
-                        <input type="text" name={dataSourceTitleElement} value={title.value} maxLength={255}
+                        <input type="text" value={title.value} maxLength={255}
                                onChange={onChangeDataSourceTitle} placeholder={"Enter a title..."}
                                disabled={disabled}
                         />
@@ -59,11 +65,11 @@ export const AddDataSourceForm = (props) => {
                 </tr>
                 <tr>
                     <td>
-                        <label htmlFor={dataSourceBaseUriElement}>Base URI</label>
+                        <h3>Base URI</h3>
                     </td>
                     <td>
-                        <input type={"url"} placeholder={"https://..."} name={dataSourceBaseUriElement}
-                               value={baseUri.value} onChange={onChangeDataSourceBaseUri}
+                        <input type={"url"} placeholder={"https://..."} value={baseUri.value}
+                               onChange={onChangeDataSourceBaseUri}
                                disabled={disabled}
                         />
                         <input type={"hidden"} name={"data-source-pluginId"} value={pluginId}/>
