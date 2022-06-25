@@ -44,7 +44,7 @@ export const PatternKitFieldEditor = (props) => {
         }
     }
 
-    let {pattern, type, fields, patternHandler, fieldHandler} = props
+    let {pattern, type, fields, patternHandler, fieldHandler, disabled} = props
     let patternLen = pattern !== null ? Math.min(pattern.length, 35) : 20
     let typeName = getClassName(type)
     let {data: template, isLoading, isFetching} =
@@ -58,7 +58,7 @@ export const PatternKitFieldEditor = (props) => {
             let patternKitFields = template ?
                 Object.entries(template.fields)
                     .map(field =>
-                        <PatternKitFieldRow pattern={pattern} field={field} fields={fields}
+                        <PatternKitFieldRow pattern={pattern} field={field} fields={fields} disabled={disabled}
                                             fieldHandler={onFieldChange} key={field[0]}/>
                     ) :
                 <tr>
@@ -68,7 +68,7 @@ export const PatternKitFieldEditor = (props) => {
                 <>
                     <div style={patternContainerStyle}>
                         <h3 style={{paddingRight: '3.75rem'}}>Pattern</h3>
-                        <input type="text" name="pattern-kit-pattern" value={pattern != null ? pattern : ""}
+                        <input type="text" name="pattern-kit-pattern" value={pattern != null ? pattern : ""} disabled={disabled}
                                size={patternLen} onChange={onPatternChange} placeholder={"Enter a regular expression"}/>
                     </div>
                     <table className="Field-list">

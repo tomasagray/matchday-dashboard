@@ -23,7 +23,7 @@ const getGroupOptions = (pattern) => {
 
 export const PatternKitFieldRow = (props) => {
 
-    let {pattern, field, fields, fieldHandler} = props
+    let {pattern, field, fields, fieldHandler, disabled} = props
     const onChange = (e, value) => {
         fieldHandler(e, {fieldName, value})
     }
@@ -33,7 +33,7 @@ export const PatternKitFieldRow = (props) => {
     let matchingField = fields ? Object.entries(fields).find(field => field[1] === fieldName) : null
     let selectedItem = matchingField ? matchingField[0] : null
     let options = getGroupOptions(pattern)
-    let isDisabled = pattern === ''
+    let isDisabled = disabled || pattern === ''
 
     return (
         <tr key={groupId}>

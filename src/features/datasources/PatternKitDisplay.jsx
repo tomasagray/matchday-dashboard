@@ -39,7 +39,7 @@ export const PatternKitDisplay = (props) => {
         dispatch(patternKitDeleted({patternKitId}))
     }
 
-    let {patternKitId} = props
+    let {patternKitId, disabled} = props
     let patternKit = useSelector(state => selectPatternKitById(state, patternKitId))
     let {fields, pattern, clazz} = patternKit
     let type = getClassName(clazz)
@@ -70,12 +70,14 @@ export const PatternKitDisplay = (props) => {
                     <p>
                         <strong>Type</strong> : <span style={{color: '#ccc'}}>{type}</span>
                     </p>
-                    <button className={"Pattern-kit-delete-button"} onClick={onClickDeleteButton}>
-                        <img src={process.env.PUBLIC_URL + '/img/delete/delete_16.png'} alt={'Delete'}/>
-                        Delete
-                    </button>
+                    <div style={{display: disabled ? 'none' : ''}}>
+                        <button className={"Pattern-kit-delete-button"} onClick={onClickDeleteButton}>
+                            <img src={process.env.PUBLIC_URL + '/img/delete/delete_16.png'} alt={'Delete'}/>
+                            Delete
+                        </button>
+                    </div>
                 </div>
-                <PatternKitFieldEditor pattern={pattern} type={clazz} fields={fields}
+                <PatternKitFieldEditor pattern={pattern} type={clazz} fields={fields} disabled={disabled}
                                        patternHandler={onPatternValChanged} fieldHandler={onFieldValueChanged}/>
             </div>
         </>

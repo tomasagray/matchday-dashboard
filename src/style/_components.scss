@@ -256,8 +256,15 @@
     border-color: #ccc;
   }
 
+  &.disabled {
+    border-color: transparent;
+  }
+
   &.disabled > .Selected-item-button {
     cursor: default;
+    &:after {
+      content: '';
+    }
   }
 
   .Selected-item-button {

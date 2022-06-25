@@ -91,6 +91,27 @@ $dataSourceIntBorder: 1px solid #666;
     font-size: 1.3rem;
     margin-right: 1rem;
   }
+
+  input[type=text] {
+    background: none;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    border-radius: 0;
+    color: colors.$defaultFontColor;
+    font-size: 11pt;
+    display: flex;
+    justify-content: center;
+
+    &:disabled {
+      background: none;
+      border: none;
+      color: #ccc;
+    }
+
+    &:focus {
+      background-color: rgba(0,0,0,.2);
+    }
+  }
 }
 
 .Data-source-table {

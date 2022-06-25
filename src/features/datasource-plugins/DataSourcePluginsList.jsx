@@ -36,7 +36,7 @@ export const DataSourcePluginsList = () => {
     }
 
     let pluginData
-    if (selectedPluginId) {
+    if (selectedPluginId && !pluginsLoading) {
         pluginData = <PluginDetailDisplay plugin={selectedPluginId}/>
     } else if (pluginLoaded) {
         pluginData = <p>Please select a Data Source plugin from above.</p>

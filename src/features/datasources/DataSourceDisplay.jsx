@@ -41,7 +41,7 @@ const getTypeGroupHeader = (types, selectedType, setTypeHandler) => {
             )
         });
 }
-const getPatternKitDisplays = (patternKits) => {
+const getPatternKitDisplays = (patternKits, isEditable) => {
     return Object.entries(patternKits).map((patternKitGroup) => {
         let type = patternKitGroup[0]
         let patternKits = patternKitGroup[1]
@@ -51,7 +51,7 @@ const getPatternKitDisplays = (patternKits) => {
                 <PatternKitTypeGroup key={type} type={type}>
                     {
                         patternKits.map(patternKit =>
-                            <PatternKitDisplay key={patternKit.id} patternKitId={patternKit.id}/>
+                            <PatternKitDisplay key={patternKit.id} patternKitId={patternKit.id} disabled={!isEditable}/>
                         )
                     }
                 </PatternKitTypeGroup>
@@ -116,6 +116,7 @@ export const DataSourceDisplay = (props) => {
     }
     const onResetDataSource = () => {
         dispatch( dataSourceReset({dataSourceId: dataSourceId}) )
+        setIsEditable(false)
         setShowResetModal(false)
     }
     const onSaveDataSource = async () => {
@@ -171,7 +172,12 @@ export const DataSourceDisplay = (props) => {
         setEditMenuHidden(false)
     }
     const onClickEditButton = () => {
-        console.log('edit button clicked')
+        if (!isEditable) {
+            setIsEditable(true)
+        }
+        if (isEditable && !isModified) {
+            setIsEditable(false)
+        }
         setEditMenuHidden(true)
     }
 
@@ -196,6 +202,7 @@ export const DataSourceDisplay = (props) => {
     let [showTypeMenu, setShowTypeMenu] = useState(false)
     let [selectedType, setSelectedType] = useState('')
     let [editMenuHidden, setEditMenuHidden] = useState(true)
+    let [isEditable, setIsEditable] = useState(false)
     // modal controls
     let [showResetModal, setShowResetModal] = useState(false)
     let [showAddPatternKitModal, setShowAddPatternKitModal] = useState(false)
@@ -210,7 +217,7 @@ export const DataSourceDisplay = (props) => {
         let groupedPatternKits = groupPatternKits(patternKits)
         let types = Object.keys(groupedPatternKits)
         typeGroupHeader = getTypeGroupHeader(types, selectedType, onSetSelectedPatternKitType)
-        patternKitDisplays = getPatternKitDisplays(groupedPatternKits)
+        patternKitDisplays = getPatternKitDisplays(groupedPatternKits, isEditable)
     }
     if (selectedType) {
         patternKitData = patternKitDisplays.find(patternKits => patternKits.type === selectedType)?.data
@@ -229,6 +236,13 @@ export const DataSourceDisplay = (props) => {
     }
 
     let fieldStyle = {display: 'flex', alignItems: 'center'}
+    let hoverColor = isEditable ? 'light-green' : 'green'
+    let editImg = !isEditable ? '/edit-pencil/edit-pencil_16.png' : '/cancel/cancel_16.png'
+    const editButton = isModified ? null :
+        <MenuItem onClick={onClickEditButton} backgroundColor={hoverColor}>
+            <p>{isEditable ? 'Cancel' : ''} Edit</p>
+            <img src={process.env.PUBLIC_URL + '/img/' + editImg} alt="Edit"/>
+        </MenuItem>
     return (
         <CollapsableContainer _key={dataSourceId} title={title}>
             <div id="modal-container">
@@ -291,24 +305,22 @@ export const DataSourceDisplay = (props) => {
             </div>
 
             <form className="Data-source-display">
+                <div id={"data-source-edit-menu"} style={{float: 'right'}}>
+                    <button onClick={onMenuButtonClick} className="Edit-menu-button">&#8942;</button>
+                    <FloatingMenu hidden={editMenuHidden} onClickOutside={setEditMenuHidden}>
+                        {editButton}
+                        <MenuItem onClick={onShowDeleteDataSourceModal} backgroundColor="darkred">
+                            <p>Delete</p>
+                            <img src={process.env.PUBLIC_URL + '/img/delete/delete_16.png'} alt="Delete"/>
+                        </MenuItem>
+                    </FloatingMenu>
+                </div>
+
                 <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', margin: 0}}>
                     <div>
                         <p style={{fontSize: 'small'}}>
                             <strong>ID</strong>: <span style={{color: '#aaa'}}>{dataSourceId}</span>
                         </p>
-                    </div>
-                    <div>
-                        <button onClick={onMenuButtonClick} className="Edit-menu-button">&#8942;</button>
-                        <FloatingMenu hidden={editMenuHidden} onClickOutside={setEditMenuHidden}>
-                            <MenuItem onClick={onClickEditButton} backgroundColor="green">
-                                <p>Edit</p>
-                                <img src={process.env.PUBLIC_URL + '/img/edit-pencil/edit-pencil_32.png'} alt="Edit"/>
-                            </MenuItem>
-                            <MenuItem onClick={onShowDeleteDataSourceModal} backgroundColor="darkred">
-                                <p>Delete</p>
-                                <img src={process.env.PUBLIC_URL + '/img/delete/delete_32.png'} alt="Delete"/>
-                            </MenuItem>
-                        </FloatingMenu>
                     </div>
                 </div>
                 <div style={fieldStyle}>
@@ -317,7 +329,7 @@ export const DataSourceDisplay = (props) => {
                 </div>
                 <div style={fieldStyle}>
                     <h3 style={{marginRight: '1rem'}}>Base URI<span style={{color: '#aaa'}}> :</span></h3>
-                    <input type="text" name="data-source-base-uri"
+                    <input type="text" name="data-source-base-uri" disabled={!isEditable}
                            value={baseUri} onChange={onBaseUriValChanged}
                            size={baseUri != null ? baseUri.length : DEFAULT_FIELD_SIZE} />
                 </div>
