@@ -2,7 +2,7 @@ import UserMenu from "./UserMenu";
 import {Link} from "react-router-dom";
 
 export const HeaderNav = () => {
-    let PLACEHOLDER_IMG = process.env.PUBLIC_URL + '/img/_tmp.png';  // todo: use real images
+    let PLACEHOLDER_IMG = process.env.PUBLIC_URL + '/img/_tmp.png';  // todo: create Matchday logo, use
 
     return (
         <header className="App-header">
@@ -14,12 +14,11 @@ export const HeaderNav = () => {
                                  id="home-button"/>
                         </button>
                     </Link>
-                    <h4 className="Current-location">Current location </h4>
                     <div className="Search-tool">
                         <form>
                             <input type="text" id="q" name="q" maxLength={250}/>
                             <button type="submit">
-                                <img src={process.env.PUBLIC_URL + '/img/search-icon.png'} alt={"Search"}/>
+                                <img src={process.env.PUBLIC_URL + '/img/icon/search/search_32.png'} alt={"Search"}/>
                             </button>
                         </form>
                     </div>
@@ -29,14 +28,14 @@ export const HeaderNav = () => {
                         <li>
                             <Link to="/settings">
                                 <button className="Nav-link">
-                                    <img src={process.env.PUBLIC_URL + '/img/config-icon.png'} alt="Config"/>
+                                    <img src={process.env.PUBLIC_URL + '/img/icon/config/config_64.png'} alt="Config"/>
                                 </button>
                             </Link>
                         </li>
                         <li>
                             <Link to="/alerts">
                                 <button className="Nav-link">
-                                    <img src={process.env.PUBLIC_URL + '/img/alert-icon.png'} alt="Alerts"/>
+                                    <img src={process.env.PUBLIC_URL + '/img/icon/alerts/alerts_64.png'} alt="Alerts"/>
                                 </button>
                             </Link>
                         </li>
@@ -47,5 +46,5 @@ export const HeaderNav = () => {
                 </div>
             </nav>
         </header>
-    );
+    )
 }

@@ -35,7 +35,7 @@
   }
 }
 
-.loading-box {
+.Loading-box {
   display: flex;
   justify-content: center;
   box-sizing: border-box;
@@ -54,6 +54,10 @@
   &:hover, &:active {
     opacity: .95;
     background-color: colors.$navButtonHover;
+  }
+
+  &.current {
+    background-color: colors.$currentNavItemBg;
   }
 
   img {

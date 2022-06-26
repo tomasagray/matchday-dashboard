@@ -31,7 +31,7 @@ export const DataSourceList = (props) => {
     }
     if (isLoading) {
         dataSourceList =
-            <div className="loading-box">
+            <div className="Loading-box">
                 <Spinner/>
             </div>
     }

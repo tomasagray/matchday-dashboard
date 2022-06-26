@@ -22,7 +22,7 @@ export const DataSourcePluginsList = () => {
     let dataSourceList
     if (pluginsLoading) {
         dataSourceList =
-            <div className="loading-box">
+            <div className="Loading-box">
                 <Spinner/>
             </div>
     } else if (pluginLoaded) {
@@ -51,7 +51,7 @@ export const DataSourcePluginsList = () => {
     return (
         <>
             <div className="section-header">
-                <img src={process.env.PUBLIC_URL + '/img/plugin_128.png'} alt="Plugins"
+                <img src={process.env.PUBLIC_URL + '/img/icon/plugins/plugins_64.png'} alt="Plugins"
                      style={{height: 'fit-content'}}/>
                 <h1>Plugins</h1>
                 <button className="Small-button" style={refreshButtonStyle} disabled={refreshDisabled}

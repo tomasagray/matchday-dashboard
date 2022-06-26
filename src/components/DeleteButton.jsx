@@ -6,7 +6,7 @@ export const DeleteButton = (props) => {
     return (
         <button onClick={onClick} disabled={disabled} className={"Delete-button"} style={style}>
             {props.children ?? 'DELETE'}
-            <img src={process.env.PUBLIC_URL + '/img/delete/delete_16.png'} alt={"Delete"}/>
+            <img src={process.env.PUBLIC_URL + '/img/icon/delete/delete_16.png'} alt={"Delete"}/>
         </button>
     )
 }

@@ -2,13 +2,14 @@ import '../style/App.css';
 import '../style/main.scss';
 import React, {useContext} from "react";
 import {HeaderNav} from '../layout/HeaderNav';
-import SideNav from "../layout/SideNav";
+import {SideNav} from "../layout/SideNav";
 import {ContentStage} from "../layout/ContentStage";
 import {Preferences} from "./Preferences";
 
 
 export default function App() {
-    const prefs = useContext(Preferences);
+
+    const prefs = useContext(Preferences)
 
     return (
         <Preferences.Provider value={prefs}>
@@ -20,5 +21,5 @@ export default function App() {
                 </div>
             </div>
         </Preferences.Provider>
-    );
+    )
 }

@@ -1,6 +1,5 @@
 import {apiSlice, dataSourcePluginTag} from "../../app/apiSlice";
 import {JsonHeaders} from "../../app/constants";
-import {createSelector} from "@reduxjs/toolkit";
 import {dataSourcePluginSlice, pluginAdapter} from "./dataSourcePluginSlice";
 import store from "../../app/store";
 
@@ -70,8 +69,3 @@ export const {
     useDisableDataSourcePluginMutation,
 } = dataSourcePluginApiSlice
 
-export const selectNormalizedPluginData = dataSourcePluginApiSlice.endpoints.getAllDataSourcePlugins.select()
-export const selectPluginsData = createSelector(
-    selectNormalizedPluginData,
-    plugins => plugins?.data ?? []
-)

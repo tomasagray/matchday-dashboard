@@ -38,7 +38,7 @@ root.render(
                     {/* Second level */}
                     <Route path="competition" element={<CompetitionDetail/>} />
                     <Route path="team" element={<TeamDetail/>} />
-                    <Route path="datasource/:pluginId" element={<PluginDataSourceList/>} />
+                    <Route path="data-sources/data-source/:pluginId" element={<PluginDataSourceList/>} />
                 </Route>
               </Routes>
           </BrowserRouter>

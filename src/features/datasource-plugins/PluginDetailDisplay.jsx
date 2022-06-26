@@ -1,10 +1,7 @@
 import {Status, ToggleSwitch} from "../../components/ToggleSwitch";
 import React from "react";
 import {useSelector} from "react-redux";
-import {
-    useDisableDataSourcePluginMutation,
-    useEnableDataSourcePluginMutation
-} from "./dataSourcePluginApiSlice";
+import {useDisableDataSourcePluginMutation, useEnableDataSourcePluginMutation} from "./dataSourcePluginApiSlice";
 import {selectDataSourcePluginById} from "./dataSourcePluginSlice";
 import {SettingContainer} from "../../components/SettingContainer";
 import {SettingsGroup} from "../../components/SettingsGroup";
@@ -58,7 +55,7 @@ export const PluginDetailDisplay = () => {
                     <p>Enabled</p>
                     <ToggleSwitch status={toggle} onclick={onEnabledToggle}/>
                 </SettingContainer>
-                <SettingsLink title="Data Sources" location={"/dataSource/" + plugin.id}/>
+                <SettingsLink title="Data Sources" location={"/data-sources/data-source/" + plugin.id}/>
             </SettingsGroup>
         </>
     )

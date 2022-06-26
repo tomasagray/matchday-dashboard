@@ -34,7 +34,7 @@ class UserMenu extends Component {
                 this.dropdownMenu = element;
             }}>
                 <button onClick={this.showMenu} className="Nav-link">
-                    <img src={process.env.PUBLIC_URL + '/img/avatar-icon.png'} alt="User menu"/>
+                    <img src={process.env.PUBLIC_URL + '/img/icon/avatar/avatar_64.png'} alt="User menu"/>
                 </button>
                 {
                     this.state.showMenu ? (

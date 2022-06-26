@@ -104,7 +104,7 @@ $dataSourceIntBorder: 1px solid #666;
 
     &:disabled {
       background: none;
-      border: none;
+      border-color: transparent;
       color: #ccc;
     }
 
@@ -286,6 +286,10 @@ $dataSourceIntBorder: 1px solid #666;
 
   td {
     padding: 1rem;
+
+    &:nth-of-type(2n+1) {
+      width: 15vw;
+    }
   }
 
   .Field-name-heading > th {

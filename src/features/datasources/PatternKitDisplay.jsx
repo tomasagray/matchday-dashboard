@@ -72,7 +72,7 @@ export const PatternKitDisplay = (props) => {
                     </p>
                     <div style={{display: disabled ? 'none' : ''}}>
                         <button className={"Pattern-kit-delete-button"} onClick={onClickDeleteButton}>
-                            <img src={process.env.PUBLIC_URL + '/img/delete/delete_16.png'} alt={'Delete'}/>
+                            <img src={process.env.PUBLIC_URL + '/img/icon/delete/delete_16.png'} alt={'Delete'}/>
                             Delete
                         </button>
                     </div>

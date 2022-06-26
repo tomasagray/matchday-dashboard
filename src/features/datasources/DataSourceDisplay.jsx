@@ -241,7 +241,7 @@ export const DataSourceDisplay = (props) => {
     const editButton = isModified ? null :
         <MenuItem onClick={onClickEditButton} backgroundColor={hoverColor}>
             <p>{isEditable ? 'Cancel' : ''} Edit</p>
-            <img src={process.env.PUBLIC_URL + '/img/' + editImg} alt="Edit"/>
+            <img src={process.env.PUBLIC_URL + '/img/icon/' + editImg} alt="Edit"/>
         </MenuItem>
     return (
         <CollapsableContainer _key={dataSourceId} title={title}>
@@ -311,7 +311,7 @@ export const DataSourceDisplay = (props) => {
                         {editButton}
                         <MenuItem onClick={onShowDeleteDataSourceModal} backgroundColor="darkred">
                             <p>Delete</p>
-                            <img src={process.env.PUBLIC_URL + '/img/delete/delete_16.png'} alt="Delete"/>
+                            <img src={process.env.PUBLIC_URL + '/img/icon/delete/delete_16.png'} alt="Delete"/>
                         </MenuItem>
                     </FloatingMenu>
                 </div>
@@ -340,12 +340,12 @@ export const DataSourceDisplay = (props) => {
                         </h3>
                         <button className={"Filter-by-type-button"} onClick={onShowPatternKitTypeMenu}>
                             Filter by type
-                            <img src={process.env.PUBLIC_URL+'/img/link-arrow_64.png'} alt={"Filter by type"}
+                            <img src={process.env.PUBLIC_URL+'/img/icon/link-arrow/link-arrow_64.png'} alt={"Filter by type"}
                                     className={showTypeMenu ? 'flipped' : ''}/>
                         </button>
                         <button className={"Clear-filter-button"} style={{display: selectedType ? '' : 'none'}}
                                 onClick={onClearPatternKitTypeSelection}>
-                            <img src={process.env.PUBLIC_URL + '/img/clear/clear_16.png'} alt={"Clear selected type"}/>
+                            <img src={process.env.PUBLIC_URL + '/img/icon/clear/clear_16.png'} alt={"Clear selected type"}/>
                         </button>
                     </div>
                     <div className={"Type-header-container"} style={{display: showTypeMenu ? '' : 'none'}}>

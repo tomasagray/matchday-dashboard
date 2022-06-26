@@ -1,9 +1,16 @@
 @use "variables";
 @use "colors";
 @use "header";
-@use "side-nav";
 @use "content-stage";
 @use "home";
+
+
+.Side-nav {
+  background-color: colors.$darkBg;
+  overflow: hidden;
+  width: variables.$navigationSquare;
+  height: 100vh;
+}
 
 .Full-page-display {
   padding: variables.$navMenuHeight 6rem;
@@ -132,7 +139,7 @@
     height: 0;
     display: none;
     animation: collapseContainer .5s linear;
-    background-color: rgba(150,150,150,.1);
+    background-color: rgba(150, 150, 150, .1);
 
     &.expanded {
       height: revert;

@@ -68,7 +68,6 @@ export const dataSourceApiSlice = apiSlice.injectEndpoints({
 })
 
 export const {
-    useGetAllDataSourcesQuery,
     useGetDataSourcesForPluginQuery,
     useAddDataSourceMutation,
     useUpdateDataSourceMutation,
