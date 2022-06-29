@@ -3,7 +3,7 @@ import {CollapsableContainer} from "../../components/CollapsableContainer";
 import {PatternKitTypeGroup} from "./PatternKitTypeGroup";
 import {dataSourceReset, dataSourceUpdated, selectCleanDataSourceById, selectDataSourceById,} from "./dataSourceSlice";
 import {useDispatch, useSelector} from "react-redux";
-import {getClassName} from "../../Utils";
+import {getClassName, getDownloadableJson} from "../../Utils";
 import {InfoMessage} from "../../components/InfoMessage";
 import {PatternKitDisplay} from "./PatternKitDisplay";
 import Modal, {Body, Footer, Header} from "../../components/Modal";
@@ -123,6 +123,7 @@ export const DataSourceDisplay = (props) => {
         console.log('updating data source', dataSource.dataSourceId)
         await updateDataSource(dataSource)
         console.log('... updated')
+        setIsEditable(false)
     }
 
     const onShowPatternKitTypeMenu = (e) => {
@@ -153,6 +154,26 @@ export const DataSourceDisplay = (props) => {
         onHideAddPatternKitModal()
     }
 
+    const onMenuButtonClick = (e) => {
+        e.preventDefault()
+        setEditMenuHidden(false)
+    }
+    const onClickEditButton = () => {
+        if (!isEditable) {
+            setIsEditable(true)
+        }
+        if (isEditable && !isModified) {
+            setIsEditable(false)
+        }
+        setEditMenuHidden(true)
+    }
+    const onExportDataSource = () => {
+        const a = document.createElement('a')
+        a.href = getDownloadableJson(dataSource)
+        a.setAttribute('download', `data-source_${dataSourceId}.json`)
+        a.click()
+        setEditMenuHidden(true)
+    }
     const onShowDeleteDataSourceModal = (e) => {
         e.preventDefault()
         setShowDeleteDataSourceModal(true)
@@ -166,19 +187,6 @@ export const DataSourceDisplay = (props) => {
         await deleteDataSource(dataSourceId)
         onHideDeleteDataSourceModal()
         console.log(`data source: ${dataSourceId} deleted`)
-    }
-    const onMenuButtonClick = (e) => {
-        e.preventDefault()
-        setEditMenuHidden(false)
-    }
-    const onClickEditButton = () => {
-        if (!isEditable) {
-            setIsEditable(true)
-        }
-        if (isEditable && !isModified) {
-            setIsEditable(false)
-        }
-        setEditMenuHidden(true)
     }
 
     let {dataSourceId} = props
@@ -309,6 +317,10 @@ export const DataSourceDisplay = (props) => {
                     <button onClick={onMenuButtonClick} className="Edit-menu-button">&#8942;</button>
                     <FloatingMenu hidden={editMenuHidden} onClickOutside={setEditMenuHidden}>
                         {editButton}
+                        <MenuItem onClick={onExportDataSource} backgroundColor="cornflowerblue">
+                            <p>Export</p>
+                            <img src={process.env.PUBLIC_URL + '/img/icon/download/download_16.png'} alt="Export" />
+                        </MenuItem>
                         <MenuItem onClick={onShowDeleteDataSourceModal} backgroundColor="darkred">
                             <p>Delete</p>
                             <img src={process.env.PUBLIC_URL + '/img/icon/delete/delete_16.png'} alt="Delete"/>

@@ -9,7 +9,6 @@ export const AddDataSourceForm = (props) => {
 
     let dispatch = useDispatch()
     const onSelectType = (e, type) => {
-        console.log('selecting type', type)
         dispatch(newDataSourceUpdated({field: 'type', value: type}))
     }
     const onChangeDataSourceTitle = (e) => {

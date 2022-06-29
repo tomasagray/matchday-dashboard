@@ -15,7 +15,7 @@ export const ToggleSwitch = ({status = Status().Unchecked, onclick}) => {
         <>
             <div className={`Toggle-switch ${status}`} onClick={onclick}>
                 <span className="slider round">
-                    <Spinner className="spinner" />
+                    <Spinner size={'1.9rem'} text={''} />
                 </span>
             </div>
         </>

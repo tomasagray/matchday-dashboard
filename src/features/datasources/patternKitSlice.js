@@ -64,10 +64,7 @@ export const patternKitSlice = createSlice({
             let newPatternKit = state.newPatternKit
             let payload = action.payload
             let fields = payload.value
-            let fieldCount = Object.values(fields).filter(field => {
-                console.log('field is', field)
-                return field !== null
-            }).length
+            let fieldCount = Object.values(fields).filter(field => field !== null).length
             state.newPatternKit = {
                 ...newPatternKit,
                 fields: {

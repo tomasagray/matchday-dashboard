@@ -25,8 +25,11 @@ export const DataSourceList = (props) => {
                 )
         } else {
             dataSourceList =
-                <InfoMessage> There are currently no Data Sources for this plugin.<br/> Click above to add one
-                </InfoMessage>
+                <div style={{padding: '3rem 0'}}>
+                    <InfoMessage>
+                        There are currently no Data Sources for this plugin.<br/> Click above to add one
+                    </InfoMessage>
+                </div>
         }
     }
     if (isLoading) {
@@ -36,7 +39,7 @@ export const DataSourceList = (props) => {
             </div>
     }
     if (isError) {
-        dataSourceList = <ErrorMessage code={error.status}>{error}</ErrorMessage>
+        dataSourceList = <ErrorMessage code={error.status}>{error.message}</ErrorMessage>
     }
     return (dataSourceList)
 }

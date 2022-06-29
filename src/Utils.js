@@ -1,6 +1,7 @@
 import moment from "moment";
 
-const dateFormatter = 'MM/DD/YYYY';
+const dateFormatter = 'MM/DD/YYYY'
+const jsonPrefix = 'data:text/json;charset=utf-8,'
 
 export function formatDate(date) {
     return moment(date).format(dateFormatter);
@@ -15,4 +16,8 @@ export const getClassName = (clazz) => {
     } else {
         return clazz.trim()
     }
+}
+
+export const getDownloadableJson = (data) => {
+    return jsonPrefix + encodeURIComponent(JSON.stringify(data))
 }
