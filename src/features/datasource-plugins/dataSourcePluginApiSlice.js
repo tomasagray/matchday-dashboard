@@ -3,18 +3,19 @@ import {JsonHeaders} from "../../app/constants";
 import {dataSourcePluginSlice, pluginAdapter} from "./dataSourcePluginSlice";
 import store from "../../app/store";
 
-const getSnapshotRequest = ({label = ''}) => {
-    return {
-        endDate: "",
+const getSnapshotRequest = (refreshParams) => {
+    let q =  {
+        ...refreshParams,
         startDate: "",
         fetchBodies: true,
         fetchImages: false,
         maxResults: 50,
-        labels: [label],
         orderBy: "",
         pageToken: "",
         status: ""
     }
+    console.log('q', q)
+    return q
 }
 
 export const dataSourcePluginApiSlice = apiSlice.injectEndpoints({
@@ -52,11 +53,11 @@ export const dataSourcePluginApiSlice = apiSlice.injectEndpoints({
             invalidatesTags: [dataSourcePluginTag],
         }),
         refreshAllDataSourcePlugins: builder.mutation({
-            query: () => ({
+            query: refreshQuery => ({
                 url: '/data-sources/refresh/all',
                 method: 'POST',
                 headers: JsonHeaders,
-                body: getSnapshotRequest({}),
+                body: getSnapshotRequest(refreshQuery),
             })
         }),
     })

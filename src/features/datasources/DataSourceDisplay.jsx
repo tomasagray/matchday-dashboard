@@ -17,6 +17,7 @@ import {FloatingMenu} from "../../components/FloatingMenu";
 import {MenuItem} from "../../components/MenuItem";
 import {SaveButton} from "../../components/SaveButton";
 import {DeleteButton} from "../../components/DeleteButton";
+import {ClearButton} from "../../components/ClearButton";
 
 
 const groupPatternKits = (patternKits) => {
@@ -355,10 +356,7 @@ export const DataSourceDisplay = (props) => {
                             <img src={process.env.PUBLIC_URL+'/img/icon/link-arrow/link-arrow_64.png'} alt={"Filter by type"}
                                     className={showTypeMenu ? 'flipped' : ''}/>
                         </button>
-                        <button className={"Clear-filter-button"} style={{display: selectedType ? '' : 'none'}}
-                                onClick={onClearPatternKitTypeSelection}>
-                            <img src={process.env.PUBLIC_URL + '/img/icon/clear/clear_16.png'} alt={"Clear selected type"}/>
-                        </button>
+                        <ClearButton onClick={onClearPatternKitTypeSelection} style={{display: selectedType ? '' : 'none'}} />
                     </div>
                     <div className={"Type-header-container"} style={{display: showTypeMenu ? '' : 'none'}}>
                         {typeGroupHeader}

@@ -28,6 +28,10 @@
   }
 }
 
+@mixin lowerButton {
+  transform: translateY(3px);
+}
+
 .Button-container {
   display: flex;
   justify-content: flex-end;
@@ -171,6 +175,17 @@
 
   &:hover:not([disabled]) {
     background-color: #888;
+  }
+}
+
+.Clear-button {
+  @include lowerButton;
+  opacity: .5;
+  background: none;
+  border: none;
+  margin-left: 1rem;
+  &:hover {
+    opacity: 1;
   }
 }
 
