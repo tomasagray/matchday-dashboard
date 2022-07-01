@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {useAddDataSourceMutation} from "./dataSourceApiSlice";
 import {selectDataSourcePluginById} from "../datasource-plugins/dataSourcePluginSlice";
 import {useGetAllDataSourcePluginsQuery} from "../datasource-plugins/dataSourcePluginApiSlice";
-import {PluginId} from "../datasource-plugins/PluginId";
+import {PluginId} from "../../components/PluginId";
 import {Spinner} from "../../components/Spinner";
 import Modal, {Body, Footer, Header} from "../../components/Modal";
 import {CancelButton} from "../../components/CancelButton";
@@ -47,7 +47,7 @@ export const PluginDataSourceList = () => {
 
 
     const params = useParams()
-    let {pluginId} = params;
+    let {pluginId} = params
     let newDataSource = useSelector(state => selectNewDataSource(state))
     let [showAddDataSourceModal, setShowAddDataSourceModal] = useState(false)
     // ensure data is loaded into store

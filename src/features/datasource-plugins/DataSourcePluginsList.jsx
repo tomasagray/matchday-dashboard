@@ -1,7 +1,6 @@
 import React, {useState} from 'react'
 import {useSelector} from "react-redux";
 import {Spinner} from "../../components/Spinner";
-import GridList from "../../components/GridList"
 import {useGetAllDataSourcePluginsQuery, useRefreshAllDataSourcePluginsMutation} from "./dataSourcePluginApiSlice";
 import {PluginDetailDisplay} from "./PluginDetailDisplay";
 import {ErrorMessage} from "../../components/ErrorMessage";
@@ -99,11 +98,10 @@ export const DataSourcePluginsList = () => {
                 <Spinner/>
             </div>
     } else if (pluginLoaded) {
-        let tiles = dataSourcePlugins.ids.map(pluginId => {
+        pluginList = dataSourcePlugins.ids.map(pluginId => {
             let active = selectedPluginId !== null && pluginId === selectedPluginId
             return <DataSourcePluginTile key={pluginId} active={active} pluginId={pluginId}/>;
         })
-        pluginList = <GridList items={tiles}/>
     } else if (pluginLoadingError) {
         pluginList = <ErrorMessage code={pluginError.status}>{pluginError.error}</ErrorMessage>
     }
@@ -138,8 +136,10 @@ export const DataSourcePluginsList = () => {
                     {refreshTool}
                 </div>
             </div>
-            <div style={{margin: '2rem 0'}}>{pluginList}</div>
-            <div className="plugin-details-container">
+            <div className={"Plugin-tile-container"}>
+                {pluginList}
+            </div>
+            <div className="Plugin-details-container">
                 {pluginData}
             </div>
         </>

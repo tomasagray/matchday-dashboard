@@ -32,6 +32,11 @@
   transform: translateY(3px);
 }
 
+@mixin toggleSwitch($height) {
+  height: $height;
+  width: calc(2 * $height);
+}
+
 .Button-container {
   display: flex;
   justify-content: flex-end;
@@ -63,10 +68,9 @@
 }
 
 .Toggle-switch {
+  @include toggleSwitch(variables.$sliderSize);
   position: relative;
   display: inline-block;
-  width: 3.6rem;
-  height: 1.9rem;
   cursor: pointer;
 
   .slider {
@@ -82,12 +86,12 @@
   }
 
   .slider:before, .slider > * {
+    $size: calc(#{variables.$sliderSize} * 1.2);
     position: absolute;
     content: "";
-    height: variables.$sliderSize;
-    width: variables.$sliderSize;
-    left: 2px;
-    bottom: 2px;
+    top: -3px;
+    height: $size;
+    width: $size;
     background-color: white;
     -webkit-transition: .4s;
     transition: .4s;

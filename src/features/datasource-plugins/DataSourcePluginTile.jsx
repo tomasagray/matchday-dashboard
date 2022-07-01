@@ -1,8 +1,7 @@
 import {useDispatch, useSelector} from "react-redux";
-import {pluginSelected} from "./dataSourcePluginSlice";
-import {PluginId} from "./PluginId";
+import {pluginSelected, selectDataSourcePluginById} from "./dataSourcePluginSlice";
+import {PluginId} from "../../components/PluginId";
 import React from "react";
-import {selectDataSourcePluginById} from "./dataSourcePluginSlice";
 
 export const DataSourcePluginTile = (props) => {
 

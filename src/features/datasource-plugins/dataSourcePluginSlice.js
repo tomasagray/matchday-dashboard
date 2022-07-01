@@ -14,7 +14,7 @@ export const {
 
 export const dataSourcePluginSlice = createSlice({
     name: 'dataSourcePlugins',
-    initialState: initialState,
+    initialState,
     tagTypes: [dataSourcePluginTag],
     reducers: {
         pluginsLoaded: pluginAdapter.setAll,

@@ -17,6 +17,8 @@ import {TeamDetail} from "./features/teams/TeamDetail";
 import {CompetitionDetail} from "./features/competitions/CompetitionDetail";
 import {PluginDataSourceList} from "./features/datasources/PluginDataSourceList";
 import {createRoot} from "react-dom/client";
+import {FileServerPluginList} from "./features/file-servers/FileServerPluginList";
+import {FileServerUserList} from "./features/file-servers/FileServerUserList";
 
 const container = document.getElementById('root');
 const root = createRoot(container)
@@ -26,19 +28,22 @@ root.render(
           <BrowserRouter>
               <Routes>
                 <Route path="/" element={<App/>}>
-                    {/* Top level */}
+                    {/* Top bar nav */}
+                    <Route path="settings" element={<Settings/>} />
+                    <Route path="alerts" element={<Alerts/>} />
+                    <Route path="search" element={<Search/>} />
+                    {/* Main nav - top level */}
                     <Route exact path="/" element={<Home/>} />
                     <Route path="events" element={<Events/>} />
                     <Route path="competitions" element={<Competitions/>} />
                     <Route path="teams" element={<Teams/>} />
                     <Route path="data-sources" element={<DataSourcePluginsList/>} />
-                    <Route path="settings" element={<Settings/>} />
-                    <Route path="alerts" element={<Alerts/>} />
-                    <Route path="search" element={<Search/>} />
-                    {/* Second level */}
+                    <Route path="file-servers" element={<FileServerPluginList/>} />
+                    {/* Main nav - second level */}
                     <Route path="competition" element={<CompetitionDetail/>} />
                     <Route path="team" element={<TeamDetail/>} />
                     <Route path="data-sources/data-source/:pluginId" element={<PluginDataSourceList/>} />
+                    <Route path="file-servers/:pluginId/users" element={<FileServerUserList/>} />
                 </Route>
               </Routes>
           </BrowserRouter>

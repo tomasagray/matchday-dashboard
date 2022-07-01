@@ -4,7 +4,7 @@ import {dataSourcePluginSlice, pluginAdapter} from "./dataSourcePluginSlice";
 import store from "../../app/store";
 
 const getSnapshotRequest = (refreshParams) => {
-    let q =  {
+    return {
         ...refreshParams,
         startDate: "",
         fetchBodies: true,
@@ -14,8 +14,6 @@ const getSnapshotRequest = (refreshParams) => {
         pageToken: "",
         status: ""
     }
-    console.log('q', q)
-    return q
 }
 
 export const dataSourcePluginApiSlice = apiSlice.injectEndpoints({

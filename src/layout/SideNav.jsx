@@ -11,6 +11,7 @@ export const SideNav = () => {
                 <NavButton href={'/competitions'} icon={'/img/icon/competitions/competitions_64.png'} />
                 <NavButton href={'/teams'} icon={'/img/icon/teams/teams_64.png'} />
                 <NavButton href={'/data-sources'} icon={'/img/icon/data-sources/data-sources_64.png'} />
+                <NavButton href={'/file-servers'} icon={'/img/icon/file-servers/file-servers_64.png'} />
             </ul>
         </nav>
     )

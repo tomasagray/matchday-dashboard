@@ -72,36 +72,46 @@
   }
 }
 
-.Plugin-button-tile {
-  width: 20vw;
-  padding: 1.8rem;
-  border: 1px solid #333;
-  border-radius: .6rem;
-  box-shadow: 3px 3px 3px colors.$shadow;
+.Plugin-tile-container {
 
-  &.active {
-    background-color: #444;
-  }
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(auto-fill, 25vh);
 
-  &:hover {
-    cursor: pointer;
-    background-color: rgba(255, 255, 255, .1);
-  }
+  .Plugin-button-tile {
+    width: 15vw;
+    min-width: 15vw;
+    padding: 1.8rem;
+    margin: 2rem;
+    display: inline-block;
+    border: 1px solid #333;
+    border-radius: .6rem;
+    box-shadow: 3px 3px 3px colors.$shadow;
 
-  .Plugin-button-title {
-    font-weight: bold;
-    color: #777;
-  }
+    &.active {
+      background-color: #444;
+    }
 
-  &.active .Plugin-button-title {
-    color: whitesmoke;
-  }
+    &:hover {
+      cursor: pointer;
+      background-color: rgba(255, 255, 255, .1);
+    }
 
-  &.active .Plugin-id {
-    color: #ccc;
+    .Plugin-button-title {
+      font-weight: bold;
+      color: #777;
+    }
 
-    strong {
+    &.active .Plugin-button-title {
       color: whitesmoke;
+    }
+
+    &.active .Plugin-id {
+      color: #ccc;
+
+      strong {
+        color: whitesmoke;
+      }
     }
   }
 }
@@ -347,4 +357,19 @@ $dataSourceIntBorder: 1px solid #666;
 .Add-pattern-kit-form {
   width: 100%;
   margin: 0;
+}
+
+// File servers
+.User-list {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+
+  .User-tile {
+    padding: 1rem;
+    margin: 1rem;
+    border: 1px solid #888;
+    display: flex;
+    width: 20vw;
+  }
 }
