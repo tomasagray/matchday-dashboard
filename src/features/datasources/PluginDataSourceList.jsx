@@ -7,11 +7,11 @@ import {useGetAllDataSourcePluginsQuery} from "../datasource-plugins/dataSourceP
 import {PluginId} from "../../components/PluginId";
 import {Spinner} from "../../components/Spinner";
 import Modal, {Body, Footer, Header} from "../../components/Modal";
-import {CancelButton} from "../../components/CancelButton";
+import {CancelButton} from "../../components/controls/CancelButton";
 import {AddDataSourceForm} from "./AddDataSourceForm";
 import {clearNewDataSource, selectIsNewDataSourceValid, selectNewDataSource} from "./dataSourceSlice";
 import {DataSourceList} from "./DataSourceList";
-import {SaveButton} from "../../components/SaveButton";
+import {SaveButton} from "../../components/controls/SaveButton";
 
 export const PluginDataSourceList = () => {
 
@@ -96,8 +96,9 @@ export const PluginDataSourceList = () => {
                     <AddDataSourceForm pluginId={pluginId} disabled={isDataSourceSaving} />
                 </Body>
                 <Footer>
-                    <CancelButton clickHandler={onHideAddDataSourceModal} disabled={isDataSourceSaving}>Discard</CancelButton>
-                    <SaveButton onClick={onSaveNewDataSource} disabled={!isFormValid || isDataSourceSaving} />
+                    <CancelButton onClick={onHideAddDataSourceModal} disabled={isDataSourceSaving}>Discard</CancelButton>
+                    <SaveButton onClick={onSaveNewDataSource} disabled={!isFormValid || isDataSourceSaving}
+                                isLoading={isDataSourceSaving} />
                 </Footer>
             </Modal>
 

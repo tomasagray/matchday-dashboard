@@ -4,7 +4,7 @@ import React, {useContext} from "react";
 import {HeaderNav} from '../layout/HeaderNav';
 import {SideNav} from "../layout/SideNav";
 import {ContentStage} from "../layout/ContentStage";
-import {Preferences} from "./Preferences";
+import {Preferences} from "./preferences";
 
 
 export default function App() {

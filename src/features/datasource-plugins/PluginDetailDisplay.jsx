@@ -1,4 +1,4 @@
-import {Status, ToggleSwitch} from "../../components/ToggleSwitch";
+import {Status, ToggleSwitch} from "../../components/controls/ToggleSwitch";
 import React from "react";
 import {useSelector} from "react-redux";
 import {useDisableDataSourcePluginMutation, useEnableDataSourcePluginMutation} from "./dataSourcePluginApiSlice";

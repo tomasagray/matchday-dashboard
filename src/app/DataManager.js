@@ -1,6 +1,6 @@
 import EventTile from "../features/events/EventTile";
 import React from "react";
-import {Preferences} from "./Preferences";
+import {Preferences} from "./preferences";
 import axios from "axios";
 import TeamTile from "../features/teams/TeamTile";
 import CompetitionTile from "../features/competitions/CompetitionTile";

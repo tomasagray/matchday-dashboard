@@ -3,21 +3,21 @@ import {CollapsableContainer} from "../../components/CollapsableContainer";
 import {PatternKitTypeGroup} from "./PatternKitTypeGroup";
 import {dataSourceReset, dataSourceUpdated, selectCleanDataSourceById, selectDataSourceById,} from "./dataSourceSlice";
 import {useDispatch, useSelector} from "react-redux";
-import {getClassName, getDownloadableJson} from "../../Utils";
+import {getClassName, getDownloadableJson} from "../../app/utils";
 import {InfoMessage} from "../../components/InfoMessage";
 import {PatternKitDisplay} from "./PatternKitDisplay";
 import Modal, {Body, Footer, Header} from "../../components/Modal";
-import {CancelButton} from "../../components/CancelButton";
-import {OKButton} from "../../components/OKButton";
+import {CancelButton} from "../../components/controls/CancelButton";
+import {OKButton} from "../../components/controls/OKButton";
 import {useDeleteDataSourceMutation, useUpdateDataSourceMutation} from "./dataSourceApiSlice";
 import {AddPatternKitForm} from "./AddPatternKitForm";
 import {clearNewPatternKit, selectIsNewPatternKitValid, selectNewPatternKitForUpload} from "./patternKitSlice";
 import {useGetTemplateForTypeQuery} from "./patternKitTemplateApiSlice";
 import {FloatingMenu} from "../../components/FloatingMenu";
 import {MenuItem} from "../../components/MenuItem";
-import {SaveButton} from "../../components/SaveButton";
-import {DeleteButton} from "../../components/DeleteButton";
-import {ClearButton} from "../../components/ClearButton";
+import {SaveButton} from "../../components/controls/SaveButton";
+import {DeleteButton} from "../../components/controls/DeleteButton";
+import {ClearButton} from "../../components/controls/ClearButton";
 
 
 const groupPatternKits = (patternKits) => {
@@ -262,8 +262,8 @@ export const DataSourceDisplay = (props) => {
                         <strong>This cannot be undone.</strong>
                     </Body>
                     <Footer>
-                        <CancelButton clickHandler={onCloseResetWarning}/>
-                        <OKButton clickHandler={onResetDataSource}>RESET</OKButton>
+                        <CancelButton onClick={onCloseResetWarning}/>
+                        <OKButton onClick={onResetDataSource}>RESET</OKButton>
                     </Footer>
                 </Modal>
                 <Modal show={showAddPatternKitModal}>
@@ -272,7 +272,7 @@ export const DataSourceDisplay = (props) => {
                         <AddPatternKitForm dataSourceType={type} dataSourceId={dataSourceId}/>
                     </Body>
                     <Footer>
-                        <CancelButton clickHandler={onHideAddPatternKitModal}>Discard</CancelButton>
+                        <CancelButton onClick={onHideAddPatternKitModal}>Discard</CancelButton>
                         <SaveButton onClick={onAddPatternKit} disabled={!isNewPatternKitValid}>Add</SaveButton>
                     </Footer>
                 </Modal>
@@ -307,8 +307,8 @@ export const DataSourceDisplay = (props) => {
                         </table>
                     </Body>
                     <Footer>
-                        <CancelButton clickHandler={onHideDeleteDataSourceModal} disabled={isDeleting}/>
-                        <DeleteButton onClick={onDeleteDataSource} disabled={isDeleting}/>
+                        <CancelButton onClick={onHideDeleteDataSourceModal} disabled={isDeleting}/>
+                        <DeleteButton onClick={onDeleteDataSource} isLoading={isDeleting}/>
                     </Footer>
                 </Modal>
             </div>
@@ -370,8 +370,8 @@ export const DataSourceDisplay = (props) => {
                 <button className="Small-button" onClick={onShowAddPatternKitModal} disabled={isUpdating}>Add Pattern Kit...</button>
             </div>
             <div className={"Button-container"} style={{padding: '2rem', display: isModified ? '' : 'none'}}>
-                <CancelButton clickHandler={onShowResetWarning} disabled={isUpdating}>Reset</CancelButton>
-                <SaveButton onClick={onSaveDataSource} disabled={isUpdating || !isDataSourceValid} />
+                <CancelButton onClick={onShowResetWarning} disabled={isUpdating}>Reset</CancelButton>
+                <SaveButton onClick={onSaveDataSource} disabled={!isDataSourceValid || isUpdating} isLoading={isUpdating}/>
             </div>
         </CollapsableContainer>
     )

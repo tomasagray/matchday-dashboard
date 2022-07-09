@@ -1,5 +1,5 @@
-import {Option} from "../../components/Option";
-import Select from "../../components/Select";
+import {Option} from "../../components/controls/Option";
+import Select from "../../components/controls/Select";
 import React from "react";
 
 const patternGroupMatcher = new RegExp(/(\(\S+\))/g)

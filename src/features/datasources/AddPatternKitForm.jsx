@@ -8,8 +8,8 @@ import {
 import {useDispatch, useSelector} from "react-redux";
 import {PatternKitFieldEditor} from "./PatternKitFieldEditor";
 import {Spinner} from "../../components/Spinner";
-import Select from "../../components/Select";
-import {Option} from "../../components/Option";
+import Select from "../../components/controls/Select";
+import {Option} from "../../components/controls/Option";
 import {InfoMessage} from "../../components/InfoMessage";
 import {useGetTemplateForTypeQuery} from "./patternKitTemplateApiSlice";
 

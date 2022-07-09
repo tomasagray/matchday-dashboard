@@ -12,7 +12,7 @@
   letter-spacing: .1em;
   display: flex;
   justify-content: center;
-
+  align-items: center;
 
   &[disabled] {
     cursor: not-allowed;
@@ -188,6 +188,7 @@
   background: none;
   border: none;
   margin-left: 1rem;
+
   &:hover {
     opacity: 1;
   }
@@ -195,13 +196,19 @@
 
 .Save-button {
   @include _button;
-  background-color: #aaa;
-  color: #333;
+  width: fit-content;
+  border-radius: 4px;
+  border: 1px solid #666;
 
-  img {
+  .Save-icon {
     visibility: hidden;
     margin-left: .7em;
     opacity: .5;
+  }
+
+  &[disabled] {
+    background: none;
+    color: rgba(160,160,160,.75);
   }
 
   &:not(:disabled):hover {
@@ -216,10 +223,10 @@
 .Delete-button {
   @include _button;
   background-color: transparent;
-  color: red; //colors.$defaultFontColor;
-  border-color: red;//colors.$defaultFontColor;
+  color: red;
+  border-color: red;
 
-  img {
+  .Delete-icon {
     visibility: hidden;
     margin-left: .7em;
     opacity: .7;
@@ -230,6 +237,79 @@
     border-color: colors.$defaultFontColor;
 
     img {
+      visibility: visible;
+    }
+  }
+}
+
+.File-upload {
+  display: flex;
+  align-items: center;
+
+  .File-upload-button {
+    margin-right: 1rem;
+    padding: .5em .7em;
+    display: flex;
+    align-items: center;
+    width: fit-content;
+    border-radius: 4px;
+    border: 1px solid #666;
+    color: colors.$mediumFontColor;
+
+    &:hover {
+      background-color: rgba(100, 100, 100, .4);
+      color: colors.$defaultFontColor;
+      border-color: colors.$border;
+      cursor: pointer;
+
+      img {
+        opacity: .8;
+      }
+    }
+
+    img {
+      width: 1rem;
+      margin-right: 1rem;
+      opacity: .5;
+    }
+
+    input[type=file] {
+      position: absolute;
+      top: 0;
+      right: 0;
+      margin: 0;
+      padding: 0;
+      font-size: 20px;
+      cursor: pointer;
+      opacity: 0;
+      filter: alpha(opacity=0);
+    }
+  }
+
+  .File-path {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 20vw;
+    color: colors.$mediumFontColor;
+  }
+}
+
+.Download-button {
+  @include _button;
+  background-color: transparent;
+  border-color: colors.$border;
+
+  .Download-icon {
+    visibility: hidden;
+    margin-left: .7em;
+    opacity: .7;
+  }
+
+  &:hover:not(:disabled) {
+    background-color: cornflowerblue;
+
+    .Download-icon {
       visibility: visible;
     }
   }

@@ -11,11 +11,19 @@ import {selectFileServerPluginById, selectSelectedPluginId} from "./fileServerPl
 import {InfoMessage} from "../../components/InfoMessage";
 import {SettingsGroup} from "../../components/SettingsGroup";
 import {SettingContainer} from "../../components/SettingContainer";
-import {Status, ToggleSwitch} from "../../components/ToggleSwitch";
+import {Status, ToggleSwitch} from "../../components/controls/ToggleSwitch";
 import {SettingsLink} from "../../components/SettingsLink";
 
 
-export const FileServerPluginList = (props) => {
+export const FileServerPluginList = () => {
+
+    const spinnerStyle = {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '100%',
+        padding: '5rem'
+    }
 
     const onTogglePluginEnabled = async () => {
         if (selectedPlugin) {
@@ -37,7 +45,7 @@ export const FileServerPluginList = (props) => {
         Status().Unchecked
 
     let plugins = isLoading ?
-        <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%'}}>
+        <div style={spinnerStyle}>
             <Spinner/>
         </div> :
         isSuccess ?

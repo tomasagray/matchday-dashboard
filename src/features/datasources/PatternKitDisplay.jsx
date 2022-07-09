@@ -3,9 +3,9 @@ import {useDispatch, useSelector} from "react-redux";
 import {patternKitDeleted, patternKitUpdated, selectPatternKitById} from "./dataSourceSlice";
 import {PatternKitFieldEditor} from "./PatternKitFieldEditor";
 import Modal, {Body, Footer, Header} from "../../components/Modal";
-import {CancelButton} from "../../components/CancelButton";
-import {getClassName} from "../../Utils";
-import {DeleteButton} from "../../components/DeleteButton";
+import {CancelButton} from "../../components/controls/CancelButton";
+import {getClassName} from "../../app/utils";
+import {DeleteButton} from "../../components/controls/DeleteButton";
 
 export const PatternKitDisplay = (props) => {
 
@@ -57,7 +57,7 @@ export const PatternKitDisplay = (props) => {
                     this Pattern Kit?
                 </Body>
                 <Footer>
-                    <CancelButton clickHandler={onHideDeleteConfirmModal}/>
+                    <CancelButton onClick={onHideDeleteConfirmModal}/>
                     <DeleteButton onClick={deletePatternKit} />
                 </Footer>
             </Modal>

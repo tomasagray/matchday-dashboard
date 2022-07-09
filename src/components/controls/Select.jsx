@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {FloatingMenu} from "./FloatingMenu";
+import {FloatingMenu} from "../FloatingMenu";
 
 export const Select = (props) => {
 

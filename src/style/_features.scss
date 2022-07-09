@@ -74,9 +74,8 @@
 
 .Plugin-tile-container {
 
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(auto-fill, 25vh);
+  display: flex;
+  flex-wrap: wrap;
 
   .Plugin-button-tile {
     width: 15vw;
@@ -160,7 +159,7 @@ $dataSourceIntBorder: 1px solid #666;
     }
 
     &:focus {
-      background-color: rgba(0,0,0,.2);
+      background-color: rgba(0, 0, 0, .2);
     }
   }
 }
@@ -171,10 +170,10 @@ $dataSourceIntBorder: 1px solid #666;
 
   td {
     padding: 1.25rem;
-    background-color: rgba(0,0,0,.1);
+    background-color: rgba(0, 0, 0, .1);
 
     &:nth-of-type(2n+2) {
-      background-color: rgba(0,0,0,.15);
+      background-color: rgba(0, 0, 0, .15);
       color: #ccc;
     }
   }
@@ -182,7 +181,7 @@ $dataSourceIntBorder: 1px solid #666;
 
 .Type-header-container {
   display: flex;
-  background-color: rgba(150,150,150,.25);
+  background-color: rgba(150, 150, 150, .25);
 
   .Type-header {
     display: flex;
@@ -246,7 +245,7 @@ $dataSourceIntBorder: 1px solid #666;
   align-content: center;
   margin-bottom: .5rem;
   padding: .5rem 1rem;
-  background-color: rgba(100,100,100,.5);
+  background-color: rgba(100, 100, 100, .5);
 
 
   .Filter-by-type-button {
@@ -282,7 +281,7 @@ $dataSourceIntBorder: 1px solid #666;
 .Pattern-kit {
   margin-bottom: 1.5rem;
   padding: 1rem;
-  background-color: rgba(0,0,0,.15);
+  background-color: rgba(0, 0, 0, .15);
 
   input[type=text] {
     width: fit-content;
@@ -368,8 +367,179 @@ $dataSourceIntBorder: 1px solid #666;
   .User-tile {
     padding: 1rem;
     margin: 1rem;
-    border: 1px solid #888;
+    border: 1px solid colors.$mediumFontColor;
+    border-radius: .35rem;
     display: flex;
+    justify-content: space-between;
     width: 20vw;
+    color: colors.$mediumFontColor;
+
+    &:hover {
+      color: colors.$defaultFontColor;
+      border-color: colors.$defaultFontColor;
+
+      & .Logged-in-checkbox::before {
+        color: colors.$defaultFontColor;
+        border-color: colors.$defaultFontColor;
+      }
+    }
+
+    p {
+      margin: .4rem 0;
+      max-width: 15vw;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .Logged-in-checkbox {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      display: inline-flex;
+      justify-content: center;
+
+      &::before {
+        content: '\00a0';
+        color: colors.$mediumFontColor;
+        border-radius: 100%;
+        border: 1px solid colors.$mediumFontColor;
+        width: .85rem;
+        height: .85rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      &:checked::before {
+        content: '✔';
+      }
+    }
+
+    .Menu-button {
+      background: none;
+      border: none;
+      color: colors.$mediumFontColor;
+      font-size: large;
+      padding: .5rem 1rem;
+
+      &:hover {
+        background-color: rgba(100, 100, 100, .5);
+        color: colors.$defaultFontColor;
+      }
+    }
+  }
+}
+
+.User-delete-details {
+  border-collapse: collapse;
+  margin: 3rem 0;
+
+  td {
+    padding: 1.4rem;
+    color: colors.$mediumFontColor;
+  }
+
+  td:first-child {
+    font-weight: bolder;
+    color: colors.$defaultFontColor;
+  }
+
+  td + td,
+  th + th {
+    border-left: 1px solid #666;
+  }
+
+  tr + tr {
+    border-top: 1px solid #666;
+  }
+}
+
+.User-credential-container {
+  margin: 1rem 0;
+  border: variables.$lightBorder;
+  padding: 2rem;
+
+  .User-credential-header {
+    .Credential-header-button {
+      background-color: colors.$defaultComponentBg;
+      border: none;
+      padding: 1rem 2rem;
+      color: colors.$mediumFontColor;
+
+      &.selected {
+        background-color: rgba(100, 100, 100, .4);
+
+        &:hover {
+          background-color: rgba(100, 100, 100, .3);
+        }
+      }
+
+      &:hover {
+        background-color: rgba(100, 100, 100, .2);
+        color: colors.$defaultFontColor;
+      }
+    }
+  }
+
+  .User-credential-display {
+    border: variables.$lightBorder;
+    padding: 1rem;
+  }
+}
+
+.Add-new-user-form {
+
+  .Form-row {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    padding: 1rem;
+
+    input[type=text],
+    input[type=password] {
+      max-width: 75%;
+      background: none;
+    }
+
+    .Hover-label {
+      align-self: start;
+      position: relative;
+      transform: translateY(50%) translateX(20%);
+    }
+  }
+}
+
+.Cookie-display {
+  max-width: 100%;
+  overflow-x: scroll;
+
+  .Cookie-display-table {
+    $padding: .8rem;
+
+    border-collapse: collapse;
+
+    th {
+      text-align: left;
+      background-color: colors.$darkBg;
+      padding: $padding;
+    }
+
+    tr:nth-of-type(2n) {
+      background-color: rgba(0,0,0,.2);
+    }
+
+    td {
+      padding: $padding;
+      color: colors.$mediumFontColor;
+      max-width: 15vw;
+      overflow: hidden;
+      text-overflow: ellipsis;
+
+      &:nth-of-type(2n+1) {
+        background-color: rgba(100,100,100,.2);
+        color: colors.$defaultFontColor;
+      }
+    }
   }
 }

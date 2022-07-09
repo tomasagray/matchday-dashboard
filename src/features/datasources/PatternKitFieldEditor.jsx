@@ -1,5 +1,5 @@
 import React from "react";
-import {getClassName} from "../../Utils";
+import {getClassName} from "../../app/utils";
 import {InfoMessage} from "../../components/InfoMessage";
 import {Spinner} from "../../components/Spinner";
 import {PatternKitFieldRow} from "./PatternKitFieldRow";

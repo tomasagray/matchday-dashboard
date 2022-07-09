@@ -5,7 +5,7 @@ import {useGetAllDataSourcePluginsQuery, useRefreshAllDataSourcePluginsMutation}
 import {PluginDetailDisplay} from "./PluginDetailDisplay";
 import {ErrorMessage} from "../../components/ErrorMessage";
 import {DataSourcePluginTile} from "./DataSourcePluginTile";
-import {ClearButton} from "../../components/ClearButton";
+import {ClearButton} from "../../components/controls/ClearButton";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import dateformat from "dateformat";
