@@ -55,7 +55,7 @@ export const fileServerUserApiSlice = apiSlice.injectEndpoints({
                 method: 'POST',
                 headers: JsonHeaders,
             }),
-            invalidatesTags: (result, error, arg) => [{type: fileServerUserTag, id: arg}],
+            invalidatesTags: [fileServerUserTag],
             transformResponse: (response) => {
                 store.dispatch(fileServerUserSlice.actions.userUpdated(response))
                 return response
