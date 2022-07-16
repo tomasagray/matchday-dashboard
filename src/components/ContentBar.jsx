@@ -57,7 +57,7 @@ class ContentBar extends React.Component {
         return (
             <div className="Content-bar" ref={this.ref}>
                 <div className="Content-bar-header">
-                    <h2 className="Content-bar-title"> {this.props.title} </h2>
+                    <h3 className="Content-bar-title"> {this.props.title} </h3>
                     <div className="Content-bar-controls">
                         <button className="Content-bar-control prev" onClick={this.handlePrevClick}
                                 disabled={this.state.prevDisabled}> &lt; </button>

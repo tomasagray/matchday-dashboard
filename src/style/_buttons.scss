@@ -2,6 +2,8 @@
 @use "colors";
 @use "variables";
 
+// TODO - alphabetize
+
 @mixin _button {
   margin: auto .5rem;
   padding: .5rem 1.2rem;
@@ -161,6 +163,18 @@
   }
 }
 
+.Edit-button {
+  padding: .75rem;
+  border: none;
+  border-radius: 5px;
+  background-color: rgba(100,100,100,.2);
+  margin: 1rem 0;
+
+  &:hover {
+    background-color: rgba(100,100,100,.6);
+  }
+}
+
 .OK-button {
   @include _button;
   box-sizing: content-box;
@@ -311,6 +325,32 @@
 
     .Download-icon {
       visibility: visible;
+    }
+  }
+}
+
+.Play-button {
+  padding: .5rem 1rem;
+  border: none;
+  border-radius: 5px;
+  background-color: colors.$highlight;
+  filter: saturate(50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  svg {
+    width: 16px;
+    margin-right: .5em;
+  }
+
+  &:hover {
+    filter: saturate(100%);
+  }
+  &:disabled {
+    background-color: #888;
+    svg {
+      opacity: .5;
     }
   }
 }

@@ -1,39 +1,50 @@
-import React, {useContext, useEffect, useState} from "react";
-import {Preferences} from "../app/preferences";
-import DataManager from "../app/DataManager";
+import React from "react";
 import ContentBar from "../components/ContentBar";
+import {useFetchAllEventsQuery} from "../features/events/eventApiSlice";
+import {useFetchAllCompetitionsQuery} from "../features/competitions/competitionApiSlice";
+import {useFetchAllTeamsQuery} from "../features/teams/teamApiSlice";
+import {Spinner} from "../components/Spinner";
+import EventTile from "../features/events/EventTile";
+import CompetitionTile from "../features/competitions/CompetitionTile";
+import TeamTile from "../features/teams/TeamTile";
 
-
-const dataManager = new DataManager();
 
 export const Home = () => {
 
-    const prefs = useContext(Preferences);
-    let eventUrl = prefs.url.events;
-    let competitionUrl = prefs.url.competitions;
-    let teamUrl = prefs.url.teams;
+    const spinnerStyle = {
+        margin: '3rem',
+        overflow: 'revert',
+        height: '10vh',
+        display: 'flex',
+        alignItems: 'center',
+    }
+    const spinner =
+        <div style={spinnerStyle}>
+            <Spinner text='' size={'32px'}/>
+        </div>
 
-    let [events, setEvents] = useState();
-    let [competitions, setCompetitions] = useState();
-    let [teams, setTeams] = useState();
+    const {data: eventsData, isLoading: isEventsLoading} = useFetchAllEventsQuery()
+    const {data: competitionsData, isLoading: isCompetitionsLoading} = useFetchAllCompetitionsQuery()
+    const {data: teamsData, isLoading: isTeamsLoading} = useFetchAllTeamsQuery()
 
-    useEffect(() => {
-        dataManager.fetchEventTiles(eventUrl).then(events => setEvents(events));
-    }, [eventUrl]);
-
-    useEffect(() => {
-        dataManager.fetchCompetitionTiles(competitionUrl).then(competitions => setCompetitions(competitions));
-    }, [competitionUrl]);
-
-    useEffect(() => {
-        dataManager.fetchTeamTiles(teamUrl).then(teams => setTeams(teams));
-    }, [teamUrl]);
+    const events =
+        isEventsLoading ?
+            [spinner] :
+            Object.values(eventsData.entities).map(event => <EventTile event={event} />)
+    const competitions =
+        isCompetitionsLoading ?
+            [spinner] :
+            Object.values(competitionsData.entities).map(competition => <CompetitionTile competition={competition} />)
+    const teams =
+        isTeamsLoading ?
+            [spinner] :
+            Object.values(teamsData.entities).map(team => <TeamTile team={team} />)
 
     return (
         <div className="Content-container Home-container">
-            {/*Most recent events*/} <ContentBar title="Recent" items={events}/> {/*Most viewed competitions*/}
-            <ContentBar title="Top Competitions" items={competitions}/> {/*Most viewed teams*/} <ContentBar
-            title="Top Teams" items={teams}/>
+            <ContentBar title="Recent" items={events}/>
+            <ContentBar title="Top Competitions" items={competitions}/>
+            <ContentBar title="Top Teams" items={teams}/>
         </div>
     );
 }

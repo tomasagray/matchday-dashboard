@@ -1,7 +1,6 @@
 @use "variables";
 @use "colors";
 @use "header";
-@use "content-stage";
 @use "home";
 
 
@@ -12,8 +11,25 @@
   height: 100vh;
 }
 
+#Content-stage {
+  position: absolute;
+  top: 0;
+  left: variables.$navigationSquare;
+  height: calc(100vh - #{variables.$navigationSquare});
+  width: calc(100vw - #{variables.$navigationSquare});
+  overflow-y: auto;
+}
+
+.Content-container {
+  display: flex;
+  flex-direction: column;
+}
+
 .Full-page-display {
   padding: variables.$navMenuHeight 6rem;
+  height: calc(100% - #{variables.$navigationSquare} - 1rem);
+  display: flex;
+  flex-direction: column;
 }
 
 .Grid-list {
@@ -82,12 +98,7 @@
     max-width: variables.$eventPosterWidth;
 
     div {
-      text-align: left;
-      text-overflow: ellipsis;
-      overflow: hidden;
-      white-space: nowrap;
       max-width: variables.$eventPosterWidth;
-      max-lines: 1;
     }
   }
 }

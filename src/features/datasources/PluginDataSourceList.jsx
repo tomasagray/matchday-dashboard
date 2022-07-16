@@ -112,7 +112,7 @@ export const PluginDataSourceList = () => {
                     Add Data Source...
                 </button>
             </div>
-            <div>
+            <div style={{height: '100%'}}>
                 <DataSourceList pluginId={pluginId}/>
             </div>
         </>

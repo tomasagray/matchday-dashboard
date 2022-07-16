@@ -58,7 +58,6 @@ export const dataSourceSlice = createSlice({
             let {dataSourceId} = action.payload
             let cleanDataSource =
                 Object.values(state.clean.entities).find(dataSource => dataSource.dataSourceId === dataSourceId)
-            console.log('clean', JSON.stringify(cleanDataSource))
             dataSourceAdapter.setOne(state.dirty, cleanDataSource)
         },
         newDataSourceUpdated(state, action) {

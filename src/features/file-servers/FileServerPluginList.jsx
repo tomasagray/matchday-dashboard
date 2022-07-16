@@ -4,7 +4,7 @@ import {
     useEnableFileServerPluginMutation,
     useGetAllFileServerPluginsQuery
 } from "./fileServerPluginApiSlice";
-import {Spinner} from "../../components/Spinner";
+import {FillSpinner} from "../../components/Spinner";
 import {FileServerPluginTile} from "./FileServerPluginTile";
 import {useSelector} from "react-redux";
 import {selectFileServerPluginById, selectSelectedPluginId} from "./fileServerPluginSlice";
@@ -16,15 +16,6 @@ import {SettingsLink} from "../../components/SettingsLink";
 
 
 export const FileServerPluginList = () => {
-
-    const spinnerStyle = {
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: '100%',
-        padding: '5rem'
-    }
-
     const onTogglePluginEnabled = async () => {
         if (selectedPlugin) {
             console.log('toggling...', selectedPlugin)
@@ -44,11 +35,7 @@ export const FileServerPluginList = () => {
             (selectedPlugin.enabled ? Status().Checked : Status().Unchecked) :
         Status().Unchecked
 
-    let plugins = isLoading ?
-        <div style={spinnerStyle}>
-            <Spinner/>
-        </div> :
-        isSuccess ?
+    let plugins = isSuccess ?
             Object.values(fileServerPlugins.entities)
                 .map(plugin => <FileServerPluginTile pluginId={plugin.id} title={plugin.title} key={plugin.id}/>) :
             <InfoMessage style={{marginTop: '2rem'}}>There are no File Server plugins</InfoMessage>
@@ -65,20 +52,25 @@ export const FileServerPluginList = () => {
                 <InfoMessage>Please select a File Server plugin from above.</InfoMessage> :
                 null
 
-
     return (
         <>
-            <div className={"section-header"}>
-                <img src={process.env.PUBLIC_URL + '/img/icon/plugins/plugins_64.png'} alt="Plugins"
-                     style={{height: 'fit-content'}}/>
-                <h1>File Server Plugins</h1>
-            </div>
-            <div className={"Plugin-tile-container"}>
-                {plugins}
-            </div>
-            <div className={"Plugin-details-container"}>
-                {pluginDetails}
-            </div>
+            {
+                isLoading ?
+                <FillSpinner/> :
+                <div>
+                    <div className={"section-header"}>
+                        <img src={process.env.PUBLIC_URL + '/img/icon/plugins/plugins_64.png'} alt="Plugins"
+                             style={{height: 'fit-content'}}/>
+                        <h1>File Server Plugins</h1>
+                    </div>
+                    <div className={"Plugin-tile-container"}>
+                        {plugins}
+                    </div>
+                    <div className={"Plugin-details-container"}>
+                        {pluginDetails}
+                    </div>
+                </div>
+            }
         </>
     );
 }

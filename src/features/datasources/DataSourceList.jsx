@@ -1,7 +1,7 @@
 import {useGetDataSourcesForPluginQuery} from "./dataSourceApiSlice";
 import {DataSourceDisplay} from "./DataSourceDisplay";
 import {InfoMessage} from "../../components/InfoMessage";
-import {Spinner} from "../../components/Spinner";
+import {FillSpinner} from "../../components/Spinner";
 import {ErrorMessage} from "../../components/ErrorMessage";
 import React from "react";
 
@@ -33,10 +33,7 @@ export const DataSourceList = (props) => {
         }
     }
     if (isLoading) {
-        dataSourceList =
-            <div className="Loading-box">
-                <Spinner/>
-            </div>
+        dataSourceList = <FillSpinner />
     }
     if (isError) {
         dataSourceList = <ErrorMessage code={error.status}>{error.message}</ErrorMessage>

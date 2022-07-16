@@ -26,21 +26,13 @@
   justify-content: left;
 
   .Detail-poster {
-    max-width: 15vw;
-    max-height: 40vh;
+    width: 15vw;
+    height: 30vh;
   }
 
   .Detail-title {
     text-align: left;
   }
-}
-
-.Loading-box {
-  display: flex;
-  justify-content: center;
-  box-sizing: border-box;
-  padding: 5rem;
-  width: 100%;
 }
 
 .Nav-link {

@@ -3,7 +3,7 @@ import {FloatingMenu} from "../FloatingMenu";
 
 export const Select = (props) => {
 
-    let {disabled: isDisabled, selectedIndex} = props
+    let {disabled: isDisabled, selectedIndex, selectedValue} = props
     let [isFocused, setIsFocused] = useState(false)
     let [menuHidden, setMenuHidden] = useState(true)
 
@@ -24,14 +24,15 @@ export const Select = (props) => {
     }
 
     let selectedItem
-    let childCount = React.Children.count(props.children)
     const items = React.Children.map(props.children, child =>
         <div onClick={onMenuItemSelected(child)}>{child}</div>
     )
-    if (childCount === 0 || selectedIndex === null) {
-        selectedItem = props.placeholder
-    } else {
+    if (selectedIndex) {
         selectedItem = items[selectedIndex]
+    } else if (selectedValue) {
+        selectedItem = items.find(item => item['props'].children.props.value === selectedValue)
+    } else {
+        selectedItem = props.placeholder
     }
 
     const menuStyle = {

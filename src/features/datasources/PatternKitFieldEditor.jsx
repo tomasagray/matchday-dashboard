@@ -99,7 +99,7 @@ export const PatternKitFieldEditor = (props) => {
         } else {
             editor =
                 <div style={{padding: '2rem'}}>
-                    <Spinner size={64} text={'Loading...'}/>
+                    <Spinner size={'32px'} text={''}/>
                 </div>
         }
     } else {

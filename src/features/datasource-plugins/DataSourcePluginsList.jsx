@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import {useSelector} from "react-redux";
-import {Spinner} from "../../components/Spinner";
+import {FillSpinner} from "../../components/Spinner";
 import {useGetAllDataSourcePluginsQuery, useRefreshAllDataSourcePluginsMutation} from "./dataSourcePluginApiSlice";
 import {PluginDetailDisplay} from "./PluginDetailDisplay";
 import {ErrorMessage} from "../../components/ErrorMessage";
@@ -85,19 +85,14 @@ export const DataSourcePluginsList = () => {
         error: pluginError
     } = useGetAllDataSourcePluginsQuery()
     const [refreshAllPlugins, {isLoading: refreshing}] = useRefreshAllDataSourcePluginsMutation()
-    const selectedPluginId = useSelector(state => state.dataSourcePlugins.selectedPluginId)
+    const selectedPluginId = useSelector(state => state['dataSourcePlugins'].selectedPluginId)
     let [refreshHover, setRefreshHover] = useState(false)
     let [refreshMode, setRefreshMode] = useState(null)
     let [refreshLabel, setRefreshLabel] = useState(DEFAULT_LABEL)
     let [refreshDate, setRefreshDate] = useState(DEFAULT_DATE)
 
     let pluginList
-    if (pluginsLoading) {
-        pluginList =
-            <div className="Loading-box">
-                <Spinner/>
-            </div>
-    } else if (pluginLoaded) {
+    if (pluginLoaded) {
         pluginList = dataSourcePlugins.ids.map(pluginId => {
             let active = selectedPluginId !== null && pluginId === selectedPluginId
             return <DataSourcePluginTile key={pluginId} active={active} pluginId={pluginId}/>;
@@ -118,30 +113,36 @@ export const DataSourcePluginsList = () => {
     let refreshTool = getRefreshTool(refreshMode)
     let refreshOptionsVisibility =
         (refreshHover || refreshLabel !== DEFAULT_LABEL || refreshDate !== DEFAULT_DATE) ? 'visible' : 'hidden'
+
     return (
         <>
-            <div className="section-header">
-                <img src={process.env.PUBLIC_URL + '/img/icon/plugins/plugins_64.png'} alt="Plugins"
-                     style={{height: 'fit-content'}}/>
-                <h1>Data Source Plugins</h1>
-            </div>
-            <div className={"Refresh-container"} onMouseEnter={onRefreshHover} onMouseLeave={onRefreshUnHover}>
-                <button className="Small-button" style={refreshButtonStyle} disabled={refreshDisabled}
-                        onClick={onRefreshAllPlugins}>
-                    Refresh All
-                </button>
-
-                <div className={"Refresh-options-container"}
-                     style={{visibility: refreshOptionsVisibility}}>
-                    {refreshTool}
-                </div>
-            </div>
-            <div className={"Plugin-tile-container"}>
-                {pluginList}
-            </div>
-            <div className="Plugin-details-container">
-                {pluginData}
-            </div>
+            {
+                pluginsLoading ?
+                    <FillSpinner /> :
+                    <div>
+                        <div className="section-header">
+                            <img src={process.env.PUBLIC_URL + '/img/icon/plugins/plugins_64.png'} alt="Plugins"
+                                 style={{height: 'fit-content'}}/>
+                            <h1>Data Source Plugins</h1>
+                        </div>
+                        <div className={"Refresh-container"} onMouseEnter={onRefreshHover} onMouseLeave={onRefreshUnHover}>
+                            <button className="Small-button" style={refreshButtonStyle} disabled={refreshDisabled}
+                                    onClick={onRefreshAllPlugins}>
+                                Refresh All
+                            </button>
+                            <div className={"Refresh-options-container"}
+                                 style={{visibility: refreshOptionsVisibility}}>
+                                {refreshTool}
+                            </div>
+                        </div>
+                        <div className={"Plugin-tile-container"}>
+                            {pluginList}
+                        </div>
+                        <div className="Plugin-details-container">
+                            {pluginData}
+                        </div>
+                    </div>
+            }
         </>
     );
 }
