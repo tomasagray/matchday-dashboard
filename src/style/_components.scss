@@ -260,6 +260,7 @@
 
   &.disabled > .Selected-item-button {
     cursor: default;
+
     &:after {
       content: '';
     }

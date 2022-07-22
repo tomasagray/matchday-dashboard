@@ -167,11 +167,11 @@
   padding: .75rem;
   border: none;
   border-radius: 5px;
-  background-color: rgba(100,100,100,.2);
+  background-color: rgba(100, 100, 100, .2);
   margin: 1rem 0;
 
   &:hover {
-    background-color: rgba(100,100,100,.6);
+    background-color: rgba(100, 100, 100, .6);
   }
 }
 
@@ -222,7 +222,7 @@
 
   &[disabled] {
     background: none;
-    color: rgba(160,160,160,.75);
+    color: rgba(160, 160, 160, .75);
   }
 
   &:not(:disabled):hover {
@@ -347,8 +347,10 @@
   &:hover {
     filter: saturate(100%);
   }
+
   &:disabled {
     background-color: #888;
+
     svg {
       opacity: .5;
     }
