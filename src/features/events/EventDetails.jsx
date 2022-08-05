@@ -5,15 +5,17 @@ import {FillSpinner, Spinner} from "../../components/Spinner";
 import {PlayButton} from "../../components/controls/PlayButton";
 import {EditButton} from "../../components/controls/EditButton";
 import Select from "../../components/controls/Select";
-import {useFetchVideoSourcesForEventQuery} from "./videoSourceApiSlice";
+import {useFetchVideoSourcesForEventQuery} from "../video/videoSourceApiSlice";
 import {Option} from "../../components/controls/Option";
-import dateformat from "dateformat";
-import {VideoPlayer} from "./VideoPlayer";
+import {VideoPlayer} from "../video/VideoPlayer";
+import dayjs from "dayjs";
 
 export const EventDetails = () => {
 
     const onPlayVideo = () => {
         console.log('clicked play video button EventDetail')
+        let src = selectedVideoSource ? selectedVideoSource['_links']['transcode_stream'].href : null
+        setVideoSrc(src)
         setShowVideoPlayer(true)
     }
     const onHideVideoPlayer = () => {
@@ -41,9 +43,9 @@ export const EventDetails = () => {
 
     let [selectedVideoSource, setSelectedVideoSource] = useState()
     let [showVideoPlayer, setShowVideoPlayer] = useState(false)
-    const date = event ? new Date(event['date']) : new Date()
-    const formattedDate = dateformat(date, 'dd/mm/yy')
-    const videoSrc = selectedVideoSource ? selectedVideoSource['_links']['transcode_stream'].href : null
+    let [videoSrc, setVideoSrc] = useState(null)
+    const date = event ? dayjs(event['date']) : dayjs()
+    const formattedDate = date.format('MM/DD/YY')
 
     return (
         <>
@@ -53,6 +55,7 @@ export const EventDetails = () => {
                     <div className="Content-container">
                         <VideoPlayer src={videoSrc} hidden={!showVideoPlayer}
                                      onClose={onHideVideoPlayer} title={event['title']} subtitle={formattedDate} />
+
                         <h2 className="Event-detail-header">
                             {event['competition'].name} &nbsp;&nbsp;
                             <span className={"Team-name"}>{event['homeTeam'].name}</span>

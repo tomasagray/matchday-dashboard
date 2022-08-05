@@ -1,10 +1,10 @@
-import moment from "moment";
+import dayjs from "dayjs";
 
 const dateFormatter = 'MM/DD/YYYY'
 const jsonPrefix = 'data:text/json;charset=utf-8,'
 
 export function formatDate(date) {
-    return moment(date).format(dateFormatter);
+    return dayjs(date).format(dateFormatter)
 }
 
 export const getClassName = (clazz) => {

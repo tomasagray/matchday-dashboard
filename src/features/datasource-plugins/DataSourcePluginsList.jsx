@@ -8,7 +8,7 @@ import {DataSourcePluginTile} from "./DataSourcePluginTile";
 import {ClearButton} from "../../components/controls/ClearButton";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import dateformat from "dateformat";
+import dayjs from "dayjs";
 
 const DEFAULT_LABEL = ''
 const DEFAULT_DATE = new Date()
@@ -73,7 +73,7 @@ export const DataSourcePluginsList = () => {
     const getRefreshQuery = () => {
         return {
             labels: [refreshLabel],
-            endDate: dateformat(refreshDate, "yyyy-mm-dd'T'hh:mm:ss"),
+            endDate: dayjs(refreshDate).format( "yyyy-mm-dd'T'hh:mm:ss"),
         }
     }
 

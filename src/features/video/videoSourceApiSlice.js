@@ -16,10 +16,8 @@ export const videoSourceApiSlice = apiSlice.injectEndpoints({
                 }
             }),
             fetchVideoPlaylist: builder.query({
-                query: (eventId, videoSrcId) =>
-                    `/events/event/${eventId}/video/stream/${videoSrcId}/playlist.m3u8`,
+                query: (url) => url,
                 transformResponse: (response) => {
-                    console.log('response for video src', response)
                     return response
                 }
             }),
