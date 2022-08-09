@@ -5,6 +5,17 @@ import {Spinner} from "../../components/Spinner";
 import {PatternKitFieldRow} from "./PatternKitFieldRow";
 import {useGetTemplateForTypeQuery} from "./patternKitTemplateApiSlice";
 
+export const validateFields = (fields, template) => {
+    if (!fields || !template) {
+        return false
+    }
+    const fieldValues = Object.values(fields)
+    return template.fields
+        .filter(field => field.required)
+        .map(field => fieldValues.find(value => value === field.fieldName) !== undefined)
+        .reduce((isValid, isFieldValid) => isValid && isFieldValid)
+}
+
 export const PatternKitFieldEditor = (props) => {
 
     const patternContainerStyle = {
@@ -49,10 +60,9 @@ export const PatternKitFieldEditor = (props) => {
     let typeName = getClassName(type)
     let {data: template, isLoading, isFetching} =
         useGetTemplateForTypeQuery(typeName, {skip: typeName === null})
-    let fieldValues = Object.values(fields).filter(field => field !== null)
-    let valid = fieldValues.length === template?.fields.length
-
+    let isValid = validateFields(fields, template)
     let editor
+
     if (typeName) {
         if (!isLoading && !isFetching) {
             let patternKitFields = template ?
@@ -68,8 +78,9 @@ export const PatternKitFieldEditor = (props) => {
                 <>
                     <div style={patternContainerStyle}>
                         <h3 style={{paddingRight: '3.75rem'}}>Pattern</h3>
-                        <input type="text" name="pattern-kit-pattern" value={pattern != null ? pattern : ""} disabled={disabled}
-                               size={patternLen} onChange={onPatternChange} placeholder={"Enter a regular expression"}/>
+                        <input type="text" name="pattern-kit-pattern" value={pattern != null ? pattern : ""}
+                               disabled={disabled} size={patternLen} onChange={onPatternChange}
+                               placeholder={"Enter a regular expression"}/>
                     </div>
                     <table className="Field-list">
                         <thead>
@@ -85,10 +96,9 @@ export const PatternKitFieldEditor = (props) => {
                         <tr>
                             <td colSpan={2}>
                                 {
-                                    valid ? '' :
+                                    isValid ? '' :
                                         <p style={{color: 'red', fontWeight: 'bold'}}>
-                                            Each field must be assigned to a pattern group
-                                        </p>
+                                            Please ensure each required field has been assigned a value.</p>
                                 }
                             </td>
                         </tr>

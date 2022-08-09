@@ -12,7 +12,6 @@ const initialNewPatternKit = {
     fields: {
         value: {},
         valid: false,
-        requiredFields: 0,
     },
 }
 
@@ -34,7 +33,7 @@ export const patternKitSlice = createSlice({
     },
     reducers: {
         newPatternKitUpdated(state, action) {
-            let payload = action.payload;
+            let payload = action.payload
             state.newPatternKit = {
                 ...state.newPatternKit,
                 [payload.field]: {
@@ -45,37 +44,34 @@ export const patternKitSlice = createSlice({
         },
         newPatternKitTypeSelected(state, action) {
             let template = action.payload
-            let requiredFields = Object.keys(template.fields).length
             let type = template.type;
             state.newPatternKit = {
                 ...state.newPatternKit,
                 type: {
-                    value: type,
+                    value: template,
                     valid: type !== 'placeholder'
                 },
                 fields: {
                     value: {},
                     valid: false,
-                    requiredFields,
                 },
             }
         },
         newPatternKitFieldsUpdated(state, action) {
             let newPatternKit = state.newPatternKit
             let payload = action.payload
-            let fields = payload.value
-            let fieldCount = Object.values(fields).filter(field => field !== null).length
+            console.log('payload', payload)
+            let {fields, valid} = payload
             state.newPatternKit = {
                 ...newPatternKit,
                 fields: {
                     ...newPatternKit.fields,
                     value: fields,
-                    valid: fieldCount === newPatternKit.fields.requiredFields
+                    valid,
                 }
             }
         },
         clearNewPatternKit(state) {
-            console.log('clearing...')
             state.newPatternKit = initialNewPatternKit
         },
     }
@@ -107,7 +103,7 @@ export const selectNewPatternKitForUpload = createSelector(
     selectNewPatternKit,
     patternKit => {
         return {
-            clazz: patternKit.type.value,
+            clazz: patternKit.type.value?.type,
             pattern: patternKit.pattern.value,
             fields: patternKit.fields.value,
             id: null,

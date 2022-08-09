@@ -18,6 +18,7 @@ import {MenuItem} from "../../components/MenuItem";
 import {SaveButton} from "../../components/controls/SaveButton";
 import {DeleteButton} from "../../components/controls/DeleteButton";
 import {ClearButton} from "../../components/controls/ClearButton";
+import {validateFields} from "./PatternKitFieldEditor";
 
 
 const groupPatternKits = (patternKits) => {
@@ -27,7 +28,7 @@ const groupPatternKits = (patternKits) => {
         reducer[className] = reducer[className] || []
         reducer[className].push(patternKit)
         return reducer
-    }, Object.create(null));
+    }, Object.create(null))
 }
 const getTypeGroupHeader = (types, selectedType, setTypeHandler) => {
     return types.map(clazz => getClassName(clazz))
@@ -65,10 +66,11 @@ const getPatternKitDisplays = (patternKits, isEditable) => {
 const clazzPattern = /[\w.]+/
 const uuidPattern = /[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}/
 const urlPattern = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=+$,\w]+@)?[A-Za-z\d.-]+|(?:www\.|[-;:&=+$,\w]+@)[A-Za-z\d.-]+)((?:\/[+~%/.\w\-_]*)?\??[-+=&;%@.\w_]*#?[.!/\\\w]*)?)/
+
 const validateDataSource = (dataSource, template) => {
 
     let templates = template ? [template] : []
-    templates.push.apply(templates, template?.relatedTemplates)
+    templates.push.apply(templates, template ? template['relatedTemplates'] : null)
 
     let isTypeValid = clazzPattern.test(dataSource.clazz)
     let isDataSourceIdValid = uuidPattern.test(dataSource.dataSourceId)
@@ -79,10 +81,7 @@ const validateDataSource = (dataSource, template) => {
         let _template = templates.find(template => template.type === patternKit.clazz)
         let isClazzValid = clazzPattern.test(patternKit.clazz)
         let isPatternValid = patternKit.pattern !== ''
-        let nonNullFieldCount = Object.values(patternKit.fields)
-            .filter(field => field !== null)
-            .length
-        let isFieldsValid = nonNullFieldCount === _template?.fields.length
+        let isFieldsValid = validateFields(patternKit.fields, _template)
         return isValid && isClazzValid && isPatternValid && isFieldsValid
     }, true)
     return isTypeValid &&
@@ -136,7 +135,8 @@ export const DataSourceDisplay = (props) => {
         setSelectedType('')
     }
 
-    const onShowAddPatternKitModal = () => {
+    const onShowAddPatternKitModal = (e) => {
+        e.preventDefault()
         setShowAddPatternKitModal(true)
     }
     const onHideAddPatternKitModal = () => {
@@ -201,10 +201,10 @@ export const DataSourceDisplay = (props) => {
     let type = getClassName(clazz)
     let {data: template} = useGetTemplateForTypeQuery(type)
     let isDataSourceValid = validateDataSource(dataSource, template)
-    let newPatternKit = useSelector(state => selectNewPatternKitForUpload(state))
-    let isNewPatternKitValid = useSelector(state => selectIsNewPatternKitValid(state))
     let cleanDataSource = useSelector(state => selectCleanDataSourceById(state, dataSourceId))
     let isModified = cleanDataSource !== dataSource
+    let newPatternKit = useSelector(state => selectNewPatternKitForUpload(state))
+    let isNewPatternKitValid = useSelector(state => selectIsNewPatternKitValid(state))
     const [updateDataSource, {isLoading: isUpdating}] = useUpdateDataSourceMutation()
     const [deleteDataSource, {isLoading: isDeleting}] = useDeleteDataSourceMutation()
 
@@ -244,7 +244,6 @@ export const DataSourceDisplay = (props) => {
         }
     }
 
-    let fieldStyle = {display: 'flex', alignItems: 'center'}
     let hoverColor = isEditable ? 'light-green' : 'green'
     let editImg = !isEditable ? '/edit-pencil/edit-pencil_16.png' : '/cancel/cancel_16.png'
     const editButton = isModified ? null :
@@ -336,16 +335,21 @@ export const DataSourceDisplay = (props) => {
                         </p>
                     </div>
                 </div>
-                <div style={fieldStyle}>
+                <div className="Data-source-field">
                     <h3 style={{marginRight: '1rem'}}>Type<span style={{color: '#aaa'}}> : </span></h3>
                     <p style={{fontSize: 'large'}}>{type}</p>
                 </div>
-                <div style={fieldStyle}>
-                    <h3 style={{marginRight: '1rem'}}>Base URI<span style={{color: '#aaa'}}> :</span></h3>
+                <div className="Data-source-field">
+                    <h3 style={{marginRight: '1rem', whiteSpace: 'nowrap'}}>Base URI<span style={{color: '#aaa'}}> :</span></h3>
                     <input type="text" name="data-source-base-uri" disabled={!isEditable}
                            value={baseUri} onChange={onBaseUriValChanged}
                            size={baseUri != null ? baseUri.length : DEFAULT_FIELD_SIZE} />
+
+                    <div style={{display: 'flex', justifyContent: 'flex-end', width: '-webkit-fill-available'}}>
+                        <button className="Small-button" onClick={onShowAddPatternKitModal} disabled={isUpdating}>Add Pattern Kit...</button>
+                    </div>
                 </div>
+
                 <div>
                     <div className={"Pattern-kit-type-header"}>
                         <h3 style={{marginRight: '2rem'}}>
@@ -353,8 +357,8 @@ export const DataSourceDisplay = (props) => {
                         </h3>
                         <button className={"Filter-by-type-button"} onClick={onShowPatternKitTypeMenu}>
                             Filter by type
-                            <img src={process.env.PUBLIC_URL+'/img/icon/link-arrow/link-arrow_64.png'} alt={"Filter by type"}
-                                    className={showTypeMenu ? 'flipped' : ''}/>
+                            <img src={process.env.PUBLIC_URL+'/img/icon/link-arrow/link-arrow_64.png'}
+                                 alt={"Filter by type"} className={showTypeMenu ? 'flipped' : ''}/>
                         </button>
                         <ClearButton onClick={onClearPatternKitTypeSelection} style={{display: selectedType ? '' : 'none'}} />
                     </div>
@@ -366,9 +370,6 @@ export const DataSourceDisplay = (props) => {
                     </div>
                 </div>
             </form>
-            <div style={{textAlign: 'right', padding: '2rem'}}>
-                <button className="Small-button" onClick={onShowAddPatternKitModal} disabled={isUpdating}>Add Pattern Kit...</button>
-            </div>
             <div className={"Button-container"} style={{padding: '2rem', display: isModified ? '' : 'none'}}>
                 <CancelButton onClick={onShowResetWarning} disabled={isUpdating}>Reset</CancelButton>
                 <SaveButton onClick={onSaveDataSource} disabled={!isDataSourceValid || isUpdating} isLoading={isUpdating}/>

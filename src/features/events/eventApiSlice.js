@@ -24,7 +24,6 @@ export const eventApiSlice = apiSlice.injectEndpoints({
                 query: (competitionId) => `/competitions/competition/${competitionId}/events`,
                 providesTags: [eventTag],
                 transformResponse: (response) => {
-                    console.log('response', response)
                     return response['matches']
                 }
             }),

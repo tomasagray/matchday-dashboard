@@ -304,6 +304,15 @@ $dataSourceIntBorder: 1px solid #666;
       background-color: rgba(0, 0, 0, .2);
     }
   }
+
+  .Data-source-field {
+    display: flex;
+    align-items: center;
+
+    h3 {
+      width: 5vw;
+    }
+  }
 }
 
 .Data-source-table {

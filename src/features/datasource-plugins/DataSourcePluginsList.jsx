@@ -71,9 +71,10 @@ export const DataSourcePluginsList = () => {
         }
     }
     const getRefreshQuery = () => {
+        const endDate = dayjs(refreshDate).format( 'YYYY-MM-DDThh:mm:ss')
         return {
             labels: [refreshLabel],
-            endDate: dayjs(refreshDate).format( "yyyy-mm-dd'T'hh:mm:ss"),
+            endDate,
         }
     }
 

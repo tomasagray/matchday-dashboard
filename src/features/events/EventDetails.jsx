@@ -13,7 +13,6 @@ import dayjs from "dayjs";
 export const EventDetails = () => {
 
     const onPlayVideo = () => {
-        console.log('clicked play video button EventDetail')
         let src = selectedVideoSource ? selectedVideoSource['_links']['transcode_stream'].href : null
         setVideoSrc(src)
         setShowVideoPlayer(true)

@@ -29,7 +29,7 @@ export const PatternKitFieldRow = (props) => {
     }
 
     let groupId = field[0]
-    let fieldName = field[1]
+    let fieldName = field[1]['fieldName']
     let matchingField = fields ? Object.entries(fields).find(field => field[1] === fieldName) : null
     let selectedItem = matchingField ? matchingField[0] : null
     let options = getGroupOptions(pattern)
