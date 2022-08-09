@@ -27,10 +27,10 @@ export const Select = (props) => {
     const items = React.Children.map(props.children, child =>
         <div onClick={onMenuItemSelected(child)}>{child}</div>
     )
-    if (selectedIndex) {
-        selectedItem = items[selectedIndex]
-    } else if (selectedValue) {
+    if (selectedValue) {
         selectedItem = items.find(item => item['props'].children.props.value === selectedValue)
+    } else if (selectedIndex) {
+        selectedItem = items[selectedIndex]
     } else {
         selectedItem = props.placeholder
     }

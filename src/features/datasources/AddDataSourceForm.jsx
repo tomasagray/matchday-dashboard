@@ -24,12 +24,12 @@ export const AddDataSourceForm = (props) => {
     let newDataSource = useSelector( state =>  selectNewDataSource(state))
     let {type, title, baseUri} = newDataSource
     let {data: templates, isLoading} = useGetAllTemplatesQuery()
-    let selectedIndex
+    let selectedValue
     let templateOptions = []
     for (let i = 0; i < templates?.length ?? 0; i++) {
         let template = templates[i]
         if (template.type === type.value) {
-            selectedIndex = i
+            selectedValue = template.type
         }
         templateOptions.push(
             <Option value={template.type} key={template.id}>{template.name}</Option>
@@ -46,7 +46,7 @@ export const AddDataSourceForm = (props) => {
                     </td>
                     <td>
                         <Select disabled={isLoading || disabled} placeholder={'Select Data Source type...'}
-                                onChange={onSelectType} selectedIndex={selectedIndex} >
+                                onChange={onSelectType} selectedValue={selectedValue} >
                             {templateOptions}
                         </Select>
                     </td>
