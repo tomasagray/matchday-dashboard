@@ -1,0 +1,41 @@
+@mixin Poster {
+  box-sizing: content-box;
+  border: 1px solid transparent;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, .1);
+    border-color: rgba(200, 200, 200, .1);
+  }
+}
+
+@mixin EntityButton {
+  padding: 1rem;
+  border: 1px solid transparent;
+  box-sizing: content-box;
+  margin: 1rem 1.5rem;
+  text-align: center;
+
+  img {
+    width: 10vw;
+    height: 20vh;
+    filter: saturate(80%) opacity(.8);
+  }
+  div {
+    margin-top: .5rem;
+    color: rgba(220, 220, 220, .7);
+  }
+
+  &:hover {
+    cursor: pointer;
+    border-color: rgba(150, 150, 150, .2);
+    background-color: rgba(100, 100, 100, .1);
+
+    img {
+      filter: saturate(100%) opacity(1);
+    }
+
+    div {
+      color: rgba(220, 220, 220, 1);
+    }
+  }
+}

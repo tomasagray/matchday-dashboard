@@ -1,0 +1,5 @@
+@import "../mixins";
+
+.Competition-tile {
+  @include EntityButton;
+}

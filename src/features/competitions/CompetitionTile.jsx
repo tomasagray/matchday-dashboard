@@ -11,13 +11,10 @@ export default function CompetitionTile(props) {
             <Link to={
                 {
                     pathname: '/competitions/competition/' + id,
-                    competition: competition,
                 }
             }>
                 <img src={posterUrl} alt={name} className="Entity-poster"/>
-                <div className="Competition-title">
-                    {name}
-                </div>
+                <div>{name}</div>
             </Link>
         </div>
     );

@@ -1,0 +1,92 @@
+@use "../colors";
+@use "../variables";
+
+
+.Refresh-container {
+  display: flex;
+  padding: 3rem 0;
+
+  .Refresh-options-container {
+    display: flex;
+    align-items: center;
+    width: fit-content;
+    margin-left: 2rem;
+    //visibility: hidden;
+
+    & > p {
+      color: colors.$mediumFontColor;
+      padding: 0 1rem;
+    }
+
+    .Refresh-tool-container {
+      display: flex;
+      align-items: center;
+    }
+
+    .Refresh-option {
+      border: none;
+      border-bottom: 1px solid transparent;
+      margin: 0 1em;
+      background: none;
+      font-size: variables.$defaultFontSize;
+      color: colors.$defaultFontColor;
+
+      &:hover {
+        border-color: colors.$border;
+      }
+    }
+  }
+}
+
+.Plugin-tile-container {
+  display: flex;
+  flex-wrap: wrap;
+
+  .Plugin-button-tile {
+    width: 15vw;
+    min-width: 15vw;
+    padding: 1.8rem;
+    margin: 2rem;
+    display: inline-block;
+    border: 1px solid #333;
+    border-radius: .6rem;
+    box-shadow: 3px 3px 3px colors.$shadow;
+
+    &.active {
+      background-color: #444;
+    }
+
+    &:hover {
+      cursor: pointer;
+      background-color: rgba(255, 255, 255, .1);
+    }
+
+    .Plugin-button-title {
+      font-weight: bold;
+      color: #777;
+    }
+
+    &.active .Plugin-button-title {
+      color: whitesmoke;
+    }
+
+    &.active .Plugin-id {
+      color: #ccc;
+
+      strong {
+        color: whitesmoke;
+      }
+    }
+  }
+}
+
+.Plugin-id {
+  font-size: 10pt;
+  margin: 4px;
+  color: #666;
+
+  strong {
+    color: #aaa;
+  }
+}
+

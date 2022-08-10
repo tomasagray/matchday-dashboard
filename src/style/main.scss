@@ -3,7 +3,12 @@
 
 @use "animations";
 @use "buttons";
-@use "features";
+@use "features/competitions";
+@use "features/events";
+@use "features/file-servers";
+@use "features/data-sources";
+@use "features/plugins";
+@use "features/teams";
 @use "components";
 @use "layout";
 @use "spinner";

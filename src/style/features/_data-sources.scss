@@ -1,0 +1,244 @@
+@use "../colors";
+@use "../buttons";
+
+$dataSourceExtBorder: 1px solid #ccc;
+$dataSourceIntBorder: 1px solid #666;
+
+.Data-source-display {
+
+  padding: 1rem 2rem;
+
+  & > div {
+    margin: 1rem 0;
+  }
+
+  label {
+    font-size: 1.3rem;
+    margin-right: 1rem;
+  }
+
+  input[type=text] {
+    background: none;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    border-radius: 0;
+    color: colors.$defaultFontColor;
+    font-size: 11pt;
+    display: flex;
+    justify-content: center;
+
+    &:disabled {
+      background: none;
+      border-color: transparent;
+      color: #ccc;
+    }
+
+    &:focus {
+      background-color: rgba(0, 0, 0, .2);
+    }
+  }
+
+  .Data-source-field {
+    display: flex;
+    align-items: center;
+
+    h3 {
+      width: 5vw;
+    }
+  }
+}
+
+.Data-source-table {
+  border-collapse: collapse;
+  margin: 2rem 0;
+
+  td {
+    padding: 1.25rem;
+    background-color: rgba(0, 0, 0, .1);
+
+    &:nth-of-type(2n+2) {
+      background-color: rgba(0, 0, 0, .15);
+      color: #ccc;
+    }
+  }
+}
+
+.Type-header-container {
+  display: flex;
+  background-color: rgba(150, 150, 150, .25);
+
+  .Type-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: .25rem 1.25rem;
+    border-bottom: 2px solid transparent;
+
+    &:hover {
+      background-color: rgba(200, 200, 200, .2);
+      cursor: pointer;
+    }
+
+    &.selected {
+      border-bottom-color: colors.$selected;
+    }
+  }
+}
+
+.Pattern-kit-display {
+  overflow: hidden;
+
+  .Pattern-kit-type {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #333;
+    padding-left: 1rem;
+
+    input[type=text] {
+      width: fit-content;
+    }
+  }
+
+  .Pattern-kit-editor {
+    border-collapse: collapse;
+    border-radius: 1rem;
+    width: 100%;
+
+    tr:not(:last-child) {
+      td {
+        border-bottom: $dataSourceIntBorder;
+      }
+    }
+
+    td {
+      padding: 2rem;
+      vertical-align: top;
+    }
+
+    td:first-child {
+      border-right: $dataSourceIntBorder;
+    }
+  }
+
+}
+
+.Pattern-kit-type-header {
+  display: flex;
+  align-items: center;
+  align-content: center;
+  margin-bottom: .5rem;
+  padding: .5rem 1rem;
+  background-color: rgba(100, 100, 100, .5);
+
+
+  .Filter-by-type-button {
+    @include buttons.lowerButton;
+    background: none;
+    border: none;
+    color: colors.$mediumFontColor;
+    font-size: medium;
+    padding: 0;
+    border-bottom: 1px solid transparent;
+
+    &:hover {
+      border-color: #888;
+    }
+
+    img {
+      height: 11px;
+      transform: rotate(90deg);
+      margin-left: 1em;
+      filter: opacity(80);
+
+      &.flipped {
+        transform: rotate(-90deg);
+      }
+
+      &:hover {
+        filter: none;
+      }
+    }
+  }
+}
+
+.Pattern-kit {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background-color: rgba(0, 0, 0, .15);
+
+  input[type=text] {
+    width: fit-content;
+  }
+
+  .Pattern-kit-header {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px dashed #888;
+
+    & > * {
+      margin-right: 3rem;
+    }
+
+    .Pattern-kit-delete-button {
+      display: flex;
+      align-items: center;
+      color: colors.$defaultFontColor;
+      background: none;
+      border: none;
+      font-size: medium;
+
+      img {
+        height: 18px;
+        margin-right: .5em;
+      }
+
+      &:hover {
+        filter: brightness(0) saturate(100%) invert(15%) sepia(76%) saturate(5964%) hue-rotate(360deg) brightness(100%) contrast(121%);
+      }
+    }
+  }
+}
+
+.Field-list {
+  border-collapse: collapse;
+  width: 100%;
+
+  td {
+    padding: 1rem;
+
+    &:nth-of-type(2n+1) {
+      width: 15vw;
+    }
+  }
+
+  .Field-name-heading > th {
+    font-size: large;
+    text-align: left;
+    padding: .4rem 0;
+    border-bottom: 1px dashed #777;
+  }
+
+  tbody {
+    tr:hover td:nth-of-type(2n+1) {
+      background-color: rgba(160, 160, 160, .15);
+    }
+
+    tr:hover td:nth-of-type(2n+2) {
+      background-color: rgba(160, 160, 160, .1);
+    }
+  }
+
+}
+
+.Add-data-source-form {
+  td {
+    padding: 1rem;
+  }
+}
+
+.Add-pattern-kit-form {
+  width: 100%;
+  margin: 0;
+}
+

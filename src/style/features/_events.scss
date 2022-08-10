@@ -1,0 +1,123 @@
+@use "../colors";
+@use "../variables";
+@import "../mixins";
+
+.Item-poster {
+  @include Poster;
+  max-width: 10vw;
+}
+
+.Event-display {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.Event-tile {
+  @include EntityButton;
+  width: 15vw;
+  overflow: hidden;
+  padding: 1rem;
+  text-align: left;
+  color: rgba(200, 200, 200, .6);
+
+  &:hover {
+    color: colors.$defaultFontColor;
+
+    .Event-title > span {
+      color: rgba(200, 200, 200, .4);
+
+      span {
+        color: rgba(200, 200, 200, .8);
+      }
+    }
+
+    .Event-date {
+      opacity: 1;
+    }
+  }
+
+  .Event-poster {
+    width: variables.$eventPosterWidth;
+    height: 15vh;
+  }
+
+  .Event-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    font-weight: normal;
+
+    span {
+      color: rgba(150, 150, 150, .4);
+
+      span {
+        color: rgba(150, 150, 150, .6);
+      }
+    }
+  }
+
+  .Event-date {
+    font-size: small;
+    color: colors.$mediumFontColor;
+    opacity: .8;
+  }
+}
+
+.Event-details-container {
+  display: flex;
+
+  img {
+    width: 20vw;
+    height: 20vh;
+    margin-right: 1.5rem;
+  }
+}
+
+.Event-detail-header {
+  margin-bottom: 1.5rem;
+
+  .Team-name {
+    color: rgba(220, 220, 220, .75);
+  }
+}
+
+.Event-button-container {
+  display: flex;
+  align-items: center;
+  height: 2rem;
+  margin: 2rem 0;
+
+  & > * {
+    margin-right: 1rem;
+  }
+}
+
+.Video-source-metadata {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+
+  .Video-source-metadata-field {
+    margin-right: .75rem;
+
+    div {
+      padding: .7rem 1.7rem;
+    }
+
+    .Video-source-metadata-field-name {
+      background-color: rgba(160, 160, 160, .1);
+      color: colors.$mediumFontColor;
+      font-weight: bold;
+    }
+
+    .Video-source-metadata-field-value {
+      background-color: rgba(160, 160, 160, .05);
+      color: rgba(240, 240, 240, .65);
+    }
+  }
+}
+
+.Entity-display {
+  display: flex;
+  flex-wrap: wrap;
+}
