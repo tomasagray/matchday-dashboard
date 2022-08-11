@@ -4,6 +4,7 @@ import {FillSpinner} from "../../components/Spinner";
 import EventTile from "./EventTile";
 import {ErrorMessage} from "../../components/ErrorMessage";
 import {toast} from "react-toastify";
+import {getToastMessage} from "../../app/utils";
 
 export const EventsDisplay = () => {
 
@@ -17,7 +18,7 @@ export const EventsDisplay = () => {
 
     useEffect(() => {
         if (isError) {
-            let msg = error.data ?? error.error
+            let msg = 'Could not fetch latest events: ' + getToastMessage(error)
             toast.error(msg)
         }
     }, [error, isError])

@@ -74,7 +74,7 @@ export const PluginDataSourceList = () => {
             toast.error(msg)
         }
         if (isSaveDataSourceError) {
-            let msg = saveDataSourceError.data ?? saveDataSourceError.error;
+            let msg = 'Could not save data source: ' + getToastMessage(saveDataSourceError)
             toast.error(msg);
         }
         if (isDataSourceSaveSuccess) {

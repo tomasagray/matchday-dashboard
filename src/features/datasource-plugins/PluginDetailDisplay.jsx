@@ -7,6 +7,7 @@ import {SettingContainer} from "../../components/SettingContainer";
 import {SettingsGroup} from "../../components/SettingsGroup";
 import {SettingsLink} from "../../components/SettingsLink";
 import {toast} from "react-toastify";
+import {getToastMessage} from "../../app/utils";
 
 export const PluginDetailDisplay = () => {
 
@@ -47,11 +48,11 @@ export const PluginDetailDisplay = () => {
     // error message toast
     useEffect(() => {
         if (isEnableError) {
-            let msg = enableError.data ?? enableError.error
+            let msg = 'Could not enable plugin: ' + getToastMessage(enableError)
             toast.error(msg)
         }
         if (isDisableError) {
-            let msg = disableError.data ?? disableError.error
+            let msg = 'Could not disable plugin: ' + getToastMessage(disableError)
             toast.error(msg)
         }
     }, [isEnableError, enableError, isDisableError, disableError])

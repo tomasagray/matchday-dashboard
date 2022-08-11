@@ -3,7 +3,7 @@ import {CollapsableContainer} from "../../components/CollapsableContainer";
 import {PatternKitTypeGroup} from "./PatternKitTypeGroup";
 import {dataSourceReset, dataSourceUpdated, selectCleanDataSourceById, selectDataSourceById,} from "./dataSourceSlice";
 import {useDispatch, useSelector} from "react-redux";
-import {getClassName, getDownloadableJson} from "../../app/utils";
+import {getClassName, getDownloadableJson, getToastMessage} from "../../app/utils";
 import {InfoMessage} from "../../components/InfoMessage";
 import {PatternKitDisplay} from "./PatternKitDisplay";
 import Modal, {Body, Footer, Header} from "../../components/Modal";
@@ -239,15 +239,15 @@ export const DataSourceDisplay = (props) => {
             toast('Data source successfully deleted')
         }
         if (isTemplateError) {
-            let msg = templateError.data ?? templateError.error;
-            toast.error(msg);
+            let msg = 'Could not get required pattern kit template: ' + getToastMessage(templateError)
+            toast.error(msg)
         }
         if (isUpdateError) {
-            let msg = updateError.data ?? updateError.error
+            let msg = 'Could not update date source: ' + getToastMessage(updateError)
             toast.error(msg)
         }
         if (isDeleteError) {
-            let msg = deleteError.data ?? deleteError.error
+            let msg = 'Could not delete data source: ' + getToastMessage(deleteError)
             toast.error(msg)
         }
     }, [
@@ -257,10 +257,8 @@ export const DataSourceDisplay = (props) => {
         isTemplateError,
         isUpdateError,
         isUpdateSuccess,
-        templateError?.data,
-        templateError?.error,
-        updateError?.data,
-        updateError?.error
+        templateError,
+        updateError
     ])
 
     // state

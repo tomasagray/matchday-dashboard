@@ -8,6 +8,7 @@ import EventTile from "../features/events/EventTile";
 import CompetitionTile from "../features/competitions/CompetitionTile";
 import TeamTile from "../features/teams/TeamTile";
 import {toast} from "react-toastify";
+import {getToastMessage} from "../app/utils";
 
 
 export const Home = () => {
@@ -73,16 +74,16 @@ export const Home = () => {
     // toast messages
     useEffect(() => {
         if (isEventsError) {
-            let msg = eventsError.data ?? eventsError.error
-            toast.error('Failed to load Events: ' + msg)
+            let msg = 'Failed to load Events: ' + getToastMessage(eventsError)
+            toast.error(msg)
         }
         if (isCompetitionsError) {
-            let msg = competitionsError.data ?? competitionsError.error
-            toast.error('Failed to load Competitions: ' + msg)
+            let msg = 'Failed to load Competitions: ' + getToastMessage(competitionsError)
+            toast.error(msg)
         }
         if (isTeamsError) {
-            let msg = teamsError.data ?? teamsError.error
-            toast.error('Failed to load Teams: ' + msg)
+            let msg = 'Failed to load Teams: ' + getToastMessage(teamsError)
+            toast.error(msg)
         }
     }, [
         isEventsError,
