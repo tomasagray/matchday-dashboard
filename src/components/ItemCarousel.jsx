@@ -3,9 +3,17 @@ import React, {createRef} from "react";
 class ItemCarousel extends React.Component {
 
     constructor(props) {
-        super(props);
-        this.carousel = createRef();
-        this.itemList = createRef();
+        super(props)
+        console.log('props', props.items)
+        this.carousel = createRef()
+        this.itemList = createRef()
+        this.itemDisplay = props.items ?
+            props.items?.map((item, idx) => {
+                return (
+                    <li key={idx} className="Item-slide">{item}</li>
+                )
+            }) :
+            null
     }
 
     getAdvancePosition() {
@@ -56,6 +64,7 @@ class ItemCarousel extends React.Component {
         };
     }
 
+
     render() {
         if (this.props.items === undefined) {
             return null;
@@ -64,13 +73,7 @@ class ItemCarousel extends React.Component {
         return (
             <div className="Item-carousel" ref={this.carousel}>
                 <ul className="Item-list" ref={this.itemList} style={{left: this.props.x}}>
-                    {
-                        this.props.items.map((item, idx) => {
-                            return (
-                                <li key={idx} className="Item-slide">{item}</li>
-                            );
-                        })
-                    }
+                    {this.itemDisplay}
                 </ul>
             </div>
         );

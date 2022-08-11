@@ -18,10 +18,14 @@ html {
   margin: 0;
   padding: 0;
   color: colors.$defaultFontColor;
+  width: 100vw;
+  height: 100vh;
 }
 
 body {
   overflow: hidden;
+  width: 100vw;
+  height: 100vh;
 }
 
 button:not([disabled]) {

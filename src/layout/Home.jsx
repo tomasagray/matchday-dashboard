@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import ContentBar from "../components/ContentBar";
 import {useFetchAllEventsQuery} from "../features/events/eventApiSlice";
 import {useFetchAllCompetitionsQuery} from "../features/competitions/competitionApiSlice";
@@ -7,6 +7,7 @@ import {Spinner} from "../components/Spinner";
 import EventTile from "../features/events/EventTile";
 import CompetitionTile from "../features/competitions/CompetitionTile";
 import TeamTile from "../features/teams/TeamTile";
+import {toast} from "react-toastify";
 
 
 export const Home = () => {
@@ -23,22 +24,71 @@ export const Home = () => {
             <Spinner text='' size={'32px'}/>
         </div>
 
-    const {data: eventsData, isLoading: isEventsLoading} = useFetchAllEventsQuery()
-    const {data: competitionsData, isLoading: isCompetitionsLoading} = useFetchAllCompetitionsQuery()
-    const {data: teamsData, isLoading: isTeamsLoading} = useFetchAllTeamsQuery()
+    // hooks
+    const {
+        data: eventsData,
+        isLoading: isEventsLoading,
+        isSuccess: isEventsSuccess,
+        isError: isEventsError,
+        error: eventsError
+    } = useFetchAllEventsQuery()
+    const {
+        data: competitionsData,
+        isLoading: isCompetitionsLoading,
+        isSuccess: isCompetitionsSuccess,
+        isError: isCompetitionsError,
+        error: competitionsError
+    } = useFetchAllCompetitionsQuery()
+    const {
+        data: teamsData,
+        isLoading: isTeamsLoading,
+        isSuccess: isTeamsSuccess,
+        isError: isTeamsError,
+        error: teamsError
+    } = useFetchAllTeamsQuery()
 
+    // item lists
     const events =
         isEventsLoading ?
             [spinner] :
-            Object.values(eventsData.entities).map(event => <EventTile event={event} />)
+            isEventsSuccess ?
+            Object.values(eventsData.entities).map(event => <EventTile event={event} />) :
+            null
     const competitions =
         isCompetitionsLoading ?
             [spinner] :
-            Object.values(competitionsData.entities).map(competition => <CompetitionTile competition={competition} />)
+            isCompetitionsSuccess ?
+            Object.values(competitionsData.entities).map(competition => <CompetitionTile competition={competition} />) :
+            null
     const teams =
         isTeamsLoading ?
             [spinner] :
-            Object.values(teamsData.entities).map(team => <TeamTile team={team} />)
+            isTeamsSuccess ?
+            Object.values(teamsData.entities).map(team => <TeamTile team={team} />) :
+            null
+
+    // toast messages
+    useEffect(() => {
+        if (isEventsError) {
+            let msg = eventsError.data ?? eventsError.error
+            toast.error('Failed to load Events: ' + msg)
+        }
+        if (isCompetitionsError) {
+            let msg = competitionsError.data ?? competitionsError.error
+            toast.error('Failed to load Competitions: ' + msg)
+        }
+        if (isTeamsError) {
+            let msg = teamsError.data ?? teamsError.error
+            toast.error('Failed to load Teams: ' + msg)
+        }
+    }, [
+        isEventsError,
+        eventsError,
+        isCompetitionsError,
+        competitionsError,
+        isTeamsError,
+        teamsError
+    ])
 
     return (
         <div className="Content-container Home-container">

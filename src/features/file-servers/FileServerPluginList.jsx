@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {
     useDisableFileServerPluginMutation,
     useEnableFileServerPluginMutation,
@@ -13,9 +13,14 @@ import {SettingsGroup} from "../../components/SettingsGroup";
 import {SettingContainer} from "../../components/SettingContainer";
 import {Status, ToggleSwitch} from "../../components/controls/ToggleSwitch";
 import {SettingsLink} from "../../components/SettingsLink";
+import {getToastMessage} from "../../app/utils";
+import {toast} from "react-toastify";
+import {ErrorMessage} from "../../components/ErrorMessage";
 
 
 export const FileServerPluginList = () => {
+
+    // handlers
     const onTogglePluginEnabled = async () => {
         if (selectedPlugin) {
             console.log('toggling...', selectedPlugin)
@@ -25,20 +30,66 @@ export const FileServerPluginList = () => {
         }
     }
 
-    let {data: fileServerPlugins, isLoading, isSuccess} = useGetAllFileServerPluginsQuery()
-    let [enablePlugin, {isLoading: enableLoading}] = useEnableFileServerPluginMutation()
-    let [disablePlugin, {isLoading: disableLoading}] = useDisableFileServerPluginMutation()
+    // hooks
+    let {
+        data: fileServerPlugins,
+        isLoading: isPluginsLoading,
+        isSuccess: isPluginsSuccess,
+        isError: isPluginsError,
+        error: pluginsError
+    } = useGetAllFileServerPluginsQuery()
+    let [enablePlugin, {
+        isLoading: enableLoading,
+        isError: isEnableError,
+        error: enableError
+    }] = useEnableFileServerPluginMutation()
+    let [disablePlugin, {
+        isLoading: disableLoading,
+        isError: isDisableError,
+        error: disableError
+    }] = useDisableFileServerPluginMutation()
+
+    // toast messages
+    useEffect(() => {
+        if (isPluginsError) {
+            let msg = 'Failed to fetch file server plugins: ' + getToastMessage(pluginsError)
+            toast.error(msg)
+        }
+        if (isEnableError) {
+            let msg = 'Could not enable file server plugin: ' + getToastMessage(enableError);
+            toast.error(msg);
+        }
+        if (isDisableError) {
+            let msg = 'Could not disable file server plugin: ' + getToastMessage(disableError)
+            toast.error(msg)
+        }
+    }, [
+        isPluginsError,
+        pluginsError,
+        isEnableError,
+        enableError,
+        isDisableError,
+        disableError
+    ])
+
+    // state
     let selectedPluginId = useSelector(state => selectSelectedPluginId(state))
     let selectedPlugin = useSelector(state => selectFileServerPluginById(state, selectedPluginId))
-    let toggle = selectedPlugin ?
-        enableLoading || disableLoading ? Status().Transitioning :
-            (selectedPlugin.enabled ? Status().Checked : Status().Unchecked) :
-        Status().Unchecked
 
-    let plugins = isSuccess ?
+    // components
+    let toggle = selectedPlugin ?
+        enableLoading || disableLoading ? Status()['Transitioning'] :
+            (selectedPlugin.enabled ? Status()['Checked'] : Status()['Unchecked']) :
+        Status()['Unchecked']
+
+    let plugins = isPluginsSuccess ?
             Object.values(fileServerPlugins.entities)
-                .map(plugin => <FileServerPluginTile pluginId={plugin.id} title={plugin.title} key={plugin.id}/>) :
-            <InfoMessage style={{marginTop: '2rem'}}>There are no File Server plugins</InfoMessage>
+                .map(plugin =>
+                    <FileServerPluginTile pluginId={plugin.id} title={plugin.title} key={plugin.id}/>
+                ) :
+            <ErrorMessage style={{marginTop: '2rem'}}>
+                Could not load file server plugins
+            </ErrorMessage>
 
     let pluginDetails =
         selectedPlugin ?
@@ -48,14 +99,14 @@ export const FileServerPluginList = () => {
                     <p>Enabled</p>
                     <ToggleSwitch status={toggle} onclick={onTogglePluginEnabled}/> </SettingContainer> <SettingsLink
                 title={"Users"} location={`/file-servers/${selectedPluginId}/users`}/> </SettingsGroup> :
-            isSuccess ?
+            isPluginsSuccess ?
                 <InfoMessage>Please select a File Server plugin from above.</InfoMessage> :
                 null
 
     return (
         <>
             {
-                isLoading ?
+                isPluginsLoading ?
                 <FillSpinner/> :
                 <div>
                     <div className={"section-header"}>

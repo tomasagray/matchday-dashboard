@@ -1,4 +1,4 @@
-import React from "react"
+import React, {useEffect} from "react"
 import {
     newPatternKitFieldsUpdated,
     newPatternKitTypeSelected,
@@ -12,12 +12,16 @@ import Select from "../../components/controls/Select";
 import {Option} from "../../components/controls/Option";
 import {InfoMessage} from "../../components/InfoMessage";
 import {useGetTemplateForTypeQuery} from "./patternKitTemplateApiSlice";
+import {toast} from "react-toastify";
+import {getToastMessage} from "../../app/utils";
 
 export const AddPatternKitForm = (props) => {
 
     const patternKitTypeElement = 'pattern-kit-type'
 
     const dispatch = useDispatch()
+    
+    // handlers
     const onSelectType = (e, template) => {
         dispatch(newPatternKitTypeSelected(template))
     }
@@ -29,12 +33,30 @@ export const AddPatternKitForm = (props) => {
         dispatch(newPatternKitFieldsUpdated({fields, valid}))
     }
 
+    // state
     let typeOptions = []
     let {dataSourceType, dataSourceId} = props
     let newPatternKit = useSelector(state => selectNewPatternKit(state))
     let {type, pattern, fields} = newPatternKit
-    let {data: patternKitTemplate, isLoading, isSuccess} = useGetTemplateForTypeQuery(dataSourceType)
+    
+    // hook
+    let {
+        data: patternKitTemplate,
+        isLoading,
+        isSuccess,
+        isError,
+        error
+    } = useGetTemplateForTypeQuery(dataSourceType)
 
+    // toast messages
+    useEffect(() => {
+        if (isError) {
+            let msg = `Failed to retrieve pattern kit templates for ${dataSourceType}: ` + getToastMessage(error)
+            toast.error(msg)
+        }
+    }, [dataSourceType, isError, error])
+    
+    // components
     if (isLoading) {
         typeOptions.push(
             <Option value={"loading"} key={255}>

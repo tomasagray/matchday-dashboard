@@ -3,9 +3,7 @@ import dayjs from "dayjs";
 const dateFormatter = 'MM/DD/YYYY'
 const jsonPrefix = 'data:text/json;charset=utf-8,'
 
-export function formatDate(date) {
-    return dayjs(date).format(dateFormatter)
-}
+export const formatDate = (date) => dayjs(date).format(dateFormatter)
 
 export const getClassName = (clazz) => {
     if (!clazz) return null
@@ -18,6 +16,6 @@ export const getClassName = (clazz) => {
     }
 }
 
-export const getDownloadableJson = (data) => {
-    return jsonPrefix + encodeURIComponent(JSON.stringify(data))
-}
+export const getDownloadableJson = (data) => jsonPrefix + encodeURIComponent(JSON.stringify(data))
+
+export const getToastMessage = (msg) => msg.data ?? msg.error

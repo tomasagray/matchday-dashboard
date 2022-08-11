@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {useSelector} from "react-redux";
 import {FillSpinner} from "../../components/Spinner";
 import {useGetAllDataSourcePluginsQuery, useRefreshAllDataSourcePluginsMutation} from "./dataSourcePluginApiSlice";
@@ -9,12 +9,15 @@ import {ClearButton} from "../../components/controls/ClearButton";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import dayjs from "dayjs";
+import {toast} from "react-toastify";
+import {getToastMessage} from "../../app/utils";
 
 const DEFAULT_LABEL = ''
 const DEFAULT_DATE = new Date()
 
 export const DataSourcePluginsList = () => {
 
+    // handlers
     const onRefreshHover = () => {
         setRefreshHover(true)
     }
@@ -44,6 +47,8 @@ export const DataSourcePluginsList = () => {
         const query = getRefreshQuery()
         await refreshAllPlugins(query)
     }
+    
+    // refresh tools
     const getRefreshTool = (refreshMode) => {
         switch (refreshMode) {
             case 'label':
@@ -82,23 +87,54 @@ export const DataSourcePluginsList = () => {
         data: dataSourcePlugins,
         isLoading: pluginsLoading,
         isSuccess: pluginLoaded,
-        isError: pluginLoadingError,
+        isError: isPluginError,
         error: pluginError
     } = useGetAllDataSourcePluginsQuery()
-    const [refreshAllPlugins, {isLoading: refreshing}] = useRefreshAllDataSourcePluginsMutation()
-    const selectedPluginId = useSelector(state => state['dataSourcePlugins'].selectedPluginId)
+    const [refreshAllPlugins, {
+        isLoading: refreshing,
+        isSuccess: isRefreshSuccess,
+        isError: isRefreshError,
+        error: refreshError
+    }] = useRefreshAllDataSourcePluginsMutation()
+    
+    // toast messages
+    useEffect(() => {
+        // success
+        if (isRefreshSuccess) {
+            toast('Data sources successfully refreshed')
+        }
+        // error
+        if (isPluginError) {
+            let msg = 'Error fetching data source plugins: ' + getToastMessage(pluginError)
+            toast.error(msg)
+        }
+        if (isRefreshError) {
+            let msg = 'Error refreshing data sources: ' + getToastMessage(refreshError)
+            toast.error(msg)
+        }
+    }, [
+        isRefreshSuccess,
+        isRefreshError,
+        refreshError,
+        isPluginError,
+        pluginError
+    ])
+    
+    // state
+    const selectedPluginId = useSelector(state => state['dataSourcePlugins']['selectedPluginId'])
     let [refreshHover, setRefreshHover] = useState(false)
     let [refreshMode, setRefreshMode] = useState(null)
     let [refreshLabel, setRefreshLabel] = useState(DEFAULT_LABEL)
     let [refreshDate, setRefreshDate] = useState(DEFAULT_DATE)
 
+    // components
     let pluginList
     if (pluginLoaded) {
         pluginList = dataSourcePlugins.ids.map(pluginId => {
             let active = selectedPluginId !== null && pluginId === selectedPluginId
             return <DataSourcePluginTile key={pluginId} active={active} pluginId={pluginId}/>;
         })
-    } else if (pluginLoadingError) {
+    } else if (isPluginError) {
         pluginList = <ErrorMessage code={pluginError.status}>{pluginError.error}</ErrorMessage>
     }
 
@@ -109,7 +145,7 @@ export const DataSourcePluginsList = () => {
         pluginData = <p>Please select a Data Source plugin from above.</p>
     }
 
-    let refreshDisabled = pluginsLoading || pluginLoadingError || refreshing;
+    let refreshDisabled = pluginsLoading || isPluginError || refreshing;
     let refreshButtonStyle = pluginsLoading || refreshing ? {cursor: 'wait'} : {}
     let refreshTool = getRefreshTool(refreshMode)
     let refreshOptionsVisibility =

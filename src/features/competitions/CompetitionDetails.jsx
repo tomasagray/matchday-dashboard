@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {useParams} from "react-router-dom";
 import {useFetchCompetitionByIdQuery, useFetchTeamsForCompetitionQuery} from "./competitionApiSlice";
 import {FillSpinner, Spinner} from "../../components/Spinner";
@@ -9,31 +9,66 @@ import TeamTile from "../teams/TeamTile";
 import Select from "../../components/controls/Select";
 import {Option} from "../../components/controls/Option";
 import {EditButton} from "../../components/controls/EditButton";
+import {toast} from "react-toastify";
+import {getToastMessage} from "../../app/utils";
 
 export const CompetitionDetails = () => {
 
     const onClickEditButton = (e) => {
         e.preventDefault()
         console.log('edit')
+        // todo - add competition edit modal
     }
 
     const params = useParams()
     const {competitionId} = params
+
+    // hooks
     const {
         data: competition,
         isLoading: isCompetitionLoading,
-        isSuccess: isCompetitionSuccess
+        isSuccess: isCompetitionSuccess,
+        isError: isCompetitionError,
+        error: competitionError
     } = useFetchCompetitionByIdQuery(competitionId)
     const {
         data: teams,
         isLoading: isTeamsLoading,
-        isSuccess: isTeamsSuccess
+        isSuccess: isTeamsSuccess,
+        isError: isTeamsError,
+        error: teamsError
     } = useFetchTeamsForCompetitionQuery(competitionId)
     const {
         data: events,
         isLoading: isEventsLoading,
+        isError: isEventsError,
+        error: eventsError
     } = useFetchEventsForCompetitionQuery(competitionId)
 
+    // toast messages
+    useEffect(() => {
+        if (isCompetitionError) {
+            let msg = `Failed to load Competition data for: ${competitionId}` + getToastMessage(competitionError)
+            toast.error(msg)
+        }
+        if (isTeamsError) {
+            let msg = 'Failed to load Teams: ' + getToastMessage(teamsError)
+            toast.error(msg)
+        }
+        if (isEventsError) {
+            let msg = 'Failed to load Events data: ' + getToastMessage(eventsError)
+            toast.error(msg)
+        }
+    }, [
+        competitionId,
+        isCompetitionError,
+        competitionError,
+        isEventsError,
+        eventsError,
+        isTeamsError,
+        teamsError])
+
+    // components
     let eventTiles = events?.map(event => <EventTile event={event} /> ) ?? []
     let teamTiles =
         isTeamsSuccess ?

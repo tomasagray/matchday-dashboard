@@ -1,51 +1,60 @@
 import {Status, ToggleSwitch} from "../../components/controls/ToggleSwitch";
-import React from "react";
+import React, {useEffect} from "react";
 import {useSelector} from "react-redux";
 import {useDisableDataSourcePluginMutation, useEnableDataSourcePluginMutation} from "./dataSourcePluginApiSlice";
 import {selectDataSourcePluginById} from "./dataSourcePluginSlice";
 import {SettingContainer} from "../../components/SettingContainer";
 import {SettingsGroup} from "../../components/SettingsGroup";
 import {SettingsLink} from "../../components/SettingsLink";
+import {toast} from "react-toastify";
 
 export const PluginDetailDisplay = () => {
 
-    const [enablePlugin, {isLoading: enableIsLoading}] = useEnableDataSourcePluginMutation()
-    const [disablePlugin, {isLoading: disableIsLoading}] = useDisableDataSourcePluginMutation()
+    const onEnabledToggle = () => {
+        if (plugin && !enableIsLoading && !disableIsLoading) {
+            if (plugin.enabled) {
+                disablePlugin(plugin.id)
+            } else {
+                enablePlugin(plugin.id)
+            }
+        }
+    }
+    const [enablePlugin, {
+        isLoading: enableIsLoading,
+        isError: isEnableError,
+        error: enableError
+    }] = useEnableDataSourcePluginMutation()
+    const [disablePlugin, {
+        isLoading: disableIsLoading,
+        isError: isDisableError,
+        error: disableError
+    }] = useDisableDataSourcePluginMutation()
     const selectedPluginId = useSelector(state => state.dataSourcePlugins.selectedPluginId)
     const plugin = useSelector(state => selectDataSourcePluginById(state, selectedPluginId))
-    let toggle = Status().Unchecked
+    let toggle = Status()['Unchecked']
 
     // handle toggle switch rendering
     if (enableIsLoading || disableIsLoading) {
-        toggle = Status().Transitioning
+        toggle = Status()['Transitioning']
     } else if (plugin) {
         if (plugin.enabled) {
-            toggle = Status().Checked
+            toggle = Status()['Checked']
         } else {
-            toggle = Status().Unchecked
+            toggle = Status()['Unchecked']
         }
     }
 
-    const showEnabled = async (plugin) => {
-        return await enablePlugin(plugin.id)
-    };
-    const showDisabled = async (plugin) => {
-        return await disablePlugin(plugin.id)
-    }
-    const onEnabledToggle = async () => {
-        if (plugin && !enableIsLoading && !disableIsLoading) {
-            let result
-            if (plugin.enabled) {
-                result = await showDisabled(plugin)
-            } else {
-                result = await showEnabled(plugin)
-            }
-            if (result.error) {
-                // todo - how to display errors?
-                console.log('got an error', result)
-            }
+    // error message toast
+    useEffect(() => {
+        if (isEnableError) {
+            let msg = enableError.data ?? enableError.error
+            toast.error(msg)
         }
-    }
+        if (isDisableError) {
+            let msg = disableError.data ?? disableError.error
+            toast.error(msg)
+        }
+    }, [isEnableError, enableError, isDisableError, disableError])
 
     return (
         <>

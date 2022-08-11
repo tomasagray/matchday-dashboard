@@ -1,17 +1,33 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {useFetchAllEventsQuery} from "./eventApiSlice";
 import {FillSpinner} from "../../components/Spinner";
 import EventTile from "./EventTile";
+import {ErrorMessage} from "../../components/ErrorMessage";
+import {toast} from "react-toastify";
 
 export const EventsDisplay = () => {
 
-    const {data: events, isLoading} = useFetchAllEventsQuery()
+    const {
+        data: events,
+        isLoading,
+        isSuccess,
+        isError,
+        error
+    } = useFetchAllEventsQuery()
+
+    useEffect(() => {
+        if (isError) {
+            let msg = error.data ?? error.error
+            toast.error(msg)
+        }
+    }, [error, isError])
 
     return (
         <>
             {
                 isLoading ?
                     <FillSpinner/> :
+                    isSuccess ?
                 <div>
                     <h1>Latest Events</h1>
                     <div className={"Event-display"}>
@@ -21,8 +37,9 @@ export const EventsDisplay = () => {
                         )
                     }
                     </div>
-                </div>
+                </div> :
+                <ErrorMessage>No Events could be loaded from the server</ErrorMessage>
             }
         </>
-    )
+    );
 }

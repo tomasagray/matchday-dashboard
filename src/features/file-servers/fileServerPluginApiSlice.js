@@ -20,7 +20,7 @@ export const fileServerPluginApiSlice = apiSlice.injectEndpoints({
                 method: 'POST',
                 headers: JsonHeaders,
             }),
-            invalidatesTags: (result, error, arg) => [fileServerPluginTag]
+            invalidatesTags: [fileServerPluginTag]
         }),
         disableFileServerPlugin: builder.mutation({
             query: pluginId => ({
@@ -28,7 +28,7 @@ export const fileServerPluginApiSlice = apiSlice.injectEndpoints({
                 method: 'POST',
                 headers: JsonHeaders,
             }),
-            invalidatesTags: (result, error, arg) => [fileServerPluginTag],
+            invalidatesTags: [fileServerPluginTag],
         })
     })
 })

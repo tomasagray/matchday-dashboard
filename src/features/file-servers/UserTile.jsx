@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {newUserUpdated, selectUserById} from "./fileServerUserSlice";
 import {FloatingMenu} from "../../components/FloatingMenu";
@@ -9,9 +9,12 @@ import {CancelButton} from "../../components/controls/CancelButton";
 import {DeleteButton} from "../../components/controls/DeleteButton";
 import {SmallSpinner} from "../../components/Spinner";
 import {CookieDisplay} from "./CookieDisplay";
+import {getToastMessage} from "../../app/utils";
+import {toast} from "react-toastify";
 
 export const UserTile = (props) => {
 
+    // handlers
     const dispatch = useDispatch()
     const onMenuButtonClick = (e) => {
         e.preventDefault()
@@ -25,10 +28,8 @@ export const UserTile = (props) => {
     const onUserLogin = async () => {
         console.log('relogging in user', userId, user)
         setEditMenuHidden(true)
-        if (user.hasPassword) {
-            let response = await loginUser(userId);
-            // todo - handle, display messages
-            console.log('login result', response)
+        if (user['hasPassword']) {
+            loginUser(userId)
         } else {
             dispatch(newUserUpdated({field: 'username', value: username}))
             showLoginModal()
@@ -52,28 +53,74 @@ export const UserTile = (props) => {
         setShowCookiesModal(false)
     }
 
-    const [logoutUser, {isLoading: isLoggingOut, isSuccess: isLogoutSuccess}] = useLogoutUserMutation()
-    const [loginUser, {isLoading: isLoggingIn, isSuccess: isLoginSuccess}] = useReloginUserMutation()
-    const [deleteUser, {isLoading: isDeleting, isSuccess: isDeleteSuccess}] = useDeleteUserMutation();
-    if (isLogoutSuccess) {
-        console.log('logged out')
-    }
-    if (isLoginSuccess) {
-        console.log('successfully re-logged in...')
-    }
-    if (isDeleteSuccess) {
-        console.log('deleted')
-    }
-
     let {userId, showLoginModal} = props
-    let user = useSelector(state => selectUserById(state, userId))
 
+    // hooks
+    const [loginUser, {
+        isLoading: isLoggingIn,
+        isSuccess: isLoginSuccess,
+        isError: isLoginError,
+        error: loginError
+    }] = useReloginUserMutation()
+    const [logoutUser, {
+        isLoading: isLoggingOut,
+        isSuccess: isLogoutSuccess,
+        isError: isLogoutError,
+        error: logoutError
+    }] = useLogoutUserMutation()
+    const [deleteUser, {
+        isLoading: isDeleting,
+        isSuccess: isDeleteSuccess,
+        isError: isDeleteError,
+        error: deleteError
+    }] = useDeleteUserMutation()
+
+    // toast messages
+    useEffect(() => {
+        // success
+        if (isLogoutSuccess) {
+            toast('User logged in successfully')
+        }
+        if (isLogoutSuccess) {
+            toast('User successfully logged out')
+        }
+        if (isDeleteSuccess) {
+            toast('User was deleted')
+        }
+        // error
+        if (isLoginError) {
+            let msg = 'Could not login: ' + getToastMessage(loginError);
+            toast.error(msg);
+        }
+        if (isLogoutError) {
+            let msg = 'Failed to logout: ' + getToastMessage(logoutError)
+            toast.error(msg)
+        }
+        if (isDeleteError) {
+            let msg = 'Could not delete user: ' + getToastMessage(deleteError)
+            toast.error(msg)
+        }
+    }, [
+        isLoginSuccess,
+        isLogoutSuccess,
+        isDeleteSuccess,
+        isLoginError,
+        loginError,
+        isLogoutError,
+        logoutError,
+        isDeleteError,
+        deleteError
+    ])
+
+    // state
+    let user = useSelector(state => selectUserById(state, userId))
     let username = user?.username ?? '... deleting ...'
     let loggedIn = user?.loggedIn ?? false
     let [editMenuHidden, setEditMenuHidden] = useState(true)
     let [showDeleteUserConfirm, setShowDeleteUserConfirm] = useState(false)
     let [showCookiesModal, setShowCookiesModal] = useState(false)
 
+    // components
     let logButton = loggedIn ?
         <MenuItem onClick={onUserLogout}>
             Logout <img src={process.env.PUBLIC_URL + '/img/icon/logout/logout_32.png'} alt={'Logout'}/>

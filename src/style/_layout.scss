@@ -32,20 +32,6 @@
   flex-direction: column;
 }
 
-.Grid-list {
-  width: 100%;
-  list-style: none;
-  display: grid;
-  grid-template-columns: auto auto auto auto auto auto;
-  gap: 5vw;
-
-  .Grid-item {
-    display: flex;
-    flex-direction: column;
-    text-align: left;
-  }
-}
-
 .section-header {
   display: flex;
   align-items: center;

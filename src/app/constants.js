@@ -3,6 +3,4 @@ export const JsonHeaders = {
     'Content-Type': 'application/json',
 }
 
-export const FileUploadHeaders = {
-    'Content-Type': 'multipart/form-data; boundary=xxx',
-}
+

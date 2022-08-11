@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {newUserUpdated, selectNewUser} from "./fileServerUserSlice";
 import {FileUploadButton} from "../../components/controls/FileUploadButton";
@@ -6,6 +6,7 @@ import Modal, {Body, Footer, Header} from "../../components/Modal";
 import {CancelButton} from "../../components/controls/CancelButton";
 import {SaveButton} from "../../components/controls/SaveButton";
 import {useLoginUserMutation, useUploadCredentialsMutation} from "./fileServerUserApiSlice";
+import {toast} from "react-toastify";
 
 export const AddNewUserForm = (props) => {
 
@@ -56,14 +57,8 @@ export const AddNewUserForm = (props) => {
             serverId: pluginId,
         }
         console.log('logging in user:', user)
-        let result = await loginUser(user)
-        if (result.data) {
-            console.log('user logged in successfully', result.data)
-            onHide()
-        } else {
-            // todo - show errors
-            console.log('error logging in user', result.error)
-        }
+        await loginUser(user)
+        onHide()
     }
     const onUploadUserCredentials = async () => {
         console.log('uploading credentials...')
@@ -71,18 +66,48 @@ export const AddNewUserForm = (props) => {
         formData.append('username', username.value)
         formData.append('serverId', pluginId)
         formData.append('cookies', cookieFileData)
-        uploadCredentials(formData).unwrap().then((payload) => {
-            console.log('login successful:', payload)
-            onHide()
-        })
+        uploadCredentials(formData).unwrap().then(() => onHide())
     }
 
     let {pluginId, onHide, isShown} = props
     let newUser = useSelector(state => selectNewUser(state))
     let {username, password, cookieFile} = newUser
     let [loginMode, setLoginMode] = useState('login')
-    const [loginUser, {isLoading: isLoggingIn}] = useLoginUserMutation()
-    const [uploadCredentials, {isLoading: isUploading}] = useUploadCredentialsMutation()
+    const [loginUser, {
+        isLoading: isLoggingIn,
+        isSuccess: isLoginSuccess,
+        isError: isLoginError,
+        error: loginError
+    }] = useLoginUserMutation()
+    const [uploadCredentials, {
+        isLoading: isUploading,
+        isSuccess: isUploadSuccess,
+        isError: isUploadError,
+        error: uploadError
+    }] = useUploadCredentialsMutation()
+
+    // toast messages
+    useEffect(() => {
+        if (isLoginSuccess || isUploadSuccess) {
+            toast(`User ${username.value} logged in successfully`)
+        }
+        if (isLoginError) {
+            let msg = loginError.data ?? loginError.error
+            toast.error(msg)
+        }
+        if (isUploadError) {
+            let msg = uploadError.data ?? uploadError.error
+            toast.error(msg)
+        }
+    }, [
+        username,
+        isLoginSuccess,
+        isLoginError,
+        isUploadSuccess,
+        isUploadError,
+        loginError,
+        uploadError
+    ])
 
     let [cookieFileData, setCookieFileData] = useState(new Blob())
     let isLoginMode = loginMode === 'login' ? ' selected' : ''

@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {CollapsableContainer} from "../../components/CollapsableContainer";
 import {PatternKitTypeGroup} from "./PatternKitTypeGroup";
 import {dataSourceReset, dataSourceUpdated, selectCleanDataSourceById, selectDataSourceById,} from "./dataSourceSlice";
@@ -19,6 +19,7 @@ import {SaveButton} from "../../components/controls/SaveButton";
 import {DeleteButton} from "../../components/controls/DeleteButton";
 import {ClearButton} from "../../components/controls/ClearButton";
 import {validateFields} from "./PatternKitFieldEditor";
+import {toast} from "react-toastify";
 
 
 const groupPatternKits = (patternKits) => {
@@ -95,8 +96,9 @@ const validateDataSource = (dataSource, template) => {
 export const DataSourceDisplay = (props) => {
 
     const DEFAULT_FIELD_SIZE = 25
-
     const dispatch = useDispatch()
+
+    // save/reset data source modal
     const onBaseUriValChanged = (e) => {
         let baseUriVal = e.target.value
         let updatedDataSource = {
@@ -126,6 +128,7 @@ export const DataSourceDisplay = (props) => {
         setIsEditable(false)
     }
 
+    // type submenu
     const onShowPatternKitTypeMenu = (e) => {
         e.preventDefault()
         setShowTypeMenu(!showTypeMenu)
@@ -135,6 +138,7 @@ export const DataSourceDisplay = (props) => {
         setSelectedType('')
     }
 
+    // add pattern kit modal
     const onShowAddPatternKitModal = (e) => {
         e.preventDefault()
         setShowAddPatternKitModal(true)
@@ -155,6 +159,7 @@ export const DataSourceDisplay = (props) => {
         onHideAddPatternKitModal()
     }
 
+    // floating menu
     const onMenuButtonClick = (e) => {
         e.preventDefault()
         setEditMenuHidden(false)
@@ -191,6 +196,9 @@ export const DataSourceDisplay = (props) => {
     }
 
     let {dataSourceId} = props
+    let cleanDataSource = useSelector(state => selectCleanDataSourceById(state, dataSourceId))
+    let newPatternKit = useSelector(state => selectNewPatternKitForUpload(state))
+    let isNewPatternKitValid = useSelector(state => selectIsNewPatternKitValid(state))
     let dataSource = useSelector(state => selectDataSourceById(state, dataSourceId))
     let {
         clazz,
@@ -198,16 +206,64 @@ export const DataSourceDisplay = (props) => {
         baseUri,
         patternKits,
     } = dataSource
-    let type = getClassName(clazz)
-    let {data: template} = useGetTemplateForTypeQuery(type)
-    let isDataSourceValid = validateDataSource(dataSource, template)
-    let cleanDataSource = useSelector(state => selectCleanDataSourceById(state, dataSourceId))
     let isModified = cleanDataSource !== dataSource
-    let newPatternKit = useSelector(state => selectNewPatternKitForUpload(state))
-    let isNewPatternKitValid = useSelector(state => selectIsNewPatternKitValid(state))
-    const [updateDataSource, {isLoading: isUpdating}] = useUpdateDataSourceMutation()
-    const [deleteDataSource, {isLoading: isDeleting}] = useDeleteDataSourceMutation()
+    let type = getClassName(clazz)
 
+    // hooks
+    let {
+        data: template,
+        isSuccess: isTemplateSuccess,
+        isError: isTemplateError,
+        error: templateError
+    } = useGetTemplateForTypeQuery(type)
+    let isDataSourceValid = isTemplateSuccess && validateDataSource(dataSource, template)
+    const [updateDataSource, {
+        isLoading: isUpdating,
+        isSuccess: isUpdateSuccess,
+        isError: isUpdateError,
+        error: updateError
+    }] = useUpdateDataSourceMutation()
+    const [deleteDataSource, {
+        isLoading: isDeleting,
+        isSuccess: isDeleteSuccess,
+        isError: isDeleteError,
+        error: deleteError
+    }] = useDeleteDataSourceMutation()
+
+    // toast messages
+    useEffect(() => {
+        if (isUpdateSuccess) {
+            toast('Data source updated successfully')
+        }
+        if (isDeleteSuccess) {
+            toast('Data source successfully deleted')
+        }
+        if (isTemplateError) {
+            let msg = templateError.data ?? templateError.error;
+            toast.error(msg);
+        }
+        if (isUpdateError) {
+            let msg = updateError.data ?? updateError.error
+            toast.error(msg)
+        }
+        if (isDeleteError) {
+            let msg = deleteError.data ?? deleteError.error
+            toast.error(msg)
+        }
+    }, [
+        deleteError,
+        isDeleteError,
+        isDeleteSuccess,
+        isTemplateError,
+        isUpdateError,
+        isUpdateSuccess,
+        templateError?.data,
+        templateError?.error,
+        updateError?.data,
+        updateError?.error
+    ])
+
+    // state
     let [showTypeMenu, setShowTypeMenu] = useState(false)
     let [selectedType, setSelectedType] = useState('')
     let [editMenuHidden, setEditMenuHidden] = useState(true)
@@ -217,7 +273,7 @@ export const DataSourceDisplay = (props) => {
     let [showAddPatternKitModal, setShowAddPatternKitModal] = useState(false)
     let [showDeleteDataSourceModal, setShowDeleteDataSourceModal] = useState(false)
 
-
+    // components
     let typeGroupHeader
     let patternKitDisplays
     let patternKitData
@@ -244,13 +300,14 @@ export const DataSourceDisplay = (props) => {
         }
     }
 
-    let hoverColor = isEditable ? 'light-green' : 'green'
-    let editImg = !isEditable ? '/edit-pencil/edit-pencil_16.png' : '/cancel/cancel_16.png'
+    const hoverColor = isEditable ? 'light-green' : 'green'
+    const editImg = !isEditable ? '/edit-pencil/edit-pencil_16.png' : '/cancel/cancel_16.png'
     const editButton = isModified ? null :
         <MenuItem onClick={onClickEditButton} backgroundColor={hoverColor}>
             <p>{isEditable ? 'Cancel' : ''} Edit</p>
             <img src={process.env.PUBLIC_URL + '/img/icon/' + editImg} alt="Edit"/>
         </MenuItem>
+
     return (
         <CollapsableContainer _key={dataSourceId} title={title}>
             <div id="modal-container">

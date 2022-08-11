@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {useAddDataSourceMutation} from "./dataSourceApiSlice";
@@ -12,6 +12,7 @@ import {AddDataSourceForm} from "./AddDataSourceForm";
 import {clearNewDataSource, selectIsNewDataSourceValid, selectNewDataSource} from "./dataSourceSlice";
 import {DataSourceList} from "./DataSourceList";
 import {SaveButton} from "../../components/controls/SaveButton";
+import {toast} from "react-toastify";
 
 export const PluginDataSourceList = () => {
 
@@ -38,45 +39,54 @@ export const PluginDataSourceList = () => {
         dispatch(clearNewDataSource({}))
         setShowAddDataSourceModal(false)
     }
+
+    const params = useParams()
+    let {pluginId} = params
+    let newDataSource = useSelector(state => selectNewDataSource(state))
+    let [showAddDataSourceModal, setShowAddDataSourceModal] = useState(false)
+
     let [addDataSource, {
         isLoading: isDataSourceSaving,
         isSuccess: isDataSourceSaveSuccess,
         isError: isSaveDataSourceError,
         error: saveDataSourceError
     }] = useAddDataSourceMutation()
-
-
-    const params = useParams()
-    let {pluginId} = params
-    let newDataSource = useSelector(state => selectNewDataSource(state))
-    let [showAddDataSourceModal, setShowAddDataSourceModal] = useState(false)
     // ensure data is loaded into store
     let {
         isLoading: pluginLoading,
         isSuccess: pluginSuccess,
         isFetching: isPluginRefetching,
+        isError: isPluginError,
+        error: pluginError
     } = useGetAllDataSourcePluginsQuery()
     let plugin = useSelector(state => {
         if (pluginSuccess) {
             return selectDataSourcePluginById(state, pluginId)
         }
     })
-    let isFormValid = useSelector(state => {
-        if (pluginSuccess) {
-            return selectIsNewDataSourceValid(state)
-        }
-    })
+    let isFormValid = useSelector(state => pluginSuccess && selectIsNewDataSourceValid(state))
 
-    // todo - handle these
-    if (isSaveDataSourceError) {
-        console.log('error', saveDataSourceError)
-    }
-    if (isDataSourceSaving) {
-        console.log('saving saving saving.')
-    }
-    if (isDataSourceSaveSuccess) {
-        console.log('saving was successful')
-    }
+
+    useEffect(() => {
+        if (isPluginError) {
+            let msg = pluginError.data ?? pluginError.error
+            toast.error(msg)
+        }
+        if (isSaveDataSourceError) {
+            let msg = saveDataSourceError.data ?? saveDataSourceError.error;
+            toast.error(msg);
+        }
+        if (isDataSourceSaveSuccess) {
+            toast('DataSource was successfully uploaded')
+        }
+    },  [
+        isSaveDataSourceError,
+        saveDataSourceError,
+        isDataSourceSaveSuccess,
+        isPluginError,
+        pluginError?.data,
+        pluginError?.error
+    ])
 
 
     let pluginTitle
@@ -101,20 +111,24 @@ export const PluginDataSourceList = () => {
                                 isLoading={isDataSourceSaving} />
                 </Footer>
             </Modal>
-
-            <div className="Banner-title">
-                {pluginTitle}
-                <PluginId id={pluginId}/>
-            </div>
-            <div style={{display: 'flex', justifyContent: 'space-between'}}>
-                <h2>Data Sources</h2>
-                <button onClick={onAddDataSource} className="Small-button" disabled={isDataFetching}>
-                    Add Data Source...
-                </button>
-            </div>
+            {
+                pluginSuccess ?
+                    <>
+                        <div className="Banner-title">
+                            {pluginTitle} <PluginId id={pluginId}/>
+                        </div>
+                        <div style={{display: 'flex', justifyContent: 'space-between'}}>
+                            <h2>Data Sources</h2>
+                            <button onClick={onAddDataSource} className="Small-button" disabled={isDataFetching}>
+                                Add Data Source...
+                            </button>
+                        </div>
+                    </> :
+                    null
+            }
             <div style={{height: '100%'}}>
                 <DataSourceList pluginId={pluginId}/>
             </div>
         </>
-    );
+    )
 }

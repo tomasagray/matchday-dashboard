@@ -1,13 +1,17 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {newDataSourceUpdated, selectNewDataSource} from "./dataSourceSlice";
 import {useGetAllTemplatesQuery} from "./patternKitTemplateApiSlice";
 import Select from "../../components/controls/Select";
 import {Option} from "../../components/controls/Option";
+import {toast} from "react-toastify";
+import {getToastMessage} from "../../app/utils";
 
 export const AddDataSourceForm = (props) => {
 
     let dispatch = useDispatch()
+    
+    // handlers
     const onSelectType = (e, type) => {
         dispatch(newDataSourceUpdated({field: 'type', value: type}))
     }
@@ -20,10 +24,26 @@ export const AddDataSourceForm = (props) => {
         dispatch(newDataSourceUpdated({field: 'baseUri', value}))
     }
 
+    let {
+        data: templates, 
+        isLoading,
+        isSuccess,
+        isError,
+        error
+    } = useGetAllTemplatesQuery()
+    
+    // toast messages
+    useEffect(() => {
+        if (isError) {
+            let msg = 'Failed to add data source: ' + getToastMessage(error)
+            toast.error(msg)
+        }
+    }, [error, isError, isSuccess])
+    
+    // state
     let {pluginId, disabled} = props
     let newDataSource = useSelector( state =>  selectNewDataSource(state))
     let {type, title, baseUri} = newDataSource
-    let {data: templates, isLoading} = useGetAllTemplatesQuery()
     let selectedValue
     let templateOptions = []
     for (let i = 0; i < templates?.length ?? 0; i++) {
