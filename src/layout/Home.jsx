@@ -52,20 +52,23 @@ export const Home = () => {
         isEventsLoading ?
             [spinner] :
             isEventsSuccess ?
-            Object.values(eventsData.entities).map(event => <EventTile event={event} />) :
-            null
+                Object.values(eventsData.entities)
+                    .map(event => <EventTile event={event} />) :
+                null
     const competitions =
         isCompetitionsLoading ?
             [spinner] :
             isCompetitionsSuccess ?
-            Object.values(competitionsData.entities).map(competition => <CompetitionTile competition={competition} />) :
-            null
+                Object.values(competitionsData.entities)
+                    .map(competition => <CompetitionTile competition={competition} />) :
+                null
     const teams =
         isTeamsLoading ?
             [spinner] :
             isTeamsSuccess ?
-            Object.values(teamsData.entities).map(team => <TeamTile team={team} />) :
-            null
+                Object.values(teamsData.entities)
+                    .map(team => <TeamTile team={team} />) :
+                null
 
     // toast messages
     useEffect(() => {

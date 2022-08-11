@@ -13,6 +13,7 @@ import {clearNewDataSource, selectIsNewDataSourceValid, selectNewDataSource} fro
 import {DataSourceList} from "./DataSourceList";
 import {SaveButton} from "../../components/controls/SaveButton";
 import {toast} from "react-toastify";
+import {getToastMessage} from "../../app/utils";
 
 export const PluginDataSourceList = () => {
 
@@ -69,7 +70,7 @@ export const PluginDataSourceList = () => {
 
     useEffect(() => {
         if (isPluginError) {
-            let msg = pluginError.data ?? pluginError.error
+            let msg = 'Error loading data source plugins: ' + getToastMessage(pluginError)
             toast.error(msg)
         }
         if (isSaveDataSourceError) {
@@ -84,8 +85,7 @@ export const PluginDataSourceList = () => {
         saveDataSourceError,
         isDataSourceSaveSuccess,
         isPluginError,
-        pluginError?.data,
-        pluginError?.error
+        pluginError
     ])
 
 

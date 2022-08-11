@@ -7,6 +7,7 @@ import {CancelButton} from "../../components/controls/CancelButton";
 import {SaveButton} from "../../components/controls/SaveButton";
 import {useLoginUserMutation, useUploadCredentialsMutation} from "./fileServerUserApiSlice";
 import {toast} from "react-toastify";
+import {getToastMessage} from "../../app/utils";
 
 export const AddNewUserForm = (props) => {
 
@@ -92,11 +93,11 @@ export const AddNewUserForm = (props) => {
             toast(`User ${username.value} logged in successfully`)
         }
         if (isLoginError) {
-            let msg = loginError.data ?? loginError.error
+            let msg = 'Error logging in: ' + getToastMessage(loginError)
             toast.error(msg)
         }
         if (isUploadError) {
-            let msg = uploadError.data ?? uploadError.error
+            let msg = 'Error uploading credentials: ' + getToastMessage(uploadError)
             toast.error(msg)
         }
     }, [

@@ -60,7 +60,6 @@ export const patternKitSlice = createSlice({
         newPatternKitFieldsUpdated(state, action) {
             let newPatternKit = state.newPatternKit
             let payload = action.payload
-            console.log('payload', payload)
             let {fields, valid} = payload
             state.newPatternKit = {
                 ...newPatternKit,

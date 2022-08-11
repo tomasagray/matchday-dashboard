@@ -33,6 +33,7 @@ export const DataSourcePluginsList = () => {
     }
     const onShowDatePicker = (e) => {
         e.preventDefault()
+        // todo - date picker
         console.log('show date picker here')
         setRefreshMode('date')
     }

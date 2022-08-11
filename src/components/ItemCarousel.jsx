@@ -4,7 +4,6 @@ class ItemCarousel extends React.Component {
 
     constructor(props) {
         super(props)
-        console.log('props', props.items)
         this.carousel = createRef()
         this.itemList = createRef()
         this.itemDisplay = props.items ?
@@ -80,4 +79,4 @@ class ItemCarousel extends React.Component {
     }
 }
 
-export default ItemCarousel;
+export default ItemCarousel

@@ -31,8 +31,7 @@ export const fileServerUserApiSlice = apiSlice.injectEndpoints({
                 body: user,
             }),
             invalidatesTags: [fileServerUserTag],
-            transformResponse: (response, meta, arg) => {
-                console.log('login response: ', response, meta, arg)
+            transformResponse: (response) => {
                 store.dispatch(fileServerUserSlice.actions.userUpdated(response))
                 return response
             }
@@ -44,10 +43,6 @@ export const fileServerUserApiSlice = apiSlice.injectEndpoints({
                 body,
             }),
             invalidatesTags: [fileServerUserTag],
-            transformResponse: (response) => {
-                console.log('got response, etc.', response)
-                return response
-            }
         }),
         logoutUser: builder.mutation({
             query: userId => ({

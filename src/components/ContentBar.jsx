@@ -74,4 +74,4 @@ class ContentBar extends React.Component {
     }
 }
 
-export default ContentBar;
+export default ContentBar

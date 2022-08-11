@@ -23,7 +23,6 @@ export const FileServerPluginList = () => {
     // handlers
     const onTogglePluginEnabled = async () => {
         if (selectedPlugin) {
-            console.log('toggling...', selectedPlugin)
             selectedPlugin.enabled ?
                 await disablePlugin(selectedPlugin.id) :
                 await enablePlugin(selectedPlugin.id)
