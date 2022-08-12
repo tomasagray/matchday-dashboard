@@ -62,29 +62,60 @@
   .Content-bar-header {
     display: flex;
     justify-content: space-between;
+    margin-bottom: .5rem;
 
     .Content-bar-controls {
       display: flex;
+
+      .Content-bar-control {
+        background: none;
+        border: none;
+        margin: 0 .5rem;
+        opacity: .6;
+
+        &:hover:not(:disabled) {
+          opacity: .9;
+        }
+
+        &:disabled {
+          opacity: .2;
+        }
+      }
     }
   }
-}
 
-.Item-list {
-  list-style: none;
-  display: flex;
-  position: relative;
-  width: fit-content;
-
-  .Item-slide {
-    float: left;
+  .Item-carousel {
     display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    margin-right: 2rem;
-    max-width: variables.$eventPosterWidth;
+    flex-direction: row;
+    width: 100%;
+    overflow: hidden;
 
-    div {
-      max-width: variables.$eventPosterWidth;
+    .Item-list {
+      list-style: none;
+      display: flex;
+      position: relative;
+      width: fit-content;
+
+      .Item-slide {
+        float: left;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        margin-right: 2rem;
+        max-width: variables.$eventPosterWidth;
+
+        & > * {
+          margin: 0 !important; // reset
+        }
+
+        .Event-tile {
+          margin: 0 !important;
+        }
+
+        div {
+          max-width: variables.$eventPosterWidth;
+        }
+      }
     }
   }
 }

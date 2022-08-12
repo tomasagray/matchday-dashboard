@@ -15,8 +15,11 @@ export const Home = () => {
 
     const spinnerStyle = {
         margin: '3rem',
+        padding: '1rem',
+        opacity: .8,
         overflow: 'revert',
-        height: '10vh',
+        height: '15vh',
+        width: '100vw',
         display: 'flex',
         alignItems: 'center',
     }
@@ -49,21 +52,21 @@ export const Home = () => {
     } = useFetchAllTeamsQuery()
 
     // item lists
-    const events =
+    let events =
         isEventsLoading ?
-            [spinner] :
-            isEventsSuccess ?
+           [spinner] :
+           isEventsSuccess ?
                 Object.values(eventsData.entities)
                     .map(event => <EventTile event={event} />) :
                 null
-    const competitions =
+    let competitions =
         isCompetitionsLoading ?
             [spinner] :
             isCompetitionsSuccess ?
                 Object.values(competitionsData.entities)
                     .map(competition => <CompetitionTile competition={competition} />) :
                 null
-    const teams =
+    let teams =
         isTeamsLoading ?
             [spinner] :
             isTeamsSuccess ?
@@ -96,9 +99,9 @@ export const Home = () => {
 
     return (
         <div className="Content-container Home-container">
-            <ContentBar title="Recent" items={events}/>
-            <ContentBar title="Top Competitions" items={competitions}/>
-            <ContentBar title="Top Teams" items={teams}/>
+            <ContentBar title="Recent" items={events} />
+            <ContentBar title="Top Competitions" items={competitions} />
+            <ContentBar title="Top Teams" items={teams} />
         </div>
     );
 }

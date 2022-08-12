@@ -1,77 +1,96 @@
-import React from "react";
-import ItemCarousel from "./ItemCarousel";
+import React, {useEffect, useRef, useState} from "react";
 
-class ContentBar extends React.Component {
-    constructor(props) {
-        super(props);
+export const ContentBar = (props) => {
 
-        this.state = {
-            steps: 0,
-            carouselX: 0,
-            nextDisabled: false,
-            prevDisabled: true,
-        };
-        this.ref = React.createRef();
-        this.carousel = React.createRef();
-
-        this.handlePrevClick = this.handlePrevClick.bind(this);
-        this.handleNextClick = this.handleNextClick.bind(this);
+    // handlers
+    const onPrevClick = () => {
+        console.log('prev')
+        setCurrentSlide(currentSlide - 1)
+    }
+    const onNextClick = () => {
+        console.log('next')
+        console.log('currentSlide', currentSlide)
+        setCurrentSlide(currentSlide + 1)
     }
 
-    handlePrevClick() {
-        let steps = this.state.steps;
-        if (steps < 0) {
-            let carouselOffset = this.carousel.current.getReversePosition();
-            console.log('revOffset', carouselOffset)
-            this.setState({
-                steps: steps + 1,
-                carouselX: carouselOffset.x,
-                nextDisabled: false,
-                prevDisabled: carouselOffset.disablePrev
-            });
-        } else {
-            this.setState({
-                prevDisabled: true,
-            })
+    let {title, items} = props
+
+    // state
+    let [isPrevDisabled, setIsPrevDisabled] = useState(false)
+    let [isNextDisabled, setIsNextDisabled] = useState(false)
+    let [offset, setOffset] = useState(0)
+    // slide = section of itemList <= in width as contentBar
+    let [slideCount, setSlideCount] = useState(0)
+    let [currentSlide, setCurrentSlide] = useState(0)
+    const contentBar = useRef(null)
+    const itemList = useRef(null)
+
+    useEffect(() => {
+        if (contentBar.current !== null && itemList.current !== null) {
+            let {offsetWidth: contentBarWidth} = contentBar.current
+            let {offsetWidth: itemListWidth} = itemList.current
+
+            // determine slide count
+            const slides = Math.floor(itemListWidth / contentBarWidth) - 1
+            setSlideCount(slides)
+            // set carousel position
+            setOffset(contentBarWidth * currentSlide * -1)
+
+            // previous button
+            if (currentSlide <= 0) {
+                setIsPrevDisabled(true)
+            } else {
+                setIsPrevDisabled(false)
+            }
+
+            // next button
+            if (currentSlide <= slideCount) {
+                setIsNextDisabled(false)
+            } else {
+                setIsNextDisabled(true)
+            }
         }
-    }
+    }, [
+        props,
+        contentBar,
+        itemList,
+        currentSlide,
+        slideCount,
+        setIsPrevDisabled,
+        setIsNextDisabled
+    ])
 
-    handleNextClick() {
-        let carouselOffset = this.carousel.current.getAdvancePosition();
-        console.log('advance', carouselOffset)
-        if (carouselOffset !== this.state.carouselX) {
-            this.setState(currentState => ({
-                steps: currentState.steps - 1,
-                carouselX: carouselOffset.x,
-                prevDisabled: false,
-                nextDisabled: carouselOffset.disableNext,
-            }));
-        } else {
-            this.setState({
-                nextDisabled: true,
-            })
-        }
-    }
+    // components
+    let itemDisplay = items ?
+        items.map((item, idx) => <li key={idx} className="Item-slide">{item}</li> ) :
+        null;
 
-    render() {
-        return (
-            <div className="Content-bar" ref={this.ref}>
-                <div className="Content-bar-header">
-                    <h3 className="Content-bar-title"> {this.props.title} </h3>
-                    <div className="Content-bar-controls">
-                        <button className="Content-bar-control prev" onClick={this.handlePrevClick}
-                                disabled={this.state.prevDisabled}> &lt; </button>
-                        <button className="Content-bar-control next" onClick={this.handleNextClick}
-                                disabled={this.state.nextDisabled}> &gt; </button>
-                    </div>
-                </div>
-                <div className="Content-bar-content">
-                    <ItemCarousel ref={this.carousel} items={this.props.items} x={this.state.carouselX}
-                                  steps={this.state.steps}/>
+    return (
+        <div className="Content-bar">
+            <div className="Content-bar-header">
+                <h3 className="Content-bar-title"> {title} </h3>
+                <div className="Content-bar-controls">
+                    <button className="Content-bar-control prev" onClick={onPrevClick}
+                            disabled={isPrevDisabled}>
+                        <img src={process.env.PUBLIC_URL + '/img/icon/link-arrow/link-arrow_16.png'} alt='Previous'
+                            style={{transform: 'scaleX(-1)'}}/>
+                    </button>
+                    <button className="Content-bar-control next" onClick={onNextClick}
+                            disabled={isNextDisabled}>
+                        <img src={process.env.PUBLIC_URL + '/img/icon/link-arrow/link-arrow_16.png'} alt='Next' />
+                    </button>
                 </div>
             </div>
-        );
-    }
+
+            <div className="Content-bar-content" ref={contentBar}>
+                <div className="Item-carousel">
+                    <ul className="Item-list" ref={itemList} style={{left: offset}}>
+                        {itemDisplay}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    )
 }
 
 export default ContentBar
