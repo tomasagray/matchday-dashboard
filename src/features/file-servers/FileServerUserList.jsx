@@ -11,6 +11,7 @@ import {AddNewUserForm} from "./AddNewUserForm";
 import {newUserCleared} from "./fileServerUserSlice";
 import {getToastMessage} from "../../app/utils";
 import {toast} from "react-toastify";
+import {InfoMessage} from "../../components/InfoMessage";
 
 export const FileServerUserList = (props) => {
 
@@ -52,6 +53,7 @@ export const FileServerUserList = (props) => {
             toast.error(msg)
         }
         if (isUsersError) {
+            console.error(usersError)
             let msg = 'Failed to load user data: ' + getToastMessage(usersError)
             toast.error(msg)
         }
@@ -64,13 +66,13 @@ export const FileServerUserList = (props) => {
             <h1>{plugin.title}</h1> :
                 null
     let pluginUserList =
-        isUsersSuccess ?
+        isUsersSuccess && users ?
             <UserList users={Object.values(users.entities)} showLoginModal={onShowAddUserModal} /> :
             isUsersLoading ?
                 <div style={{margin: '5rem', display: 'flex', justifyContent: 'center'}}>
                     <Spinner />
                 </div> :
-                <p>There are no users</p>
+                <InfoMessage>There are currently no users for this plugin.</InfoMessage>
 
     return (
         <div style={props.style}>

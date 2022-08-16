@@ -9,18 +9,24 @@ export const fileServerUserApiSlice = apiSlice.injectEndpoints({
             query: (pluginId) => `/file-server-users/users/file-server/${pluginId}`,
             providesTags: [fileServerUserTag],
             transformResponse: (response) => {
-                let users = response._embedded.users
-                store.dispatch(fileServerUserSlice.actions.usersLoaded(users))
-                return userAdapter.setAll(userAdapter.getInitialState(), users)
+                let {_embedded} = response
+                if (_embedded) {
+                    let {users} = _embedded
+                    store.dispatch(fileServerUserSlice.actions.usersLoaded(users))
+                    return userAdapter.setAll(userAdapter.getInitialState(), users)
+                }
             }
         }),
         getUser: builder.query({
             query: userId => `/file-server-users/user/${userId}`,
             providesTags: (result, error, arg) => [{type: fileServerUserTag, id: arg}],
             transformResponse: (response) => {
-                let user = response._embedded.user
-                store.dispatch(fileServerUserSlice.actions.userLoaded(user))
-                return userAdapter.setOne(userAdapter.getInitialState(), user)
+                let {_embedded} = response
+                if (_embedded) {
+                    let {user} = _embedded
+                    store.dispatch(fileServerUserSlice.actions.userLoaded(user))
+                    return userAdapter.setOne(userAdapter.getInitialState(), user)
+                }
             }
         }),
         loginUser: builder.mutation({
