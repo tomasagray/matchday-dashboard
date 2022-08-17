@@ -1,4 +1,4 @@
-import {apiSlice, dataSourcePluginTag} from "../../app/apiSlice";
+import {apiSlice, competitionTag, dataSourcePluginTag, eventTag, teamTag} from "../../app/apiSlice";
 import {JsonHeaders} from "../../app/constants";
 import {dataSourcePluginSlice, pluginAdapter} from "./dataSourcePluginSlice";
 import store from "../../app/store";
@@ -56,7 +56,8 @@ export const dataSourcePluginApiSlice = apiSlice.injectEndpoints({
                 method: 'POST',
                 headers: JsonHeaders,
                 body: getSnapshotRequest(refreshQuery),
-            })
+            }),
+            invalidatesTags: [eventTag, competitionTag, teamTag]
         }),
     })
 })

@@ -10,9 +10,12 @@ export const teamApiSlice = apiSlice.injectEndpoints({
                 query: () => '/teams',
                 providesTags: [teamTag],
                 transformResponse: (response) => {
-                    const teams = response['_embedded']['teams']
-                    store.dispatch(teamsLoaded(teams))
-                    return teamAdapter.setAll(teamAdapter.getInitialState(), teams)
+                    let {_embedded} = response
+                    if (_embedded) {
+                        let {teams} = _embedded
+                        store.dispatch(teamsLoaded(teams))
+                        return teamAdapter.setAll(teamAdapter.getInitialState(), teams)
+                    }
                 }
             }),
             fetchTeamById: builder.query({
@@ -27,9 +30,12 @@ export const teamApiSlice = apiSlice.injectEndpoints({
                 query: (teamId) => `/teams/team/${teamId}/competitions`,
                 providesTags: [competitionTag],
                 transformResponse: (response) => {
-                    let competitions = response['_embedded'].competitions
-                    store.dispatch(competitionsLoaded(competitions))
-                    return competitionAdapter.setAll(competitionAdapter.getInitialState(), competitions)
+                    let {_embedded} = response
+                    if (_embedded) {
+                        let {competitions} = _embedded
+                        store.dispatch(competitionsLoaded(competitions))
+                        return competitionAdapter.setAll(competitionAdapter.getInitialState(), competitions)
+                    }
                 }
             }),
         })

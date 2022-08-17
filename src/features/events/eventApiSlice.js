@@ -9,10 +9,12 @@ export const eventApiSlice = apiSlice.injectEndpoints({
                 query: () => '/events/',
                 providesTags: [eventTag],
                 transformResponse: (response) => {
-                    const matches = response['matches']
-                    store.dispatch(matchSlice.actions.matchesLoaded(matches))
                     // todo - handle highlights, other types?
-                    return matchAdapter.setAll(matchAdapter.getInitialState(), matches)
+                    let {matches} = response
+                    if (matches && matches.length > 0) {
+                        store.dispatch(matchSlice.actions.matchesLoaded(matches));
+                        return matchAdapter.setAll(matchAdapter.getInitialState(), matches)
+                    }
                 },
             }),
             fetchMatchesForTeam: builder.query({

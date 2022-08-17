@@ -22,7 +22,6 @@ export const PatternKitFieldEditor = (props) => {
         display: 'flex',
         alignItems: 'center',
         padding: '1rem 0',
-        marginBottom: '2rem',
     }
     const helpMessage =
         <div style={{display: 'flex', justifyContent: 'center', padding: '2rem', width: '100%'}}>
@@ -56,7 +55,7 @@ export const PatternKitFieldEditor = (props) => {
     }
 
     let {pattern, type, fields, patternHandler, fieldHandler, disabled} = props
-    let patternLen = pattern !== null ? Math.min(pattern.length, 35) : 20
+    let patternLen = pattern !== null ? pattern.length : 20
     let typeName = getClassName(type)
     let {data: template, isLoading, isFetching} =
         useGetTemplateForTypeQuery(typeName, {skip: typeName === null})
@@ -77,10 +76,10 @@ export const PatternKitFieldEditor = (props) => {
             editor = (
                 <>
                     <div style={patternContainerStyle}>
-                        <h3 style={{paddingRight: '3.75rem'}}>Pattern</h3>
-                        <input type="text" name="pattern-kit-pattern" value={pattern != null ? pattern : ""}
-                               disabled={disabled} size={patternLen} onChange={onPatternChange}
-                               placeholder={"Enter a regular expression"}/>
+                        <h3 style={{width: '5.75rem'}}>Pattern</h3>
+                        <input type="text" name="pattern-kit-pattern" className="Pattern-kit-pattern"
+                               value={pattern != null ? pattern : ""} disabled={disabled} size={patternLen}
+                               onChange={onPatternChange} placeholder={"Enter a regular expression"}/>
                     </div>
                     <table className="Field-list">
                         <thead>

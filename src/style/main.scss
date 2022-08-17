@@ -42,8 +42,13 @@ p {
 }
 
 a {
-  color: colors.$defaultFontColor;
+  color: white  ;
   text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+    opacity: 1 !important;
+  }
 }
 
 code {

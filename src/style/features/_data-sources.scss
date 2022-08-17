@@ -26,9 +26,12 @@ $dataSourceIntBorder: 1px solid #666;
     font-size: 11pt;
     display: flex;
     justify-content: center;
+    max-width: 90%;
+    overflow: hidden;
+    text-overflow: ellipsis;
 
     &:disabled {
-      background: none;
+      background: none !important;
       border-color: transparent;
       color: #ccc;
     }

@@ -9,6 +9,7 @@ import CompetitionTile from "../features/competitions/CompetitionTile";
 import TeamTile from "../features/teams/TeamTile";
 import {toast} from "react-toastify";
 import {getToastMessage} from "../app/utils";
+import {Link} from "react-router-dom";
 
 
 export const Home = () => {
@@ -27,6 +28,24 @@ export const Home = () => {
         <div style={spinnerStyle}>
             <Spinner text='' size={'32px'}/>
         </div>
+
+    const EmptyMessage = (props) => {
+
+        let {noun} = props
+        const style = {
+            margin: '2rem 0',
+            opacity: .8,
+        }
+
+        return (
+            <>
+                <p style={style}>
+                    There are currently no <strong>{noun}</strong>.
+                    Try refreshing the <Link to="/data-sources">data sources</Link>.
+                </p>
+            </>
+        )
+    }
 
     // hooks
     const {
@@ -54,25 +73,33 @@ export const Home = () => {
     // item lists
     let events =
         isEventsLoading ?
-           [spinner] :
-           isEventsSuccess ?
-                Object.values(eventsData.entities)
-                    .map(event => <EventTile event={event} />) :
-                null
+           spinner :
+           isEventsSuccess && eventsData ?
+                <ContentBar title="Recent" items={
+                    Object.values(eventsData.entities)
+                        .map(event => <EventTile event={event} />)}
+                /> :
+                <EmptyMessage noun="events"/>
+
     let competitions =
         isCompetitionsLoading ?
-            [spinner] :
-            isCompetitionsSuccess ?
-                Object.values(competitionsData.entities)
-                    .map(competition => <CompetitionTile competition={competition} />) :
-                null
+            spinner :
+            isCompetitionsSuccess && competitionsData ?
+                <ContentBar title="Competitions" items={
+                    Object.values(competitionsData.entities)
+                        .map(competition => <CompetitionTile competition={competition}/>)
+                } /> :
+                <EmptyMessage noun="competitions" />
+
     let teams =
         isTeamsLoading ?
-            [spinner] :
-            isTeamsSuccess ?
-                Object.values(teamsData.entities)
-                    .map(team => <TeamTile team={team} />) :
-                null
+            spinner :
+            isTeamsSuccess && teamsData ?
+                <ContentBar title="Teams" items={
+                    Object.values(teamsData.entities)
+                        .map(team => <TeamTile team={team}/>)
+                } /> :
+                <EmptyMessage noun="teams" />
 
     // toast messages
     useEffect(() => {
@@ -99,9 +126,9 @@ export const Home = () => {
 
     return (
         <div className="Content-container Home-container">
-            <ContentBar title="Recent" items={events} />
-            <ContentBar title="Top Competitions" items={competitions} />
-            <ContentBar title="Top Teams" items={teams} />
+            {events}
+            {competitions}
+            {teams}
         </div>
     );
 }

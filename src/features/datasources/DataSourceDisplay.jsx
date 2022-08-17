@@ -395,11 +395,12 @@ export const DataSourceDisplay = (props) => {
                     <p style={{fontSize: 'large'}}>{type}</p>
                 </div>
                 <div className="Data-source-field">
-                    <h3 style={{marginRight: '1rem', whiteSpace: 'nowrap'}}>Base URI<span style={{color: '#aaa'}}> :</span></h3>
+                    <h3 style={{marginRight: '1rem', whiteSpace: 'nowrap'}}>
+                        Base URI<span style={{color: '#aaa'}}> :</span>
+                    </h3>
                     <input type="text" name="data-source-base-uri" disabled={!isEditable}
                            value={baseUri} onChange={onBaseUriValChanged}
-                           size={baseUri != null ? baseUri.length : DEFAULT_FIELD_SIZE} />
-
+                           size={baseUri != null ? baseUri.length + 5 : DEFAULT_FIELD_SIZE} />
                     <div style={{display: 'flex', justifyContent: 'flex-end', width: '-webkit-fill-available'}}>
                         <button className="Small-button" onClick={onShowAddPatternKitModal} disabled={isUpdating}>Add Pattern Kit...</button>
                     </div>
