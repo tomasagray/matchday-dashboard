@@ -15,14 +15,15 @@ import {Link} from "react-router-dom";
 export const Home = () => {
 
     const spinnerStyle = {
-        margin: '3rem',
+        margin: '.8rem',
         padding: '1rem',
         opacity: .8,
         overflow: 'revert',
         height: '15vh',
-        width: '100vw',
+        width: '100%',
         display: 'flex',
         alignItems: 'center',
+        justifyContent: 'center',
     }
     const spinner =
         <div style={spinnerStyle}>
@@ -34,9 +35,8 @@ export const Home = () => {
         let {noun} = props
         const style = {
             margin: '2rem 0',
-            opacity: .8,
+            color: '#ccc',
         }
-
         return (
             <>
                 <p style={style}>
