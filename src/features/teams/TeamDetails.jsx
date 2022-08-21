@@ -1,7 +1,7 @@
 import ContentBar from "../../components/ContentBar";
 import {useParams} from "react-router-dom";
 import {useFetchCompetitionsForTeamQuery, useFetchTeamByIdQuery} from "./teamApiSlice";
-import {FillSpinner, Spinner} from "../../components/Spinner";
+import {CenteredSpinner, FillSpinner} from "../../components/Spinner";
 import {useFetchMatchesForTeamQuery} from "../events/eventApiSlice";
 import EventTile from "../events/EventTile";
 import CompetitionTile from "../competitions/CompetitionTile";
@@ -79,7 +79,7 @@ export const TeamDetails = () => {
                 []
     let competitionTiles =
         isCompetitionsLoading ?
-            <Spinner text=''/> :
+            <CenteredSpinner /> :
             isCompetitionsSuccess ?
                 Object.values(competitions.entities).map(
                     competition => <CompetitionTile competition={competition} key={competition.id} />
@@ -111,7 +111,7 @@ export const TeamDetails = () => {
 
                             {
                                 isMatchesLoading ?
-                                    <Spinner text='' /> :
+                                    <CenteredSpinner /> :
                                     <ContentBar title={"Most recent matches"} items={matchTiles}/>
                             }
 

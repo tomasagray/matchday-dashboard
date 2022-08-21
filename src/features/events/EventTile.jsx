@@ -14,12 +14,7 @@ export default function EventTile(props) {
         <span>{title}</span>
 
     return (
-        <Link to={
-            {
-                pathname: '/events/event/' + eventId,
-                event,
-            }
-        }>
+        <Link to={{pathname: '/events/event/' + eventId}}>
             <div className="Event-tile">
                 <img src={imgUrl} alt={props.event.title} className="Event-poster"/>
                 <div className="Event-details">

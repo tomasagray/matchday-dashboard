@@ -1,5 +1,23 @@
 @use "variables";
 
+@-webkit-keyframes load3 {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes load3 {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 .spinner {
   display: flex;
   flex-direction: column;
@@ -79,24 +97,16 @@
       right: 0;
     }
   }
-
 }
 
-
-@-webkit-keyframes load3 {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes load3 {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
+.Centered-spinner {
+  margin: .8rem;
+  padding: 1em;
+  opacity: .8;
+  overflow: revert;
+  height: 15vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

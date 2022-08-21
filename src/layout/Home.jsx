@@ -3,7 +3,7 @@ import ContentBar from "../components/ContentBar";
 import {useFetchAllEventsQuery} from "../features/events/eventApiSlice";
 import {useFetchAllCompetitionsQuery} from "../features/competitions/competitionApiSlice";
 import {useFetchAllTeamsQuery} from "../features/teams/teamApiSlice";
-import {Spinner} from "../components/Spinner";
+import {CenteredSpinner} from "../components/Spinner";
 import EventTile from "../features/events/EventTile";
 import CompetitionTile from "../features/competitions/CompetitionTile";
 import TeamTile from "../features/teams/TeamTile";
@@ -13,22 +13,6 @@ import {Link} from "react-router-dom";
 
 
 export const Home = () => {
-
-    const spinnerStyle = {
-        margin: '.8rem',
-        padding: '1rem',
-        opacity: .8,
-        overflow: 'revert',
-        height: '15vh',
-        width: '100%',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-    }
-    const spinner =
-        <div style={spinnerStyle}>
-            <Spinner text='' size={'32px'}/>
-        </div>
 
     const EmptyMessage = (props) => {
 
@@ -73,7 +57,7 @@ export const Home = () => {
     // item lists
     let events =
         isEventsLoading ?
-           spinner :
+           <CenteredSpinner /> :
            isEventsSuccess && eventsData ?
                 <ContentBar title="Recent" items={
                     Object.values(eventsData.entities)
@@ -83,7 +67,7 @@ export const Home = () => {
 
     let competitions =
         isCompetitionsLoading ?
-            spinner :
+            <CenteredSpinner /> :
             isCompetitionsSuccess && competitionsData ?
                 <ContentBar title="Competitions" items={
                     Object.values(competitionsData.entities)
@@ -93,7 +77,7 @@ export const Home = () => {
 
     let teams =
         isTeamsLoading ?
-            spinner :
+            <CenteredSpinner /> :
             isTeamsSuccess && teamsData ?
                 <ContentBar title="Teams" items={
                     Object.values(teamsData.entities)

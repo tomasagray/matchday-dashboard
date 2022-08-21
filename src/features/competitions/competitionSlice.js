@@ -26,4 +26,4 @@ export default competitionSlice.reducer
 export const {
     selectById: selectCompetitionById,
     selectAll: selectAllCompetitions
-} = competitionAdapter.getSelectors(state => state.competitions)
+} = competitionAdapter.getSelectors(state => state.competitions ?? initialState)

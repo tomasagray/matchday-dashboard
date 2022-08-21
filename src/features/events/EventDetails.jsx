@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import {useFetchMatchByIdQuery} from "./eventApiSlice";
-import {FillSpinner, Spinner} from "../../components/Spinner";
+import {CenteredSpinner} from "../../components/Spinner";
 import {PlayButton} from "../../components/controls/PlayButton";
 import {EditButton} from "../../components/controls/EditButton";
 import Select from "../../components/controls/Select";
@@ -12,6 +12,29 @@ import dayjs from "dayjs";
 import {ErrorMessage} from "../../components/ErrorMessage";
 import {getToastMessage} from "../../app/utils";
 import {toast} from "react-toastify";
+import {FindMoreContainer} from "./FindMoreContainer";
+
+const getFindMoreDisplay = (event) => {
+    let competitionId, homeTeamId, awayTeamId
+    if (event) {
+        let {competition, homeTeam, awayTeam} = event
+        if (competition) {
+            competitionId = competition['id']
+            console.log('competition', competitionId)
+        }
+        if (homeTeam) {
+            homeTeamId = homeTeam['id']
+        }
+        if (awayTeam) {
+            awayTeamId = awayTeam['id']
+        }
+        return <FindMoreContainer
+                competitionId={competitionId}
+                homeTeamId={homeTeamId}
+                awayTeamId={awayTeamId} />
+    }
+    return null
+}
 
 export const EventDetails = () => {
 
@@ -82,9 +105,10 @@ export const EventDetails = () => {
             <br/>
         </span> :
         null
+    let findMore = event ? getFindMoreDisplay(event) : null
     let videoSourceOptions =
         isVideoSourcesLoading ?
-            <Spinner text='' /> :
+            <CenteredSpinner /> :
             isVideoSourceSuccess ?
                 Object.values(videoSources.entities).map(videoSource =>
                     <Option onClick={onSelectVideoSource(videoSource)} value={videoSource.channel} key={videoSource.id}>
@@ -97,7 +121,7 @@ export const EventDetails = () => {
         <>
             {
                 isEventLoading ?
-                    <FillSpinner /> :
+                    <CenteredSpinner /> :
                     isEventSuccess ?
                     <div className="Content-container">
                         <VideoPlayer src={videoSrc} hidden={!showVideoPlayer}
@@ -146,6 +170,7 @@ export const EventDetails = () => {
                                 ) : null
                             }
                         </div>
+                        {findMore}
                     </div> :
                     <ErrorMessage>Could not load Event data</ErrorMessage>
             }

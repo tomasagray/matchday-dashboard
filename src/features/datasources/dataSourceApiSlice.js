@@ -25,10 +25,13 @@ export const dataSourceApiSlice = apiSlice.injectEndpoints({
             getDataSourcesForPlugin: builder.query({
                 query: (pluginId) => ({url: `/data-sources/plugin/${pluginId}`}),
                 transformResponse: (response) => {
-                    let dataSource = response._embedded?.data_source ?? null
-                    if (dataSource !== null) {
-                        store.dispatch(dataSourcesLoaded(dataSource))
-                        return dataSourceAdapter.setMany(initialState, dataSource)
+                    let {_embedded} = response
+                    if (_embedded) {
+                        let {dataSource} = _embedded
+                        if (dataSource !== null) {
+                            store.dispatch(dataSourcesLoaded(dataSource))
+                            return dataSourceAdapter.setMany(initialState, dataSource)
+                        }
                     }
                 },
                 providesTags: (result) =>

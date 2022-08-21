@@ -18,5 +18,4 @@ export default videoSourceSlice.reducer
 
 export const {
     videoSourcesLoaded,
-    videoSourceLoaded
 } = videoSourceSlice.actions

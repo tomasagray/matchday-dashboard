@@ -121,3 +121,12 @@
   display: flex;
   flex-wrap: wrap;
 }
+
+.Find-more-container {
+  margin: 2rem 0;
+
+  .Find-more-items {
+    display: flex;
+    flex-direction: row;
+  }
+}

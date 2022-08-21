@@ -18,6 +18,5 @@ export const matchSlice = createSlice({
 export default matchSlice.reducer
 
 export const {
-    matchesLoaded,
     matchLoaded,
 } = matchSlice.actions

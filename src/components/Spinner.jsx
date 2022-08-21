@@ -47,3 +47,11 @@ export const FillSpinner = ({size = '64px', text=''}) => {
         </div>
     )
 }
+
+export const CenteredSpinner = () => {
+    return (
+        <div className="Centered-spinner">
+            <Spinner text='' size={'32px'}/>
+        </div>
+    )
+}

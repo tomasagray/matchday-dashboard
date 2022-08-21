@@ -1,7 +1,7 @@
 import React, {useEffect} from "react";
 import {useParams} from "react-router-dom";
 import {useFetchCompetitionByIdQuery, useFetchTeamsForCompetitionQuery} from "./competitionApiSlice";
-import {FillSpinner, Spinner} from "../../components/Spinner";
+import {CenteredSpinner, FillSpinner} from "../../components/Spinner";
 import ContentBar from "../../components/ContentBar";
 import {useFetchEventsForCompetitionQuery} from "../events/eventApiSlice";
 import EventTile from "../events/EventTile";
@@ -101,14 +101,14 @@ export const CompetitionDetails = () => {
                             </div>
                             {
                                 isEventsLoading ?
-                                    <Spinner/> :
+                                    <CenteredSpinner /> :
                                     <ContentBar title="Most recent events" items={eventTiles}/>
                             }
                             <div className="Competition-teams-container">
                                 <h2 className="Content-bar-title">Teams</h2>
                                 {
                                     isTeamsLoading ?
-                                        <Spinner/> :
+                                        <CenteredSpinner /> :
                                         <div className="Entity-display">
                                             {teamTiles}
                                         </div>

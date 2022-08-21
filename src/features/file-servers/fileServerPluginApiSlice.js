@@ -9,7 +9,8 @@ export const fileServerPluginApiSlice = apiSlice.injectEndpoints({
             query: () => '/file-servers/all',
             providesTags: [fileServerPluginTag],
             transformResponse: (response) => {
-                let fileServers = response._embedded.fileservers
+                let {_embedded} = response
+                let {fileservers: fileServers} = _embedded
                 store.dispatch(fileServerPluginSlice.actions.pluginsLoaded(fileServers))
                 return fileServerPluginAdapter.setAll(fileServerPluginAdapter.getInitialState(), fileServers)
             }
