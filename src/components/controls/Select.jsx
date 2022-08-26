@@ -3,7 +3,7 @@ import {FloatingMenu} from "../FloatingMenu";
 
 export const Select = (props) => {
 
-    let {disabled: isDisabled, selectedIndex, selectedValue} = props
+    let {disabled: isDisabled, selectedIndex, selectedValue, onChange} = props
     let [isFocused, setIsFocused] = useState(false)
     let [menuHidden, setMenuHidden] = useState(true)
 
@@ -18,9 +18,7 @@ export const Select = (props) => {
     }
     const onMenuItemSelected = (option) => (e) => {
         setMenuHidden(true)
-        if (props.onChange) {
-            props.onChange(e, option.props.value)
-        }
+        onChange && onChange(e, option.props.value)
     }
 
     let selectedItem
@@ -35,13 +33,9 @@ export const Select = (props) => {
         selectedItem = props.placeholder
     }
 
-    const menuStyle = {
-        transform: 'translate(-4px, 2px)',
-        zIndex: 100,
-        width: '10.3rem',
-    }
+
     const selectedContainerStyle = {
-        maxWidth: '90%',
+        // maxWidth: '90%',
         overflow: 'hidden',
         whiteSpace: 'nowrap',
         textOverflow: 'ellipses',
@@ -58,7 +52,7 @@ export const Select = (props) => {
                     {selected}
                 </div>
             </button>
-            <FloatingMenu hidden={menuHidden} onClickOutside={setMenuHidden} style={menuStyle}>
+            <FloatingMenu hidden={menuHidden} onClickOutside={setMenuHidden}>
                 {items}
             </FloatingMenu>
         </div>

@@ -9,27 +9,10 @@ import CompetitionTile from "../features/competitions/CompetitionTile";
 import TeamTile from "../features/teams/TeamTile";
 import {toast} from "react-toastify";
 import {getToastMessage} from "../app/utils";
-import {Link} from "react-router-dom";
+import {EmptyMessage} from "../components/EmptyMessage";
 
 
 export const Home = () => {
-
-    const EmptyMessage = (props) => {
-
-        let {noun} = props
-        const style = {
-            margin: '2rem 0',
-            color: '#ccc',
-        }
-        return (
-            <>
-                <p style={style}>
-                    There are currently no <strong>{noun}</strong>.
-                    Try refreshing the <Link to="/data-sources">data sources</Link>.
-                </p>
-            </>
-        )
-    }
 
     // hooks
     const {

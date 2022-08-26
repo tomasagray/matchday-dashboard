@@ -1,9 +1,8 @@
-@use "variables";
-@use "colors";
-
 @use "animations";
 @use "buttons";
+@use "colors";
 @use "features/competitions";
+@use "features/edit-wizard";
 @use "features/events";
 @use "features/file-servers";
 @use "features/data-sources";
@@ -12,7 +11,10 @@
 @use "components";
 @use "layout";
 @use "spinner";
+@use "variables";
 @use "video-player";
+
+@import "mixins";
 
 html {
   margin: 0;
@@ -57,11 +59,6 @@ code {
   Menlo, Monaco, Consolas, monospace;
 }
 
-@mixin disabledInput {
-  background-color: colors.$defaultComponentBg;
-  border: 1px solid #888;
-  color: #888;
-}
 
 input[type=text],
 input[type=password],
@@ -69,12 +66,12 @@ input[type=url] {
   border: 1px solid #333;
   background-color: colors.$darkBg !important;
   border-radius: 3px;
-  padding: 1em;
+  padding: .5em;
   color: #ccc !important;
   font-size: 16px;
 
   &:disabled {
-    @include disabledInput;
+    @include Disabled-input;
   }
 }
 

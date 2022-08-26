@@ -2,6 +2,7 @@ import {apiSlice, competitionTag, teamTag} from "../../app/apiSlice";
 import {allCompetitionsLoaded, competitionAdapter, competitionLoaded} from "./competitionSlice";
 import store from "../../app/store";
 import {teamAdapter, teamsLoaded} from "../teams/teamSlice";
+import {JsonHeaders} from "../../app/constants";
 
 
 export const competitionApiSlice = apiSlice.injectEndpoints({
@@ -39,6 +40,18 @@ export const competitionApiSlice = apiSlice.injectEndpoints({
                     }
                 }
             }),
+            updateCompetition: builder.mutation({
+                query: (competition) =>
+                    ({
+                        url: `/competitions/competition/${competition.id}/update`,
+                        method: 'PATCH',
+                        headers: JsonHeaders,
+                        body: competition,
+                    }),
+                invalidatesTags: (result, error, arg) => [
+                    {type: competitionTag, id: arg.id}
+                ]
+            })
         })
     }
 })
@@ -47,4 +60,5 @@ export const {
     useFetchAllCompetitionsQuery,
     useFetchCompetitionByIdQuery,
     useFetchTeamsForCompetitionQuery,
+    useUpdateCompetitionMutation,
 } = competitionApiSlice

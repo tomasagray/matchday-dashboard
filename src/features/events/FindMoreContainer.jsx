@@ -10,7 +10,6 @@ import TeamTile from "../teams/TeamTile";
 export const FindMoreContainer = (props) => {
 
     let {competitionId, homeTeamId, awayTeamId} = props
-    console.log('stuff', competitionId, homeTeamId, awayTeamId)
 
     // hooks
     const {
@@ -60,13 +59,13 @@ export const FindMoreContainer = (props) => {
 
     // components
     let competitionTile = isCompetitionSuccess ?
-        <CompetitionTile competition={competition} /> :
+        <CompetitionTile competition={competition} key={competitionId} /> :
         null
     let homeTeamTile = isHomeTeamSuccess ?
-        <TeamTile team={homeTeam} /> :
+        <TeamTile team={homeTeam} key={homeTeamId} /> :
         null
     let awayTeamTile = isAwayTeamSuccess ?
-        <TeamTile team={awayTeam} /> :
+        <TeamTile team={awayTeam} key={awayTeamId} /> :
         null
     let tiles = [competitionTile, homeTeamTile, awayTeamTile]
 

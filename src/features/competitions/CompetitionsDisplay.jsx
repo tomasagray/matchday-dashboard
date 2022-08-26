@@ -3,8 +3,8 @@ import {useFetchAllCompetitionsQuery} from "./competitionApiSlice";
 import {FillSpinner} from "../../components/Spinner";
 import CompetitionTile from "./CompetitionTile";
 import {toast} from "react-toastify";
-import {ErrorMessage} from "../../components/ErrorMessage";
 import {getToastMessage} from "../../app/utils";
+import {EmptyMessage} from "../../components/EmptyMessage";
 
 
 export const CompetitionsDisplay = () => {
@@ -29,7 +29,7 @@ export const CompetitionsDisplay = () => {
             {
                 isLoading ?
                     <FillSpinner/> :
-                    isSuccess ?
+                    isSuccess && competitions ?
                     <div>
                         <h1>Competitions</h1>
                         <div className="Entity-display">
@@ -40,7 +40,7 @@ export const CompetitionsDisplay = () => {
                             }
                         </div>
                     </div> :
-                    <ErrorMessage>Could not load Competitions</ErrorMessage>
+                    <EmptyMessage noun="competitions" />
             }
         </>
     )

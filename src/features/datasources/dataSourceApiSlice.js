@@ -27,10 +27,10 @@ export const dataSourceApiSlice = apiSlice.injectEndpoints({
                 transformResponse: (response) => {
                     let {_embedded} = response
                     if (_embedded) {
-                        let {dataSource} = _embedded
-                        if (dataSource !== null) {
-                            store.dispatch(dataSourcesLoaded(dataSource))
-                            return dataSourceAdapter.setMany(initialState, dataSource)
+                        let {data_source: dataSources} = _embedded
+                        if (dataSources !== null) {
+                            store.dispatch(dataSourcesLoaded(dataSources))
+                            return dataSourceAdapter.setMany(initialState, dataSources)
                         }
                     }
                 },

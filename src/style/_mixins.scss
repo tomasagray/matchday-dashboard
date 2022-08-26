@@ -1,4 +1,5 @@
 @use "colors";
+@use "variables";
 
 @mixin Poster {
   box-sizing: content-box;
@@ -18,10 +19,11 @@
   text-align: center;
 
   img {
-    width: 10vw;
-    height: 20vh;
+    width: variables.$tilePosterSize;
+    height: variables.$tilePosterSize;
     filter: saturate(80%) opacity(.8);
   }
+
   div {
     margin-top: .5rem;
     color: rgba(220, 220, 220, .7);
@@ -75,4 +77,22 @@
 @mixin toggleSwitch($height) {
   height: $height;
   width: calc(2 * $height);
+}
+
+@mixin Disabled-input {
+  background-color: colors.$defaultComponentBg;
+  border: 1px solid #888;
+  color: #888;
+}
+
+@mixin Dropdown-arrow {
+
+  content: url('data:image/svg+xml;charset=UTF-8, <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 19.2"><title>Asset 1</title><g id="Layer_2" data-name="Layer 2"><g id="Layer_1-2" data-name="Layer 1"><path d="M29.73,0A2.28,2.28,0,0,0,28,.8l0,0-12,12L3.85.63h0A2.25,2.25,0,0,0,2.27,0,2.27,2.27,0,0,0,0,2.27,2.25,2.25,0,0,0,.63,3.84h0L12.76,16h0L16,19.2,31.07,4.11A2.28,2.28,0,0,0,29.73,0Z"/></g></g></svg>');
+  text-align: right;
+  float: right;
+  width: 12px;
+  filter: invert(91%) sepia(0%) saturate(1%) hue-rotate(230deg) brightness(93%) contrast(88%);
+  &:hover {
+    filter: invert(99%) sepia(4%) saturate(443%) hue-rotate(301deg) brightness(115%) contrast(90%);
+  }
 }

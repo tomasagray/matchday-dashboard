@@ -13,8 +13,8 @@ export default function CompetitionTile(props) {
                     pathname: '/competitions/competition/' + id,
                 }
             }>
-                <img src={posterUrl} alt={name} className="Entity-poster"/>
-                <div>{name}</div>
+                <img src={posterUrl} alt={name.name} className="Entity-poster"/>
+                <div>{name.name}</div>
             </Link>
         </div>
     );

@@ -20,7 +20,6 @@ const getFindMoreDisplay = (event) => {
         let {competition, homeTeam, awayTeam} = event
         if (competition) {
             competitionId = competition['id']
-            console.log('competition', competitionId)
         }
         if (homeTeam) {
             homeTeamId = homeTeam['id']
@@ -128,7 +127,7 @@ export const EventDetails = () => {
                                      onClose={onHideVideoPlayer} title={event['title']} subtitle={formattedDate} />
 
                         <h2 className="Event-detail-header">
-                            {event['competition'].name} &nbsp;&nbsp;
+                            {event['competition'].name.name} &nbsp;&nbsp;
                             <span className={"Team-name"}>{event['homeTeam'].name}</span>
                             <span style={{color: '#888'}}> vs.&nbsp;</span>
                             <span className={"Team-name"}>{event['awayTeam'].name}</span>

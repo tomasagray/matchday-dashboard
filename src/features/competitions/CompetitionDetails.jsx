@@ -1,6 +1,10 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
-import {useFetchCompetitionByIdQuery, useFetchTeamsForCompetitionQuery} from "./competitionApiSlice";
+import {
+    useFetchCompetitionByIdQuery,
+    useFetchTeamsForCompetitionQuery,
+    useUpdateCompetitionMutation
+} from "./competitionApiSlice";
 import {CenteredSpinner, FillSpinner} from "../../components/Spinner";
 import ContentBar from "../../components/ContentBar";
 import {useFetchEventsForCompetitionQuery} from "../events/eventApiSlice";
@@ -11,17 +15,78 @@ import {Option} from "../../components/controls/Option";
 import {EditButton} from "../../components/controls/EditButton";
 import {toast} from "react-toastify";
 import {getToastMessage} from "../../app/utils";
+import Modal, {Body, Footer, Header} from "../../components/Modal";
+import {EditWizard, EditWizardDisplay, EditWizardMenu} from "../edit-wizard/EditWizard";
+import {CancelButton} from "../../components/controls/CancelButton";
+import {SaveButton} from "../../components/controls/SaveButton";
+import {WizardMenuItem} from "../edit-wizard/WizardMenuItem";
+import {GeneralEditor} from "../edit-wizard/GeneralEditor";
+import {
+    addCompetitionSynonym,
+    beginEditingCompetition,
+    deleteCompetitionSynonym,
+    editCompetitionTitle,
+    editNewSynonym,
+    selectEditedCompetition,
+    selectEditedCompetitionForUpload,
+    setCompetitionCountry
+} from "./competitionSlice";
+import {useDispatch, useSelector} from "react-redux";
+import {ArtworkEditor} from "../edit-wizard/ArtworkEditor";
 
 export const CompetitionDetails = () => {
 
+    // wizard types
+    const GENERAL = 'general'
+    const EMBLEM = 'emblem'
+    const FANART = 'fanart'
+
+    // handlers
     const onClickEditButton = (e) => {
         e.preventDefault()
-        console.log('edit')
-        // todo - add competition edit modal
+        dispatch(beginEditingCompetition({competition}))
+        setIsEditModalShown(true)
+    }
+    const onCloseEditModal = () => {
+        setIsEditModalShown(false)
+    }
+    const onSelectWizard = (wizard) => () => {
+        setSelectedWizard(wizard)
+    }
+    const onEditTitle = (title) => {
+        dispatch(editCompetitionTitle({title}))
+    }
+    const onEditSynonym = (newSynonym) => {
+        dispatch(editNewSynonym({newSynonym}))
+    }
+    const onAddSynonym = (synonym) => {
+        dispatch(addCompetitionSynonym({
+            synonym: {
+                name: synonym,
+                // properName: editedCompetition.name,
+            }
+        }))
+    }
+    const onDeleteSynonym = (synonym) => {
+        dispatch(deleteCompetitionSynonym({synonym}))
+    }
+    const onSelectCountry = (country) => {
+        dispatch(setCompetitionCountry({country}))
+    }
+    const onSaveEdits = () => {
+        console.log('save edits here')
+        console.log('upload:', uploadCompetition)
+        updateCompetition(uploadCompetition)
     }
 
+    //state
     const params = useParams()
     const {competitionId} = params
+    const dispatch = useDispatch()
+    let [isEditModalShown, setIsEditModalShown] = useState(false)
+    let [selectedWizard, setSelectedWizard] = useState(GENERAL)
+    let editedCompetition = useSelector(state => selectEditedCompetition(state))
+    let uploadCompetition = useSelector(state => selectEditedCompetitionForUpload(state))
 
     // hooks
     const {
@@ -31,6 +96,7 @@ export const CompetitionDetails = () => {
         isError: isCompetitionError,
         error: competitionError
     } = useFetchCompetitionByIdQuery(competitionId)
+    let name = competition?.name
     const {
         data: teams,
         isLoading: isTeamsLoading,
@@ -44,6 +110,15 @@ export const CompetitionDetails = () => {
         isError: isEventsError,
         error: eventsError
     } = useFetchEventsForCompetitionQuery(competitionId)
+    const [
+        updateCompetition, {
+            data: updatedCompetitionResult,
+            isLoading: isUpdatingCompetition,
+            isSuccess: isUpdateCompetitionSuccess,
+            isError: isUpdateCompetitionError,
+            error: updateCompetitionError,
+        }
+    ] = useUpdateCompetitionMutation(uploadCompetition)
 
     // toast messages
     useEffect(() => {
@@ -59,6 +134,10 @@ export const CompetitionDetails = () => {
             let msg = 'Failed to load Events data: ' + getToastMessage(eventsError)
             toast.error(msg)
         }
+        if (isUpdateCompetitionError) {
+            let msg = 'Failed updating Competition: ' + getToastMessage(updateCompetitionError)
+            toast.error(msg)
+        }
     }, [
         competitionId,
         isCompetitionError,
@@ -66,15 +145,34 @@ export const CompetitionDetails = () => {
         isEventsError,
         eventsError,
         isTeamsError,
-        teamsError])
+        teamsError,
+        isUpdateCompetitionError,
+        updateCompetitionError
+    ])
 
     // components
     let eventTiles = events?.map(event => <EventTile event={event} /> ) ?? []
     let teamTiles =
-        isTeamsSuccess ?
+        isTeamsSuccess && teams ?
             Object.values(teams.entities).map(
                 team => <TeamTile team={team} key={team.id} />
             ) : []
+    let wizards = {
+        general:
+            <GeneralEditor
+                title={editedCompetition.name?.name}
+                synonyms={editedCompetition.name?.synonyms}
+                newTagValue={editedCompetition.newSynonym?.name}
+                country={editedCompetition.country}
+                onEditTitle={onEditTitle}
+                onEditSynonym={onEditSynonym}
+                onAddSynonym={onAddSynonym}
+                onDeleteSynonym={onDeleteSynonym}
+                onSelectCountry={onSelectCountry}
+            />,
+        emblem: <ArtworkEditor />,
+        fanart: <ArtworkEditor />,
+    }
 
     return (
         <>
@@ -83,9 +181,49 @@ export const CompetitionDetails = () => {
                     <FillSpinner/> :
                     isCompetitionSuccess ?
                         <div>
-                            <h1 className="Detail-title">{competition.name}</h1>
+                            <Modal show={isEditModalShown}>
+                                <Header onHide={onCloseEditModal}>
+                                    Edit competition &mdash;&nbsp;
+                                    <span style={{color: '#ccc'}}>
+                                        {name?.name}
+                                    </span>
+                                </Header>
+                                <Body>
+                                    <EditWizard>
+                                        <EditWizardMenu>
+                                            <WizardMenuItem
+                                                imgSrc="/img/icon/form/form_16.png"
+                                                onClick={onSelectWizard(GENERAL)}
+                                                selected={selectedWizard === GENERAL}>
+                                                General
+                                            </WizardMenuItem>
+                                            <WizardMenuItem
+                                                imgSrc="/img/icon/image/image_16.png"
+                                                onClick={onSelectWizard(EMBLEM)}
+                                                selected={selectedWizard === EMBLEM}>
+                                                Emblem
+                                            </WizardMenuItem>
+                                            <WizardMenuItem
+                                                imgSrc="/img/icon/image/image_16.png"
+                                                onClick={onSelectWizard(FANART)}
+                                                selected={selectedWizard === FANART}>
+                                                Fanart
+                                            </WizardMenuItem>
+                                        </EditWizardMenu>
+                                        <EditWizardDisplay>
+                                            {wizards[selectedWizard]}
+                                        </EditWizardDisplay>
+                                    </EditWizard>
+                                </Body>
+                                <Footer>
+                                    <CancelButton onClick={onCloseEditModal} />
+                                    <SaveButton onClick={onSaveEdits} />
+                                </Footer>
+                            </Modal>
+
+                            <h1 className="Detail-title">{name?.name}</h1>
                             <div className="Detail-header">
-                                <img src={competition['_links']['emblem'].href} alt={competition.name}
+                                <img src={competition['_links']['emblem'].href} alt={name?.name}
                                      className="Detail-poster"/>
                                 <div className="Detail-data">
                                     <EditButton onClick={onClickEditButton} />

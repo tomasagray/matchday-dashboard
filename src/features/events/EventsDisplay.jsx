@@ -5,6 +5,7 @@ import EventTile from "./EventTile";
 import {ErrorMessage} from "../../components/ErrorMessage";
 import {toast} from "react-toastify";
 import {getToastMessage} from "../../app/utils";
+import {EmptyMessage} from "../../components/EmptyMessage";
 
 export const EventsDisplay = () => {
 
@@ -33,9 +34,11 @@ export const EventsDisplay = () => {
                     <h1>Latest Events</h1>
                     <div className={"Event-display"}>
                     {
+                        events ?
                         Object.values(events.entities).map(event =>
                             <EventTile event={event} key={event['eventId']}/>
-                        )
+                        ) :
+                        <EmptyMessage noun="events" />
                     }
                     </div>
                 </div> :

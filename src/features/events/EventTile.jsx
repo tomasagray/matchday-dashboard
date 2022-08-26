@@ -19,7 +19,7 @@ export default function EventTile(props) {
                 <img src={imgUrl} alt={props.event.title} className="Event-poster"/>
                 <div className="Event-details">
                     <p className={"Event-title"}>
-                        <strong>{competition['name']}</strong>
+                        <strong style={{marginRight: '.12em'}}>{competition.name?.name}</strong>
                         <span className={"Event-title-details"}>:&nbsp;{details}</span>
                     </p>
                     <div className="Event-date">{formatDate(date)}</div>
