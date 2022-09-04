@@ -1,7 +1,12 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {Option} from "../../components/controls/Option";
 import Select from "../../components/controls/Select";
 import {CountryTile} from "../../components/CountryTile";
+import {useFetchAllCountriesQuery} from "../../slices/countryApiSlice";
+import {getToastMessage} from "../../app/utils";
+import {toast} from "react-toastify";
+import {SmallSpinner} from "../../components/Spinner";
+
 
 export const CountrySelect = (props) => {
 
@@ -11,22 +16,41 @@ export const CountrySelect = (props) => {
     }
 
     // state
-    let {countries, selected, onSelect} = props
+    let { selected, onSelect} = props
 
-    // components
-    let options = countries.map(country => {
-        let {name, _links} = country
-        let {flag} = _links
-        return (
-            <Option value={name} key={name}>
-                <CountryTile name={name} flag={flag.href} />
-            </Option>
-        )
-    })
+    // hooks
+    let {
+        data: countries,
+        isLoading: isCountriesLoading,
+        isSuccess: isCountriesSuccess,
+        isError: isCountriesError,
+        error: countriesError,
+    } = useFetchAllCountriesQuery()
+
+    // toast messages
+    useEffect(() => {
+        if (isCountriesError) {
+            let msg = 'Failed loading countries data: ' + getToastMessage(countriesError)
+            toast.error(msg)
+        }
+    }, [countriesError, isCountriesError])
 
     return (
-        <Select onChange={onSelectCountry} placeholder="No country set" selectedValue={selected}>
-            {options}
-        </Select>
+        isCountriesLoading ?
+            <SmallSpinner /> :
+            isCountriesSuccess ?
+            <Select onChange={onSelectCountry} placeholder="No country set" selectedValue={selected}>
+                {
+                    countries.map(country => {
+                        let {name, _links} = country
+                        return (
+                            <Option value={name} key={name}>
+                                <CountryTile name={name} flag={_links.flag.href} />
+                            </Option>
+                        )
+                    })
+                }
+            </Select> :
+            null
     )
 }

@@ -22,10 +22,15 @@ export const competitionSlice = createSlice({
         beginEditingCompetition: (state, action) => {
             let {payload} = action
             let {competition} = payload
-            let {_links, ...noLinks} = competition
+            let {id, name, country} = competition
             return {
                 ...state,
-                editedCompetition: noLinks,
+                editedCompetition: {
+                    ...state.editedCompetition,
+                    id,
+                    name,
+                    country: country?.name,
+                },
             }
         },
         editCompetitionTitle: (state, action) => {

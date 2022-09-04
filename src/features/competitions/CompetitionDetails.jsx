@@ -10,8 +10,6 @@ import ContentBar from "../../components/ContentBar";
 import {useFetchEventsForCompetitionQuery} from "../events/eventApiSlice";
 import EventTile from "../events/EventTile";
 import TeamTile from "../teams/TeamTile";
-import Select from "../../components/controls/Select";
-import {Option} from "../../components/controls/Option";
 import {EditButton} from "../../components/controls/EditButton";
 import {toast} from "react-toastify";
 import {getToastMessage} from "../../app/utils";
@@ -73,10 +71,10 @@ export const CompetitionDetails = () => {
     const onSelectCountry = (country) => {
         dispatch(setCompetitionCountry({country}))
     }
-    const onSaveEdits = () => {
+    const onSaveEdits = async () => {
         console.log('save edits here')
         console.log('upload:', uploadCompetition)
-        updateCompetition(uploadCompetition)
+        updateCompetition(uploadCompetition).unwrap().then(() => onCloseEditModal())
     }
 
     //state
@@ -112,7 +110,6 @@ export const CompetitionDetails = () => {
     } = useFetchEventsForCompetitionQuery(competitionId)
     const [
         updateCompetition, {
-            data: updatedCompetitionResult,
             isLoading: isUpdatingCompetition,
             isSuccess: isUpdateCompetitionSuccess,
             isError: isUpdateCompetitionError,
@@ -134,9 +131,12 @@ export const CompetitionDetails = () => {
             let msg = 'Failed to load Events data: ' + getToastMessage(eventsError)
             toast.error(msg)
         }
+        if (isUpdateCompetitionSuccess) {
+            toast('Competition metadata successfully updated')
+        }
         if (isUpdateCompetitionError) {
-            let msg = 'Failed updating Competition: ' + getToastMessage(updateCompetitionError)
-            toast.error(msg)
+            let msg = 'Failed updating Competition: ' + getToastMessage(updateCompetitionError);
+            toast.error(msg);
         }
     }, [
         competitionId,
@@ -146,6 +146,7 @@ export const CompetitionDetails = () => {
         eventsError,
         isTeamsError,
         teamsError,
+        isUpdateCompetitionSuccess,
         isUpdateCompetitionError,
         updateCompetitionError
     ])
@@ -217,7 +218,7 @@ export const CompetitionDetails = () => {
                                 </Body>
                                 <Footer>
                                     <CancelButton onClick={onCloseEditModal} />
-                                    <SaveButton onClick={onSaveEdits} />
+                                    <SaveButton onClick={onSaveEdits} isLoading={isUpdatingCompetition} />
                                 </Footer>
                             </Modal>
 
@@ -227,14 +228,6 @@ export const CompetitionDetails = () => {
                                      className="Detail-poster"/>
                                 <div className="Detail-data">
                                     <EditButton onClick={onClickEditButton} />
-                                    <Select id="language-selector" placeholder="Default language">
-                                        {/* todo - get languages from server */}
-                                        <Option name="default" value="default">Default language</Option>
-                                        <Option name="en" value="en-Us">English</Option>
-                                        <Option name="es" value="es">Spanish</Option>
-                                        <Option name="it" value="it">Italian</Option>
-                                        <Option name="fr" value="fr">French</Option>
-                                    </Select>
                                 </div>
                             </div>
                             {

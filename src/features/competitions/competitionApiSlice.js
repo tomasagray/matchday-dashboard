@@ -1,4 +1,4 @@
-import {apiSlice, competitionTag, teamTag} from "../../app/apiSlice";
+import {apiSlice, competitionTag, eventTag, teamTag} from "../../app/apiSlice";
 import {allCompetitionsLoaded, competitionAdapter, competitionLoaded} from "./competitionSlice";
 import store from "../../app/store";
 import {teamAdapter, teamsLoaded} from "../teams/teamSlice";
@@ -48,9 +48,7 @@ export const competitionApiSlice = apiSlice.injectEndpoints({
                         headers: JsonHeaders,
                         body: competition,
                     }),
-                invalidatesTags: (result, error, arg) => [
-                    {type: competitionTag, id: arg.id}
-                ]
+                invalidatesTags: [competitionTag, eventTag]
             })
         })
     }

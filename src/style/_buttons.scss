@@ -236,6 +236,10 @@
       visibility: visible;
     }
   }
+  
+  &.loading:not(:disabled) {
+    cursor: wait;
+  }
 }
 
 .Small-button {

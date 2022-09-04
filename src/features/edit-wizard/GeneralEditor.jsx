@@ -1,8 +1,4 @@
-import React, {useEffect} from "react";
-import {useFetchAllCountriesQuery} from "../../slices/countryApiSlice";
-import {SmallSpinner} from "../../components/Spinner";
-import {getToastMessage} from "../../app/utils";
-import {toast} from "react-toastify";
+import React from "react";
 import {CountrySelect} from "./CountrySelect";
 import {Tag, TagField} from "../../components/controls/TagField";
 
@@ -25,23 +21,6 @@ export const GeneralEditor = (props) => {
         onDeleteSynonym,
         onSelectCountry,
     } = props
-
-    // hooks
-    let {
-        data: countries,
-        isLoading: isCountriesLoading,
-        isSuccess: isCountriesSuccess,
-        isError: isCountriesError,
-        error: countriesError,
-    } = useFetchAllCountriesQuery()
-
-    // toast messages
-    useEffect(() => {
-        if (isCountriesError) {
-            let msg = 'Failed loading countries data: ' + getToastMessage(countriesError)
-            toast.error(msg)
-        }
-    }, [countriesError, isCountriesError])
 
     // components
     let synonymTags = synonyms?.map(synonym =>
@@ -67,13 +46,7 @@ export const GeneralEditor = (props) => {
 
                 <div className="Editor-field">
                     <label>Country</label>
-                    {
-                        isCountriesLoading ?
-                            <SmallSpinner /> :
-                            isCountriesSuccess ?
-                                <CountrySelect countries={countries} selected={country} onSelect={onSelectCountry} /> :
-                                null
-                    }
+                    <CountrySelect selected={country} onSelect={onSelectCountry} />
                 </div>
             </div>
         </>
