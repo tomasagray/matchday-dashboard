@@ -12,7 +12,7 @@ export default function TeamTile(props) {
                     pathname: '/teams/team/' + id,
                 }
             }>
-                <img src={links['emblem'].href} alt={name} className="Entity-poster"/>
+                <img src={links['emblem']} alt={name} className="Entity-poster"/>
                 <div>{name}</div>
             </Link>
         </div>

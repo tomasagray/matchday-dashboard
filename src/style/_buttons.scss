@@ -173,6 +173,18 @@
   }
 }
 
+.Link-button {
+  border: 0;
+  background: none;
+  color: colors.$mediumFontColor;
+  text-decoration: underline #666;
+
+  &:hover {
+    color: colors.$defaultFontColor;
+    text-decoration-color: #ccc;
+  }
+}
+
 .OK-button {
   @include _button;
   box-sizing: content-box;

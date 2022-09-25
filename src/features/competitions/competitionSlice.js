@@ -6,6 +6,7 @@ export const editedCompetition = {
     id: null,
     name: null,
     country: null,
+    emblem: null,
     newSynonym: {},
 }
 export const initialState = competitionAdapter.getInitialState({
@@ -22,7 +23,10 @@ export const competitionSlice = createSlice({
         beginEditingCompetition: (state, action) => {
             let {payload} = action
             let {competition} = payload
-            let {id, name, country} = competition
+            let {id, name, country, emblem} = competition
+            let {artwork, ...emblemCollection} = emblem
+            let {_embedded: embedded} = artwork
+            let collection = embedded ? embedded['artworks'] : null
             return {
                 ...state,
                 editedCompetition: {
@@ -30,6 +34,10 @@ export const competitionSlice = createSlice({
                     id,
                     name,
                     country: country?.name,
+                    emblem: {
+                        ...emblemCollection,
+                        collection,
+                    },
                 },
             }
         },
@@ -117,8 +125,64 @@ export const competitionSlice = createSlice({
                 }
             }
         },
+        uploadArtwork: (state, action) => {
+            let {payload} = action
+            let {artwork: _artworks} = payload
+            let {id, role, selectedIndex, artwork} = _artworks
+            return {
+                ...state,
+                editedCompetition: {
+                    ...state.editedCompetition,
+                    [role.toLowerCase()]: {
+                        id,
+                        role,
+                        selectedIndex,
+                        collection: artwork['_embedded']['artworks']
+                    },
+                }
+            }
+        },
+        selectArtwork: (state, action) => {
+            let {payload} = action
+            let {selection, role} = payload
+            let {selectedId} = selection
+            const artworkCollection = {...state.editedCompetition[role].collection}
+            const {selectedIndex, updatedCollection} = updateSelectedArtwork(selectedId, artworkCollection)
+            return {
+                ...state,
+                editedCompetition: {
+                    ...state.editedCompetition,
+                    [role]: {
+                        ...state.editedCompetition[role],
+                        selectedIndex,
+                        collection: updatedCollection,
+                    }
+                }
+            }
+        }
     }
 })
+
+const updateSelectedArtwork = (selectedId, artworkCollection) => {
+    let collection = Object.values(artworkCollection)
+    let selectedIndex = 0
+    let updatedCollection = []
+    for (let i = 0; i < collection.length; i++) {
+        if (collection[i].id === selectedId) {
+            selectedIndex = i
+            updatedCollection[i] = {
+                ...collection[i],
+                selected: true,
+            }
+        } else {
+            updatedCollection[i] = {
+                ...collection[i],
+                selected: false,
+            }
+         }
+    }
+    return {selectedIndex, updatedCollection}
+}
 
 export const {
     allCompetitionsLoaded,
@@ -130,6 +194,8 @@ export const {
     addCompetitionSynonym,
     deleteCompetitionSynonym,
     setCompetitionCountry,
+    uploadArtwork,
+    selectArtwork,
 } = competitionSlice.actions
 
 export default competitionSlice.reducer

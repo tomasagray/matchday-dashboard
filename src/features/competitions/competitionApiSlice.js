@@ -1,4 +1,4 @@
-import {apiSlice, competitionTag, eventTag, teamTag} from "../../app/apiSlice";
+import {apiSlice, artworkTag, competitionTag, eventTag, teamTag} from "../../app/apiSlice";
 import {allCompetitionsLoaded, competitionAdapter, competitionLoaded} from "./competitionSlice";
 import store from "../../app/store";
 import {teamAdapter, teamsLoaded} from "../teams/teamSlice";
@@ -43,13 +43,36 @@ export const competitionApiSlice = apiSlice.injectEndpoints({
             updateCompetition: builder.mutation({
                 query: (competition) =>
                     ({
-                        url: `/competitions/competition/${competition.id}/update`,
+                        url: `/competitions/competition/update`,
                         method: 'PATCH',
                         headers: JsonHeaders,
                         body: competition,
                     }),
                 invalidatesTags: [competitionTag, eventTag]
-            })
+            }),
+            fetchCompetitionEmblemCollection: builder.query({
+                query: competitionId => `/competitions/competition/${competitionId}/emblem`,
+                providesTags: [artworkTag],
+                transformResponse(response) {
+                    let {_embedded} = response
+                    if (_embedded) {
+                        let {artworks} = _embedded;
+                        return artworks
+                    }
+                }
+            }),
+            fetchSelectedCompetitionEmblem: builder.query({
+                query: competitionId => `/competitions/competition/${competitionId}/emblem/selected`,
+                providesTags: [artworkTag],
+            }),
+            addCompetitionEmblem: builder.mutation({
+                query: emblem => ({
+                    url: `/competitions/competition/${emblem.id}/emblem`,
+                    method: 'POST',
+                    body: emblem.formData,
+                }),
+                invalidatesTags: [artworkTag]
+            }),
         })
     }
 })
@@ -59,4 +82,7 @@ export const {
     useFetchCompetitionByIdQuery,
     useFetchTeamsForCompetitionQuery,
     useUpdateCompetitionMutation,
+    useFetchCompetitionEmblemCollectionQuery,
+    useFetchSelectedCompetitionEmblemQuery,
+    useAddCompetitionEmblemMutation,
 } = competitionApiSlice

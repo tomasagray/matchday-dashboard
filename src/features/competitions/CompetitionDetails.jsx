@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import {
+    useAddCompetitionEmblemMutation,
     useFetchCompetitionByIdQuery,
     useFetchTeamsForCompetitionQuery,
-    useUpdateCompetitionMutation
+    useUpdateCompetitionMutation,
 } from "./competitionApiSlice";
 import {CenteredSpinner, FillSpinner} from "../../components/Spinner";
 import ContentBar from "../../components/ContentBar";
@@ -25,21 +26,32 @@ import {
     deleteCompetitionSynonym,
     editCompetitionTitle,
     editNewSynonym,
+    selectArtwork,
     selectEditedCompetition,
     selectEditedCompetitionForUpload,
-    setCompetitionCountry
+    setCompetitionCountry,
+    uploadArtwork
 } from "./competitionSlice";
 import {useDispatch, useSelector} from "react-redux";
+import {useSoftLoadImage} from "../../hooks/useSoftLoadImage";
 import {ArtworkEditor} from "../edit-wizard/ArtworkEditor";
 
 export const CompetitionDetails = () => {
 
-    // wizard types
+    // wizards
     const GENERAL = 'general'
     const EMBLEM = 'emblem'
     const FANART = 'fanart'
 
+    const getPosterUrl = (competition) => {
+        if (competition) {
+            let {_links: links} = competition
+            return links['emblem']['href']
+        }
+    }
+
     // handlers
+    const dispatch = useDispatch()
     const onClickEditButton = (e) => {
         e.preventDefault()
         dispatch(beginEditingCompetition({competition}))
@@ -61,7 +73,6 @@ export const CompetitionDetails = () => {
         dispatch(addCompetitionSynonym({
             synonym: {
                 name: synonym,
-                // properName: editedCompetition.name,
             }
         }))
     }
@@ -71,16 +82,19 @@ export const CompetitionDetails = () => {
     const onSelectCountry = (country) => {
         dispatch(setCompetitionCountry({country}))
     }
+    const onUploadArtwork = (artwork) => {
+        dispatch(uploadArtwork({artwork}))
+    }
+    const onSelectEmblem = (selection) => {
+        dispatch(selectArtwork({selection, role: 'emblem'}))
+    }
     const onSaveEdits = async () => {
-        console.log('save edits here')
-        console.log('upload:', uploadCompetition)
         updateCompetition(uploadCompetition).unwrap().then(() => onCloseEditModal())
     }
 
     //state
     const params = useParams()
     const {competitionId} = params
-    const dispatch = useDispatch()
     let [isEditModalShown, setIsEditModalShown] = useState(false)
     let [selectedWizard, setSelectedWizard] = useState(GENERAL)
     let editedCompetition = useSelector(state => selectEditedCompetition(state))
@@ -95,6 +109,15 @@ export const CompetitionDetails = () => {
         error: competitionError
     } = useFetchCompetitionByIdQuery(competitionId)
     let name = competition?.name
+    const placeholderUrl = process.env.PUBLIC_URL + '/img/default_competition_poster.png'
+    let posterImageUrl = getPosterUrl(competition)
+    const {
+        data: competitionEmblem,
+        /*isSuccess: isEmblemSuccess,
+        isLoading: isEmblemLoading,*/
+        isError: isEmblemError,
+        error: emblemError
+    } = useSoftLoadImage(placeholderUrl, posterImageUrl)
     const {
         data: teams,
         isLoading: isTeamsLoading,
@@ -135,20 +158,20 @@ export const CompetitionDetails = () => {
             toast('Competition metadata successfully updated')
         }
         if (isUpdateCompetitionError) {
-            let msg = 'Failed updating Competition: ' + getToastMessage(updateCompetitionError);
-            toast.error(msg);
+            let msg = 'Failed updating Competition: ' + getToastMessage(updateCompetitionError)
+            toast.error(msg)
+        }
+        if (isEmblemError) {
+            if (emblemError.response.status !== 404) {
+                let msg = 'Error loading Competition artwork: ' + getToastMessage(emblemError);
+                toast.error(msg)
+            }
         }
     }, [
-        competitionId,
-        isCompetitionError,
-        competitionError,
-        isEventsError,
-        eventsError,
-        isTeamsError,
-        teamsError,
-        isUpdateCompetitionSuccess,
-        isUpdateCompetitionError,
-        updateCompetitionError
+        competitionId, isCompetitionError, competitionError,
+        isEventsError, eventsError, isTeamsError, teamsError,
+        isUpdateCompetitionSuccess, isUpdateCompetitionError,
+        updateCompetitionError, isEmblemError, emblemError
     ])
 
     // components
@@ -171,8 +194,18 @@ export const CompetitionDetails = () => {
                 onDeleteSynonym={onDeleteSynonym}
                 onSelectCountry={onSelectCountry}
             />,
-        emblem: <ArtworkEditor />,
-        fanart: <ArtworkEditor />,
+        emblem:
+            <ArtworkEditor
+                key="emblem"
+                id={competitionId}
+                hooks={{
+                    upload: useAddCompetitionEmblemMutation,
+                }}
+                artwork={editedCompetition.emblem}
+                onUpload={onUploadArtwork}
+                onSelectArtwork={onSelectEmblem}
+            />,
+        // fanart: <ArtworkEditor key="fanart" />,
     }
 
     return (
@@ -224,7 +257,7 @@ export const CompetitionDetails = () => {
 
                             <h1 className="Detail-title">{name?.name}</h1>
                             <div className="Detail-header">
-                                <img src={competition['_links']['emblem'].href} alt={name?.name}
+                                <img src={competitionEmblem} alt={name?.name}
                                      className="Detail-poster"/>
                                 <div className="Detail-data">
                                     <EditButton onClick={onClickEditButton} />

@@ -3,7 +3,7 @@ import {CollapsableContainer} from "../../components/CollapsableContainer";
 import {PatternKitTypeGroup} from "./PatternKitTypeGroup";
 import {dataSourceReset, dataSourceUpdated, selectCleanDataSourceById, selectDataSourceById,} from "./dataSourceSlice";
 import {useDispatch, useSelector} from "react-redux";
-import {getClassName, getDownloadableJson, getToastMessage} from "../../app/utils";
+import {getClassName, getDownloadableJson, getToastMessage, isValidUrl, isValidUuid} from "../../app/utils";
 import {InfoMessage} from "../../components/InfoMessage";
 import {PatternKitDisplay} from "./PatternKitDisplay";
 import Modal, {Body, Footer, Header} from "../../components/Modal";
@@ -63,21 +63,17 @@ const getPatternKitDisplays = (patternKits, isEditable) => {
     })
 }
 
-// validation patterns
 const clazzPattern = /[\w.]+/
-const uuidPattern = /[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}/
-const urlPattern = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=+$,\w]+@)?[A-Za-z\d.-]+|(?:www\.|[-;:&=+$,\w]+@)[A-Za-z\d.-]+)((?:\/[+~%/.\w\-_]*)?\??[-+=&;%@.\w_]*#?[.!/\\\w]*)?)/
-
 const validateDataSource = (dataSource, template) => {
 
     let templates = template ? [template] : []
     templates.push.apply(templates, template ? template['relatedTemplates'] : null)
 
     let isTypeValid = clazzPattern.test(dataSource.clazz)
-    let isDataSourceIdValid = uuidPattern.test(dataSource.dataSourceId)
-    let isPluginIdValid = uuidPattern.test(dataSource.pluginId)
+    let isDataSourceIdValid = isValidUuid(dataSource.dataSourceId)
+    let isPluginIdValid = isValidUuid(dataSource.pluginId)
     let isTitleValid = dataSource.title !== ''
-    let isBaseUriValid = urlPattern.test(dataSource.baseUri)
+    let isBaseUriValid = isValidUrl(dataSource.baseUri)
     let isPatternKitsValid = dataSource.patternKits.reduce((isValid, patternKit) => {
         let _template = templates.find(template => template.type === patternKit.clazz)
         let isClazzValid = clazzPattern.test(patternKit.clazz)
