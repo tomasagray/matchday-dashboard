@@ -64,7 +64,7 @@
 $uploadContainerHeight: 2rem;
 .Artwork-editor {
   margin: -2rem;
-  height: -webkit-fill-available;
+  height: fill-available;
   contain: content;
 
   .Artwork-upload-container {
@@ -75,7 +75,7 @@ $uploadContainerHeight: 2rem;
     align-content: center;
     position: fixed;
     top: 0;
-    width: -webkit-fill-available;
+    width: fill-available;
     height: $uploadContainerHeight;
     z-index: 300;
 
@@ -86,10 +86,10 @@ $uploadContainerHeight: 2rem;
     .Artwork-upload-form {
       display: flex;
       align-content: center;
-      width: -webkit-fill-available;
+      width: fill-available;
 
       input[type=url] {
-        width: -webkit-fill-available;
+        width: fill-available;
       }
     }
   }
@@ -98,7 +98,7 @@ $uploadContainerHeight: 2rem;
     padding: 2rem;
     contain: content;
     overflow-y: scroll;
-    height: -webkit-fill-available;
+    height: fill-available;
 
     .Artwork-collection-display {
       display: grid;
