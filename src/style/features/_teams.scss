@@ -3,6 +3,7 @@
 
 .Team-tile {
   @include EntityButton;
+  width: 12vw;
 
   img {
     position: relative;

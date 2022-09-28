@@ -20,19 +20,58 @@
   }
 }
 
+.Detail-title {
+  text-align: left;
+  margin-bottom: 1rem;
+}
+
 .Detail-header {
   display: flex;
   flex-direction: row;
   justify-content: left;
+  position: relative;
 
   .Detail-poster {
-    width: 250px;
-    height: 350px;
-    padding: 1rem 0;
+    @include Detail-poster;
   }
 
-  .Detail-title {
-    text-align: left;
+  .Detail-edit-controls {
+    position: absolute;
+    @include Detail-poster;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 1rem 0;
+    height: 318px;
+
+    &.Team-edit-controls {
+      width: 350px;
+      margin: 0;
+    }
+
+    .Edit-button {
+      background-color: rgba(50, 50, 50, .7);
+      border: 3px solid colors.$border;
+      display: none;
+      border-radius: 100%;
+      padding: 1rem;
+      opacity: .7;
+
+      &:hover {
+        background-color: rgba(100, 100, 100, .7);
+        border-color: #888;
+        opacity: 1;
+      }
+    }
+
+    &:hover {
+      cursor: pointer;
+      background: radial-gradient(transparent, rgba(10, 10, 10, .75));
+
+      .Edit-button {
+        display: block;
+      }
+    }
   }
 }
 

@@ -261,7 +261,7 @@ export const CompetitionDetails = () => {
                                     placeholderUrl={placeholderUrl}
                                     className="Detail-poster"
                                  />
-                                <div className="Detail-data">
+                                <div className="Detail-edit-controls" onClick={onClickEditButton}>
                                     <EditButton onClick={onClickEditButton} />
                                 </div>
                             </div>

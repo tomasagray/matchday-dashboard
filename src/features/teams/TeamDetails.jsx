@@ -259,7 +259,7 @@ export const TeamDetails = () => {
                                     <SaveButton onClick={onSaveEdits} isLoading={isUpdatingTeam} />
                                 </Footer>
                             </Modal>
-                            <h2 className="Detail-title">{name?.name}</h2>
+                            <h1 className="Detail-title">{name?.name}</h1>
                             <div className="Detail-header">
                                 <SoftLoadImage
                                     imageUrl={imageUrl}
@@ -267,7 +267,7 @@ export const TeamDetails = () => {
                                     alt={name?.name}
                                     className="Team-detail-poster"
                                 />
-                                <div className="Detail-data">
+                                <div className="Detail-edit-controls Team-edit-controls" onClick={onClickEditButton}>
                                     <EditButton onClick={onClickEditButton} />
                                 </div>
                             </div>

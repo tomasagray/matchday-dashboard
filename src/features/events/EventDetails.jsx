@@ -127,10 +127,10 @@ export const EventDetails = () => {
                                      onClose={onHideVideoPlayer} title={event['title']} subtitle={formattedDate} />
 
                         <h2 className="Event-detail-header">
-                            {event['competition'].name.name} &nbsp;&nbsp;
-                            <span className={"Team-name"}>{event['homeTeam'].name}</span>
+                            {event['competition'].name?.name} &nbsp;&nbsp;
+                            <span className={"Team-name"}>{event['homeTeam'].name?.name}</span>
                             <span style={{color: '#888'}}> vs.&nbsp;</span>
-                            <span className={"Team-name"}>{event['awayTeam'].name}</span>
+                            <span className={"Team-name"}>{event['awayTeam'].name?.name}</span>
                         </h2>
                         <div className="Event-details-container">
                             <div className="Event-poster-container">
