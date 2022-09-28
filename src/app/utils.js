@@ -38,3 +38,44 @@ export const isValidUuid = (str) => {
 export const isValidUrl = (url) => {
     return urlPattern.test(url)
 }
+
+export const getArtworkUrl = (entity, role) => {
+    if (entity) {
+        let {_links: links} = entity
+        if (links) {
+            return links[role]['href']
+        }
+    }
+}
+
+
+export const formatArtworkData = (art) => {
+    let collection = []
+    let {artwork, ...metadata} = art
+    if (artwork !== null) {
+        let {_embedded: embedded} = artwork
+        collection = embedded ? embedded['artworks'] : []
+    }
+    return {...metadata, collection}
+}
+
+export const updateSelectedArtwork = (selectedId, artworkCollection) => {
+    let collection = Object.values(artworkCollection)
+    let selectedIndex = 0
+    let updatedCollection = []
+    for (let i = 0; i < collection.length; i++) {
+        if (collection[i].id === selectedId) {
+            selectedIndex = i
+            updatedCollection[i] = {
+                ...collection[i],
+                selected: true,
+            }
+        } else {
+            updatedCollection[i] = {
+                ...collection[i],
+                selected: false,
+            }
+        }
+    }
+    return {selectedIndex, updatedCollection}
+}

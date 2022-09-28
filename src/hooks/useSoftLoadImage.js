@@ -1,11 +1,10 @@
 import {useEffect, useRef} from "react";
-import axios from "axios";
 
-export const useSoftLoadImage = (placeholderUrl, imageUrl) => {
+export const useSoftLoadImage = (props) => {
 
-    // TODO: make this return <img>
+    let {placeholderUrl, imageUrl, className} = props
     let result = useRef({
-        data: placeholderUrl,
+        data: <img src={placeholderUrl} alt="..." className={className} />,
         isSuccess: false,
         isLoading: false,
         isError: false,
@@ -21,13 +20,15 @@ export const useSoftLoadImage = (placeholderUrl, imageUrl) => {
             ...result.current,
             isLoading: true
         }
-        axios.get(imageUrl)
-            .then(() => {
+        fetch(imageUrl)
+            .then((response) => {
+                console.log('fetch done', response)
                 result.current = {
                     ...result.current,
-                    isSuccess: true,
+                    isSuccess: response.ok,
+                    isError: !response.ok,
                     isLoading: false,
-                    data: imageUrl
+                    data: <img src={imageUrl} alt="" className={className} />
                 }
             }).catch(error => {
                 result.current = {
@@ -37,6 +38,9 @@ export const useSoftLoadImage = (placeholderUrl, imageUrl) => {
                     error
                 }
         })
-    }, [result, imageUrl, placeholderUrl])
+        return () => {
+            console.log('cleaning up....', result.current)
+        }
+    }, [result, imageUrl, placeholderUrl, className])
     return result.current
 }

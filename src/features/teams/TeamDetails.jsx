@@ -1,31 +1,109 @@
 import ContentBar from "../../components/ContentBar";
 import {useParams} from "react-router-dom";
-import {useFetchCompetitionsForTeamQuery, useFetchTeamByIdQuery} from "./teamApiSlice";
+import {
+    useAddTeamEmblemMutation,
+    useAddTeamFanartMutation,
+    useFetchCompetitionsForTeamQuery,
+    useFetchTeamByIdQuery,
+    useUpdateTeamMutation
+} from "./teamApiSlice";
 import {CenteredSpinner, FillSpinner} from "../../components/Spinner";
 import {useFetchMatchesForTeamQuery} from "../events/eventApiSlice";
 import EventTile from "../events/EventTile";
 import CompetitionTile from "../competitions/CompetitionTile";
 import {EditButton} from "../../components/controls/EditButton";
-import Select from "../../components/controls/Select";
-import {Option} from "../../components/controls/Option";
-import React, {useEffect} from "react";
-import {getToastMessage} from "../../app/utils";
+import React, {useEffect, useState} from "react";
+import {getArtworkUrl, getToastMessage} from "../../app/utils";
 import {toast} from "react-toastify";
 import {ErrorMessage} from "../../components/ErrorMessage";
+import {SoftLoadImage} from "../../components/SoftLoadImage";
+import {GeneralEditor} from "../edit-wizard/GeneralEditor";
+import {useDispatch, useSelector} from "react-redux";
+import {
+    addTeamSynonym,
+    beginEditingTeam,
+    deleteTeamSynonym,
+    editNewSynonym,
+    editTeamTitle,
+    selectEditedTeam,
+    selectEditedTeamForUpload,
+    selectTeamArtwork,
+    setTeamCountry,
+    uploadTeamArtwork
+} from "./teamSlice";
+import Modal, {Body, Footer, Header} from "../../components/Modal";
+import {EditWizard, EditWizardDisplay, EditWizardMenu} from "../edit-wizard/EditWizard";
+import {WizardMenuItem} from "../edit-wizard/WizardMenuItem";
+import {CancelButton} from "../../components/controls/CancelButton";
+import {SaveButton} from "../../components/controls/SaveButton";
+import {ArtworkEditor} from "../edit-wizard/ArtworkEditor";
 
 
 export const TeamDetails = () => {
 
+    // wizards
+    const GENERAL = 'general'
+    const EMBLEM = 'emblem'
+    const FANART = 'fanart'
+
+    // handlers
     const onClickEditButton = (e) => {
         e.preventDefault()
-        console.log('edit team')
-        // todo - edit teams modal
+        dispatch(beginEditingTeam({team}))
+        setIsEditShown(true)
+    }
+    const onCloseEditModal = () => {
+        setIsEditShown(false)
+    }
+    const onSelectWizard = (wizard) => () => {
+        setSelectedWizard(wizard)
+    }
+    const onEditTitle = (title) => {
+        dispatch(editTeamTitle({title}))
+    }
+    const onEditSynonym = (synonym) => {
+        dispatch(editNewSynonym({synonym}))
+    }
+    const onAddSynonym = (synonym) => {
+        console.log('called add synonym', synonym)
+        dispatch(addTeamSynonym({
+            synonym: {
+                name: synonym,
+            }
+        }))
+    }
+    const onDeleteSynonym = (synonym) => {
+        dispatch(deleteTeamSynonym({synonym}))
+    }
+    const onSelectCountry = (country) => {
+        dispatch(setTeamCountry({country}))
+    }
+    const onSaveEdits = async () => {
+        updateTeam(uploadTeam).unwrap().then(() => onCloseEditModal())
+    }
+    const onUploadArtwork = (artwork) => {
+        console.log('uploading', artwork)
+        dispatch(uploadTeamArtwork({artwork}))
+    }
+    const onSelectEmblem = (selection) => {
+        console.log('selecting emblem', selection)
+        dispatch(selectTeamArtwork({selection, role: 'emblem'}))
+    }
+    const onSelectFanart = (selection) => {
+        console.log('selecting', selection)
+        dispatch(selectTeamArtwork({selection, role: 'fanart'}))
     }
 
+    // state
     const params = useParams()
     const {teamId} = params
+    let [isEditShown, setIsEditShown] = useState(false)
+    let [selectedWizard, setSelectedWizard] = useState(GENERAL)
+    let editedTeam = useSelector(state => selectEditedTeam(state))
+    let uploadTeam = useSelector(state => selectEditedTeamForUpload(state))
 
     // hooks
+    const dispatch = useDispatch()
     const {
         data: team,
         isLoading: isTeamLoading,
@@ -33,6 +111,17 @@ export const TeamDetails = () => {
         isError: isTeamError,
         error: teamError
     } = useFetchTeamByIdQuery(teamId)
+    let name = team?.name
+    const posterPlaceholder = process.env.PUBLIC_URL + '/img/default_team_emblem.png'
+    const imageUrl = getArtworkUrl(team, 'emblem')
+    const [
+        updateTeam, {
+            isLoading: isUpdatingTeam,
+            isSuccess: isUpdateSuccess,
+            isError: isUpdateError,
+            error: updateError,
+        }
+    ] = useUpdateTeamMutation()
     const {
         data: matches,
         isLoading: isMatchesLoading,
@@ -41,7 +130,7 @@ export const TeamDetails = () => {
         error: matchesError
     } = useFetchMatchesForTeamQuery(teamId)
     const {
-        data: competitions, 
+        data: competitions,
         isLoading: isCompetitionsLoading,
         isSuccess: isCompetitionsSuccess,
         isError: isCompetitionsError,
@@ -50,9 +139,12 @@ export const TeamDetails = () => {
 
     // toast messages
     useEffect(() => {
+        if (isUpdateSuccess) {
+            toast('Successfully updated Team')
+        }
         if (isTeamError) {
-            let msg = `Failed to load Team data for ${teamId}: ` + getToastMessage(teamError)
-            toast.error(msg)
+            let msg = `Failed to load Team data for ${teamId}: ` + getToastMessage(teamError);
+            toast.error(msg);
         }
         if (isCompetitionsError) {
             let msg = 'Failed to load Competitions: ' + getToastMessage(competitionsError)
@@ -62,14 +154,14 @@ export const TeamDetails = () => {
             let msg = 'Failed to load Matches: ' + getToastMessage(matchesError)
             toast.error(msg)
         }
+        if (isUpdateError) {
+            let msg = 'Could not update Team: ' + getToastMessage(updateError)
+            toast.error(msg)
+        }
     }, [
-        teamId,
-        isMatchesError,
-        matchesError,
-        isCompetitionsError,
-        competitionsError,
-        isTeamError,
-        teamError
+        teamId, isMatchesError, matchesError, isCompetitionsError,
+        competitionsError, isTeamError, teamError, isUpdateSuccess,
+        isUpdateError, updateError
     ])
 
     // components
@@ -86,6 +178,43 @@ export const TeamDetails = () => {
                 ) :
                 null
 
+    let wizards = {
+        general:
+            <GeneralEditor
+                title={editedTeam.name?.name}
+                synonyms={editedTeam.name?.synonyms}
+                newTagValue={editedTeam.newSynonym?.name}
+                country={editedTeam.country}
+                onEditTitle={onEditTitle}
+                onEditSynonym={onEditSynonym}
+                onAddSynonym={onAddSynonym}
+                onDeleteSynonym={onDeleteSynonym}
+                onSelectCountry={onSelectCountry}
+            />,
+        emblem:
+            <ArtworkEditor
+                key="emblem"
+                entityId={teamId}
+                hooks={{
+                    upload: useAddTeamEmblemMutation,
+                }}
+                artwork={editedTeam.emblem}
+                onUpload={onUploadArtwork}
+                onSelectArtwork={onSelectEmblem}
+            />,
+        fanart:
+            <ArtworkEditor
+                key="fanart"
+                entityId={teamId}
+                hooks={{
+                    upload: useAddTeamFanartMutation,
+                }}
+                artwork={editedTeam.fanart}
+                onUpload={onUploadArtwork}
+                onSelectArtwork={onSelectFanart}
+            />,
+    }
+
     return (
         <>
             {
@@ -93,28 +222,60 @@ export const TeamDetails = () => {
                     <FillSpinner /> :
                     isTeamSuccess ?
                         <div className="Content-container">
-                            <h2 className="Detail-title">{team.name}</h2>
+                            <Modal show={isEditShown}>
+                                <Header onHide={onCloseEditModal}>
+                                    Edit team &mdash;&nbsp;
+                                    <span style={{color: '#ccc'}}>{name?.name}</span>
+                                </Header>
+                                <Body>
+                                    <EditWizard>
+                                        <EditWizardMenu>
+                                            <WizardMenuItem
+                                                imgSrc="/img/icon/form/form_16.png"
+                                                onClick={onSelectWizard(GENERAL)}
+                                                selected={selectedWizard === GENERAL}>
+                                                General
+                                            </WizardMenuItem>
+                                            <WizardMenuItem
+                                                imgSrc="/img/icon/image/image_16.png"
+                                                onClick={onSelectWizard(EMBLEM)}
+                                                selected={selectedWizard === EMBLEM}>
+                                                Emblem
+                                            </WizardMenuItem>
+                                            <WizardMenuItem
+                                                imgSrc="/img/icon/image/image_16.png"
+                                                onClick={onSelectWizard(FANART)}
+                                                selected={selectedWizard === FANART}>
+                                                Fanart
+                                            </WizardMenuItem>
+                                        </EditWizardMenu>
+                                        <EditWizardDisplay>
+                                            {wizards[selectedWizard]}
+                                        </EditWizardDisplay>
+                                    </EditWizard>
+                                </Body>
+                                <Footer>
+                                    <CancelButton onClick={onCloseEditModal} />
+                                    <SaveButton onClick={onSaveEdits} isLoading={isUpdatingTeam} />
+                                </Footer>
+                            </Modal>
+                            <h2 className="Detail-title">{name?.name}</h2>
                             <div className="Detail-header">
-                                <img src={team['_links']['emblem'].href} alt={team.name} className="Detail-poster"/>
+                                <SoftLoadImage
+                                    imageUrl={imageUrl}
+                                    placeholderUrl={posterPlaceholder}
+                                    alt={name?.name}
+                                    className="Team-detail-poster"
+                                />
                                 <div className="Detail-data">
                                     <EditButton onClick={onClickEditButton} />
-                                    <Select id="language-selector" placeholder="Default language">
-                                        {/* todo - get languages from server */}
-                                        <Option name="default" value="default">Default language</Option>
-                                        <Option name="en" value="en-Us">English</Option>
-                                        <Option name="es" value="es">Spanish</Option>
-                                        <Option name="it" value="it">Italian</Option>
-                                        <Option name="fr" value="fr">French</Option>
-                                    </Select>
                                 </div>
                             </div>
-
                             {
                                 isMatchesLoading ?
                                     <CenteredSpinner /> :
-                                    <ContentBar title={"Most recent matches"} items={matchTiles}/>
+                                    <ContentBar title={"Most recent Matches"} items={matchTiles}/>
                             }
-
                             <h3>Competing in</h3>
                             <div className="Entity-display">
                                 {competitionTiles}

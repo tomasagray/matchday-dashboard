@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import {
     useAddCompetitionEmblemMutation,
+    useAddCompetitionFanartMutation,
     useFetchCompetitionByIdQuery,
     useFetchTeamsForCompetitionQuery,
     useUpdateCompetitionMutation,
@@ -13,7 +14,7 @@ import EventTile from "../events/EventTile";
 import TeamTile from "../teams/TeamTile";
 import {EditButton} from "../../components/controls/EditButton";
 import {toast} from "react-toastify";
-import {getToastMessage} from "../../app/utils";
+import {getArtworkUrl, getToastMessage} from "../../app/utils";
 import Modal, {Body, Footer, Header} from "../../components/Modal";
 import {EditWizard, EditWizardDisplay, EditWizardMenu} from "../edit-wizard/EditWizard";
 import {CancelButton} from "../../components/controls/CancelButton";
@@ -33,8 +34,8 @@ import {
     uploadArtwork
 } from "./competitionSlice";
 import {useDispatch, useSelector} from "react-redux";
-import {useSoftLoadImage} from "../../hooks/useSoftLoadImage";
 import {ArtworkEditor} from "../edit-wizard/ArtworkEditor";
+import {SoftLoadImage} from "../../components/SoftLoadImage";
 
 export const CompetitionDetails = () => {
 
@@ -43,15 +44,7 @@ export const CompetitionDetails = () => {
     const EMBLEM = 'emblem'
     const FANART = 'fanart'
 
-    const getPosterUrl = (competition) => {
-        if (competition) {
-            let {_links: links} = competition
-            return links['emblem']['href']
-        }
-    }
-
     // handlers
-    const dispatch = useDispatch()
     const onClickEditButton = (e) => {
         e.preventDefault()
         dispatch(beginEditingCompetition({competition}))
@@ -88,6 +81,9 @@ export const CompetitionDetails = () => {
     const onSelectEmblem = (selection) => {
         dispatch(selectArtwork({selection, role: 'emblem'}))
     }
+    const onSelectFanart = (selection) => {
+        dispatch(selectArtwork({selection, role: 'fanart'}))
+    }
     const onSaveEdits = async () => {
         updateCompetition(uploadCompetition).unwrap().then(() => onCloseEditModal())
     }
@@ -101,6 +97,7 @@ export const CompetitionDetails = () => {
     let uploadCompetition = useSelector(state => selectEditedCompetitionForUpload(state))
 
     // hooks
+    const dispatch = useDispatch()
     const {
         data: competition,
         isLoading: isCompetitionLoading,
@@ -110,14 +107,7 @@ export const CompetitionDetails = () => {
     } = useFetchCompetitionByIdQuery(competitionId)
     let name = competition?.name
     const placeholderUrl = process.env.PUBLIC_URL + '/img/default_competition_poster.png'
-    let posterImageUrl = getPosterUrl(competition)
-    const {
-        data: competitionEmblem,
-        /*isSuccess: isEmblemSuccess,
-        isLoading: isEmblemLoading,*/
-        isError: isEmblemError,
-        error: emblemError
-    } = useSoftLoadImage(placeholderUrl, posterImageUrl)
+    let posterImageUrl = getArtworkUrl(competition, 'emblem')
     const {
         data: teams,
         isLoading: isTeamsLoading,
@@ -142,9 +132,14 @@ export const CompetitionDetails = () => {
 
     // toast messages
     useEffect(() => {
+        if (isCompetitionSuccess) {
+            const fanartUrl = getArtworkUrl(competition, 'fanart')
+            const background = document.getElementsByClassName('Background-container')[0]
+            background['style'].backgroundImage = `url(${fanartUrl})`
+        }
         if (isCompetitionError) {
-            let msg = `Failed to load Competition data for: ${competitionId}` + getToastMessage(competitionError)
-            toast.error(msg)
+            let msg = `Failed to load Competition data for: ${competitionId}` + getToastMessage(competitionError);
+            toast.error(msg);
         }
         if (isTeamsError) {
             let msg = 'Failed to load Teams: ' + getToastMessage(teamsError)
@@ -161,17 +156,11 @@ export const CompetitionDetails = () => {
             let msg = 'Failed updating Competition: ' + getToastMessage(updateCompetitionError)
             toast.error(msg)
         }
-        if (isEmblemError) {
-            if (emblemError.response.status !== 404) {
-                let msg = 'Error loading Competition artwork: ' + getToastMessage(emblemError);
-                toast.error(msg)
-            }
-        }
     }, [
-        competitionId, isCompetitionError, competitionError,
-        isEventsError, eventsError, isTeamsError, teamsError,
-        isUpdateCompetitionSuccess, isUpdateCompetitionError,
-        updateCompetitionError, isEmblemError, emblemError
+        competitionId, isCompetitionError, competitionError, isEventsError,
+        eventsError, isTeamsError, teamsError, isUpdateCompetitionSuccess,
+        isUpdateCompetitionError, updateCompetitionError,
+        isCompetitionSuccess, competition
     ])
 
     // components
@@ -197,7 +186,7 @@ export const CompetitionDetails = () => {
         emblem:
             <ArtworkEditor
                 key="emblem"
-                id={competitionId}
+                entityId={competitionId}
                 hooks={{
                     upload: useAddCompetitionEmblemMutation,
                 }}
@@ -205,7 +194,17 @@ export const CompetitionDetails = () => {
                 onUpload={onUploadArtwork}
                 onSelectArtwork={onSelectEmblem}
             />,
-        // fanart: <ArtworkEditor key="fanart" />,
+        fanart:
+            <ArtworkEditor
+                key="fanart"
+                entityId={competitionId}
+                hooks={{
+                    upload: useAddCompetitionFanartMutation,
+                }}
+                artwork={editedCompetition.fanart}
+                onUpload={onUploadArtwork}
+                onSelectArtwork={onSelectFanart}
+            />,
     }
 
     return (
@@ -235,7 +234,7 @@ export const CompetitionDetails = () => {
                                                 imgSrc="/img/icon/image/image_16.png"
                                                 onClick={onSelectWizard(EMBLEM)}
                                                 selected={selectedWizard === EMBLEM}>
-                                                Emblem
+                                                Poster
                                             </WizardMenuItem>
                                             <WizardMenuItem
                                                 imgSrc="/img/icon/image/image_16.png"
@@ -257,8 +256,11 @@ export const CompetitionDetails = () => {
 
                             <h1 className="Detail-title">{name?.name}</h1>
                             <div className="Detail-header">
-                                <img src={competitionEmblem} alt={name?.name}
-                                     className="Detail-poster"/>
+                                <SoftLoadImage
+                                    imageUrl={posterImageUrl}
+                                    placeholderUrl={placeholderUrl}
+                                    className="Detail-poster"
+                                 />
                                 <div className="Detail-data">
                                     <EditButton onClick={onClickEditButton} />
                                 </div>

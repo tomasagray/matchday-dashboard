@@ -6,12 +6,14 @@ import {SideNav} from "../layout/SideNav";
 import {ContentStage} from "../layout/ContentStage";
 import "react-toastify/dist/ReactToastify.min.css";
 import {ToastContainer} from "react-toastify";
+import {BackgroundContainer} from "../layout/BackgroundContainer";
 
 
 export default function App() {
 
     return (
         <div className="App">
+            <BackgroundContainer/>
             <HeaderNav/>
             <div className="Scroll-wrapper">
                 <SideNav/>

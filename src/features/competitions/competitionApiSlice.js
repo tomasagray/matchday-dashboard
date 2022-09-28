@@ -1,4 +1,4 @@
-import {apiSlice, artworkTag, competitionTag, eventTag, teamTag} from "../../app/apiSlice";
+import {apiSlice, competitionTag, eventTag, teamTag} from "../../app/apiSlice";
 import {allCompetitionsLoaded, competitionAdapter, competitionLoaded} from "./competitionSlice";
 import store from "../../app/store";
 import {teamAdapter, teamsLoaded} from "../teams/teamSlice";
@@ -50,28 +50,21 @@ export const competitionApiSlice = apiSlice.injectEndpoints({
                     }),
                 invalidatesTags: [competitionTag, eventTag]
             }),
-            fetchCompetitionEmblemCollection: builder.query({
-                query: competitionId => `/competitions/competition/${competitionId}/emblem`,
-                providesTags: [artworkTag],
-                transformResponse(response) {
-                    let {_embedded} = response
-                    if (_embedded) {
-                        let {artworks} = _embedded;
-                        return artworks
-                    }
-                }
-            }),
-            fetchSelectedCompetitionEmblem: builder.query({
-                query: competitionId => `/competitions/competition/${competitionId}/emblem/selected`,
-                providesTags: [artworkTag],
-            }),
             addCompetitionEmblem: builder.mutation({
                 query: emblem => ({
-                    url: `/competitions/competition/${emblem.id}/emblem`,
+                    url: `/competitions/competition/${emblem.entityId}/emblem`,
                     method: 'POST',
                     body: emblem.formData,
                 }),
-                invalidatesTags: [artworkTag]
+                invalidatesTags: [competitionTag]
+            }),
+            addCompetitionFanart: builder.mutation({
+                query: fanart => ({
+                    url: `/competitions/competition/${fanart.entityId}/fanart`,
+                    method: 'POST',
+                    body: fanart.formData,
+                }),
+                invalidatesTags: [competitionTag]
             }),
         })
     }
@@ -82,7 +75,6 @@ export const {
     useFetchCompetitionByIdQuery,
     useFetchTeamsForCompetitionQuery,
     useUpdateCompetitionMutation,
-    useFetchCompetitionEmblemCollectionQuery,
-    useFetchSelectedCompetitionEmblemQuery,
     useAddCompetitionEmblemMutation,
+    useAddCompetitionFanartMutation,
 } = competitionApiSlice

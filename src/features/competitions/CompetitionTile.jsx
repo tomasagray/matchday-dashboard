@@ -1,14 +1,12 @@
 import {Link} from "react-router-dom";
-import {useSoftLoadImage} from "../../hooks/useSoftLoadImage";
+import {SoftLoadImage} from "../../components/SoftLoadImage";
 
 export default function CompetitionTile(props) {
 
-    const {competition} = props
-    const {id, name, _links: links} = competition
     const placeholderUrl = process.env.PUBLIC_URL + '/img/default_competition_emblem.png'
-    let {
-        data: competitionEmblem,
-    } = useSoftLoadImage(placeholderUrl, links['emblem'].href)
+    let {competition} = props
+    let {id, name, _links: links} = competition
+    let imageUrl = links['emblem'].href
 
     return (
         <div className="Competition-tile">
@@ -17,8 +15,12 @@ export default function CompetitionTile(props) {
                     pathname: '/competitions/competition/' + id,
                 }
             }>
-                <img src={competitionEmblem} alt={name.name} className="Entity-poster"/>
-                <div>{name.name}</div>
+                <SoftLoadImage
+                    placeholderUrl={placeholderUrl}
+                    imageUrl={imageUrl}
+                    className="Entity-poster"
+                />
+                <div>{name?.name}</div>
             </Link>
         </div>
     );

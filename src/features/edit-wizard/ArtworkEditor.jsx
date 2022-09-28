@@ -28,10 +28,10 @@ export const ArtworkEditor = (props) => {
             return
         }
         let formData = new FormData()
-        formData.append('id', id)
+        formData.append('id', entityId)
         formData.append('image', img)
         let result = await uploadArtwork({
-            id: id,
+            entityId,
             formData
         })
         if (result.data) {
@@ -48,11 +48,11 @@ export const ArtworkEditor = (props) => {
     }
 
     // state
-    let {id, artwork, hooks, onUpload, onSelectArtwork} = props
+    let {entityId, artwork, hooks, onUpload, onSelectArtwork} = props
     let {upload} = hooks
     let [isEnterUrlMode, setIsEnterUrlMode] = useState(false)
     let [uploadUrl, setUploadUrl] = useState('')
-    // console.log('artwork', artwork)
+    console.log('artwork', JSON.stringify(artwork))
 
     // hooks
     const [uploadArtwork, {

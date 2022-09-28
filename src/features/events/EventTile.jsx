@@ -9,7 +9,7 @@ export default function EventTile(props) {
     const {eventId, title, competition, homeTeam, awayTeam, date} = event
     const details = homeTeam ?
         <>
-            <span>{homeTeam['name']}</span> vs. <span>{awayTeam['name']}</span>
+            <span>{homeTeam.name?.name}</span> vs. <span>{awayTeam.name?.name}</span>
         </> :
         <span>{title}</span>
 

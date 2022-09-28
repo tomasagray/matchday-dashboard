@@ -10,6 +10,16 @@
   margin-bottom: 3rem;
 }
 
+.Country-tile {
+  display: flex;
+  align-items: center;
+
+  img {
+    width: 24px;
+    margin-right: .6rem;
+  }
+}
+
 .Detail-header {
   display: flex;
   flex-direction: row;
@@ -23,103 +33,6 @@
 
   .Detail-title {
     text-align: left;
-  }
-}
-
-.Nav-link {
-  border: 0;
-  width: variables.$navigationSquare;
-  height: variables.$navigationSquare;
-  opacity: .5;
-  background-color: transparent;
-  transition: opacity 250ms ease-in-out, background-color 250ms ease-in-out;
-
-  &:hover, &:active {
-    opacity: .95;
-    background-color: colors.$navButtonHover;
-  }
-
-  &.current {
-    background-color: colors.$currentNavItemBg;
-  }
-
-  img {
-    max-height: 2rem;
-    max-width: 2rem;
-  }
-}
-
-.Settings-group {
-  margin: 4rem 0;
-  max-width: 75%;
-
-  .Setting-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 1rem;
-    margin: 1.6rem 0;
-    background-color: colors.$defaultComponentBg;
-    border-radius: 1rem;
-  }
-
-  .Settings-link {
-    font-size: medium;
-
-    &:hover {
-      background-color: rgba(255, 255, 255, .2);
-      cursor: pointer;
-    }
-
-    .link-arrow {
-      max-height: 1rem;
-      opacity: .3;
-    }
-  }
-}
-
-.Message {
-  display: flex;
-  border: 1px solid #444;
-  box-shadow: 3px 3px 5px colors.$shadow;
-  padding: 2em;
-  margin: 2rem 0;
-  width: fit-content;
-
-  & > img {
-    width: 8em;
-    height: 8em;
-    border-radius: 100%;
-
-    &.error {
-      background-color: red;
-    }
-
-    &.info {
-      background-color: cornflowerblue;
-    }
-  }
-
-  .Message-description-container {
-    padding: 0 3em;
-
-    p {
-      margin: 10px 0;
-    }
-
-    .Message-title {
-      margin: 0;
-      text-align: start;
-      padding: 0;
-    }
-
-    .Message-description {
-      color: #ccc;
-    }
-
-    .Message-code {
-      color: #666;
-    }
   }
 }
 
@@ -171,6 +84,51 @@
   }
 }
 
+.Message {
+  display: flex;
+  border: 1px solid #444;
+  box-shadow: 3px 3px 5px colors.$shadow;
+  padding: 2em;
+  margin: 2rem 0;
+  width: fit-content;
+
+  & > img {
+    width: 8em;
+    height: 8em;
+    border-radius: 100%;
+
+    &.error {
+      background-color: red;
+    }
+
+    &.info {
+      background-color: cornflowerblue;
+    }
+  }
+
+  .Message-description-container {
+    padding: 0 3em;
+
+    p {
+      margin: 10px 0;
+    }
+
+    .Message-title {
+      margin: 0;
+      text-align: start;
+      padding: 0;
+    }
+
+    .Message-description {
+      color: #ccc;
+    }
+
+    .Message-code {
+      color: #666;
+    }
+  }
+}
+
 .Modal-container {
   height: 100vh;
   width: 103vw;
@@ -204,7 +162,7 @@
     .Dialog {
       margin: 5rem;
       width: 45vw;
-      min-height: 25vh;
+      min-height: 45vh;
       background-color: colors.$appBg;
       border: 1px solid colors.$border;
       border-radius: .4rem;
@@ -228,8 +186,30 @@
       border-top: 1px solid colors.$border;
       padding: $modalPadding;
       height: fit-content;
-
     }
+  }
+}
+
+.Nav-link {
+  border: 0;
+  width: variables.$navigationSquare;
+  height: variables.$navigationSquare;
+  opacity: .5;
+  background-color: transparent;
+  transition: opacity 250ms ease-in-out, background-color 250ms ease-in-out;
+
+  &:hover, &:active {
+    opacity: .95;
+    background-color: colors.$navButtonHover;
+  }
+
+  &.current {
+    background-color: colors.$currentNavItemBg;
+  }
+
+  img {
+    max-height: 2rem;
+    max-width: 2rem;
   }
 }
 
@@ -307,13 +287,44 @@
   }
 }
 
-.Country-tile {
-  display: flex;
-  align-items: center;
+.Settings-group {
+  margin: 4rem 0;
+  max-width: 75%;
 
-  img {
-    width: 24px;
-    margin-right: .6rem;
+  .Setting-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1rem;
+    margin: 1.6rem 0;
+    background-color: colors.$defaultComponentBg;
+    border-radius: 1rem;
+  }
+
+  .Settings-link {
+    font-size: medium;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, .2);
+      cursor: pointer;
+    }
+
+    .link-arrow {
+      max-height: 1rem;
+      opacity: .3;
+    }
+  }
+}
+
+.Soft-load-container {
+
+  .Soft-load-image {
+    width: inherit;
+    height: inherit;
+
+    &.not-displayed {
+      display: none;
+    }
   }
 }
 

@@ -19,8 +19,6 @@
   text-align: center;
 
   img {
-    width: variables.$tilePosterSize;
-    height: variables.$tilePosterSize;
     filter: saturate(80%) opacity(.8);
   }
 

@@ -1,5 +1,13 @@
+@use "../variables";
 @import "../mixins";
 
 .Competition-tile {
   @include EntityButton;
+  height: fit-content;
+
+  img {
+    position: relative;
+    width: variables.$tilePosterSize !important;
+    //height: variables.$tilePosterSize !important;
+  }
 }

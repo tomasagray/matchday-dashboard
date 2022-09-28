@@ -1,7 +1,8 @@
-import {apiSlice, competitionTag, teamTag} from "../../app/apiSlice";
+import {apiSlice, competitionTag, eventTag, teamTag} from "../../app/apiSlice";
 import {teamAdapter, teamLoaded, teamsLoaded} from "./teamSlice";
 import store from "../../app/store";
 import {competitionAdapter, competitionsLoaded} from "../competitions/competitionSlice";
+import {JsonHeaders} from "../../app/constants";
 
 export const teamApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => {
@@ -38,6 +39,31 @@ export const teamApiSlice = apiSlice.injectEndpoints({
                     }
                 }
             }),
+            updateTeam: builder.mutation({
+                query: (team) => ({
+                    url: `/teams/team/${team.id}/update`,
+                    method: 'PATCH',
+                    headers: JsonHeaders,
+                    body: team,
+                }),
+                invalidatesTags: [teamTag, eventTag],
+            }),
+            addTeamEmblem: builder.mutation({
+                query: emblem => ({
+                    url: `/teams/team/${emblem.entityId}/emblem/add`,
+                    method: 'POST',
+                    body: emblem.formData,
+                }),
+                invalidatesTags: [teamTag],
+            }),
+            addTeamFanart: builder.mutation({
+                query: fanart => ({
+                    url: `/teams/team/${fanart.entityId}/fanart/add`,
+                    method: 'POST',
+                    body: fanart.formData,
+                }),
+                invalidatesTags: [teamTag],
+            }),
         })
     }
 
@@ -47,4 +73,7 @@ export const {
     useFetchAllTeamsQuery,
     useFetchTeamByIdQuery,
     useFetchCompetitionsForTeamQuery,
+    useUpdateTeamMutation,
+    useAddTeamEmblemMutation,
+    useAddTeamFanartMutation,
 } = teamApiSlice

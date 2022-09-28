@@ -1,5 +1,16 @@
+@use "../variables";
 @import "../mixins";
 
 .Team-tile {
   @include EntityButton;
+
+  img {
+    position: relative;
+    width: variables.$tilePosterSize !important;
+    height: variables.$tilePosterSize !important;
+  }
+}
+
+.Team-detail-poster {
+  height: 350px;
 }

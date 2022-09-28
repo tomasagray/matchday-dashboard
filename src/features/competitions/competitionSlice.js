@@ -1,4 +1,5 @@
 import {createEntityAdapter, createSelector, createSlice} from "@reduxjs/toolkit";
+import {formatArtworkData, updateSelectedArtwork} from "../../app/utils";
 
 
 export const competitionAdapter = createEntityAdapter()
@@ -7,6 +8,7 @@ export const editedCompetition = {
     name: null,
     country: null,
     emblem: null,
+    fanart: null,
     newSynonym: {},
 }
 export const initialState = competitionAdapter.getInitialState({
@@ -23,10 +25,7 @@ export const competitionSlice = createSlice({
         beginEditingCompetition: (state, action) => {
             let {payload} = action
             let {competition} = payload
-            let {id, name, country, emblem} = competition
-            let {artwork, ...emblemCollection} = emblem
-            let {_embedded: embedded} = artwork
-            let collection = embedded ? embedded['artworks'] : null
+            let {id, name, country, emblem, fanart} = competition
             return {
                 ...state,
                 editedCompetition: {
@@ -34,10 +33,8 @@ export const competitionSlice = createSlice({
                     id,
                     name,
                     country: country?.name,
-                    emblem: {
-                        ...emblemCollection,
-                        collection,
-                    },
+                    emblem: formatArtworkData(emblem),
+                    fanart: formatArtworkData(fanart),
                 },
             }
         },
@@ -64,7 +61,6 @@ export const competitionSlice = createSlice({
                   ...state.editedCompetition,
                   newSynonym: {
                       name: newSynonym,
-                      // properName: state.editedCompetition.name,
                   },
               }
           }
@@ -159,30 +155,9 @@ export const competitionSlice = createSlice({
                     }
                 }
             }
-        }
+        },
     }
 })
-
-const updateSelectedArtwork = (selectedId, artworkCollection) => {
-    let collection = Object.values(artworkCollection)
-    let selectedIndex = 0
-    let updatedCollection = []
-    for (let i = 0; i < collection.length; i++) {
-        if (collection[i].id === selectedId) {
-            selectedIndex = i
-            updatedCollection[i] = {
-                ...collection[i],
-                selected: true,
-            }
-        } else {
-            updatedCollection[i] = {
-                ...collection[i],
-                selected: false,
-            }
-         }
-    }
-    return {selectedIndex, updatedCollection}
-}
 
 export const {
     allCompetitionsLoaded,
