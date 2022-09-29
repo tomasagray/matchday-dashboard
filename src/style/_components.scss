@@ -125,6 +125,7 @@
 
 .Message {
   display: flex;
+  align-items: center;
   border: 1px solid #444;
   box-shadow: 3px 3px 5px colors.$shadow;
   padding: 2em;
@@ -132,17 +133,7 @@
   width: fit-content;
 
   & > img {
-    width: 8em;
     height: 8em;
-    border-radius: 100%;
-
-    &.error {
-      background-color: red;
-    }
-
-    &.info {
-      background-color: cornflowerblue;
-    }
   }
 
   .Message-description-container {
