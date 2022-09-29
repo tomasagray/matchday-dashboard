@@ -1,5 +1,6 @@
 @use "variables";
 @use "colors";
+@use "layers";
 @import "mixins";
 
 .Banner-title {
@@ -50,7 +51,7 @@
     }
 
     .Edit-button {
-      background-color: rgba(50, 50, 50, .7);
+      background-color: colors.$darkButtonBackground;
       border: 3px solid colors.$border;
       display: none;
       border-radius: 100%;
@@ -58,8 +59,8 @@
       opacity: .7;
 
       &:hover {
-        background-color: rgba(100, 100, 100, .7);
-        border-color: #888;
+        background-color: colors.$mediumButtonBackground;
+        border-color: colors.$mediumBg;
         opacity: 1;
       }
     }
@@ -76,12 +77,12 @@
 }
 
 .Floating-menu {
-  background-color: #333;
+  background-color: colors.$semiDarkBg;
   padding: 0;
-  border: 1px solid #222;
+  border: 1px solid colors.$shadow;
   position: absolute;
   box-shadow: 3px 3px 3px colors.$shadow;
-  z-index: variables.$floatingMenuIndex;
+  z-index: layers.$floatingMenu;
 
   &.hidden {
     display: none;
@@ -97,10 +98,10 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  z-index: variables.$floatingMenuIndex;
+  z-index: layers.$floatingMenu;
 
   &:hover {
-    background-color: #888;
+    background-color: colors.$mediumBg;
     cursor: pointer;
   }
 
@@ -150,11 +151,11 @@
     }
 
     .Message-description {
-      color: #ccc;
+      color: colors.$lightFontColor;
     }
 
     .Message-code {
-      color: #666;
+      color: colors.$darkFontColor;
     }
   }
 }
@@ -166,7 +167,7 @@
   position: fixed;
   top: 0;
   left: 0;
-  z-index: variables.$modalIndex - 1;
+  z-index: layers.$modalContainer;
 
   &.hidden {
     display: none;
@@ -180,7 +181,7 @@
     min-height: 100vh;
     top: 0;
     left: 0;
-    z-index: variables.$modalIndex;
+    z-index: layers.$modal;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -293,7 +294,7 @@
     max-height: 30vh;
     overflow-y: scroll;
     transform: translate(-4px, 2px);
-    z-index: 100;
+    z-index: layers.$floatingMenu;
 
     & > ul > div:not(:last-of-type) {
       border-bottom: 1px dashed #666;

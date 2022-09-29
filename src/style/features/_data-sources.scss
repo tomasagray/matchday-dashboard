@@ -33,11 +33,11 @@ $dataSourceIntBorder: 1px solid #666;
     &:disabled {
       background: none !important;
       border-color: transparent;
-      color: #ccc;
+      color: colors.$lightFontColor;
     }
 
     &:focus {
-      background-color: rgba(0, 0, 0, .2);
+      background-color: colors.$dataSourceFocusedText;
     }
   }
 
@@ -57,10 +57,10 @@ $dataSourceIntBorder: 1px solid #666;
 
   td {
     padding: 1.25rem;
-    background-color: rgba(0, 0, 0, .1);
+    background-color: colors.$dataSourceOdd;
 
     &:nth-of-type(2n+2) {
-      background-color: rgba(0, 0, 0, .15);
+      background-color: colors.$dataSourceEven;
       color: #ccc;
     }
   }
@@ -68,7 +68,7 @@ $dataSourceIntBorder: 1px solid #666;
 
 .Type-header-container {
   display: flex;
-  background-color: rgba(150, 150, 150, .25);
+  background-color: colors.$typeHeaderBackground;
 
   .Type-header {
     display: flex;
@@ -78,7 +78,7 @@ $dataSourceIntBorder: 1px solid #666;
     border-bottom: 2px solid transparent;
 
     &:hover {
-      background-color: rgba(200, 200, 200, .2);
+      background-color: colors.$typeHeaderHover;
       cursor: pointer;
     }
 

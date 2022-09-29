@@ -8,6 +8,7 @@
 @use "features/data-sources";
 @use "features/plugins";
 @use "features/teams";
+@use "fonts";
 @use "components";
 @use "layout";
 @use "spinner";
@@ -49,14 +50,13 @@ a {
 
   &:hover {
     text-decoration: underline;
-    text-decoration-color: rgba(180,180,180,.5);
+    text-decoration-color: colors.$linkUnderline;
     opacity: 1 !important;
   }
 }
 
 code {
-  font-family: ui-monospace, "Cascadia Mono", "Segoe UI Mono", "Liberation Mono",
-  Menlo, Monaco, Consolas, monospace;
+  font-family: fonts.$technical;
 }
 
 
@@ -67,7 +67,7 @@ input[type=url] {
   background-color: colors.$darkBg !important;
   border-radius: 3px;
   padding: .5em;
-  color: #ccc !important;
+  color: colors.$lightFontColor !important;
   font-size: 16px;
 
   &:disabled {

@@ -18,16 +18,16 @@
   overflow: hidden;
   padding: 1rem;
   text-align: left;
-  color: rgba(200, 200, 200, .6);
+  color: colors.$eventTile;
 
   &:hover {
     color: colors.$defaultFontColor;
 
     .Event-title > span {
-      color: rgba(200, 200, 200, .4);
+      color: colors.$eventDetails;
 
       span {
-        color: rgba(200, 200, 200, .8);
+        color: colors.$eventDetailPunctuation;
       }
     }
 
@@ -48,10 +48,10 @@
     font-weight: normal;
 
     span {
-      color: rgba(150, 150, 150, .4);
+      color: colors.$eventTitle;
 
       span {
-        color: rgba(150, 150, 150, .6);
+        color: colors.$eventTeams;
       }
     }
   }
@@ -76,7 +76,7 @@
   margin-bottom: 1.5rem;
 
   .Team-name {
-    color: rgba(220, 220, 220, .75);
+    color: colors.$teamName;
   }
 }
 
@@ -105,14 +105,14 @@
     }
 
     .Video-source-metadata-field-name {
-      background-color: rgba(160, 160, 160, .1);
+      background-color: colors.$videoSourceMetadataName;
       color: colors.$mediumFontColor;
       font-weight: bold;
     }
 
     .Video-source-metadata-field-value {
-      background-color: rgba(160, 160, 160, .05);
-      color: rgba(240, 240, 240, .65);
+      background-color: colors.$videoSourceMetadataValue;
+      color: colors.$videoSourceMetadata;
     }
   }
 }

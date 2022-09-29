@@ -67,7 +67,7 @@
       padding: .5rem 1rem;
 
       &:hover {
-        background-color: rgba(100, 100, 100, .5);
+        background-color: colors.$mediumButtonBackground;
         color: colors.$defaultFontColor;
       }
     }
@@ -111,15 +111,15 @@
       color: colors.$mediumFontColor;
 
       &.selected {
-        background-color: rgba(100, 100, 100, .4);
+        background-color: colors.$selectedCredential;
 
         &:hover {
-          background-color: rgba(100, 100, 100, .3);
+          background-color: colors.$selectedCredentialHover;
         }
       }
 
       &:hover {
-        background-color: rgba(100, 100, 100, .2);
+        background-color: colors.$credentialHover;
         color: colors.$defaultFontColor;
       }
     }

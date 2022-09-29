@@ -1,20 +1,64 @@
-$appBg: #282c34;
-$darkBg: #222;
-$defaultFontColor: whitesmoke;
-$mediumFontColor: #aaa;
-$defaultComponentBg: rgba(40,40,40,.8);
 $highlight: #089a4f;
 $shadow: #222;
 $border: #666;
+$active: #6e86ff;
+$checkMark: rgba(30, 30, 30, .7);
 
+// background
+$appBg: #282c34;
+$mediumBg: #888;
+$semiDarkBg: #333;
+$darkBg: #222;
+$defaultComponentBg: rgba(40, 40, 40, .8);
+$darkTransparent: rgba(0, 0, 0, .3);
+
+// fonts
+$linkUnderline: rgba(180,180,180,.5);
+$defaultFontColor: whitesmoke;
+$lightFontColor: #ccc;
+$mediumFontColor: #aaa;
+$darkFontColor: #666;
+$pluginButtonTitle: #777;
+$pluginButtonTitleHover: whitesmoke;
+$entityButtonFontColor: rgba(220, 220, 220, .7);
+$eventTile: rgba(200, 200, 200, .6);
+$eventDetails: rgba(200, 200, 200, .4);
+$eventDetailPunctuation:  rgba(200, 200, 200, .8);
+$eventTitle: rgba(150, 150, 150, .4);
+$eventTeams: rgba(150, 150, 150, .6);
+$teamName: rgba(220, 220, 220, .75);
+$videoSourceMetadata: rgba(240, 240, 240, .65);
+
+// modal
 $selected: #0a58ca;
 $submitButton: #0a58ca;
-$active: #6e86ff;
-$activeFilter: brightness(0) saturate(100%) invert(46%)
-        sepia(80%) saturate(1177%) hue-rotate(209deg)
-        brightness(100%) contrast(110%);
+$activeFilter: brightness(0) saturate(100%) invert(46%) sepia(80%) saturate(1177%) hue-rotate(209deg) brightness(100%) contrast(110%);
 
 // navigation menu
 $navBackgroundColor: $defaultComponentBg;
 $navButtonHover: rgba(255, 255, 255, .3);
 $currentNavItemBg: rgba(255, 255, 255, .4);
+
+// features
+$activePluginTile: #444;
+$pluginTileHover: rgba(255, 255, 255, .1);
+$delete: red;
+$dataSourceOdd: rgba(0, 0, 0, .1);
+$dataSourceEven: rgba(0, 0, 0, .15);
+$dataSourceFocusedText: rgba(0, 0, 0, .2);
+$typeHeaderBackground: rgba(150, 150, 150, .25);
+$typeHeaderHover:  rgba(200, 200, 200, .2);
+$videoSourceMetadataName: rgba(160, 160, 160, .1);
+$videoSourceMetadataValue: rgba(160, 160, 160, .05);
+$credentialHover: rgba(100, 100, 100, .2);
+$selectedCredential: rgba(100, 100, 100, .4);
+$selectedCredentialHover:  rgba(100, 100, 100, .3);
+
+// buttons
+$defaultButtonBg: #222;
+$darkButtonBackground: rgba(50, 50, 50, .7);
+$mediumButtonBackground: rgba(100, 100, 100, .7);
+$lightButtonBackground: rgba(255, 255, 255, .2);
+$lightButtonBorder: rgba(200, 200, 200, .1);
+$entityButtonBorder: rgba(150, 150, 150, .2);
+$entityButtonBackground: rgba(100, 100, 100, .1);

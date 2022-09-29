@@ -1,4 +1,5 @@
 @use "colors";
+@use "layers";
 
 .Video-player-modal {
   position: fixed;
@@ -7,7 +8,7 @@
   width: 100vw;
   height: 100vh;
   background-color: colors.$defaultComponentBg;
-  z-index: 175;
+  z-index: layers.$videoPlayerModal;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -24,7 +25,7 @@
   }
 
   .Video-player {
-    z-index: 165;
+    z-index: layers.$videoPlayer;
     position: absolute;
     top: 0;
     left: 0;

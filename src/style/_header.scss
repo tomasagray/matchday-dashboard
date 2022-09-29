@@ -1,11 +1,12 @@
 @use "variables";
 @use "colors";
+@use "layers";
 
 $searchToolAnimationDuration: .4s;
 
 .App-header {
   .Main-nav {
-    z-index: 1;
+    z-index: layers.$base;
     position: fixed;
     top: 0;
     left: 0;
@@ -48,7 +49,7 @@ $searchToolAnimationDuration: .4s;
         &:hover input#q,
         input#q:focus {
           padding: 0 .4rem;
-          background-color: rgba(100, 100, 100, .5);
+          background-color: colors.$mediumButtonBackground;
           animation: unfurlSearchTool $searchToolAnimationDuration linear forwards;
           animation-timing-function: ease-out;
         }
@@ -60,7 +61,7 @@ $searchToolAnimationDuration: .4s;
             width: 0;
             padding: 0;
             border: 0;
-            background-color: rgba(50, 50, 50, .5);
+            background-color: colors.$darkButtonBackground;
             color: whitesmoke;
             animation-name: furlSearchTool;
             animation-duration: $searchToolAnimationDuration;
@@ -78,7 +79,7 @@ $searchToolAnimationDuration: .4s;
             justify-content: center;
             border-radius: 15%;
             border: 0;
-            background-color: rgba(120, 120, 120, .5);
+            background-color: colors.$mediumButtonBackground;
 
             &:hover {
               background-color: colors.$navButtonHover;

@@ -8,8 +8,8 @@
   border: 1px solid transparent;
 
   &:hover {
-    background-color: rgba(255, 255, 255, .1);
-    border-color: rgba(200, 200, 200, .1);
+    background-color: colors.$lightButtonBackground;
+    border-color: colors.$lightButtonBorder;
   }
 }
 
@@ -26,20 +26,20 @@
 
   div {
     margin-top: .5rem;
-    color: rgba(220, 220, 220, .7);
+    color: colors.$entityButtonFontColor;
   }
 
   &:hover {
     cursor: pointer;
-    border-color: rgba(150, 150, 150, .2);
-    background-color: rgba(100, 100, 100, .1);
+    border-color: colors.$entityButtonBorder;
+    background-color: colors.$entityButtonBackground;
 
     img {
       filter: saturate(100%) opacity(1);
     }
 
     div {
-      color: rgba(220, 220, 220, 1);
+      color: colors.$defaultFontColor;
     }
   }
 }
@@ -49,7 +49,7 @@
   padding: .5rem 1.2rem;
   border: 2px solid transparent;
   border-radius: .4em;
-  background-color: #333;
+  background-color: colors.$defaultButtonBg;
   color: whitesmoke;
   letter-spacing: .1em;
   display: flex;
@@ -59,9 +59,9 @@
 
   &[disabled] {
     cursor: not-allowed;
-    background-color: #666;
-    color: #333;
-    border-color: #666;
+    background-color: colors.$darkBg;
+    color: colors.$darkFontColor;
+    border-color: colors.$border;
   }
 
   &:hover:not([disabled]) {
@@ -82,8 +82,8 @@
 
 @mixin Disabled-input {
   background-color: colors.$defaultComponentBg;
-  border: 1px solid #888;
-  color: #888;
+  border: 1px solid colors.$mediumBg;
+  color: colors.$mediumBg;
 }
 
 @mixin Dropdown-arrow {
