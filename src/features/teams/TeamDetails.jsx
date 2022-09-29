@@ -20,14 +20,17 @@ import {SoftLoadImage} from "../../components/SoftLoadImage";
 import {GeneralEditor} from "../edit-wizard/GeneralEditor";
 import {useDispatch, useSelector} from "react-redux";
 import {
+    addTeamColor,
     addTeamSynonym,
     beginEditingTeam,
+    deleteTeamColor,
     deleteTeamSynonym,
     editNewSynonym,
     editTeamTitle,
     selectEditedTeam,
     selectEditedTeamForUpload,
     selectTeamArtwork,
+    setTeamColor,
     setTeamCountry,
     uploadTeamArtwork
 } from "./teamSlice";
@@ -37,6 +40,7 @@ import {WizardMenuItem} from "../edit-wizard/WizardMenuItem";
 import {CancelButton} from "../../components/controls/CancelButton";
 import {SaveButton} from "../../components/controls/SaveButton";
 import {ArtworkEditor} from "../edit-wizard/ArtworkEditor";
+import {ColorsEditor} from "../edit-wizard/ColorsEditor";
 
 
 export const TeamDetails = () => {
@@ -45,6 +49,7 @@ export const TeamDetails = () => {
     const GENERAL = 'general'
     const EMBLEM = 'emblem'
     const FANART = 'fanart'
+    const COLORS = 'colors'
 
     // handlers
     const onClickEditButton = (e) => {
@@ -92,6 +97,15 @@ export const TeamDetails = () => {
     const onSelectFanart = (selection) => {
         console.log('selecting', selection)
         dispatch(selectTeamArtwork({selection, role: 'fanart'}))
+    }
+    const onSelectTeamColor = (color, priority) => {
+        dispatch(setTeamColor({ color, priority }))
+    }
+    const onAddTeamColor = () => {
+        dispatch(addTeamColor({}))
+    }
+    const onDeleteTeamColor = (priority) => {
+        dispatch(deleteTeamColor({priority}))
     }
 
     // state
@@ -213,6 +227,13 @@ export const TeamDetails = () => {
                 onUpload={onUploadArtwork}
                 onSelectArtwork={onSelectFanart}
             />,
+        colors:
+            <ColorsEditor
+                colors={editedTeam.colors}
+                onSelectColor={onSelectTeamColor}
+                onAddColor={onAddTeamColor}
+                onDeleteColor={onDeleteTeamColor}
+            />
     }
 
     return (
@@ -247,6 +268,12 @@ export const TeamDetails = () => {
                                                 onClick={onSelectWizard(FANART)}
                                                 selected={selectedWizard === FANART}>
                                                 Fanart
+                                            </WizardMenuItem>
+                                            <WizardMenuItem
+                                                imgSrc="/img/icon/colors/colors_16.png"
+                                                onClick={onSelectWizard(COLORS)}
+                                                selected={selectedWizard === COLORS}>
+                                                Colors
                                             </WizardMenuItem>
                                         </EditWizardMenu>
                                         <EditWizardDisplay>

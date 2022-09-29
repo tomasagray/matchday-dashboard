@@ -3,6 +3,17 @@
 @use "variables";
 @import "mixins";
 
+.Add-button {
+  border: 1px solid colors.$border;
+  background: none;
+  color: colors.$border;
+
+  &:hover {
+    color: colors.$defaultFontColor;
+    border-color: colors.$defaultFontColor;
+  }
+}
+
 .Button-container {
   display: flex;
   justify-content: flex-end;

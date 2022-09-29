@@ -9,7 +9,6 @@ import {ArtworkDisplay} from "./ArtworkDisplay";
 
 export const ArtworkEditor = (props) => {
 
-
     // handlers
     const onEnterUrlMode = () => {
         setIsEnterUrlMode(true)
