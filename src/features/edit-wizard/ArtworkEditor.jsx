@@ -51,7 +51,6 @@ export const ArtworkEditor = (props) => {
     let {upload} = hooks
     let [isEnterUrlMode, setIsEnterUrlMode] = useState(false)
     let [uploadUrl, setUploadUrl] = useState('')
-    console.log('artwork', JSON.stringify(artwork))
 
     // hooks
     const [uploadArtwork, {

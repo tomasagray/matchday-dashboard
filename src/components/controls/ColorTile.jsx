@@ -4,8 +4,7 @@ import {TwitterPicker} from "react-color";
 export const ColorTile = (props) => {
 
     // handlers
-    const onColorSelect = (color) => {
-        console.log('color changed', color)
+    const onColorSelect = () => {
         onChange && onChange()
     }
 

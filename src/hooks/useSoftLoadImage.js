@@ -22,7 +22,6 @@ export const useSoftLoadImage = (props) => {
         }
         fetch(imageUrl)
             .then((response) => {
-                console.log('fetch done', response)
                 result.current = {
                     ...result.current,
                     isSuccess: response.ok,
@@ -38,9 +37,6 @@ export const useSoftLoadImage = (props) => {
                     error
                 }
         })
-        return () => {
-            console.log('cleaning up....', result.current)
-        }
     }, [result, imageUrl, placeholderUrl, className])
     return result.current
 }

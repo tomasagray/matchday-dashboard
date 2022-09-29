@@ -31,7 +31,6 @@ export const DataSourcePluginsList = () => {
         e.preventDefault()
         setRefreshMode(LABEL_MODE)
         const label = labelRef.current
-        console.log('label', label)
         label?.focus()
     }
     const updateRefreshLabel = (e) => {

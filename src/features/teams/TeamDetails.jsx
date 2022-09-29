@@ -70,7 +70,6 @@ export const TeamDetails = () => {
         dispatch(editNewSynonym({synonym}))
     }
     const onAddSynonym = (synonym) => {
-        console.log('called add synonym', synonym)
         dispatch(addTeamSynonym({
             synonym: {
                 name: synonym,
@@ -87,15 +86,12 @@ export const TeamDetails = () => {
         updateTeam(uploadTeam).unwrap().then(() => onCloseEditModal())
     }
     const onUploadArtwork = (artwork) => {
-        console.log('uploading', artwork)
         dispatch(uploadTeamArtwork({artwork}))
     }
     const onSelectEmblem = (selection) => {
-        console.log('selecting emblem', selection)
         dispatch(selectTeamArtwork({selection, role: 'emblem'}))
     }
     const onSelectFanart = (selection) => {
-        console.log('selecting', selection)
         dispatch(selectTeamArtwork({selection, role: 'fanart'}))
     }
     const onSelectTeamColor = (color, priority) => {
