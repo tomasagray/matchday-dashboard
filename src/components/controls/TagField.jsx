@@ -1,11 +1,12 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useRef, useState} from "react";
 import {ClearButton} from "./ClearButton";
+import {useCaptureEnterPressed} from "../../hooks/useCaptureEnterPressed";
 
 export const TagField = (props) => {
 
     // handlers
     const onClickField = () => {
-        editor.current && editor.current.focus()
+        editor.current?.focus()
     }
     const onFocusEditor = () => {
         setIsEditorFocused(true)
@@ -21,24 +22,13 @@ export const TagField = (props) => {
     let {children, editorValue, onEditTag, onAddTag} = props
     let [isEditorFocused, setIsEditorFocused] = useState(false)
 
+    // hooks
     const editor = useRef()
-    useEffect(() => {
-        // listen for 'enter' button when using editor
-        const listener = (e) => {
-            const value = e.target.value
-            let isValueValid = value !== ''
-            let isEnterButton = e.code === 'Enter' || e.code === 'NumpadEnter'
-            if (isValueValid && isEnterButton && isEditorFocused) {
-                e.preventDefault()
-                onAddTag(value)
-                if (editor.current) {
-                    editor.current.blur()
-                }
-            }
-        }
-        document.addEventListener('keydown', listener)
-        return () => document.removeEventListener('keydown', listener)
-    }, [isEditorFocused, onAddTag])
+    useCaptureEnterPressed({
+        isFocused: isEditorFocused,
+        action: onAddTag,
+        ref: editor,
+    })
 
     return (
         <div className="Tag-field" onClick={onClickField}>

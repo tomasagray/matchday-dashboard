@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import {useSelector} from "react-redux";
 import {FillSpinner} from "../../components/Spinner";
 import {useGetAllDataSourcePluginsQuery, useRefreshAllDataSourcePluginsMutation} from "./dataSourcePluginApiSlice";
@@ -11,9 +11,12 @@ import "react-datepicker/dist/react-datepicker.css";
 import dayjs from "dayjs";
 import {toast} from "react-toastify";
 import {getToastMessage} from "../../app/utils";
+import {LabelRefreshTool} from "./LabelRefreshTool";
 
 const DEFAULT_LABEL = ''
 const DEFAULT_DATE = new Date()
+const DATE_MODE = 'date'
+const LABEL_MODE = 'label'
 
 export const DataSourcePluginsList = () => {
 
@@ -26,55 +29,27 @@ export const DataSourcePluginsList = () => {
     }
     const onShowLabelRefresh = (e) => {
         e.preventDefault()
-        setRefreshMode('label')
+        setRefreshMode(LABEL_MODE)
+        const label = labelRef.current
+        console.log('label', label)
+        label?.focus()
     }
     const updateRefreshLabel = (e) => {
         setRefreshLabel(e.target.value)
     }
     const onShowDatePicker = (e) => {
         e.preventDefault()
-        // todo - date picker
-        console.log('show date picker here')
-        setRefreshMode('date')
+        setRefreshMode(DATE_MODE)
     }
-    const onClearRefreshTool = (e) => {
-        e.preventDefault()
+    const onClearRefreshTool = () => {
         setRefreshMode(null)
         setRefreshLabel(DEFAULT_LABEL)
         setRefreshDate(DEFAULT_DATE)
     }
-    const onRefreshAllPlugins = async (e) => {
-        onClearRefreshTool(e)
+    const onRefreshAllPlugins = async () => {
+        onClearRefreshTool()
         const query = getRefreshQuery()
         await refreshAllPlugins(query)
-    }
-    
-    // refresh tools
-    const getRefreshTool = (refreshMode) => {
-        switch (refreshMode) {
-            case 'label':
-                return (
-                    <div className={"Refresh-tool-container"}>
-                        <input type="text" value={refreshLabel} onChange={updateRefreshLabel}
-                               placeholder="Enter a search term"/> <ClearButton onClick={onClearRefreshTool}/>
-                    </div>
-                )
-            case 'date':
-                return (
-                    <div className={"Refresh-tool-container"}>
-                        <DatePicker selected={refreshDate} onChange={(date) => setRefreshDate(date)}/> <ClearButton
-                        onClick={onClearRefreshTool}/>
-                    </div>
-                )
-            default:
-                return (
-                    <p>
-                        Refresh using:
-                        <button className={"Refresh-option"} onClick={onShowLabelRefresh}>Label</button> |
-                        <button className={"Refresh-option"} onClick={onShowDatePicker}>Date</button>
-                    </p>
-                )
-        }
     }
     const getRefreshQuery = () => {
         const endDate = dayjs(refreshDate).format( 'YYYY-MM-DDThh:mm:ss')
@@ -84,6 +59,7 @@ export const DataSourcePluginsList = () => {
         }
     }
 
+    // hooks
     const {
         data: dataSourcePlugins,
         isLoading: pluginsLoading,
@@ -127,6 +103,7 @@ export const DataSourcePluginsList = () => {
     let [refreshMode, setRefreshMode] = useState(null)
     let [refreshLabel, setRefreshLabel] = useState(DEFAULT_LABEL)
     let [refreshDate, setRefreshDate] = useState(DEFAULT_DATE)
+    const labelRef = useRef(null)
 
     // components
     let pluginList
@@ -145,12 +122,41 @@ export const DataSourcePluginsList = () => {
     } else if (pluginLoaded) {
         pluginData = <p>Please select a Data Source plugin from above.</p>
     }
+    // refresh tools
+    const getRefreshTool = (refreshMode) => {
+        switch (refreshMode) {
+            case LABEL_MODE:
+                return (
+                    <LabelRefreshTool
+                        refreshLabel={refreshLabel}
+                        onUpdateRefreshLabel={updateRefreshLabel}
+                        onClearRefreshLabel={onClearRefreshTool}
+                        onSubmit={onRefreshAllPlugins}
+                    />
+                )
+            case DATE_MODE:
+                return (
+                    <div className={"Refresh-tool-container"}>
+                        <DatePicker selected={refreshDate} onChange={(date) => setRefreshDate(date)}/>
+                        <ClearButton onClick={onClearRefreshTool}/>
+                    </div>
+                )
+            default:
+                return (
+                    <p>
+                        Refresh using:
+                        <button className={"Refresh-option"} onClick={onShowLabelRefresh}>Label</button> |
+                        <button className={"Refresh-option"} onClick={onShowDatePicker}>Date</button>
+                    </p>
+                )
+        }
+    }
 
     let refreshDisabled = pluginsLoading || isPluginError || refreshing;
     let refreshButtonStyle = pluginsLoading || refreshing ? {cursor: 'wait'} : {}
     let refreshTool = getRefreshTool(refreshMode)
     let refreshOptionsVisibility =
-        (refreshHover || refreshLabel !== DEFAULT_LABEL || refreshDate !== DEFAULT_DATE) ? 'visible' : 'hidden'
+        (refreshHover || refreshMode === LABEL_MODE || refreshMode === DATE_MODE) ? 'visible' : 'hidden'
 
     return (
         <>
@@ -159,8 +165,11 @@ export const DataSourcePluginsList = () => {
                     <FillSpinner /> :
                     <div>
                         <div className="section-header">
-                            <img src={process.env.PUBLIC_URL + '/img/icon/plugins/plugins_64.png'} alt="Plugins"
-                                 style={{height: 'fit-content'}}/>
+                            <img
+                                src={process.env.PUBLIC_URL + '/img/icon/plugins/plugins_64.png'}
+                                alt="Plugins"
+                                style={{height: 'fit-content'}}
+                            />
                             <h1>Data Source Plugins</h1>
                         </div>
                         <div className={"Refresh-container"} onMouseEnter={onRefreshHover} onMouseLeave={onRefreshUnHover}>
