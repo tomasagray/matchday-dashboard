@@ -13,6 +13,7 @@ import {ErrorMessage} from "../../components/ErrorMessage";
 import {getToastMessage} from "../../app/utils";
 import {toast} from "react-toastify";
 import {FindMoreContainer} from "./FindMoreContainer";
+import {SoftLoadImage} from "../../components/SoftLoadImage";
 
 const getFindMoreDisplay = (event) => {
     let competitionId, homeTeamId, awayTeamId
@@ -53,9 +54,15 @@ export const EventDetails = () => {
         setSelectedVideoSource(source)
     }
 
+    // state
+    const imagePlaceholderUrl = process.env.PUBLIC_URL + '/img/default_event_poster.png'
+    let imageUrl = null     // todo - get event poster url
     const params = useParams()
     const {eventId} = params
+    let [selectedVideoSource, setSelectedVideoSource] = useState()
+    let [showVideoPlayer, setShowVideoPlayer] = useState(false)
 
+    let [videoSrc, setVideoSrc] = useState(null)
     // hooks
     const {
         data: event,
@@ -90,11 +97,6 @@ export const EventDetails = () => {
         videoSourceError
     ])
 
-    // state
-    let [selectedVideoSource, setSelectedVideoSource] = useState()
-    let [showVideoPlayer, setShowVideoPlayer] = useState(false)
-    let [videoSrc, setVideoSrc] = useState(null)
-
     // components
     let date = event ? dayjs(event['date']) : dayjs()
     let formattedDate = date.format('MM/DD/YY')
@@ -123,9 +125,13 @@ export const EventDetails = () => {
                     <CenteredSpinner /> :
                     isEventSuccess ?
                     <div className="Content-container">
-                        <VideoPlayer src={videoSrc} hidden={!showVideoPlayer}
-                                     onClose={onHideVideoPlayer} title={event['title']} subtitle={formattedDate} />
-
+                        <VideoPlayer
+                            src={videoSrc}
+                            hidden={!showVideoPlayer}
+                            onClose={onHideVideoPlayer}
+                            title={event['title']}
+                            subtitle={formattedDate}
+                        />
                         <h2 className="Event-detail-header">
                             {event['competition'].name?.name} &nbsp;&nbsp;
                             <span className={"Team-name"}>{event['homeTeam'].name?.name}</span>
@@ -134,7 +140,11 @@ export const EventDetails = () => {
                         </h2>
                         <div className="Event-details-container">
                             <div className="Event-poster-container">
-                                <img src={process.env.PUBLIC_URL + '/img/_vs-poster.png'} alt={event.title} />
+                                <SoftLoadImage
+                                    placeholderUrl={imagePlaceholderUrl}
+                                    imageUrl={imageUrl}
+                                    className="Event-poster"
+                                />
                             </div>
                             <div>
                                 <span style={{color: '#aaa'}}>{formattedDate}</span><br/>

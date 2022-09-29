@@ -1,12 +1,15 @@
 import {formatDate} from "../../app/utils";
 import {Link} from "react-router-dom";
+import {SoftLoadImage} from "../../components/SoftLoadImage";
 
 export default function EventTile(props) {
 
-    let imgUrl = process.env.PUBLIC_URL + '/img/_vs-poster.png' // todo - replace with better
+    const placeholderUrl = process.env.PUBLIC_URL + '/img/default_event_poster.png'
 
     const {event} = props
     const {eventId, title, competition, homeTeam, awayTeam, date} = event
+    let imageUrl = null     // todo - event artwork URL
+
     const details = homeTeam ?
         <>
             <span>{homeTeam.name?.name}</span> vs. <span>{awayTeam.name?.name}</span>
@@ -16,7 +19,11 @@ export default function EventTile(props) {
     return (
         <Link to={{pathname: '/events/event/' + eventId}}>
             <div className="Event-tile">
-                <img src={imgUrl} alt={props.event.title} className="Event-poster"/>
+                <SoftLoadImage
+                    placeholderUrl={placeholderUrl}
+                    imageUrl={imageUrl}
+                    className="Event-poster"
+                />
                 <div className="Event-details">
                     <p className={"Event-title"}>
                         <strong style={{marginRight: '.12em'}}>{competition.name?.name}</strong>
