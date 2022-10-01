@@ -177,6 +177,20 @@ export const teamSlice = createSlice({
                 }
             }
         },
+        updateArtworkCollection: (state, action) => {
+            let {payload} = action
+            let {collection} = payload
+            let role = collection.role.toLowerCase()
+            console.log('role', role)
+            console.log('collection', collection)
+            return {
+                ...state,
+                editedTeam: {
+                    ...state.editedTeam,
+                    [role]: formatArtworkData(collection)
+                }
+            }
+        },
         setTeamColor: (state, action) => {
             let {payload} = action
             let {color, priority} = payload
@@ -232,6 +246,7 @@ export const {
     setTeamCountry,
     uploadTeamArtwork,
     selectTeamArtwork,
+    updateArtworkCollection,
     setTeamColor,
     addTeamColor,
     deleteTeamColor,

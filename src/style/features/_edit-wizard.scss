@@ -153,6 +153,28 @@ $uploadContainerHeight: 2rem;
       }
     }
   }
+
+  .Artwork-delete-menu {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    li {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: .5rem 1.25rem;
+
+      &:hover {
+        filter: brightness(0) saturate(100%) invert(16%) sepia(97%) saturate(7077%)
+          hue-rotate(359deg) brightness(102%) contrast(109%);
+      }
+
+      span {
+        margin-right: 1.5rem;
+      }
+    }
+  }
 }
 
 .Color-selector-container {

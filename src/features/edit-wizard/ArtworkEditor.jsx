@@ -36,19 +36,29 @@ export const ArtworkEditor = (props) => {
         if (result.data) {
             onUpload && onUpload(result.data)
         }
-        // todo - clear file upload input
+        // todo - clear file uploadHook input
     }
     const onUploadUrl = (e) => {
-        console.log('upload URL', e)
-        // TODO: implement this
+        console.log('uploadHook URL', e)
+        // TODO: implement uploadHook image by URL
     }
-    const onClickImage = (artwork) => {
+    const onClickArtwork = (artwork) => {
         onSelectArtwork && onSelectArtwork({selectedId: artwork.id})
+    }
+    const onDeleteArtwork = async (artwork) => {
+        console.log('deleting artwork', entityId, artwork)
+        await deleteArtwork({entityId, artwork})
     }
 
     // state
-    let {entityId, artwork, hooks, onUpload, onSelectArtwork} = props
-    let {upload} = hooks
+    let {
+        entityId,
+        artwork,
+        hooks,
+        onUpload,
+        onSelectArtwork,
+    } = props
+    let {uploadHook, deleteHook} = hooks
     let [isEnterUrlMode, setIsEnterUrlMode] = useState(false)
     let [uploadUrl, setUploadUrl] = useState('')
 
@@ -58,7 +68,11 @@ export const ArtworkEditor = (props) => {
             isLoading: isUploading,
             isError: isUploadError,
             error: uploadError
-    }] = upload()
+    }] = uploadHook()
+    const [deleteArtwork, {
+        isError: isDeleteError,
+        error: deleteError,
+    }] = deleteHook()
     
     // toast messages
     useEffect(() => {
@@ -66,7 +80,11 @@ export const ArtworkEditor = (props) => {
             let msg = 'Error uploading artwork: ' + getToastMessage(uploadError)
             toast.error(msg)
         }
-    }, [isUploadError, uploadError])
+        if (isDeleteError) {
+            let msg = 'Error deleting artwork: ' + getToastMessage(deleteError)
+            toast.error(msg)
+        }
+    }, [deleteArtwork, deleteError, isDeleteError, isUploadError, uploadError])
 
     // components
     let enterUrl = <>
@@ -77,7 +95,7 @@ export const ArtworkEditor = (props) => {
                     isUploading ? <SmallSpinner /> :
                         <p>
                         Upload &nbsp;
-                        <img src={process.env.PUBLIC_URL + '/img/icon/upload/upload_16.png'} alt="Upload" />
+                        <img src={process.env.PUBLIC_URL + '/img/icon/uploadHook/upload_16.png'} alt="Upload" />
                     </p>
                 }
             </button>
@@ -108,7 +126,8 @@ export const ArtworkEditor = (props) => {
                                     className={artwork.selected ? 'selected' : ''}
                                     artwork={artwork}
                                     key={artwork.id}
-                                    onClick={onClickImage}
+                                    onClick={onClickArtwork}
+                                    onDelete={onDeleteArtwork}
                                 />
                             ) :
                             <p style={{position: 'absolute', color: 'rgba(200,200,200,.8)'}}>

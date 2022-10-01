@@ -146,8 +146,9 @@
 
     .Message-title {
       margin: 0;
-      text-align: start;
       padding: 0;
+      text-align: start;
+      letter-spacing: .125em;
     }
 
     .Message-description {
@@ -177,6 +178,7 @@
     $modalPadding: 1rem;
 
     background-color: rgba(0, 0, 0, .4);
+    position: fixed;
     width: 100vw;
     min-height: 100vh;
     top: 0;
@@ -193,7 +195,7 @@
     .Dialog {
       margin: 5rem;
       width: 45vw;
-      min-height: 45vh;
+      max-height: 75vh;
       background-color: colors.$appBg;
       border: 1px solid colors.$border;
       border-radius: .4rem;
@@ -216,7 +218,6 @@
     .Modal-footer {
       border-top: 1px solid colors.$border;
       padding: $modalPadding;
-      height: fit-content;
     }
   }
 }

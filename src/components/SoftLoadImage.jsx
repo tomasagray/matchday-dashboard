@@ -15,7 +15,7 @@ export const SoftLoadImage = (props) => {
     let [isLoaded, setIsLoaded] = useState(false)
 
     // components
-    let imageClass = "Soft-load-image " + (!isLoaded ? 'not-displayed' : '')
+    let imageClass = 'Soft-load-image ' + (!isLoaded ? 'not-displayed' : '')
     let placeholderClass = 'Soft-load-image placeholder ' + (isLoaded ? 'not-displayed' : '')
     return (
         <div className={"Soft-load-container " + className}>

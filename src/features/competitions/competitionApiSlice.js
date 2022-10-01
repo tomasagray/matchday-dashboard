@@ -1,5 +1,10 @@
 import {apiSlice, competitionTag, eventTag, teamTag} from "../../app/apiSlice";
-import {allCompetitionsLoaded, competitionAdapter, competitionLoaded} from "./competitionSlice";
+import {
+    allCompetitionsLoaded,
+    competitionAdapter,
+    competitionLoaded,
+    updateArtworkCollection
+} from "./competitionSlice";
 import store from "../../app/store";
 import {teamAdapter, teamsLoaded} from "../teams/teamSlice";
 import {JsonHeaders} from "../../app/constants";
@@ -52,7 +57,7 @@ export const competitionApiSlice = apiSlice.injectEndpoints({
             }),
             addCompetitionEmblem: builder.mutation({
                 query: emblem => ({
-                    url: `/competitions/competition/${emblem.entityId}/emblem`,
+                    url: `/competitions/competition/${emblem.entityId}/emblem/add`,
                     method: 'POST',
                     body: emblem.formData,
                 }),
@@ -60,11 +65,33 @@ export const competitionApiSlice = apiSlice.injectEndpoints({
             }),
             addCompetitionFanart: builder.mutation({
                 query: fanart => ({
-                    url: `/competitions/competition/${fanart.entityId}/fanart`,
+                    url: `/competitions/competition/${fanart.entityId}/fanart/add`,
                     method: 'POST',
                     body: fanart.formData,
                 }),
-                invalidatesTags: [competitionTag]
+                invalidatesTags: [competitionTag],
+            }),
+            deleteCompetitionEmblem: builder.mutation({
+                query: req => ({
+                    url: `/competitions/competition/${req.entityId}/emblem/${req.artwork.id}/remove`,
+                    method: 'DELETE',
+                }),
+                invalidatesTags: [competitionTag],
+                transformResponse(response) {
+                    store.dispatch(updateArtworkCollection({collection: response}))
+                    return response
+                }
+            }),
+            deleteCompetitionFanart: builder.mutation({
+                query: req => ({
+                    url: `/competitions/competition/${req.entityId}/fanart/${req.artwork.id}/remove`,
+                    method: 'DELETE',
+                }),
+                invalidatesTags: [competitionTag],
+                transformResponse(response) {
+                    store.dispatch(updateArtworkCollection({collection: response}))
+                    return response
+                }
             }),
         })
     }
@@ -77,4 +104,6 @@ export const {
     useUpdateCompetitionMutation,
     useAddCompetitionEmblemMutation,
     useAddCompetitionFanartMutation,
+    useDeleteCompetitionEmblemMutation,
+    useDeleteCompetitionFanartMutation,
 } = competitionApiSlice

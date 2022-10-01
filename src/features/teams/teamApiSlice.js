@@ -1,5 +1,5 @@
 import {apiSlice, competitionTag, eventTag, teamTag} from "../../app/apiSlice";
-import {teamAdapter, teamLoaded, teamsLoaded} from "./teamSlice";
+import {teamAdapter, teamLoaded, teamsLoaded, updateArtworkCollection} from "./teamSlice";
 import store from "../../app/store";
 import {competitionAdapter, competitionsLoaded} from "../competitions/competitionSlice";
 import {JsonHeaders} from "../../app/constants";
@@ -64,6 +64,28 @@ export const teamApiSlice = apiSlice.injectEndpoints({
                 }),
                 invalidatesTags: [teamTag],
             }),
+            deleteTeamEmblem: builder.mutation({
+                query: req => ({
+                    url: `/teams/team/${req.entityId}/emblem/${req.artwork.id}/remove`,
+                    method: 'DELETE',
+                }),
+                invalidatesTags: [teamTag],
+                transformResponse(response) {
+                    store.dispatch(updateArtworkCollection({collection: response}))
+                    return response
+                }
+            }),
+            deleteTeamFanart: builder.mutation({
+                query: req => ({
+                    url: `/teams/team/${req.entityId}/fanart/${req.artwork.id}/remove`,
+                    method: 'DELETE',
+                }),
+                invalidatesTags: [teamTag],
+                transformResponse(response) {
+                    store.dispatch(updateArtworkCollection({collection: response}))
+                    return response
+                }
+            }),
         })
     }
 
@@ -76,4 +98,6 @@ export const {
     useUpdateTeamMutation,
     useAddTeamEmblemMutation,
     useAddTeamFanartMutation,
+    useDeleteTeamEmblemMutation,
+    useDeleteTeamFanartMutation,
 } = teamApiSlice

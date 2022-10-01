@@ -106,9 +106,14 @@ export const PluginDataSourceList = () => {
                     <AddDataSourceForm pluginId={pluginId} disabled={isDataSourceSaving} />
                 </Body>
                 <Footer>
-                    <CancelButton onClick={onHideAddDataSourceModal} disabled={isDataSourceSaving}>Discard</CancelButton>
-                    <SaveButton onClick={onSaveNewDataSource} disabled={!isFormValid || isDataSourceSaving}
-                                isLoading={isDataSourceSaving} />
+                    <CancelButton onClick={onHideAddDataSourceModal} disabled={isDataSourceSaving}>
+                        Discard
+                    </CancelButton>
+                    <SaveButton
+                        onClick={onSaveNewDataSource}
+                        disabled={!isFormValid || isDataSourceSaving}
+                        isLoading={isDataSourceSaving}
+                    />
                 </Footer>
             </Modal>
             {

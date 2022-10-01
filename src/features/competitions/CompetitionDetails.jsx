@@ -3,6 +3,8 @@ import {useParams} from "react-router-dom";
 import {
     useAddCompetitionEmblemMutation,
     useAddCompetitionFanartMutation,
+    useDeleteCompetitionEmblemMutation,
+    useDeleteCompetitionFanartMutation,
     useFetchCompetitionByIdQuery,
     useFetchTeamsForCompetitionQuery,
     useUpdateCompetitionMutation,
@@ -188,7 +190,8 @@ export const CompetitionDetails = () => {
                 key="emblem"
                 entityId={competitionId}
                 hooks={{
-                    upload: useAddCompetitionEmblemMutation,
+                    uploadHook: useAddCompetitionEmblemMutation,
+                    deleteHook: useDeleteCompetitionEmblemMutation,
                 }}
                 artwork={editedCompetition.emblem}
                 onUpload={onUploadArtwork}
@@ -199,7 +202,8 @@ export const CompetitionDetails = () => {
                 key="fanart"
                 entityId={competitionId}
                 hooks={{
-                    upload: useAddCompetitionFanartMutation,
+                    uploadHook: useAddCompetitionFanartMutation,
+                    deleteHook: useDeleteCompetitionFanartMutation,
                 }}
                 artwork={editedCompetition.fanart}
                 onUpload={onUploadArtwork}

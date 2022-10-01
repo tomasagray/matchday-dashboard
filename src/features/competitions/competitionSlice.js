@@ -39,31 +39,31 @@ export const competitionSlice = createSlice({
             }
         },
         editCompetitionTitle: (state, action) => {
-          let {payload} = action
-          let {title} = payload
-          return {
-              ...state,
-              editedCompetition: {
-                  ...state.editedCompetition,
-                  name: {
-                      ...state.editedCompetition.name,
-                      name: title,
-                  }
-              }
-          }
+            let {payload} = action
+            let {title} = payload
+            return {
+                ...state,
+                editedCompetition: {
+                    ...state.editedCompetition,
+                    name: {
+                        ...state.editedCompetition.name,
+                        name: title,
+                    }
+                }
+            }
         },
         editNewSynonym: (state, action) => {
-          let {payload} = action
-          let {newSynonym} = payload
-          return {
-              ...state,
-              editedCompetition: {
-                  ...state.editedCompetition,
-                  newSynonym: {
-                      name: newSynonym,
-                  },
-              }
-          }
+            let {payload} = action
+            let {newSynonym} = payload
+            return {
+                ...state,
+                editedCompetition: {
+                    ...state.editedCompetition,
+                    newSynonym: {
+                        name: newSynonym,
+                    },
+                }
+            }
         },
         addCompetitionSynonym: (state, action) => {
             let {payload} = action
@@ -156,6 +156,20 @@ export const competitionSlice = createSlice({
                 }
             }
         },
+        updateArtworkCollection: (state, action) => {
+            let {payload} = action
+            let {collection} = payload
+            let role = collection.role.toLowerCase()
+            console.log('role', role)
+            console.log('collection', collection)
+            return {
+                ...state,
+                editedCompetition: {
+                    ...state.editedCompetition,
+                    [role]: formatArtworkData(collection)
+                }
+            }
+        }
     }
 })
 
@@ -171,6 +185,7 @@ export const {
     setCompetitionCountry,
     uploadArtwork,
     selectArtwork,
+    updateArtworkCollection,
 } = competitionSlice.actions
 
 export default competitionSlice.reducer

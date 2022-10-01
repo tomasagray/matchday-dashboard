@@ -12,6 +12,7 @@ import dayjs from "dayjs";
 import {toast} from "react-toastify";
 import {getToastMessage} from "../../app/utils";
 import {LabelRefreshTool} from "./LabelRefreshTool";
+import {InfoMessage} from "../../components/InfoMessage";
 
 const DEFAULT_LABEL = ''
 const DEFAULT_DATE = new Date()
@@ -119,7 +120,7 @@ export const DataSourcePluginsList = () => {
     if (selectedPluginId && !pluginsLoading) {
         pluginData = <PluginDetailDisplay plugin={selectedPluginId}/>
     } else if (pluginLoaded) {
-        pluginData = <p>Please select a Data Source plugin from above.</p>
+        pluginData = <InfoMessage>Please select a Data Source plugin from above.</InfoMessage>
     }
     // refresh tools
     const getRefreshTool = (refreshMode) => {
