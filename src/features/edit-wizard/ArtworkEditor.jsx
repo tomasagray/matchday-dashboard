@@ -36,10 +36,9 @@ export const ArtworkEditor = (props) => {
         if (result.data) {
             onUpload && onUpload(result.data)
         }
-        // todo - clear file uploadHook input
     }
     const onUploadUrl = (e) => {
-        console.log('uploadHook URL', e)
+        console.log('upload via URL', e)
         // TODO: implement uploadHook image by URL
     }
     const onClickArtwork = (artwork) => {

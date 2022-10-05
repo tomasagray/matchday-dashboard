@@ -8,31 +8,39 @@
   width: 100%;
 
   .User-tile {
-    padding: 1rem;
+    padding: 2rem;
     margin: 1rem;
-    border: 1px solid colors.$mediumFontColor;
-    border-radius: .35rem;
     display: flex;
     justify-content: space-between;
-    width: 20vw;
     color: colors.$mediumFontColor;
 
-    &:hover {
-      color: colors.$defaultFontColor;
-      border-color: colors.$defaultFontColor;
+    .User-avatar {
+      filter: brightness(90%);
+    }
 
-      & .Logged-in-checkbox::before {
-        color: colors.$defaultFontColor;
-        border-color: colors.$defaultFontColor;
+    .User-data {
+      margin: 1rem 2rem;
+
+      p {
+        margin: .4rem 0;
+        max-width: 15vw;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
     }
 
-    p {
-      margin: .4rem 0;
-      max-width: 15vw;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+    &:hover {
+      color: colors.$defaultFontColor;
+      border-color: colors.$mediumFontColor;
+
+      .User-avatar {
+        filter: none;
+      }
+
+      & .Logged-in-checkbox::before {
+        opacity: 1;
+      }
     }
 
     .Logged-in-checkbox {
@@ -42,9 +50,11 @@
       display: inline-flex;
       justify-content: center;
 
+
       &::before {
         content: '\00a0';
         color: colors.$mediumFontColor;
+        opacity: .8;
         border-radius: 100%;
         border: 1px solid colors.$mediumFontColor;
         width: .85rem;
@@ -52,10 +62,13 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        padding: .3em;
       }
 
       &:checked::before {
         content: '✔';
+        color: colors.$ok;
+        border-color: colors.$ok;
       }
     }
 

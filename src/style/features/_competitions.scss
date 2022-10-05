@@ -2,7 +2,7 @@
 @import "../mixins";
 
 .Competition-tile {
-  @include EntityButton;
+  @include entity-button;
   height: fit-content;
 
   img {

@@ -20,7 +20,7 @@
 }
 
 .Cancel-button {
-  @include _button;
+  @include button;
   background-color: colors.$darkFontColor;
   border: 2px solid transparent;
 
@@ -30,7 +30,7 @@
 }
 
 .Clear-button {
-  @include lowerButton;
+  @include lower-button;
   opacity: .5;
   background: none;
   border: none;
@@ -61,7 +61,7 @@
 }
 
 .Delete-button {
-  @include _button;
+  @include button;
   background-color: transparent;
   color: red;
   border-color: red;
@@ -83,7 +83,7 @@
 }
 
 .Download-button {
-  @include _button;
+  @include button;
   background-color: transparent;
   border-color: colors.$border;
 
@@ -197,7 +197,7 @@
 }
 
 .OK-button {
-  @include _button;
+  @include button;
   box-sizing: content-box;
   background-color: colors.$submitButton;
   font-weight: bolder;
@@ -236,7 +236,7 @@
 }
 
 .Save-button {
-  @include _button;
+  @include button;
   width: fit-content;
   border-radius: 4px;
   border: 1px solid #666;
@@ -266,13 +266,13 @@
 }
 
 .Small-button {
-  @include _button;
+  @include button;
   border: 2px solid #ccc;
   border-radius: 5px;
 }
 
 .Toggle-switch {
-  @include toggleSwitch(variables.$sliderSize);
+  @include toggle-switch(variables.$sliderSize);
   position: relative;
   display: inline-block;
   cursor: pointer;

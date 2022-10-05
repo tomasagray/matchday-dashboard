@@ -37,6 +37,13 @@ export const eventApiSlice = apiSlice.injectEndpoints({
                     return response
                 }
             }),
+            refreshMatchArtwork: builder.mutation({
+                query: matchId => ({
+                    url: `/matches/match/${matchId}/artwork/refresh`,
+                    method: 'POST',
+                }),
+                invalidatesTags: [eventTag],
+            }),
         })
     }
 })
@@ -46,4 +53,5 @@ export const {
     useFetchMatchesForTeamQuery,
     useFetchEventsForCompetitionQuery,
     useFetchMatchByIdQuery,
+    useRefreshMatchArtworkMutation,
 } = eventApiSlice

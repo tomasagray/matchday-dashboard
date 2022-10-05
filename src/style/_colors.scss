@@ -3,6 +3,7 @@ $shadow: #222;
 $border: #666;
 $active: #6e86ff;
 $checkMark: rgba(30, 30, 30, .7);
+$ok: #00cc66;
 
 // background
 $appBg: #282c34;
@@ -11,6 +12,7 @@ $semiDarkBg: #333;
 $darkBg: #222;
 $defaultComponentBg: rgba(40, 40, 40, .8);
 $darkTransparent: rgba(0, 0, 0, .3);
+$dimmed: radial-gradient(transparent, rgba(10, 10, 10, .75));
 
 // fonts
 $linkUnderline: rgba(180,180,180,.5);

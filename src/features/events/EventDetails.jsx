@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
-import {useFetchMatchByIdQuery} from "./eventApiSlice";
+import {useFetchMatchByIdQuery, useRefreshMatchArtworkMutation} from "./eventApiSlice";
 import {CenteredSpinner} from "../../components/Spinner";
 import {PlayButton} from "../../components/controls/PlayButton";
 import {EditButton} from "../../components/controls/EditButton";
@@ -53,10 +53,14 @@ export const EventDetails = () => {
     const onSelectVideoSource = (source) => () => {
         setSelectedVideoSource(source)
     }
+    const onRefreshArtwork = async () => {
+        if (!isArtworkRefreshing) {
+            await refreshArtwork(eventId)
+        }
+    }
 
     // state
     const imagePlaceholderUrl = process.env.PUBLIC_URL + '/img/default_event_poster.png'
-    let imageUrl = null     // todo - get event poster url
     const params = useParams()
     const {eventId} = params
     let [selectedVideoSource, setSelectedVideoSource] = useState()
@@ -78,6 +82,14 @@ export const EventDetails = () => {
         isError: isVideoSourceError,
         error: videoSourceError
     } = useFetchVideoSourcesForEventQuery(eventId)
+    const [
+        refreshArtwork, {
+            // data: refreshedArtwork,
+            // isSuccess: isArtworkRefreshed,
+            isLoading: isArtworkRefreshing,
+            isError: isArtworkError,
+            error: artworkError
+    }] = useRefreshMatchArtworkMutation(eventId)
 
     // toast messages
     useEffect(() => {
@@ -89,12 +101,13 @@ export const EventDetails = () => {
             let msg = 'Could not load video source data: ' + getToastMessage(videoSourceError)
             toast.error(msg)
         }
+        if (isArtworkError) {
+            let msg = 'Error refreshing artwork: ' + getToastMessage(artworkError)
+            toast.error(msg)
+        }
     }, [
-        eventId,
-        isEventError,
-        eventError,
-        isVideoSourceError,
-        videoSourceError
+        eventId, isEventError, eventError, isVideoSourceError,
+        videoSourceError, isArtworkError, artworkError
     ])
 
     // components
@@ -142,9 +155,22 @@ export const EventDetails = () => {
                             <div className="Event-poster-container">
                                 <SoftLoadImage
                                     placeholderUrl={imagePlaceholderUrl}
-                                    imageUrl={imageUrl}
+                                    imageUrl={event['_links']['artwork'].href}
                                     className="Event-poster"
                                 />
+                                <div className="Refresh-event-artwork-button" onClick={onRefreshArtwork}>
+                                        {
+                                            isArtworkRefreshing ?
+                                                <CenteredSpinner /> :
+                                                <div className="Spinner-container">
+                                                    <img
+                                                        src={process.env.PUBLIC_URL + '/img/icon/refresh/refresh_32.png'}
+                                                        alt="Refresh artwork"
+                                                    />
+                                                </div>
+
+                                        }
+                                </div>
                             </div>
                             <div>
                                 <span style={{color: '#aaa'}}>{formattedDate}</span><br/>

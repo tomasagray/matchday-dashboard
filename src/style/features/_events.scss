@@ -3,7 +3,7 @@
 @import "../mixins";
 
 .Item-poster {
-  @include Poster;
+  @include poster;
   max-width: 10vw;
 }
 
@@ -13,7 +13,7 @@
 }
 
 .Event-tile {
-  @include EntityButton;
+  @include entity-button;
   width: variables.$eventPosterWidth;
   overflow: hidden;
   padding: 1rem;
@@ -66,9 +66,46 @@
 .Event-details-container {
   display: flex;
 
-  img {
-    width: variables.$eventPosterWidth;
-    margin-right: 1.5rem;
+  .Event-poster-container {
+    position: relative;
+
+    $posterWidth: 500px;
+    $posterHeight: $posterWidth / (16/9);
+
+    .Event-poster {
+      margin-right: 1.5rem;
+      width: $posterWidth;
+      height: $posterHeight;
+    }
+
+    .Refresh-event-artwork-button {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: $posterWidth;
+      height: $posterHeight;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      .Spinner-container {
+        display: none;
+        border: 1px solid colors.$border;
+        border-radius: 100%;
+        padding: 1rem;
+        width: 32px;
+        height: 32px;
+      }
+
+      &:hover {
+        cursor: pointer;
+        background: colors.$dimmed;
+
+        .Spinner-container {
+          display: block;
+        }
+      }
+    }
   }
 }
 

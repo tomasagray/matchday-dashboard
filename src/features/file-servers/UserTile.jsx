@@ -133,7 +133,7 @@ export const UserTile = (props) => {
         <input type={"checkbox"} checked={loggedIn} disabled={true} className={"Logged-in-checkbox"}/>
 
     return (
-        <div className={"User-tile"}>
+        <div className={"User-tile Message"}>
             <Modal show={showDeleteUserConfirm}>
                 <Header onHide={onHideDeleteUserConfirm}>
                     CONFIRM: <span style={{color: '#aaa'}}>Delete File Server User</span>
@@ -159,7 +159,8 @@ export const UserTile = (props) => {
                 </Footer>
             </Modal>
             <CookieDisplay userId={userId} show={showCookiesModal} onHide={onHideCookiesModal} />
-            <div>
+            <img src={process.env.PUBLIC_URL + '/img/default_avatar.png'} alt="" className="User-avatar" />
+            <div className="User-data">
                 <p>
                     <strong style={{fontSize: 'large'}}>{username}</strong>
                 </p>

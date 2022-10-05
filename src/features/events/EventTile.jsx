@@ -7,8 +7,8 @@ export default function EventTile(props) {
     const placeholderUrl = process.env.PUBLIC_URL + '/img/default_event_poster.png'
 
     const {event} = props
-    const {eventId, title, competition, homeTeam, awayTeam, date} = event
-    let imageUrl = null     // todo - event artwork URL
+    let {eventId, title, competition, homeTeam, awayTeam, date, _links: links} = event
+    let imageUrl = links['artwork'].href
 
     const details = homeTeam ?
         <>

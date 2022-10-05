@@ -136,7 +136,7 @@ $dataSourceIntBorder: 1px solid #666;
 
 
   .Filter-by-type-button {
-    @include buttons.lowerButton;
+    @include buttons.lower-button;
     background: none;
     border: none;
     color: colors.$mediumFontColor;
