@@ -178,13 +178,13 @@ export const TeamDetails = () => {
 
     // components
     let matchTiles =
-            isMatchesSuccess ?
+            isMatchesSuccess && matches ?
                 matches.map(match => <EventTile event={match} key={match['eventId']} />) :
                 []
     let competitionTiles =
         isCompetitionsLoading ?
             <CenteredSpinner /> :
-            isCompetitionsSuccess ?
+            isCompetitionsSuccess && competitions ?
                 Object.values(competitions.entities).map(
                     competition => <CompetitionTile competition={competition} key={competition.id} />
                 ) :

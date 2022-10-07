@@ -20,7 +20,12 @@ export const eventApiSlice = apiSlice.injectEndpoints({
             fetchMatchesForTeam: builder.query({
                 query: (teamId) => `/teams/team/${teamId}/matches`,
                 providesTags: [eventTag],
-                transformResponse: (response) => response['_embedded']['matches'],
+                transformResponse: (response) => {
+                    let {_embedded: embedded} = response
+                    if (embedded) {
+                        return embedded['matches'];
+                    }
+                },
             }),
             fetchEventsForCompetition: builder.query({
                 query: (competitionId) => `/competitions/competition/${competitionId}/events`,
