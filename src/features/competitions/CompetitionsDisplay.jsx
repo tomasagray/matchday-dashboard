@@ -22,7 +22,7 @@ export const CompetitionsDisplay = () => {
         if (isError) {
             toast.error('Failed to load Competitions: ' + getToastMessage(error))
         }
-    })
+    }, [error, isError])
 
     return (
         <>

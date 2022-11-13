@@ -1,10 +1,11 @@
 import ContentBar from "../../components/ContentBar";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {
     useAddTeamEmblemMutation,
     useAddTeamFanartMutation,
     useDeleteTeamEmblemMutation,
     useDeleteTeamFanartMutation,
+    useDeleteTeamMutation,
     useFetchCompetitionsForTeamQuery,
     useFetchTeamByIdQuery,
     useUpdateTeamMutation
@@ -43,6 +44,9 @@ import {CancelButton} from "../../components/controls/CancelButton";
 import {SaveButton} from "../../components/controls/SaveButton";
 import {ArtworkEditor} from "../edit-wizard/ArtworkEditor";
 import {ColorsEditor} from "../edit-wizard/ColorsEditor";
+import {DeleteWizard} from "../edit-wizard/DeleteWizard";
+import {DeleteButton} from "../../components/controls/DeleteButton";
+import {WarningMessage} from "../../components/WarningMessage";
 
 
 export const TeamDetails = () => {
@@ -52,6 +56,7 @@ export const TeamDetails = () => {
     const EMBLEM = 'emblem'
     const FANART = 'fanart'
     const COLORS = 'colors'
+    const DELETE = 'delete'
 
     // handlers
     const onClickEditButton = (e) => {
@@ -105,17 +110,41 @@ export const TeamDetails = () => {
     const onDeleteTeamColor = (priority) => {
         dispatch(deleteTeamColor({priority}))
     }
+    const onDeleteTeam = async () => {
+        setIsEditShown(false)
+        onShowHideDeleteConfirm()
+    }
+    const onShowHideDeleteConfirm = () => {
+        setIsDeleteConfirmShown(!isDeleteConfirmShown)
+    }
+    const onCancelDeleteTeam = () => {
+        onShowHideDeleteConfirm()
+        setIsEditShown(true)
+    }
+    const onConfirmDeleteTeam = () => {
+        console.log('deleting team ...')
+        deleteTeam(editedTeam.id)
+            .unwrap()
+            .then(() => {
+                onShowHideDeleteConfirm()
+                navigate('/teams')
+            })
+            .catch(err => console.error('error', err))
+        console.log('done deleting')
+    }
 
     // state
     const params = useParams()
     const {teamId} = params
     let [isEditShown, setIsEditShown] = useState(false)
+    let [isDeleteConfirmShown, setIsDeleteConfirmShown] =  useState(false)
     let [selectedWizard, setSelectedWizard] = useState(GENERAL)
     let editedTeam = useSelector(state => selectEditedTeam(state))
     let uploadTeam = useSelector(state => selectEditedTeamForUpload(state))
 
     // hooks
     const dispatch = useDispatch()
+    const navigate = useNavigate()
     const {
         data: team,
         isLoading: isTeamLoading,
@@ -126,6 +155,7 @@ export const TeamDetails = () => {
     let name = team?.name
     const posterPlaceholder = process.env.PUBLIC_URL + '/img/default_team_emblem.png'
     const imageUrl = getArtworkUrl(team, 'emblem')
+    let editedTeamName = editedTeam.name?.name
     const [
         updateTeam, {
             isLoading: isUpdatingTeam,
@@ -148,6 +178,15 @@ export const TeamDetails = () => {
         isError: isCompetitionsError,
         error: competitionsError
     } = useFetchCompetitionsForTeamQuery(teamId)
+    const [
+        deleteTeam, {
+            data: deletedTeamId,
+            isLoading: isTeamDeleting,
+            isSuccess: isTeamDeleteSuccess,
+            isError: isTeamDeleteError,
+            error: teamDeleteError
+        }
+    ] = useDeleteTeamMutation()
 
     // toast messages
     useEffect(() => {
@@ -170,10 +209,18 @@ export const TeamDetails = () => {
             let msg = 'Could not update Team: ' + getToastMessage(updateError)
             toast.error(msg)
         }
+        if (isTeamDeleteSuccess) {
+            toast(`Team: ${deletedTeamId} successfully deleted`)
+        }
+        if (isTeamDeleteError) {
+            let msg = 'Error deleting Team: ' + getToastMessage(teamDeleteError)
+            toast.error(msg)
+        }
     }, [
         teamId, isMatchesError, matchesError, isCompetitionsError,
         competitionsError, isTeamError, teamError, isUpdateSuccess,
-        isUpdateError, updateError
+        isUpdateError, updateError, isTeamDeleteSuccess,
+        isTeamDeleteError, teamDeleteError, deletedTeamId
     ])
 
     // components
@@ -193,7 +240,7 @@ export const TeamDetails = () => {
     let wizards = {
         general:
             <GeneralEditor
-                title={editedTeam.name?.name}
+                title={editedTeamName}
                 synonyms={editedTeam.name?.synonyms}
                 newTagValue={editedTeam.newSynonym?.name}
                 country={editedTeam.country}
@@ -233,59 +280,95 @@ export const TeamDetails = () => {
                 onSelectColor={onSelectTeamColor}
                 onAddColor={onAddTeamColor}
                 onDeleteColor={onDeleteTeamColor}
-            />
+            />,
+        delete:
+            <DeleteWizard
+                entityName={editedTeamName}
+                placeholderUrl={posterPlaceholder}
+                imageUrl={imageUrl}
+                onDelete={onDeleteTeam}
+                isDeleting={isTeamDeleting}
+            />,
     }
 
     return (
         <>
+            <Modal show={isEditShown}>
+                <Header onHide={onCloseEditModal}>
+                    Edit team &mdash;&nbsp;
+                    <span style={{color: '#ccc'}}>{name?.name}</span>
+                </Header>
+                <Body>
+                    <EditWizard>
+                        <EditWizardMenu>
+                            <WizardMenuItem
+                                imgSrc="/img/icon/form/form_16.png"
+                                onClick={onSelectWizard(GENERAL)}
+                                selected={selectedWizard === GENERAL}>
+                                General
+                            </WizardMenuItem>
+                            <WizardMenuItem
+                                imgSrc="/img/icon/image/image_16.png"
+                                onClick={onSelectWizard(EMBLEM)}
+                                selected={selectedWizard === EMBLEM}>
+                                Emblem
+                            </WizardMenuItem>
+                            <WizardMenuItem
+                                imgSrc="/img/icon/image/image_16.png"
+                                onClick={onSelectWizard(FANART)}
+                                selected={selectedWizard === FANART}>
+                                Fanart
+                            </WizardMenuItem>
+                            <WizardMenuItem
+                                imgSrc="/img/icon/colors/colors_16.png"
+                                onClick={onSelectWizard(COLORS)}
+                                selected={selectedWizard === COLORS}>
+                                Colors
+                            </WizardMenuItem>
+                            <WizardMenuItem
+                                imgSrc="/img/icon/delete/delete_16.png"
+                                onClick={onSelectWizard(DELETE)}
+                                selected={selectedWizard === DELETE}>
+                                Delete
+                            </WizardMenuItem>
+                        </EditWizardMenu>
+                        <EditWizardDisplay>
+                            {wizards[selectedWizard]}
+                        </EditWizardDisplay>
+                    </EditWizard>
+                </Body>
+                <Footer>
+                    <CancelButton onClick={onCloseEditModal} />
+                    <SaveButton onClick={onSaveEdits} isLoading={isUpdatingTeam} />
+                </Footer>
+            </Modal>
+            <Modal show={isDeleteConfirmShown}>
+                <Header onHide={onCancelDeleteTeam}>
+                    Confirm: Delete <span style={{color: '#aaa'}}>{editedTeamName}</span>
+                </Header>
+                <Body>
+                    <div style={{display: 'flex', justifyContent: 'center'}}>
+                        <WarningMessage>
+                            <span style={{color: '#888'}}>
+                                Are you <strong>sure</strong> you want to delete the team: <br/>
+                            </span>
+                            <strong>{editedTeamName}</strong> <br/>
+                            <strong  style={{color: 'red'}}>
+                                This CANNOT be undone
+                            </strong>
+                        </WarningMessage>
+                    </div>
+                </Body>
+                <Footer>
+                    <CancelButton onClick={onCancelDeleteTeam} />
+                    <DeleteButton onClick={onConfirmDeleteTeam} isLoading={isTeamDeleting} />
+                </Footer>
+            </Modal>
             {
                 isTeamLoading ?
                     <FillSpinner /> :
                     isTeamSuccess ?
                         <div className="Content-container">
-                            <Modal show={isEditShown}>
-                                <Header onHide={onCloseEditModal}>
-                                    Edit team &mdash;&nbsp;
-                                    <span style={{color: '#ccc'}}>{name?.name}</span>
-                                </Header>
-                                <Body>
-                                    <EditWizard>
-                                        <EditWizardMenu>
-                                            <WizardMenuItem
-                                                imgSrc="/img/icon/form/form_16.png"
-                                                onClick={onSelectWizard(GENERAL)}
-                                                selected={selectedWizard === GENERAL}>
-                                                General
-                                            </WizardMenuItem>
-                                            <WizardMenuItem
-                                                imgSrc="/img/icon/image/image_16.png"
-                                                onClick={onSelectWizard(EMBLEM)}
-                                                selected={selectedWizard === EMBLEM}>
-                                                Emblem
-                                            </WizardMenuItem>
-                                            <WizardMenuItem
-                                                imgSrc="/img/icon/image/image_16.png"
-                                                onClick={onSelectWizard(FANART)}
-                                                selected={selectedWizard === FANART}>
-                                                Fanart
-                                            </WizardMenuItem>
-                                            <WizardMenuItem
-                                                imgSrc="/img/icon/colors/colors_16.png"
-                                                onClick={onSelectWizard(COLORS)}
-                                                selected={selectedWizard === COLORS}>
-                                                Colors
-                                            </WizardMenuItem>
-                                        </EditWizardMenu>
-                                        <EditWizardDisplay>
-                                            {wizards[selectedWizard]}
-                                        </EditWizardDisplay>
-                                    </EditWizard>
-                                </Body>
-                                <Footer>
-                                    <CancelButton onClick={onCloseEditModal} />
-                                    <SaveButton onClick={onSaveEdits} isLoading={isUpdatingTeam} />
-                                </Footer>
-                            </Modal>
                             <h1 className="Detail-title">{name?.name}</h1>
                             <div className="Detail-header">
                                 <SoftLoadImage

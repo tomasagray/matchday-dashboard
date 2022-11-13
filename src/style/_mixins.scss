@@ -97,6 +97,33 @@
   }
 }
 
+@mixin selected {
+  //position: relative;
+  border-color: colors.$highlight;
+  //border-width: 3px;
+
+  &::before {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    border-style: solid;
+    border-color: colors.$highlight colors.$highlight transparent transparent;
+    border-width: 0 2rem 2rem 0;
+    z-index: 100;
+  }
+
+  &::after {
+    content: "\2713";
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: large;
+    color: colors.$checkMark;
+    z-index: 100;
+  }
+}
+
 @mixin toggle-switch($height) {
   height: $height;
   width: calc(2 * $height);

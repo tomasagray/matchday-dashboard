@@ -53,7 +53,7 @@ export const competitionApiSlice = apiSlice.injectEndpoints({
                         headers: JsonHeaders,
                         body: competition,
                     }),
-                invalidatesTags: [competitionTag, eventTag]
+                invalidatesTags: [competitionTag, eventTag],
             }),
             addCompetitionEmblem: builder.mutation({
                 query: emblem => ({
@@ -93,6 +93,13 @@ export const competitionApiSlice = apiSlice.injectEndpoints({
                     return response
                 }
             }),
+            deleteCompetition: builder.mutation({
+                query: competitionId => ({
+                    url: `/competitions/competition/${competitionId}/delete`,
+                    method: 'DELETE',
+                }),
+                invalidatesTags: [competitionTag, eventTag],
+            }),
         })
     }
 })
@@ -106,4 +113,5 @@ export const {
     useAddCompetitionFanartMutation,
     useDeleteCompetitionEmblemMutation,
     useDeleteCompetitionFanartMutation,
+    useDeleteCompetitionMutation,
 } = competitionApiSlice

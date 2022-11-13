@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from "react";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {
     useAddCompetitionEmblemMutation,
     useAddCompetitionFanartMutation,
     useDeleteCompetitionEmblemMutation,
     useDeleteCompetitionFanartMutation,
+    useDeleteCompetitionMutation,
     useFetchCompetitionByIdQuery,
     useFetchTeamsForCompetitionQuery,
     useUpdateCompetitionMutation,
@@ -38,6 +39,9 @@ import {
 import {useDispatch, useSelector} from "react-redux";
 import {ArtworkEditor} from "../edit-wizard/ArtworkEditor";
 import {SoftLoadImage} from "../../components/SoftLoadImage";
+import {DeleteWizard} from "../edit-wizard/DeleteWizard";
+import {WarningMessage} from "../../components/WarningMessage";
+import {DeleteButton} from "../../components/controls/DeleteButton";
 
 export const CompetitionDetails = () => {
 
@@ -45,6 +49,7 @@ export const CompetitionDetails = () => {
     const GENERAL = 'general'
     const EMBLEM = 'emblem'
     const FANART = 'fanart'
+    const DELETE = 'delete'
 
     // handlers
     const onClickEditButton = (e) => {
@@ -89,17 +94,46 @@ export const CompetitionDetails = () => {
     const onSaveEdits = async () => {
         updateCompetition(uploadCompetition).unwrap().then(() => onCloseEditModal())
     }
+    const onDeleteCompetition = () => {
+        setIsEditModalShown(false)
+        onShowHideDeleteConfirm()
+    }
+    const onShowHideDeleteConfirm = () => {
+        setIsDeleteConfirmShown(!isDeleteConfirmShown)
+    }
+    const onCancelDeleteCompetition = () => {
+        onShowHideDeleteConfirm()
+        setIsEditModalShown(true)
+    }
+    const onConfirmDeleteCompetition = async () => {
+        console.log('deleting competition...')
+        await deleteCompetition(competitionId)
+            .unwrap()
+            .then(() => {
+                onShowHideDeleteConfirm()
+                navigate('/competitions')
+            })
+            .catch(err => {
+                console.log('Error deleting Competition', err)
+                onShowHideDeleteConfirm()
+                setIsEditModalShown(true)
+            })
+        console.log('done deleting')
+    }
+
 
     //state
     const params = useParams()
     const {competitionId} = params
     let [isEditModalShown, setIsEditModalShown] = useState(false)
+    let [isDeleteConfirmShown, setIsDeleteConfirmShown] = useState(false)
     let [selectedWizard, setSelectedWizard] = useState(GENERAL)
     let editedCompetition = useSelector(state => selectEditedCompetition(state))
     let uploadCompetition = useSelector(state => selectEditedCompetitionForUpload(state))
 
     // hooks
     const dispatch = useDispatch()
+    const navigate = useNavigate()
     const {
         data: competition,
         isLoading: isCompetitionLoading,
@@ -131,6 +165,14 @@ export const CompetitionDetails = () => {
             error: updateCompetitionError,
         }
     ] = useUpdateCompetitionMutation(uploadCompetition)
+    const [
+        deleteCompetition, {
+            isLoading: isCompetitionDeleting,
+            isSuccess: isDeleteCompetitionSuccess,
+            isError: isDeleteCompetitionError,
+            error: deleteCompetitionError,
+        }
+    ] = useDeleteCompetitionMutation()
 
     // toast messages
     useEffect(() => {
@@ -158,11 +200,19 @@ export const CompetitionDetails = () => {
             let msg = 'Failed updating Competition: ' + getToastMessage(updateCompetitionError)
             toast.error(msg)
         }
+        if (isDeleteCompetitionSuccess) {
+            toast(`Successfully deleted Competition: ${competitionId}`)
+        }
+        if (isDeleteCompetitionError) {
+            let msg = 'Error deleting Competition: ' + getToastMessage(deleteCompetitionError)
+            toast.error(msg)
+        }
     }, [
         competitionId, isCompetitionError, competitionError, isEventsError,
         eventsError, isTeamsError, teamsError, isUpdateCompetitionSuccess,
         isUpdateCompetitionError, updateCompetitionError,
-        isCompetitionSuccess, competition
+        isCompetitionSuccess, competition, isDeleteCompetitionSuccess,
+        isDeleteCompetitionError, deleteCompetitionError
     ])
 
     // components
@@ -172,6 +222,7 @@ export const CompetitionDetails = () => {
             Object.values(teams.entities).map(
                 team => <TeamTile team={team} key={team.id} />
             ) : []
+    let editedCompetitionName = editedCompetition?.name?.name
     let wizards = {
         general:
             <GeneralEditor
@@ -209,55 +260,91 @@ export const CompetitionDetails = () => {
                 onUpload={onUploadArtwork}
                 onSelectArtwork={onSelectFanart}
             />,
+        delete:
+            <DeleteWizard
+                entityName={editedCompetitionName}
+                placeholderUrl={placeholderUrl}
+                imageUrl={posterImageUrl}
+                onDelete={onDeleteCompetition}
+                isDeleting={isCompetitionDeleting}
+            />,
     }
 
     return (
         <>
+            <Modal show={isEditModalShown}>
+                <Header onHide={onCloseEditModal}>
+                    Edit competition &mdash;&nbsp;
+                    <span style={{color: '#ccc'}}>
+                                        {name?.name}
+                                    </span>
+                </Header>
+                <Body>
+                    <EditWizard>
+                        <EditWizardMenu>
+                            <WizardMenuItem
+                                imgSrc="/img/icon/form/form_16.png"
+                                onClick={onSelectWizard(GENERAL)}
+                                selected={selectedWizard === GENERAL}>
+                                General
+                            </WizardMenuItem>
+                            <WizardMenuItem
+                                imgSrc="/img/icon/image/image_16.png"
+                                onClick={onSelectWizard(EMBLEM)}
+                                selected={selectedWizard === EMBLEM}>
+                                Poster
+                            </WizardMenuItem>
+                            <WizardMenuItem
+                                imgSrc="/img/icon/image/image_16.png"
+                                onClick={onSelectWizard(FANART)}
+                                selected={selectedWizard === FANART}>
+                                Fanart
+                            </WizardMenuItem>
+                            <WizardMenuItem
+                                imgSrc="/img/icon/delete/delete_16.png"
+                                onClick={onSelectWizard(DELETE)}
+                                selected={selectedWizard === DELETE}>
+                                Delete
+                            </WizardMenuItem>
+                        </EditWizardMenu>
+                        <EditWizardDisplay>
+                            {wizards[selectedWizard]}
+                        </EditWizardDisplay>
+                    </EditWizard>
+                </Body>
+                <Footer>
+                    <CancelButton onClick={onCloseEditModal} />
+                    <SaveButton onClick={onSaveEdits} isLoading={isUpdatingCompetition} />
+                </Footer>
+            </Modal>
+            <Modal show={isDeleteConfirmShown}>
+                <Header onHide={onShowHideDeleteConfirm}>
+                    Confirm &mdash; DELETE&nbsp;
+                    <span style={{color: '#aaa'}}>
+                        {editedCompetitionName}
+                    </span>
+                </Header>
+                <Body>
+                    <div style={{display: 'flex', justifyContent: 'center'}}>
+                        <WarningMessage>
+                            <span style={{color: '#888'}}>
+                                Are you <strong>sure</strong> you want to delete the Competition: <br/>
+                            </span>
+                            <strong>{editedCompetitionName}</strong> <br/>
+                            <strong style={{color: 'red'}}>This CANNOT be undone!</strong>
+                        </WarningMessage>
+                    </div>
+                </Body>
+                <Footer>
+                    <DeleteButton onClick={onConfirmDeleteCompetition} isLoading={isCompetitionDeleting}/>
+                    <CancelButton onClick={onCancelDeleteCompetition} />
+                </Footer>
+            </Modal>
             {
                 isCompetitionLoading ?
                     <FillSpinner/> :
                     isCompetitionSuccess ?
                         <div>
-                            <Modal show={isEditModalShown}>
-                                <Header onHide={onCloseEditModal}>
-                                    Edit competition &mdash;&nbsp;
-                                    <span style={{color: '#ccc'}}>
-                                        {name?.name}
-                                    </span>
-                                </Header>
-                                <Body>
-                                    <EditWizard>
-                                        <EditWizardMenu>
-                                            <WizardMenuItem
-                                                imgSrc="/img/icon/form/form_16.png"
-                                                onClick={onSelectWizard(GENERAL)}
-                                                selected={selectedWizard === GENERAL}>
-                                                General
-                                            </WizardMenuItem>
-                                            <WizardMenuItem
-                                                imgSrc="/img/icon/image/image_16.png"
-                                                onClick={onSelectWizard(EMBLEM)}
-                                                selected={selectedWizard === EMBLEM}>
-                                                Poster
-                                            </WizardMenuItem>
-                                            <WizardMenuItem
-                                                imgSrc="/img/icon/image/image_16.png"
-                                                onClick={onSelectWizard(FANART)}
-                                                selected={selectedWizard === FANART}>
-                                                Fanart
-                                            </WizardMenuItem>
-                                        </EditWizardMenu>
-                                        <EditWizardDisplay>
-                                            {wizards[selectedWizard]}
-                                        </EditWizardDisplay>
-                                    </EditWizard>
-                                </Body>
-                                <Footer>
-                                    <CancelButton onClick={onCloseEditModal} />
-                                    <SaveButton onClick={onSaveEdits} isLoading={isUpdatingCompetition} />
-                                </Footer>
-                            </Modal>
-
                             <h1 className="Detail-title">{name?.name}</h1>
                             <div className="Detail-header">
                                 <SoftLoadImage

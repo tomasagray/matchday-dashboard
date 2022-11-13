@@ -15,7 +15,7 @@ import {LabelRefreshTool} from "./LabelRefreshTool";
 import {InfoMessage} from "../../components/InfoMessage";
 
 const DEFAULT_LABEL = ''
-const DEFAULT_DATE = new Date()
+const DEFAULT_DATE = null
 const DATE_MODE = 'date'
 const LABEL_MODE = 'label'
 
@@ -52,7 +52,9 @@ export const DataSourcePluginsList = () => {
         await refreshAllPlugins(query)
     }
     const getRefreshQuery = () => {
-        const endDate = dayjs(refreshDate).format( 'YYYY-MM-DDThh:mm:ss')
+        const endDate = refreshDate != null ?
+            dayjs(new Date().parseIso(refreshDate)).format( 'YYYY-MM-DDThh:mm:ss') :
+            null
         return {
             labels: [refreshLabel],
             endDate,

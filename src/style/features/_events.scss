@@ -1,5 +1,6 @@
 @use "../colors";
 @use "../variables";
+@use "../layers";
 @import "../mixins";
 
 .Item-poster {
@@ -11,6 +12,10 @@
   display: flex;
   flex-wrap: wrap;
 }
+
+
+$posterWidth: 500px;
+$posterHeight: calc($posterWidth / (16/9));
 
 .Event-tile {
   @include entity-button;
@@ -69,16 +74,13 @@
   .Event-poster-container {
     position: relative;
 
-    $posterWidth: 500px;
-    $posterHeight: $posterWidth / (16/9);
-
     .Event-poster {
       margin-right: 1.5rem;
       width: $posterWidth;
       height: $posterHeight;
     }
 
-    .Refresh-event-artwork-button {
+    .Edit-event-button {
       position: absolute;
       top: 0;
       left: 0;
@@ -109,11 +111,11 @@
   }
 }
 
-.Event-detail-header {
+.Event-detail-header-container {
   margin-bottom: 1.5rem;
 
   .Team-name {
-    color: colors.$teamName;
+    color: colors.$eventTeams;
   }
 }
 
@@ -121,7 +123,7 @@
   display: flex;
   align-items: center;
   height: 2rem;
-  margin: 2rem 0;
+  margin-bottom: 2rem;
 
   & > * {
     margin-right: 1rem;
@@ -165,5 +167,125 @@
   .Find-more-items {
     display: flex;
     flex-direction: row;
+  }
+}
+
+.Artwork-metadata-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.Refresh-event-artwork-container {
+  width: 350px;
+  height: 250px;
+  display: flex;
+
+  .Event-editor-artwork {
+    .Soft-load-container {
+      width: 350px;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+    }
+
+    .Spinner-container {
+      position: absolute;
+      display: flex;
+      padding: 1rem;
+      width: 318px;
+      height: 165px;
+      background: colors.$dimmed;
+      z-index: layers.$modalFloatingMenu;
+
+      .Centered-spinner {
+        padding: 0;
+      }
+    }
+  }
+
+}
+
+.Team-select-wizard {
+  display: flex;
+
+  .Team-display {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    h3 {
+      color: colors.$mediumFontColor;
+    }
+
+    .Team-select {
+      display: flex;
+    }
+  }
+}
+
+.Team-select-menu {
+  display: flex;
+  flex-direction: row;
+  position: absolute;
+  top: 50px;
+  left: -50px;
+
+  .Team-select-arrow {
+    position: absolute;
+    left: -14px;
+    top: 25px;
+    width: 0;
+    height: 0;
+    border-top: 15px solid transparent;
+    border-bottom: 15px solid transparent;
+    border-right: 15px solid colors.$border;
+
+    div {
+      position: absolute;
+      left: 2px;
+      top: -14px;
+      width: 0;
+      height: 0;
+      border-top: 14px solid transparent;
+      border-bottom: 14px solid transparent;
+      border-right: 14px solid rgb(42,42,42);
+    }
+  }
+
+  .Team-select-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    width: 30vw;
+    height: 25vh;
+    overflow-y: scroll;
+    padding: 1rem;
+    border: 1px solid colors.$border;
+    border-radius: 5px;
+    background-color: colors.$defaultComponentBg;
+
+    .Team-tile-selector {
+      position: relative;
+      border: 2px solid transparent;
+
+      .Team-tile {
+        margin: 0;
+        width: 5rem;
+        font-size: small;
+
+        .Soft-load-container {
+          img {
+            width: 5rem !important;
+            height: 5rem !important;
+          }
+        }
+      }
+
+      &.selected {
+        @include selected;
+      }
+    }
   }
 }

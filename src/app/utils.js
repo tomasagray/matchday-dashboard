@@ -1,12 +1,14 @@
 import dayjs from "dayjs";
 
 const dateFormatter = 'MM/DD/YYYY'
+const dateTimeFormatter = 'YYYY-MM-DDTHH:mm:ss'
 const jsonPrefix = 'data:text/json;charset=utf-8,'
 const uuidPattern = /[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}/
 const urlPattern = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=+$,\w]+@)?[A-Za-z\d.-]+|(?:www\.|[-;:&=+$,\w]+@)[A-Za-z\d.-]+)((?:\/[+~%/.\w\-_]*)?\??[-+=&;%@.\w_]*#?[.!/\\\w]*)?)/
 
 
 export const formatDate = (date) => dayjs(date).format(dateFormatter)
+export const formatDateTime = (date) => dayjs(date).format(dateTimeFormatter)
 
 export const getClassName = (clazz) => {
     if (!clazz) return null

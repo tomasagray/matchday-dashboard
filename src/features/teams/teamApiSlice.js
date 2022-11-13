@@ -86,6 +86,13 @@ export const teamApiSlice = apiSlice.injectEndpoints({
                     return response
                 }
             }),
+            deleteTeam: builder.mutation({
+                query: teamId => ({
+                    url: `/teams/team/${teamId}/delete`,
+                    method: 'DELETE',
+                }),
+                invalidatesTags: [teamTag],
+            }),
         })
     }
 
@@ -100,4 +107,5 @@ export const {
     useAddTeamFanartMutation,
     useDeleteTeamEmblemMutation,
     useDeleteTeamFanartMutation,
+    useDeleteTeamMutation,
 } = teamApiSlice

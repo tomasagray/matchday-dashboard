@@ -16,7 +16,7 @@ export const FloatingMenu = (props) => {
 
     return (
         <div ref={menu}>
-            <div className={`${baseClass} ${className}`} style={style}>
+            <div className={`${baseClass} ${className ?? ''}`} style={style}>
                 <ul>{children}</ul>
             </div>
         </div>

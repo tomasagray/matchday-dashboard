@@ -1,6 +1,7 @@
-import {apiSlice, eventTag} from "../../app/apiSlice";
+import {apiSlice, competitionTag, eventTag} from "../../app/apiSlice";
 import store from "../../app/store";
 import {matchAdapter, matchLoaded, matchSlice} from "./matchSlice";
+import {JsonHeaders} from "../../app/constants";
 
 export const eventApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => {
@@ -49,6 +50,22 @@ export const eventApiSlice = apiSlice.injectEndpoints({
                 }),
                 invalidatesTags: [eventTag],
             }),
+            updateMatch: builder.mutation({
+                query: match => ({
+                    url: '/matches/match/update',
+                    method: 'PATCH',
+                    headers: JsonHeaders,
+                    body: match,
+                }),
+                invalidatesTags: [eventTag],
+            }),
+            deleteMatch: builder.mutation({
+                query: matchId => ({
+                    url: `/matches/match/${matchId}/delete`,
+                    method: 'DELETE',
+                }),
+                invalidatesTags: [eventTag, competitionTag],
+            }),
         })
     }
 })
@@ -59,4 +76,6 @@ export const {
     useFetchEventsForCompetitionQuery,
     useFetchMatchByIdQuery,
     useRefreshMatchArtworkMutation,
+    useUpdateMatchMutation,
+    useDeleteMatchMutation,
 } = eventApiSlice

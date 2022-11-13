@@ -2,10 +2,11 @@ import React from "react"
 
 export const CancelButton = (props) => {
 
-    let content = props.children ? props.children : "Cancel"
+    let {children, onClick, disabled, style} = props
+    let content = children ?? "Cancel"
     return (
-        <button className={"Cancel-button"} onClick={props.onClick}
-                disabled={props.disabled} style={props.style}>
+        <button className={"Cancel-button"} onClick={onClick}
+                disabled={disabled} style={style}>
             {content}
         </button>
     )

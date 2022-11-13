@@ -9,6 +9,7 @@ export const editedCompetition = {
     country: null,
     emblem: null,
     fanart: null,
+    synonyms: [],
     newSynonym: {},
 }
 export const initialState = competitionAdapter.getInitialState({

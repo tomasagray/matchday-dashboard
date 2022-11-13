@@ -172,9 +172,11 @@ export const DataSourceDisplay = (props) => {
     const onExportDataSource = () => {
         const a = document.createElement('a')
         a.href = getDownloadableJson(dataSource)
-        a.setAttribute('download', `data-source_${dataSourceId}.json`)
+        const filename = `data-source_${dataSourceId}.json`
+        a.setAttribute('download', filename)
         a.click()
         setEditMenuHidden(true)
+        toast('Downloaded Data Source to: ' + filename)
     }
     const onShowDeleteDataSourceModal = (e) => {
         e.preventDefault()
@@ -295,7 +297,7 @@ export const DataSourceDisplay = (props) => {
     }
 
     const hoverColor = isEditable ? 'light-green' : 'green'
-    const editImg = !isEditable ? '/edit-pencil/edit-pencil_16.png' : '/cancel/cancel_16.png'
+    const editImg = !isEditable ? '/edit/edit_16.png' : '/cancel/cancel_16.png'
     const editButton = isModified ? null :
         <MenuItem onClick={onClickEditButton} backgroundColor={hoverColor}>
             <p>{isEditable ? 'Cancel' : ''} Edit</p>

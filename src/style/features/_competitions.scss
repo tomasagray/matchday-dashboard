@@ -1,13 +1,40 @@
+@use "../colors";
 @use "../variables";
 @import "../mixins";
 
+$imageHeight: 225px;
+$posterHeight: 270px;
+
 .Competition-tile {
   @include entity-button;
-  height: fit-content;
+  height: $posterHeight;
 
   img {
-    position: relative;
+    height: $imageHeight !important;
     width: variables.$tilePosterSize !important;
-    //height: variables.$tilePosterSize !important;
+    position: relative;
+  }
+}
+
+.Competition-select-tile {
+  @include entity-button;
+  height: $posterHeight;
+
+  img {
+    height: $imageHeight !important;
+    position: relative;
+  }
+
+  .Soft-load-container {
+    border: 3px solid transparent;
+    position: relative;
+    height: $imageHeight !important;
+  }
+
+  &.selected {
+   .Soft-load-container {
+     //height: $imageHeight !important;
+     @include selected;
+   }
   }
 }

@@ -1,6 +1,7 @@
 @use "../colors";
 @use "../fonts";
 @use "../layers";
+@import "../mixins";
 
 
 .Edit-wizard-container {
@@ -41,8 +42,8 @@
 
   .Edit-wizard-display {
     padding: 2rem;
-    height: 30vh;
     width: 100%;
+    min-height: 30vh;
   }
 }
 
@@ -66,7 +67,7 @@
 $uploadContainerHeight: 2rem;
 .Artwork-editor {
   margin: -2rem;
-  height: fill-available;
+  height: stretch;
   contain: content;
 
   .Artwork-upload-container {
@@ -77,7 +78,7 @@ $uploadContainerHeight: 2rem;
     align-content: center;
     position: fixed;
     top: 0;
-    width: fill-available;
+    width: stretch;
     height: $uploadContainerHeight;
     z-index: layers.$artworkUploadContainer;
 
@@ -88,10 +89,10 @@ $uploadContainerHeight: 2rem;
     .Artwork-upload-form {
       display: flex;
       align-content: center;
-      width: fill-available;
+      width: stretch;
 
       input[type=url] {
-        width: fill-available;
+        width: stretch;
       }
     }
   }
@@ -100,7 +101,7 @@ $uploadContainerHeight: 2rem;
     padding: 2rem;
     contain: content;
     overflow-y: scroll;
-    height: fill-available;
+    height: stretch;
 
     .Artwork-collection-display {
       display: grid;
@@ -123,32 +124,13 @@ $uploadContainerHeight: 2rem;
           cursor: pointer;
         }
 
-        &.selected {
-          border-color: colors.$highlight;
-
-          &::before {
-            content: '';
-            position: absolute;
-            right: 0;
-            top: 0;
-            border-style: solid;
-            border-color: colors.$highlight colors.$highlight transparent transparent;
-            border-width: 0 2rem 2rem 0;
-          }
-
-          &::after {
-            content: "\2713";
-            position: absolute;
-            top: 0;
-            right: 0;
-            font-size: large;
-            color: colors.$checkMark;
-          }
-        }
-
         img {
           height: 100%;
           max-width: 100%;
+        }
+
+        &.selected {
+          @include selected;
         }
       }
     }
@@ -233,6 +215,43 @@ $uploadContainerHeight: 2rem;
         font-family: fonts.$technical;
         font-size: large;
       }
+    }
+  }
+}
+
+.Competition-select {
+  overflow-y: scroll;
+  height: 40vh;
+}
+
+.Delete-wizard {
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+
+  .Info-message {
+    color: #aaa;
+    width: 100%;
+    margin-bottom: 2rem;
+
+    span {
+      font-weight: bold;
+      color: whitesmoke;
+    }
+  }
+
+  .Delete-entity-display {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+    .Soft-load-container {
+      width: 200px;
+      margin-bottom: 1rem;
+    }
+
+    .Delete-button {
+      width: 150px;
     }
   }
 }
