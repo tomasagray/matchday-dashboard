@@ -161,8 +161,6 @@ export const competitionSlice = createSlice({
             let {payload} = action
             let {collection} = payload
             let role = collection.role.toLowerCase()
-            console.log('role', role)
-            console.log('collection', collection)
             return {
                 ...state,
                 editedCompetition: {

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {useNavigate, useParams} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import {
     useAddCompetitionEmblemMutation,
     useAddCompetitionFanartMutation,
@@ -154,9 +154,11 @@ export const CompetitionDetails = () => {
     const {
         data: events,
         isLoading: isEventsLoading,
+        isSuccess: isEventsSuccess,
         isError: isEventsError,
         error: eventsError
     } = useFetchEventsForCompetitionQuery(competitionId)
+    let moreEvents = events?.next
     const [
         updateCompetition, {
             isLoading: isUpdatingCompetition,
@@ -216,7 +218,22 @@ export const CompetitionDetails = () => {
     ])
 
     // components
-    let eventTiles = events?.map(event => <EventTile event={event} /> ) ?? []
+    let eventTiles =
+        isEventsSuccess && events ?
+            Object.values(events?.entities).map(event => <EventTile event={event} /> ) :
+            []
+    // add more button
+    if (eventTiles.length > 0 && moreEvents) {
+        eventTiles.push(
+            <Link to={"/events"}>
+                <div style={{padding: '1.5rem'}}>
+                    <div className="More-button">
+                        <img src={'/img/icon/more/more_32.png'} alt="More..." />
+                    </div>
+                </div>
+            </Link>
+        )
+    }
     let teamTiles =
         isTeamsSuccess && teams ?
             Object.values(teams.entities).map(

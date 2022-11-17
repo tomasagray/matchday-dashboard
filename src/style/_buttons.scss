@@ -196,6 +196,31 @@
   }
 }
 
+.More-button {
+  width: 150px;
+  height: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid colors.$border;
+  font-size: xx-large;
+  color: colors.$mediumFontColor;
+  text-decoration: none !important;
+
+  img {
+    width: 24px;
+    opacity: .5;
+  }
+
+  &:hover {
+    border-color: colors.$buttonBorder;
+
+    img {
+      opacity: .9;
+    }
+  }
+}
+
 .OK-button {
   @include button;
   box-sizing: content-box;
@@ -259,7 +284,7 @@
       visibility: visible;
     }
   }
-  
+
   &.loading:not(:disabled) {
     cursor: wait;
   }

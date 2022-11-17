@@ -1,5 +1,5 @@
 import ContentBar from "../../components/ContentBar";
-import {useNavigate, useParams} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import {
     useAddTeamEmblemMutation,
     useAddTeamFanartMutation,
@@ -226,8 +226,20 @@ export const TeamDetails = () => {
     // components
     let matchTiles =
             isMatchesSuccess && matches ?
-                matches.map(match => <EventTile event={match} key={match['eventId']} />) :
+                Object.values(matches.entities)
+                    .map(match => <EventTile event={match} key={match['eventId']} />) :
                 []
+    if (matchTiles.length > 0 && matches?.next) {
+        matchTiles.push(
+            <Link to={"/events"}>
+                <div style={{padding: '1.5rem'}}>
+                    <div className="More-button">
+                        <img src={'/img/icon/more/more_32.png'} alt="More..." />
+                    </div>
+                </div>
+            </Link>
+        )
+    }
     let competitionTiles =
         isCompetitionsLoading ?
             <CenteredSpinner /> :
@@ -235,7 +247,7 @@ export const TeamDetails = () => {
                 Object.values(competitions.entities).map(
                     competition => <CompetitionTile competition={competition} key={competition.id} />
                 ) :
-                null
+                null;
 
     let wizards = {
         general:

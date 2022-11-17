@@ -6,10 +6,11 @@ import {selectMatches} from "./matchSlice";
 import {CenteredSpinner} from "../../components/Spinner";
 import {getToastMessage} from "../../app/utils";
 import {toast} from "react-toastify";
+import {useDetectPageBottom} from "../../hooks/useDetectPageBottom";
 
 export const LatestEventsPage = (props) => {
 
-    // startingUrl
+    // TODO: make it possible to pass in a starting URL via react-router-dom
     let {startingUrl} =  props
     let [next, setNext] = useState(startingUrl)
     const {
@@ -21,19 +22,8 @@ export const LatestEventsPage = (props) => {
     } = useFetchAllEventsQuery(next)
     let nextUrl = data?.next
     let events = useSelector(state => selectMatches(state))
-
     // handle soft load of more events
-    useEffect(() => {
-        const handlePageScroll = () => {
-            let isAtBottom = contentStage.scrollTop + contentStage.clientHeight >= contentStage.scrollHeight
-            if (isAtBottom && nextUrl) {
-                setNext(nextUrl)
-            }
-        }
-        const contentStage = document.getElementById('Content-stage')
-        contentStage.addEventListener('scroll', handlePageScroll)
-        return () => contentStage.removeEventListener('scroll', handlePageScroll)
-    }, [nextUrl])
+    useDetectPageBottom(() => setNext(nextUrl))
 
     // toast messages
     useEffect(() => {

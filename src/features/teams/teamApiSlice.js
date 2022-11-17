@@ -4,18 +4,36 @@ import store from "../../app/store";
 import {competitionAdapter, competitionsLoaded} from "../competitions/competitionSlice";
 import {JsonHeaders} from "../../app/constants";
 
+const getNormalizedTeams = (response) => {
+    let {teams} = response
+    if (teams && teams.length > 0) {
+        store.dispatch(teamsLoaded(teams))
+        return teamAdapter.setMany(teamAdapter.getInitialState(), teams)
+    }
+}
+
 export const teamApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => {
         return ({
             fetchAllTeams: builder.query({
-                query: () => '/teams',
+                query: (url = null, page = 0, size = 16) => {
+                    if (url !== null) {
+                        return {url}
+                    }
+                    return {
+                        url: `/teams?page=${page}&size=${size}`,
+                    }
+                },
                 providesTags: [teamTag],
                 transformResponse: (response) => {
                     let {_embedded} = response
                     if (_embedded) {
-                        let {teams} = _embedded
-                        store.dispatch(teamsLoaded(teams))
-                        return teamAdapter.setAll(teamAdapter.getInitialState(), teams)
+                        let normalized = getNormalizedTeams(_embedded)
+                        // todo - standardize whether returned data is wrapped in _embedded
+                        return {
+                            ...normalized,
+                            next: response['_links']?.next?.href,
+                        }
                     }
                 }
             }),

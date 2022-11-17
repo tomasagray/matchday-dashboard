@@ -181,8 +181,6 @@ export const teamSlice = createSlice({
             let {payload} = action
             let {collection} = payload
             let role = collection.role.toLowerCase()
-            console.log('role', role)
-            console.log('collection', collection)
             return {
                 ...state,
                 editedTeam: {
@@ -253,6 +251,11 @@ export const {
 } = teamSlice.actions
 
 export default teamSlice.reducer
+
+export const selectAllTeams = createSelector(
+    state => state.teams,
+    state => state,
+)
 
 export const selectEditedTeam = createSelector(
     state => state.teams,

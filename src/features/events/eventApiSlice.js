@@ -3,6 +3,19 @@ import store from "../../app/store";
 import {matchAdapter, matchLoaded, matchSlice} from "./matchSlice";
 import {JsonHeaders} from "../../app/constants";
 
+const getNormalizedEvents = (response) => {
+    // todo - handle highlights, other types?
+    let {matches, _links: links} = response
+    if (matches && matches.length > 0) {
+        store.dispatch(matchSlice.actions.matchesLoaded(matches))
+        let normalized = matchAdapter.setMany(matchAdapter.getInitialState(), matches)
+        return {
+            ...normalized,
+            next: links?.next?.href
+        }
+    }
+}
+
 export const eventApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => {
         return ({
@@ -17,17 +30,7 @@ export const eventApiSlice = apiSlice.injectEndpoints({
                 },
                 providesTags: [eventTag],
                 transformResponse: (response) => {
-                    // todo - handle highlights, other types?
-                    let {matches, _links: links} = response
-                    console.log('response', response)
-                    if (matches && matches.length > 0) {
-                        store.dispatch(matchSlice.actions.matchesLoaded(matches))
-                        let normalized = matchAdapter.setMany(matchAdapter.getInitialState(), matches)
-                        return {
-                            ...normalized,
-                            next: links?.next?.href
-                        }
-                    }
+                    return getNormalizedEvents(response)
                 },
             }),
             fetchMatchesForTeam: builder.query({
@@ -37,7 +40,7 @@ export const eventApiSlice = apiSlice.injectEndpoints({
                     // TODO: standardize data shape - use matchAdapter, etc.
                     let {_embedded: embedded} = response
                     if (embedded) {
-                        return embedded['matches']
+                        return getNormalizedEvents(embedded)
                     }
                 },
             }),
@@ -45,7 +48,7 @@ export const eventApiSlice = apiSlice.injectEndpoints({
                 query: (competitionId) => `/competitions/competition/${competitionId}/events`,
                 providesTags: [eventTag],
                 transformResponse: (response) => {
-                    return response['matches']
+                    return getNormalizedEvents(response)
                 }
             }),
             fetchMatchById: builder.query({
