@@ -63,7 +63,7 @@ export const ContentBar = (props) => {
     // components
     let itemDisplay = items ?
         items.map((item, idx) => <li key={idx} className="Item-slide">{item}</li> ) :
-        null;
+        null
 
     return (
         <div className="Content-bar">

@@ -10,6 +10,7 @@ import TeamTile from "../features/teams/TeamTile";
 import {toast} from "react-toastify";
 import {getToastMessage} from "../app/utils";
 import {EmptyMessage} from "../components/EmptyMessage";
+import {Link} from "react-router-dom";
 
 
 export const Home = () => {
@@ -38,34 +39,58 @@ export const Home = () => {
     } = useFetchAllTeamsQuery()
 
     // item lists
-    let events =
+    let eventTiles = (isEventsSuccess && eventsData) ?
+        Object.values(eventsData.entities).map(event => <EventTile event={event} />) :
+        []
+    if (eventTiles.length >= 16) {
+        eventTiles.push(
+            <Link to={"/events"}>
+                <div style={{padding: '1.5rem'}}>
+                    <div className="More-button">
+                        <img src={'/img/icon/more/more_32.png'} alt="More..." />
+                    </div>
+                </div>
+            </Link>
+        )
+    }
+    let eventsList =
         isEventsLoading ?
            <CenteredSpinner /> :
            isEventsSuccess && eventsData ?
-                <ContentBar title="Recent" items={
-                    Object.values(eventsData.entities)
-                        .map(event => <EventTile event={event} />)}
-                /> :
+                <ContentBar title="Latest Events" items={eventTiles}/> :
                 <EmptyMessage noun="events"/>
 
-    let competitions =
+    let competitionTiles = (isCompetitionsSuccess && competitionsData) ?
+        Object.values(competitionsData.entities)
+            .map(competition => <CompetitionTile competition={competition}/>) :
+        []
+    let competitionsList =
         isCompetitionsLoading ?
             <CenteredSpinner /> :
             isCompetitionsSuccess && competitionsData ?
-                <ContentBar title="Competitions" items={
-                    Object.values(competitionsData.entities)
-                        .map(competition => <CompetitionTile competition={competition}/>)
-                } /> :
-                <EmptyMessage noun="competitions" />
+                <ContentBar title="Competitions" items={competitionTiles} /> :
+                <EmptyMessage noun="competitions" />;
 
-    let teams =
+    let teamTiles = (isTeamsSuccess && teamsData) ?
+        Object.values(teamsData.entities)
+            .map(team => <TeamTile team={team}/>) :
+        []
+    if (teamTiles.length >= 16) {
+        teamTiles.push(
+            <Link to={"/teams"}>
+                <div style={{padding: '1.5rem'}}>
+                    <div className="More-button">
+                        <img src={'/img/icon/more/more_32.png'} alt="More..." />
+                    </div>
+                </div>
+            </Link>
+        )
+    }
+    let teamsList =
         isTeamsLoading ?
             <CenteredSpinner /> :
             isTeamsSuccess && teamsData ?
-                <ContentBar title="Teams" items={
-                    Object.values(teamsData.entities)
-                        .map(team => <TeamTile team={team}/>)
-                } /> :
+                <ContentBar title="Teams" items={teamTiles} /> :
                 <EmptyMessage noun="teams" />
 
     // toast messages
@@ -93,9 +118,9 @@ export const Home = () => {
 
     return (
         <div className="Content-container Home-container">
-            {events}
-            {competitions}
-            {teams}
+            {eventsList}
+            {competitionsList}
+            {teamsList}
         </div>
     );
 }
