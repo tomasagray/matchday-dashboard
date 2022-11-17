@@ -6,7 +6,6 @@ import store from "./app/store";
 import {Provider} from "react-redux";
 import {BrowserRouter, Route, Routes,} from "react-router-dom";
 import {Home} from "./layout/Home";
-import {EventsDisplay} from "./features/events/EventsDisplay";
 import {CompetitionsDisplay} from "./features/competitions/CompetitionsDisplay";
 import {TeamsDisplay} from "./features/teams/TeamsDisplay";
 import {DataSourcePluginsList} from "./features/datasource-plugins/DataSourcePluginsList";
@@ -20,6 +19,7 @@ import {createRoot} from "react-dom/client";
 import {FileServerPluginList} from "./features/file-servers/FileServerPluginList";
 import {FileServerUserList} from "./features/file-servers/FileServerUserList";
 import {EventDetails} from "./features/events/EventDetails";
+import {LatestEventsPage} from "./features/events/LatestEventsPage";
 
 const container = document.getElementById('root')
 const root = createRoot(container)
@@ -35,7 +35,7 @@ root.render(
                     <Route path="search" element={<Search/>} />
                     {/* Main nav - top level */}
                     <Route exact path="/" element={<Home/>} />
-                    <Route path="events" element={<EventsDisplay/>} />
+                    <Route path="events" element={<LatestEventsPage/>} />
                     <Route path="competitions" element={<CompetitionsDisplay/>} />
                     <Route path="teams" element={<TeamsDisplay/>} />
                     <Route path="data-sources" element={<DataSourcePluginsList/>} />

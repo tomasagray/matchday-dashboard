@@ -7,14 +7,26 @@ export const eventApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => {
         return ({
             fetchAllEvents: builder.query({
-                query: () => '/events/',
+                query: (url = null, page = 0, size = 16) => {
+                    if (url !== null) {
+                        return {url}
+                    }
+                    return {
+                        url: `/events?page=${page}&size=${size}`,
+                    }
+                },
                 providesTags: [eventTag],
                 transformResponse: (response) => {
                     // todo - handle highlights, other types?
-                    let {matches} = response
+                    let {matches, _links: links} = response
+                    console.log('response', response)
                     if (matches && matches.length > 0) {
-                        store.dispatch(matchSlice.actions.matchesLoaded(matches));
-                        return matchAdapter.setAll(matchAdapter.getInitialState(), matches)
+                        store.dispatch(matchSlice.actions.matchesLoaded(matches))
+                        let normalized = matchAdapter.setMany(matchAdapter.getInitialState(), matches)
+                        return {
+                            ...normalized,
+                            next: links?.next?.href
+                        }
                     }
                 },
             }),
@@ -22,9 +34,10 @@ export const eventApiSlice = apiSlice.injectEndpoints({
                 query: (teamId) => `/teams/team/${teamId}/matches`,
                 providesTags: [eventTag],
                 transformResponse: (response) => {
+                    // TODO: standardize data shape - use matchAdapter, etc.
                     let {_embedded: embedded} = response
                     if (embedded) {
-                        return embedded['matches'];
+                        return embedded['matches']
                     }
                 },
             }),

@@ -92,6 +92,7 @@ $posterHeight: calc($posterWidth / (16/9));
 
       .Spinner-container {
         display: none;
+        background-color: colors.$defaultComponentBg;
         border: 1px solid colors.$border;
         border-radius: 100%;
         padding: 1rem;

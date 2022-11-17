@@ -3,7 +3,6 @@ import {useNavigate, useParams} from "react-router-dom";
 import {useDeleteMatchMutation, useFetchMatchByIdQuery, useUpdateMatchMutation} from "./eventApiSlice";
 import {CenteredSpinner} from "../../components/Spinner";
 import {PlayButton} from "../../components/controls/PlayButton";
-import {EditButton} from "../../components/controls/EditButton";
 import Select from "../../components/controls/Select";
 import {useFetchVideoSourcesForEventQuery} from "../video/videoSourceApiSlice";
 import {Option} from "../../components/controls/Option";
@@ -291,7 +290,7 @@ export const EventDetails = () => {
                                     <PlayButton onClick={onPlayVideo} disabled={selectedVideoSource === undefined}/>
                                     <Select placeholder="Select source" selectedValue={selectedVideoSource?.channel}>
                                         {videoSourceOptions}
-                                    </Select> <EditButton onClick={onEditEvent}/>
+                                    </Select>
                                 </div>
                                 <div className="Video-source-metadata">
                                     {

@@ -8,6 +8,7 @@ $posterHeight: 270px;
 .Competition-tile {
   @include entity-button;
   height: $posterHeight;
+  width: 200px;
 
   img {
     height: $imageHeight !important;

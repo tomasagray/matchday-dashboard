@@ -43,6 +43,11 @@ export const {
     updateEditedMatch,
 } = matchSlice.actions
 
+export const selectMatches = createSelector(
+    state => state.events,
+    state => state
+)
+
 export const selectEditedMatch = createSelector(
     state => state.events,
     state => state.editedMatch,
