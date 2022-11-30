@@ -2,10 +2,7 @@ import React, {useEffect, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
 import {useDeleteMatchMutation, useFetchMatchByIdQuery, useUpdateMatchMutation} from "./eventApiSlice";
 import {CenteredSpinner} from "../../components/Spinner";
-import {PlayButton} from "../../components/controls/PlayButton";
-import Select from "../../components/controls/Select";
 import {useFetchVideoSourcesForEventQuery} from "../video/videoSourceApiSlice";
-import {Option} from "../../components/controls/Option";
 import {VideoPlayer} from "../video/VideoPlayer";
 import dayjs from "dayjs";
 import {ErrorMessage} from "../../components/ErrorMessage";
@@ -21,6 +18,7 @@ import {SaveButton} from "../../components/controls/SaveButton";
 import {CancelButton} from "../../components/controls/CancelButton";
 import {WarningMessage} from "../../components/WarningMessage";
 import {DeleteButton} from "../../components/controls/DeleteButton";
+import {VideoSourceDisplay} from "./VideoSourceDisplay";
 
 const getFindMoreDisplay = (event) => {
     let competitionId, homeTeamId, awayTeamId
@@ -74,7 +72,7 @@ export const EventDetails = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const onPlayVideo = () => {
-        let src = selectedVideoSource ? selectedVideoSource['_links']['transcode_stream'].href : null
+        let src = null
         setVideoSrc(src)
         setShowVideoPlayer(true)
     }
@@ -115,15 +113,10 @@ export const EventDetails = () => {
         console.log('done deleting')
     }
 
-    const onSelectVideoSource = (source) => () => {
-        setSelectedVideoSource(source)
-    }
-
     // state
     const imagePlaceholderUrl = process.env.PUBLIC_URL + '/img/default_event_poster.png'
     const params = useParams()
     const {eventId} = params
-    let [selectedVideoSource, setSelectedVideoSource] = useState()
     let [videoSrc, setVideoSrc] = useState(null)
     let [showVideoPlayer, setShowVideoPlayer] = useState(false)
     let [isEditModalShown, setIsEditModalShown] = useState(false)
@@ -213,12 +206,7 @@ export const EventDetails = () => {
             <CenteredSpinner /> :
             isVideoSourceSuccess ?
                 Object.values(videoSources.entities).map(videoSource =>
-                    <Option
-                        onClick={onSelectVideoSource(videoSource)}
-                        value={videoSource.channel}
-                        key={videoSource.id}>
-                        {videoSource.channel}
-                    </Option>
+                    <VideoSourceDisplay videoSource={videoSource} key={videoSource.id} />
                 ) :
             <ErrorMessage>Could not load video source data</ErrorMessage>
 
@@ -286,32 +274,7 @@ export const EventDetails = () => {
                                 </div>
                             </div>
                             <div>
-                                <div className="Event-button-container">
-                                    <PlayButton onClick={onPlayVideo} disabled={selectedVideoSource === undefined}/>
-                                    <Select placeholder="Select source" selectedValue={selectedVideoSource?.channel}>
-                                        {videoSourceOptions}
-                                    </Select>
-                                </div>
-                                <div className="Video-source-metadata">
-                                    {
-                                        selectedVideoSource ?
-                                            Object.entries(selectedVideoSource)
-                                                .filter(([field,]) => field !== '_links' && field !== 'id')
-                                                .map(([field, value]) =>
-                                                    <div className="Video-source-metadata-field" key={field}>
-                                                        <div className={"Video-source-metadata-field-name"}>
-                                                            {
-                                                                field.replace(/([A-Z])/g, " $1")
-                                                                    .replace(/^./, str => str.toUpperCase())
-                                                            }
-                                                        </div>
-                                                        <div className={"Video-source-metadata-field-value"}>
-                                                            {value}
-                                                        </div>
-                                                    </div>
-                                                ) : null
-                                    }
-                                </div>
+                            {videoSourceOptions}
                             </div>
                         </div>
                         {findMore}

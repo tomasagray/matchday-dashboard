@@ -1,6 +1,7 @@
 @use "../colors";
-@use "../variables";
+@use "../fonts";
 @use "../layers";
+@use "../variables";
 @import "../mixins";
 
 .Item-poster {
@@ -15,7 +16,7 @@
 
 
 $posterWidth: 500px;
-$posterHeight: calc($posterWidth / (16/9));
+$posterHeight: calc($posterWidth / (16 / 9));
 
 .Event-tile {
   @include entity-button;
@@ -131,28 +132,62 @@ $posterHeight: calc($posterWidth / (16/9));
   }
 }
 
-.Video-source-metadata {
+.Video-source-display {
+  position: relative;
+  background-color: colors.$darkTransparent;
+  border-radius: .65em;
+  padding: 1rem;
+
+  .Video-source-display-close-button {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+  }
+
+  .Video-source-metadata-fields {
+    margin: 1rem 0;
+    color: colors.$defaultFontColor;
+    font-size: medium;
+    font-family: fonts.$technical;
+    font-weight: lighter;
+
+    & > *:not(:last-child) {
+
+      &::after {
+        content: '●';
+        margin: 0 .5em;
+        color: colors.$darkFontColor;
+      }
+    }
+  }
+}
+
+.Video-file-display {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
+  align-items: center;
+  margin: 1rem;
 
-  .Video-source-metadata-field {
-    margin-right: 1rem;
-    margin-bottom: 1rem;
-
-    div {
-      padding: .7rem 1.7rem;
+  &:hover {
+    .Video-file-controls-container {
+      visibility: visible;
     }
+  }
 
-    .Video-source-metadata-field-name {
-      background-color: colors.$videoSourceMetadataName;
-      color: colors.$mediumFontColor;
-      font-weight: bold;
-    }
+  .Video-file-controls-container {
+    visibility: hidden;
+    display: flex;
+    justify-content: space-evenly;
+    width: 100px;
+    margin-left: 1rem;
 
-    .Video-source-metadata-field-value {
-      background-color: colors.$videoSourceMetadataValue;
-      color: colors.$videoSourceMetadata;
+    & > * {
+      opacity: .7;
+      background: none;
+      border: none;
+
+      &:hover {
+        opacity: 1;
+      }
     }
   }
 }
@@ -251,7 +286,7 @@ $posterHeight: calc($posterWidth / (16/9));
       height: 0;
       border-top: 14px solid transparent;
       border-bottom: 14px solid transparent;
-      border-right: 14px solid rgb(42,42,42);
+      border-right: 14px solid rgb(42, 42, 42);
     }
   }
 
