@@ -36,7 +36,6 @@ export const LatestEventsPage = (props) => {
     // components
     return (
         <div>
-            <h1>Latest Events</h1>
             <EventsDisplay events={events} />
             { isLoading ? <CenteredSpinner /> : null}
         </div>

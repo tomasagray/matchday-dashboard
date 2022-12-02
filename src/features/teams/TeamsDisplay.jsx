@@ -7,6 +7,7 @@ import {getToastMessage} from "../../app/utils";
 import {toast} from "react-toastify";
 import {useSelector} from "react-redux";
 import {useDetectPageBottom} from "../../hooks/useDetectPageBottom";
+import {EmptyMessage} from "../../components/EmptyMessage";
 
 export const TeamsDisplay = () => {
 
@@ -32,11 +33,13 @@ export const TeamsDisplay = () => {
     return (
         <>
             {
-                isLoading ?
+                isError ?
+                    <ErrorMessage>Could not load Teams data</ErrorMessage> :
+                    isLoading ?
                     <FillSpinner /> :
                     isSuccess ?
+                        teams && teams.entities.length > 0 ?
                         <div>
-                            <h1>Teams</h1>
                             <div className={"Entity-display"}>
                                 {
                                     Object.values(teams.entities).map(team =>
@@ -45,7 +48,8 @@ export const TeamsDisplay = () => {
                                 }
                             </div>
                         </div> :
-                        <ErrorMessage>Could not load Teams data</ErrorMessage>
+                        <EmptyMessage noun={'teams'}/> :
+                        null
             }
         </>
     )

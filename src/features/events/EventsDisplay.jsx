@@ -6,6 +6,7 @@ export const EventsDisplay = (props) => {
 
     // state
     let {events} = props
+    console.log('events', events)
 
     // components
     return (
@@ -13,7 +14,7 @@ export const EventsDisplay = (props) => {
             <div>
                 <div className={"Event-display"}>
                 {
-                    events ?
+                    events && events.entities.length > 0 ?
                         Object.values(events.entities).map(event =>
                             <EventTile event={event} key={event['eventId']}/>
                         ) :
