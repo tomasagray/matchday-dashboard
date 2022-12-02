@@ -19,6 +19,7 @@ import {CancelButton} from "../../components/controls/CancelButton";
 import {WarningMessage} from "../../components/WarningMessage";
 import {DeleteButton} from "../../components/controls/DeleteButton";
 import {VideoSourceDisplay} from "./VideoSourceDisplay";
+import {StompSessionProvider} from "react-stomp-hooks";
 
 const getFindMoreDisplay = (event) => {
     let competitionId, homeTeamId, awayTeamId
@@ -114,14 +115,17 @@ export const EventDetails = () => {
     }
 
     // state
+    const webSocketProtocol = 'http'
+    const webSocketUrl = `${webSocketProtocol}://localhost:8080/api/ws`
     const imagePlaceholderUrl = process.env.PUBLIC_URL + '/img/default_event_poster.png'
     const params = useParams()
     const {eventId} = params
+    let editedMatchForUpload = useSelector(state => selectEditedMatchForUpload(state))
     let [videoSrc, setVideoSrc] = useState(null)
     let [showVideoPlayer, setShowVideoPlayer] = useState(false)
     let [isEditModalShown, setIsEditModalShown] = useState(false)
     let [isDeleteConfirmShown, setIsDeleteConfirmShown] = useState(false)
-    let editedMatchForUpload = useSelector(state => selectEditedMatchForUpload(state))
+    let [selectedVideoSource, setSelectedVideoSource] = useState(null)
 
     // hooks
     const {
@@ -156,7 +160,6 @@ export const EventDetails = () => {
             error: deleteMatchError
         }
     ] = useDeleteMatchMutation()
-
 
     // toast messages
     useEffect(() => {
@@ -205,8 +208,18 @@ export const EventDetails = () => {
         isVideoSourcesLoading ?
             <CenteredSpinner /> :
             isVideoSourceSuccess ?
-                Object.values(videoSources.entities).map(videoSource =>
-                    <VideoSourceDisplay videoSource={videoSource} key={videoSource.id} />
+                selectedVideoSource !== null ?
+                    <VideoSourceDisplay
+                        videoSourceId={videoSources.entities[selectedVideoSource].id}
+                        onHide={() => setSelectedVideoSource(null)}
+                        isSelected={true}
+                    /> :
+                Object.values(videoSources.ids).sort().map(videoSourceId =>
+                    <VideoSourceDisplay
+                        videoSourceId={videoSourceId}
+                        key={videoSourceId}
+                        onSelect={() => setSelectedVideoSource(videoSourceId)}
+                    />
                 ) :
             <ErrorMessage>Could not load video source data</ErrorMessage>
 
@@ -273,8 +286,10 @@ export const EventDetails = () => {
                                     </div>
                                 </div>
                             </div>
-                            <div>
-                            {videoSourceOptions}
+                            <div className="Video-source-display-container">
+                                <StompSessionProvider url={webSocketUrl}>
+                                    {videoSourceOptions}
+                                </StompSessionProvider>
                             </div>
                         </div>
                         {findMore}

@@ -353,7 +353,7 @@
   .Soft-load-image {
     width: inherit;
     height: inherit;
-    border-radius: .65em;
+    border-radius: variables.$softBorder;
 
     &.not-displayed {
       display: none;

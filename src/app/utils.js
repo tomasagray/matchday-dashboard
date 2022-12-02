@@ -8,6 +8,7 @@ const urlPattern = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=+$,\w]+@)?[A-Za-z\d.-]+|
 
 
 export const formatDate = (date) => dayjs(date).format(dateFormatter)
+
 export const formatDateTime = (date) => dayjs(date).format(dateTimeFormatter)
 
 export const getClassName = (clazz) => {
@@ -50,7 +51,6 @@ export const getArtworkUrl = (entity, role) => {
     }
 }
 
-
 export const formatArtworkData = (art) => {
     let collection = []
     let {artwork, ...metadata} = art
@@ -80,4 +80,13 @@ export const updateSelectedArtwork = (selectedId, artworkCollection) => {
         }
     }
     return {selectedIndex, updatedCollection}
+}
+
+export const createEnum = (values) => {
+    const enumObject = {}
+    for (let i=0; i < values.length; i++) {
+        let key = values[i]
+        enumObject[key] = i
+    }
+    return Object.freeze(enumObject)
 }

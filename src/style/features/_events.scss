@@ -90,11 +90,12 @@ $posterHeight: calc($posterWidth / (16 / 9));
       display: flex;
       justify-content: center;
       align-items: center;
+      border-radius: variables.$softBorder;
 
       .Spinner-container {
         display: none;
         background-color: colors.$defaultComponentBg;
-        border: 1px solid colors.$border;
+        border: 4px solid colors.$border;
         border-radius: 100%;
         padding: 1rem;
         width: 32px;
@@ -132,61 +133,105 @@ $posterHeight: calc($posterWidth / (16 / 9));
   }
 }
 
-.Video-source-display {
-  position: relative;
-  background-color: colors.$darkTransparent;
-  border-radius: .65em;
-  padding: 1rem;
+.Video-source-display-container {
+  margin-left: 1rem;
 
-  .Video-source-display-close-button {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-  }
+  .Video-source-display {
+    position: relative;
+    display: inline-block;
+    background-color: colors.$darkTransparent;
+    border-radius: .65em;
+    margin: 0 2rem 2rem 0;
+    padding: 1rem;
 
-  .Video-source-metadata-fields {
-    margin: 1rem 0;
-    color: colors.$defaultFontColor;
-    font-size: medium;
-    font-family: fonts.$technical;
-    font-weight: lighter;
-
-    & > *:not(:last-child) {
-
-      &::after {
-        content: '●';
-        margin: 0 .5em;
-        color: colors.$darkFontColor;
-      }
+    &:hover {
+      cursor: pointer;
     }
-  }
-}
 
-.Video-file-display {
-  display: flex;
-  align-items: center;
-  margin: 1rem;
-
-  &:hover {
-    .Video-file-controls-container {
-      visibility: visible;
-    }
-  }
-
-  .Video-file-controls-container {
-    visibility: hidden;
-    display: flex;
-    justify-content: space-evenly;
-    width: 100px;
-    margin-left: 1rem;
-
-    & > * {
-      opacity: .7;
-      background: none;
-      border: none;
+    &.selected {
 
       &:hover {
-        opacity: 1;
+        cursor: default;
+      }
+
+      .Video-source-display-close-button {
+        visibility: visible;
+      }
+
+      .Video-file-display {
+        display: flex;
+      }
+    }
+
+    .Video-source-display-header {
+      display: flex;
+      align-items: center;
+    }
+
+    .Video-source-display-close-button {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      visibility: hidden;
+    }
+
+    .Video-source-metadata-fields {
+      margin: 1rem 0;
+      color: colors.$defaultFontColor;
+      font-size: medium;
+      font-family: fonts.$technical;
+      font-weight: lighter;
+
+      & span:not(:last-of-type) {
+
+        &::after {
+          content: '●';
+          margin: 0 .5em;
+          color: colors.$darkFontColor;
+        }
+      }
+    }
+
+    .Video-file-display {
+      display: none;
+      align-items: flex-start;
+      margin: 1rem;
+
+      .Video-file-url {
+        display: inline-block;
+        width: 18vw;
+        font-size: 8pt;
+        color: colors.$darkFontColor;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        visibility: hidden;
+      }
+
+      &:hover {
+        .Video-file-url,
+        .Video-file-controls-container {
+          visibility: visible;
+        }
+      }
+
+      .Video-file-controls-container {
+        visibility: hidden;
+        display: flex;
+        justify-content: space-evenly;
+        width: 100px;
+        margin-left: 3rem;
+
+        & > * {
+          opacity: .7;
+          background: none;
+          border: none;
+          margin-right: 1rem;
+
+          &:hover {
+            opacity: 1;
+          }
+        }
       }
     }
   }
@@ -203,6 +248,11 @@ $posterHeight: calc($posterWidth / (16 / 9));
   .Find-more-items {
     display: flex;
     flex-direction: row;
+
+    .Team-tile a .Entity-poster img {
+      height: 225px !important;
+      width: 225px !important;
+    }
   }
 }
 
