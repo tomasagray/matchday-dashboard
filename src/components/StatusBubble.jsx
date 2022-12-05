@@ -70,7 +70,7 @@ export const StatusBubble = (props) => {
                                 r={radius}
                                 stroke={bubbleColor}
                                 strokeWidth={strokeWidth}
-                                fill={bubbleColor}
+                                fill={isComplete ? bubbleColor : 'transparent'}
                             />
                         </svg>
                         {/* progress indicator */}

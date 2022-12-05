@@ -11,6 +11,19 @@ export const formatDate = (date) => dayjs(date).format(dateFormatter)
 
 export const formatDateTime = (date) => dayjs(date).format(dateTimeFormatter)
 
+export const formatTime = (s) => {
+    if (isNaN(s) || s === Infinity) {
+        return 0
+    }
+    let seconds = Math.round(s);
+    let dateStr = new Date(seconds * 1000).toISOString()
+    if (seconds < 3600) {
+        return dateStr.substring(14, 19)
+    } else {
+        return dateStr.substring(11, 16)
+    }
+}
+
 export const getClassName = (clazz) => {
     if (!clazz) return null
     if (clazz.includes('.')) {

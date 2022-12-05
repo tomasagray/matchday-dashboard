@@ -29,7 +29,7 @@ export const TeamsDisplay = () => {
             toast.error(msg)
         }
     }, [error, isError])
-
+console.log('teams', teams)
     return (
         <>
             {
@@ -38,7 +38,7 @@ export const TeamsDisplay = () => {
                     isLoading ?
                     <FillSpinner /> :
                     isSuccess ?
-                        teams && teams.entities.length > 0 ?
+                        teams && Object.keys(teams.entities).length > 0 ?
                         <div>
                             <div className={"Entity-display"}>
                                 {

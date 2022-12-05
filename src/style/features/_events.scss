@@ -161,11 +161,24 @@ $posterHeight: calc($posterWidth / (16 / 9));
       .Video-file-display {
         display: flex;
       }
+
+      .Video-source-extra-control {
+        display: flex;
+      }
     }
 
     .Video-source-display-header {
       display: flex;
       align-items: center;
+
+      .Video-source-controls-container {
+        display: flex;
+        align-items: center;
+
+        & > * {
+          margin: 0 .25rem;
+        }
+      }
     }
 
     .Video-source-display-close-button {
@@ -223,17 +236,39 @@ $posterHeight: calc($posterWidth / (16 / 9));
         margin-left: 3rem;
 
         & > * {
-          opacity: .7;
-          background: none;
-          border: none;
           margin-right: 1rem;
-
-          &:hover {
-            opacity: 1;
-          }
         }
+
       }
     }
+  }
+
+  .Video-source-play-button {
+    display: flex;
+    width: 24px;
+    height: 24px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 100%;
+    //margin: 0 2rem;
+    background-color: colors.$active;
+    border: 0;
+
+    &:hover {
+      filter: brightness(90%);
+    }
+
+    img {
+      width: 14px;
+      height: 14px;
+      left: 1px;
+      position: relative;
+      filter: brightness(0%);
+    }
+  }
+
+  .Video-source-extra-control {
+    display: none;
   }
 }
 

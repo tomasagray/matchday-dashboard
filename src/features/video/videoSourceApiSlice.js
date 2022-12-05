@@ -1,7 +1,10 @@
 import {apiSlice, videoSourceTag} from "../../app/apiSlice";
-import {initialState, videoSourceAdapter, videoSourcesLoaded} from "./videoSourceSlice";
+import {
+    initialState,
+    videoSourceAdapter,
+    videoSourcesLoaded
+} from "./videoSourceSlice";
 import store from "../../app/store";
-
 
 export const videoSourceApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => {
@@ -17,9 +20,6 @@ export const videoSourceApiSlice = apiSlice.injectEndpoints({
             }),
             fetchVideoPlaylist: builder.query({
                 query: (url) => url,
-                transformResponse: (response) => {
-                    return response
-                }
             }),
         })
     }

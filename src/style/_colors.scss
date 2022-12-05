@@ -12,10 +12,11 @@ $semiDarkBg: #333;
 $darkBg: #222;
 $defaultComponentBg: rgba(40, 40, 40, .8);
 $darkTransparent: rgba(0, 0, 0, .3);
+$lessDarkTransparent: rgba(40, 40, 40, .3);
 $dimmed: radial-gradient(transparent, rgba(10, 10, 10, .75));
 
 // fonts
-$linkUnderline: rgba(180,180,180,.5);
+$linkUnderline: rgba(180, 180, 180, .5);
 $defaultFontColor: whitesmoke;
 $lightFontColor: #ccc;
 $mediumFontColor: #aaa;
@@ -25,7 +26,7 @@ $pluginButtonTitleHover: whitesmoke;
 $entityButtonFontColor: rgba(220, 220, 220, .7);
 $eventTile: rgba(200, 200, 200, .6);
 $eventDetails: rgba(200, 200, 200, .4);
-$eventDetailPunctuation:  rgba(200, 200, 200, .8);
+$eventDetailPunctuation: rgba(200, 200, 200, .8);
 $eventTitle: rgba(150, 150, 150, .4);
 $eventTeams: rgba(175, 175, 175, .75);
 $videoSourceMetadata: rgba(240, 240, 240, .65);
@@ -48,12 +49,12 @@ $dataSourceOdd: rgba(0, 0, 0, .1);
 $dataSourceEven: rgba(0, 0, 0, .15);
 $dataSourceFocusedText: rgba(0, 0, 0, .2);
 $typeHeaderBackground: rgba(150, 150, 150, .25);
-$typeHeaderHover:  rgba(200, 200, 200, .2);
+$typeHeaderHover: rgba(200, 200, 200, .2);
 $videoSourceMetadataName: rgba(160, 160, 160, .1);
 $videoSourceMetadataValue: rgba(160, 160, 160, .05);
 $credentialHover: rgba(100, 100, 100, .2);
 $selectedCredential: rgba(100, 100, 100, .4);
-$selectedCredentialHover:  rgba(100, 100, 100, .3);
+$selectedCredentialHover: rgba(100, 100, 100, .3);
 
 // buttons
 $defaultButtonBg: #222;

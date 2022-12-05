@@ -1,6 +1,10 @@
 import React, {useEffect, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
-import {useDeleteMatchMutation, useFetchMatchByIdQuery, useUpdateMatchMutation} from "./eventApiSlice";
+import {
+    useDeleteMatchMutation,
+    useFetchMatchByIdQuery,
+    useUpdateMatchMutation
+} from "./eventApiSlice";
 import {CenteredSpinner} from "../../components/Spinner";
 import {useFetchVideoSourcesForEventQuery} from "../video/videoSourceApiSlice";
 import {VideoPlayer} from "../video/VideoPlayer";
@@ -72,12 +76,14 @@ export const EventDetails = () => {
     // handlers
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const onPlayVideo = () => {
-        let src = null
-        setVideoSrc(src)
+    const onPlayVideo = (videoSource) => {
+        console.log('playing video source', videoSource)
+        setVideoSrc(videoSource)
         setShowVideoPlayer(true)
     }
-    const onHideVideoPlayer = () => {
+    const onStopVideo = () => {
+        console.log('stopping video playback...')
+        setVideoSrc(null)
         setShowVideoPlayer(false)
     }
     const onEditEvent = () => {
@@ -213,6 +219,7 @@ export const EventDetails = () => {
                         videoSourceId={videoSources.entities[selectedVideoSource].id}
                         onHide={() => setSelectedVideoSource(null)}
                         isSelected={true}
+                        onPlay={onPlayVideo}
                     /> :
                 Object.values(videoSources.ids).sort().map(videoSourceId =>
                     <VideoSourceDisplay
@@ -265,8 +272,13 @@ export const EventDetails = () => {
                     <CenteredSpinner /> :
                     isEventSuccess ?
                     <div className="Content-container">
-                        <VideoPlayer src={videoSrc} hidden={!showVideoPlayer} onClose={onHideVideoPlayer}
-                                     title={event['title']} subtitle={formattedDate}/>
+                        <VideoPlayer
+                            src={videoSrc}
+                            hidden={!showVideoPlayer}
+                            onStop={onStopVideo}
+                            title={event['title']}
+                            subtitle={formattedDate}
+                        />
 
                         <div className="Event-detail-header-container">
                             <h2 className="Event-detail-header">

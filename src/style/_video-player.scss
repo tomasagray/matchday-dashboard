@@ -1,6 +1,26 @@
 @use "colors";
 @use "layers";
 
+@mixin sliderBgTrack {
+  box-shadow: inset 3px 3px 3px black;
+  background-color: colors.$darkTransparent;
+}
+
+@mixin videoPlayerButton {
+  background: none;
+  border: none;
+  margin: 0 .3em;
+  opacity: .7;
+
+  &:disabled {
+    opacity: .4;
+  }
+
+  &:hover:not(:disabled) {
+    opacity: 1;
+  }
+}
+
 .Video-player-modal {
   position: fixed;
   top: 0;
@@ -31,6 +51,167 @@
     left: 0;
     width: 100vw;
     height: 100vh;
+  }
+
+  .Video-player-controls-container {
+    $controlPadding: 0 3rem;
+
+    z-index: layers.$videoPlayerControls;
+    background-color: colors.$defaultComponentBg;
+    position: absolute;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 0;
+
+    &.top {
+      display: flex;
+      justify-content: flex-end;
+      //padding: 2rem;
+      button {
+        @include videoPlayerButton;
+      }
+
+      .Video-player-fullscreen-button {
+        margin-right: 2rem;
+      }
+    }
+
+    &.bottom {
+      bottom: 0;
+      left: 0;
+      height: 5rem;
+    }
+
+    $timeBarSize: 8px;
+
+    .Video-player-time-bar-container {
+      position: absolute;
+      left: 0;
+      top: calc($timeBarSize * -1);
+
+      .Video-player-time-bar {
+        width: 100vw;
+        height: $timeBarSize;
+
+        &:hover {
+          cursor: pointer;
+        }
+
+        .Video-player-time-track {
+          height: $timeBarSize;
+          border-radius: 10px;
+        }
+
+        .Video-player-time-track-0 {
+          background-color: colors.$active;
+        }
+
+        .Video-player-time-track-1 {
+          @include sliderBgTrack;
+        }
+      }
+    }
+
+    .Video-player-info-container {
+      display: flex;
+      flex-direction: column;
+      padding: $controlPadding;
+    }
+
+    .Video-player-main-controls {
+      display: flex;
+      align-items: center;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+
+      button {
+       @include videoPlayerButton;
+      }
+
+      .Video-player-nav-button {
+        &.previous {
+          transform: scaleX(-1);
+        }
+      }
+
+      .Video-player-advance-button {
+        &.rewind {
+          transform: scaleX(-1);
+        }
+      }
+
+      .Video-player-play-button {
+        border-radius: 100%;
+        background-color: colors.$darkTransparent;
+        opacity: 1;
+        border: none;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 48px;
+        height: 48px;
+
+        &:hover {
+          background-color: colors.$lessDarkTransparent;
+        }
+      }
+    }
+
+    .Video-player-audio-controls {
+      width: 10vw;
+      display: flex;
+      align-items: center;
+      padding: $controlPadding;
+
+      &:hover {
+        .Video-player-mute-button {
+          img {
+            opacity: 1;
+          }
+        }
+      }
+
+      .Video-player-mute-button {
+        background: none;
+        border: none;
+
+        img {
+          height: 24px;
+          opacity: .7;
+          margin-right: 1rem;
+        }
+      }
+
+      .Video-player-volume-control {
+        width: 100%;
+        display: flex;
+        align-items: center;
+
+        &:hover {
+          cursor: pointer;
+        }
+
+        .Video-player-volume-thumb {
+          display: none;
+        }
+
+        .Video-player-volume-track {
+          height: 8px;
+          border-radius: 10px;
+        }
+
+        .Video-player-volume-track-0 {
+          background-color: colors.$active;
+        }
+
+        .Video-player-volume-track-1 {
+          @include sliderBgTrack;
+        }
+      }
+    }
   }
 }
 

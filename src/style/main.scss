@@ -31,8 +31,18 @@ body {
   height: 100vh;
 }
 
-button:not([disabled]) {
-  cursor: pointer;
+button {
+  background: none;
+  border: none;
+  opacity: .7;
+
+  &:hover:not(:disabled) {
+    opacity: 1;
+  }
+
+  &:not(:disabled) {
+    cursor: pointer;
+  }
 }
 
 h1 {
@@ -45,7 +55,7 @@ p {
 }
 
 a {
-  color: white  ;
+  color: white;
   text-decoration: none;
 
   &:hover {
