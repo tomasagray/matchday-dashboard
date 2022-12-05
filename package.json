@@ -18,7 +18,7 @@
     "react-hook-videojs": "^3.0.0",
     "react-redux": "^8.0.2",
     "react-router-dom": "^6.3.0",
-    "react-slider": "^2.0.1",
+    "react-slider": "^2.0.4",
     "react-stomp-hooks": "^2.1.0",
     "react-toastify": "^9.0.8",
     "sass": "^1.54.0",
@@ -26,7 +26,11 @@
     "web-vitals": "^2.1.4"
   },
   "devDependencies": {
-    "react-scripts": "^5.0.1"
+    "react-scripts": "^5.0.1",
+    "@svgr/webpack": "^6.5.1"
+  },
+  "overrides": {
+    "@svgr/webpack": "$@svgr/webpack"
   },
   "scripts": {
     "start": "react-scripts start",
