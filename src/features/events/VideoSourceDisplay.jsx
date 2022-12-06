@@ -1,7 +1,7 @@
-import React from "react";
+import React, {useState} from "react";
 import {VideoFileDisplay} from "./VideoFileDisplay";
 import {useSelector} from "react-redux";
-import {selectVideoSourceById} from "../video/videoSourceSlice";
+import {JobStatus, selectVideoSourceById} from "../video/videoSourceSlice";
 import _ from 'underscore';
 import {StatusBubble} from "../../components/StatusBubble";
 
@@ -28,6 +28,33 @@ export const VideoSourceDisplay = (props) => {
     const onDeleteStream = (id) => {
         console.log('delete a single video stream here...', id)
     }
+    const computeStreamStatus = (statuses) => {
+        return statuses.reduce((finalStatus, videoStatus) => {
+            return {
+                completionRatio: finalStatus.completionRatio + videoStatus.completionRatio,
+                status:
+                    finalStatus.status !== null &&
+                      JobStatus[finalStatus.status] < JobStatus[videoStatus.status] ?
+                        finalStatus.status : videoStatus.status
+            }
+        }, {
+            status: null,
+            completionRatio: 0,
+        })
+    }
+    const onUpdateStreamStatus = (status) => {
+        fileStatuses = {
+            ...fileStatuses,
+            [status['videoFileId']]: status,
+        }
+        let sourceStatus = computeStreamStatus(Object.values(fileStatuses))
+        let sourceProgress = parts.length > 0 ?
+            sourceStatus.completionRatio / parts.length : 0
+        setSourceStatus({
+            status: sourceStatus.status,
+            progress: sourceProgress,
+        })
+    }
 
     // state
     let {
@@ -38,7 +65,9 @@ export const VideoSourceDisplay = (props) => {
         onPlay,
     } = props
     // prevent infinite re-renders using _.isEqual
-    let videoSource = useSelector(state => selectVideoSourceById(state, videoSourceId), _.isEqual)
+    let videoSource = useSelector(
+        state => selectVideoSourceById(state, videoSourceId), _.isEqual
+    )
     let {
         audioCodec,
         bitrate,
@@ -50,20 +79,24 @@ export const VideoSourceDisplay = (props) => {
         source,
         videoCodec,
         videoFiles,
-        status,
-        completionRatio,
         _links: links,
     } = videoSource
-
+    let fileStatuses = {}
+    let [sourceStatus, setSourceStatus] = useState({})
+    // computed state
     let parts = Object.values(videoFiles)
     let className = "Video-source-display" + (isSelected ? ' selected' : '')
+
 
     return (
         <div className={className} onClick={onSelect}>
             <div className="Video-source-display-header">
                 <h3 style={{marginRight: '1rem'}}>{channel}</h3>
                 <div className="Video-source-controls-container">
-                    <StatusBubble status={status} progress={completionRatio} />
+                    <StatusBubble
+                        status={sourceStatus.status}
+                        progress={sourceStatus.progress}
+                    />
                     <button className="Video-source-play-button" onClick={handlePlayVideoSource}>
                         <img src="/img/icon/play/play_16.png" alt="Play" />
                     </button>
@@ -90,6 +123,7 @@ export const VideoSourceDisplay = (props) => {
                             <VideoFileDisplay
                                 key={part['videoFileId']}
                                 videoFile={part}
+                                onUpdateStream={onUpdateStreamStatus}
                                 onStartStream={onDownloadStream}
                                 onStopStream={onStopStream}
                                 onDeleteStream={onDeleteStream}

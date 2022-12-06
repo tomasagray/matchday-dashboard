@@ -44,6 +44,10 @@
     padding: 2rem;
     width: 100%;
     min-height: 30vh;
+
+    .react-datepicker__triangle {
+      transform: translateX(3rem) !important;
+    }
   }
 }
 

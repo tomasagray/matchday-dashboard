@@ -57,7 +57,7 @@ export const getEventTitle = (match) => {
         <>
             {competitionName} &nbsp;
             <span className={"Team-name"}>{homeTeamName}</span>
-            <span style={{color: '#888'}}> vs.&nbsp;</span>
+            <span style={{color: '#666'}}> vs&nbsp;</span>
             <span className={"Team-name"}>{awayTeamName}</span> <br/>
         </>
     )
@@ -299,6 +299,20 @@ export const EventDetails = () => {
                                 </div>
                             </div>
                             <div className="Video-source-display-container">
+                                <div style={{display: 'flex', alignItems: 'center', marginBottom: '1rem'}}>
+                                    <img
+                                        src="/img/icon/video/video_32.png"
+                                        alt="Video sources"
+                                        style={{
+                                            marginRight: '.7rem',
+                                            opacity: .7,
+                                            width: '24px',
+                                        }}
+                                    />
+                                    <h3 style={{color: 'rgba(180,180,180,.75)'}}>
+                                        Video sources
+                                    </h3>
+                                </div>
                                 <StompSessionProvider url={webSocketUrl}>
                                     {videoSourceOptions}
                                 </StompSessionProvider>

@@ -1,14 +1,13 @@
 import React, {useEffect, useState} from "react";
 import {StatusBubble} from "../../components/StatusBubble";
 import {useStompClient, useSubscription} from "react-stomp-hooks";
-import {useDispatch} from "react-redux";
-import {videoFileStatusUpdated} from "../video/videoSourceSlice";
 
 export const VideoFileDisplay = (props) => {
 
     // state
     let {
         videoFile,
+        onUpdateStream,
         onStartStream,
         onStopStream,
         onDeleteStream
@@ -17,12 +16,11 @@ export const VideoFileDisplay = (props) => {
     const [streamStatus, setStreamStatus] = useState({})
 
     // hooks
-    const dispatch = useDispatch()
     useSubscription('/status/video-stream', (msg) => {
         let status = JSON.parse(msg.body)
         if (videoFileId === status['videoFileId']) {
             setStreamStatus(status)
-            dispatch(videoFileStatusUpdated({status}))
+            onUpdateStream(status)
         }
     })
     const stompClient = useStompClient()

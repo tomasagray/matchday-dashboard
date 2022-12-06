@@ -3,7 +3,11 @@ import {SoftLoadImage} from "../../components/SoftLoadImage";
 import {CenteredSpinner} from "../../components/Spinner";
 import DatePicker from "react-datepicker";
 import {CompetitionSelect} from "./CompetitionSelect";
-import {EditWizard, EditWizardDisplay, EditWizardMenu} from "../edit-wizard/EditWizard";
+import {
+    EditWizard,
+    EditWizardDisplay,
+    EditWizardMenu
+} from "../edit-wizard/EditWizard";
 import {WizardMenuItem} from "../edit-wizard/WizardMenuItem";
 import {useDispatch, useSelector} from "react-redux";
 import {selectEditedMatch, updateEditedMatch} from "./matchSlice";
@@ -106,8 +110,8 @@ export const MatchEditWizard = (props) => {
                         </div>
                     </div>
                 </div>
-                <div style={{marginBottom: '2rem'}}>
-                    <h3 style={{marginBottom: '.5rem'}}>Date</h3>
+                <div style={{marginBottom: '2rem', display: 'flex', alignItems: 'center'}}>
+                    <h3 style={{marginRight: '1.5rem'}}>Date</h3>
                     <DatePicker selected={eventDate} onChange={(date) => onSelectDate(date)}/>
                 </div>
             </div>,
