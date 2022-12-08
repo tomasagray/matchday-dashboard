@@ -1,4 +1,8 @@
-import {createEntityAdapter, createSelector, createSlice} from "@reduxjs/toolkit";
+import {
+    createEntityAdapter,
+    createSelector,
+    createSlice
+} from "@reduxjs/toolkit";
 import {formatArtworkData, updateSelectedArtwork} from "../../app/utils";
 
 export const teamAdapter = createEntityAdapter()
@@ -258,7 +262,7 @@ export const selectAllTeams = createSelector(
 )
 
 export const selectEditedTeam = createSelector(
-    state => state.teams,
+    selectAllTeams,
     state => state.editedTeam,
 )
 

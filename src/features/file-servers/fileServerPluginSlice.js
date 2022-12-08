@@ -1,4 +1,8 @@
-import {createEntityAdapter, createSelector, createSlice} from "@reduxjs/toolkit";
+import {
+    createEntityAdapter,
+    createSelector,
+    createSlice
+} from "@reduxjs/toolkit";
 import {pluginAdapter} from "../datasource-plugins/dataSourcePluginSlice";
 
 export const fileServerPluginAdapter = createEntityAdapter()
@@ -8,7 +12,6 @@ const initialState = fileServerPluginAdapter.getInitialState({
 })
 
 export const {
-    selectAll: selectAllFileServerPlugins,
     selectById: selectFileServerPluginById
 } = pluginAdapter.getSelectors(state => state.fileServerPlugins ?? initialState)
 

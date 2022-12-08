@@ -8,7 +8,6 @@ const initialState = pluginAdapter.getInitialState({
 })
 
 export const {
-    selectAll: selectAllDataSourcePlugins,
     selectById: selectDataSourcePluginById
 } = pluginAdapter.getSelectors(state => state.dataSourcePlugins ?? initialState)
 

@@ -61,7 +61,7 @@ export const FileServerUserList = (props) => {
 
     // components
     let pluginTitle =
-        isPluginsLoading ? <Spinner size={24} text={''}/> :
+        isPluginsLoading ? <Spinner size={'24px'} text={''}/> :
             isPluginSuccess ?
             <h1>{plugin.title}</h1> :
                 null

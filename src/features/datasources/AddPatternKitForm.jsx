@@ -60,7 +60,7 @@ export const AddPatternKitForm = (props) => {
     if (isLoading) {
         typeOptions.push(
             <Option value={"loading"} key={255}>
-                <Spinner size={16} text={''}/>
+                <Spinner size={'16px'} text={''}/>
             </Option>
         )
     } else if (isSuccess) {
