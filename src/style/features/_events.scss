@@ -232,13 +232,11 @@ $posterHeight: calc($posterWidth / (16 / 9));
         visibility: hidden;
         display: flex;
         justify-content: space-evenly;
-        width: 100px;
         margin-left: 3rem;
 
         & > * {
           margin-right: 1rem;
         }
-
       }
     }
   }
@@ -269,6 +267,13 @@ $posterHeight: calc($posterWidth / (16 / 9));
 
   .Video-source-extra-control {
     display: none;
+
+    &.delete {
+      &:hover {
+        filter: brightness(0) saturate(100%) invert(21%) sepia(72%) saturate(6426%)
+          hue-rotate(355deg) brightness(97%) contrast(122%);
+      }
+    }
   }
 }
 

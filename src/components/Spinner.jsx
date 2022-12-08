@@ -18,15 +18,21 @@ export const Spinner = ({size = '64px', text = 'Loading...'}) => {
     )
 }
 
-export const SmallSpinner = (transform = '') => {
+export const SmallSpinner = (props) => {
+    let {
+        size = '16px',
+        transform,
+        style: _style
+    } = props
     const style = {
+        ..._style,
         display: 'flex',
         justifyContent: 'center',
-        transform: transform.transform,
+        transform: transform?.transform,
     }
     return (
         <div style={style}>
-            <Spinner size={'16px'} text={''} />
+            <Spinner size={size} text={''} />
         </div>
     )
 }

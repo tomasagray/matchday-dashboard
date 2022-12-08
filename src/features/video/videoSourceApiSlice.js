@@ -5,6 +5,7 @@ import {
     videoSourcesLoaded
 } from "./videoSourceSlice";
 import store from "../../app/store";
+import {JsonHeaders} from "../../app/constants";
 
 export const videoSourceApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => {
@@ -21,6 +22,34 @@ export const videoSourceApiSlice = apiSlice.injectEndpoints({
             fetchVideoPlaylist: builder.query({
                 query: (url) => url,
             }),
+            killStreamsForSource: builder.mutation({
+                query: ({eventId, videoSourceId}) => ({
+                    url: `/events/event/${eventId}/video/stream/${videoSourceId}/kill-streams`,
+                    headers: JsonHeaders,
+                    method: 'POST',
+                }),
+            }),
+            deleteStreamsForSource: builder.mutation({
+                query: ({eventId, videoSourceId}) => ({
+                    url: `/events/event/${eventId}/video/stream/${videoSourceId}/delete-streams`,
+                    headers: JsonHeaders,
+                    method: 'DELETE',
+                }),
+            }),
+            killStream: builder.mutation({
+                query: ({eventId, videoFileId}) => ({
+                    url: `/events/event/${eventId}/video/stream/${videoFileId}/kill-stream`,
+                    headers: JsonHeaders,
+                    method: 'POST',
+                }),
+            }),
+            deleteStream: builder.mutation({
+                query: ({eventId, videoFileId}) => ({
+                    url: `/events/event/${eventId}/video/stream/${videoFileId}/delete-stream`,
+                    headers: JsonHeaders,
+                    method: 'DELETE',
+                }),
+            }),
         })
     }
 })
@@ -28,4 +57,8 @@ export const videoSourceApiSlice = apiSlice.injectEndpoints({
 export const {
     useFetchVideoSourcesForEventQuery,
     useFetchVideoPlaylistQuery,
+    useKillStreamsForSourceMutation,
+    useDeleteStreamsForSourceMutation,
+    useKillStreamMutation,
+    useDeleteStreamMutation,
 } = videoSourceApiSlice

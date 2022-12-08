@@ -29,7 +29,7 @@ export const TeamsDisplay = () => {
             toast.error(msg)
         }
     }, [error, isError])
-console.log('teams', teams)
+
     return (
         <>
             {

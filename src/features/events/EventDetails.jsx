@@ -216,6 +216,7 @@ export const EventDetails = () => {
             isVideoSourceSuccess ?
                 selectedVideoSource !== null ?
                     <VideoSourceDisplay
+                        eventId={eventId}
                         videoSourceId={videoSources.entities[selectedVideoSource].id}
                         onHide={() => setSelectedVideoSource(null)}
                         isSelected={true}
@@ -223,6 +224,7 @@ export const EventDetails = () => {
                     /> :
                 Object.values(videoSources.ids).sort().map(videoSourceId =>
                     <VideoSourceDisplay
+                        eventId={eventId}
                         videoSourceId={videoSourceId}
                         key={videoSourceId}
                         onSelect={() => setSelectedVideoSource(videoSourceId)}
