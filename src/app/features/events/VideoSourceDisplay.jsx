@@ -2,7 +2,6 @@ import React, {useEffect, useState} from "react";
 import {VideoFileDisplay} from "./VideoFileDisplay";
 import {useSelector} from "react-redux";
 import {JobStatus, selectVideoSourceById} from "../../slices/videoSourceSlice";
-import _ from 'underscore';
 import {StatusBubble} from "../../components/StatusBubble";
 import {
     useDeleteStreamsForSourceMutation,
@@ -34,33 +33,35 @@ export const VideoSourceDisplay = (props) => {
         toast('TODO: Implement individual download')
         console.log('id', id)
     }
-
+    const onUpdateStreamStatus = (status) => {
+        setFileStatuses({
+            ...fileStatuses,
+            [status['videoFileId']]: status,
+        })
+    }
     const computeStreamStatus = (statuses) => {
-        return statuses.reduce((finalStatus, videoStatus) => {
+        if (statuses.length === 0) {
+            return {
+                status: null,
+                progress: 0,
+            }
+        }
+        let finalStatus = statuses.reduce((finalStatus, videoStatus) => {
             return {
                 completionRatio: finalStatus.completionRatio + videoStatus.completionRatio,
                 status:
                     finalStatus.status !== null &&
-                      JobStatus[finalStatus.status] < JobStatus[videoStatus.status] ?
+                    JobStatus[finalStatus.status] > JobStatus[videoStatus.status] ?
                         finalStatus.status : videoStatus.status
             }
         }, {
             status: null,
             completionRatio: 0,
         })
-    }
-    const onUpdateStreamStatus = (status) => {
-        fileStatuses = {
-            ...fileStatuses,
-            [status['videoFileId']]: status,
+        return {
+            status: finalStatus.status,
+            progress: finalStatus.completionRatio / statuses.length
         }
-        let sourceStatus = computeStreamStatus(Object.values(fileStatuses))
-        let sourceProgress = parts.length > 0 ?
-            sourceStatus.completionRatio / parts.length : 0
-        setSourceStatus({
-            status: sourceStatus.status,
-            progress: sourceProgress,
-        })
     }
 
     // state
@@ -72,9 +73,8 @@ export const VideoSourceDisplay = (props) => {
         onHide,
         onPlay,
     } = props
-    // prevent infinite re-renders using _.isEqual
     let videoSource = useSelector(
-        state => selectVideoSourceById(state, videoSourceId), _.isEqual
+        state => selectVideoSourceById(state, videoSourceId)
     )
     let {
         audioCodec,
@@ -89,9 +89,9 @@ export const VideoSourceDisplay = (props) => {
         videoFiles,
         _links: links,
     } = videoSource
-    let fileStatuses = {}
-    let [sourceStatus, setSourceStatus] = useState({})
+    let [fileStatuses, setFileStatuses] = useState({})
     // computed state
+    let sourceStatus = computeStreamStatus(Object.values(fileStatuses))
     let parts = Object.values(videoFiles)
 
     // hooks
@@ -155,7 +155,6 @@ export const VideoSourceDisplay = (props) => {
                                 progress={sourceStatus.progress}
                             />
                     }
-
                     {
                         streamStatus !== JobStatus['ERROR'] ?
                             <button className="Video-source-play-button" onClick={handlePlayVideoSource}>

@@ -38,9 +38,6 @@ export const VideoPlayer = (props) => {
         player.on('play', () => {
             setIsPaused(false)
         })
-        player.on('dispose', () => {
-            console.log('player is being disposed...')
-        })
         player.on('timeupdate', () => {
             setPlayerCurrentTime(player.currentTime())
         })
@@ -141,7 +138,7 @@ export const VideoPlayer = (props) => {
             const uris = Object.values(videoSources['uris'])
             setVideoJsOptions({
                 autoplay: true,
-                controls: true,
+                controls: false,
                 responsive: true,
                 fluid: true,
                 bigPlayButton: true,

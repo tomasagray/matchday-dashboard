@@ -22,12 +22,11 @@
     "react-stomp-hooks": "^2.1.0",
     "react-toastify": "^9.0.8",
     "sass": "^1.54.0",
-    "underscore": "^1.13.6",
     "web-vitals": "^2.1.4"
   },
   "devDependencies": {
-    "react-scripts": "^5.0.1",
-    "@svgr/webpack": "^6.5.1"
+    "@svgr/webpack": "^6.5.1",
+    "react-scripts": "^5.0.1"
   },
   "overrides": {
     "@svgr/webpack": "$@svgr/webpack"
