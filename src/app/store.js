@@ -1,14 +1,14 @@
 import {configureStore} from "@reduxjs/toolkit";
-import eventsReducer from "../slices/matchSlice";
-import videoSourceReducer from "../slices/videoSourceSlice";
-import competitionReducer from "../slices/competitionSlice";
-import teamReducer from "../slices/teamSlice";
-import dataSourceReducer from "../slices/dataSourceSlice";
-import dataSourcePluginReducer from "../slices/dataSourcePluginSlice";
-import patternKitReducer from "../slices/patternKitSlice";
-import fileServerPluginReducer from "../slices/fileServerPluginSlice";
-import fileServerUsersReducer from "../slices/fileServerUserSlice";
-import {apiSlice} from "../slices/api/apiSlice";
+import eventsReducer from "./slices/matchSlice";
+import videoSourceReducer from "./slices/videoSourceSlice";
+import competitionReducer from "./slices/competitionSlice";
+import teamReducer from "./slices/teamSlice";
+import dataSourceReducer from "./slices/dataSourceSlice";
+import dataSourcePluginReducer from "./slices/dataSourcePluginSlice";
+import patternKitReducer from "./slices/patternKitSlice";
+import fileServerPluginReducer from "./slices/fileServerPluginSlice";
+import fileServerUsersReducer from "./slices/fileServerUserSlice";
+import {apiSlice} from "./slices/api/apiSlice";
 
 export default configureStore({
     reducer: {

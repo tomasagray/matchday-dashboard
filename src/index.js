@@ -1,25 +1,25 @@
 import React from 'react';
-import './style/index.css';
+import './app/style/index.css';
 import App from './app/App';
 import reportWebVitals from './reportWebVitals';
 import store from "./app/store";
 import {Provider} from "react-redux";
 import {BrowserRouter, Route, Routes,} from "react-router-dom";
-import {Home} from "./layout/Home";
-import {CompetitionsDisplay} from "./features/competitions/CompetitionsDisplay";
-import {TeamsDisplay} from "./features/teams/TeamsDisplay";
-import {DataSourcePluginsList} from "./features/datasource-plugins/DataSourcePluginsList";
-import {Settings} from "./layout/Settings";
-import {Alerts} from "./components/Alerts";
-import {Search} from "./layout/Search";
-import {TeamDetails} from "./features/teams/TeamDetails";
-import {CompetitionDetails} from "./features/competitions/CompetitionDetails";
-import {PluginDataSourceList} from "./features/datasources/PluginDataSourceList";
+import {Home} from "./app/layout/Home";
+import {CompetitionsDisplay} from "./app/features/competitions/CompetitionsDisplay";
+import {TeamsDisplay} from "./app/features/teams/TeamsDisplay";
+import {DataSourcePluginsList} from "./app/features/datasource-plugins/DataSourcePluginsList";
+import {Settings} from "./app/layout/Settings";
+import {Alerts} from "./app/components/Alerts";
+import {Search} from "./app/layout/Search";
+import {TeamDetails} from "./app/features/teams/TeamDetails";
+import {CompetitionDetails} from "./app/features/competitions/CompetitionDetails";
+import {PluginDataSourceList} from "./app/features/datasources/PluginDataSourceList";
 import {createRoot} from "react-dom/client";
-import {FileServerPluginList} from "./features/file-servers/FileServerPluginList";
-import {FileServerUserList} from "./features/file-servers/FileServerUserList";
-import {EventDetails} from "./features/events/EventDetails";
-import {LatestEventsPage} from "./features/events/LatestEventsPage";
+import {FileServerPluginList} from "./app/features/file-servers/FileServerPluginList";
+import {FileServerUserList} from "./app/features/file-servers/FileServerUserList";
+import {EventDetails} from "./app/features/events/EventDetails";
+import {LatestEventsPage} from "./app/features/events/LatestEventsPage";
 
 const container = document.getElementById('root')
 const root = createRoot(container)
