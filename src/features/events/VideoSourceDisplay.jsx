@@ -1,13 +1,13 @@
 import React, {useEffect, useState} from "react";
 import {VideoFileDisplay} from "./VideoFileDisplay";
 import {useSelector} from "react-redux";
-import {JobStatus, selectVideoSourceById} from "../video/videoSourceSlice";
+import {JobStatus, selectVideoSourceById} from "../../slices/videoSourceSlice";
 import _ from 'underscore';
 import {StatusBubble} from "../../components/StatusBubble";
 import {
-    useDeleteStreamsForSourceMutation,
-    useKillStreamsForSourceMutation
-} from "../video/videoSourceApiSlice";
+  useDeleteStreamsForSourceMutation,
+  useKillStreamsForSourceMutation
+} from "../../slices/api/videoSourceApiSlice";
 import {toast} from "react-toastify";
 import {getToastMessage} from "../../app/utils";
 import {SmallSpinner} from "../../components/Spinner";

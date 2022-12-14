@@ -1,5 +1,7 @@
 import React, {useEffect} from "react";
-import {useFetchAllCompetitionsQuery} from "../competitions/competitionApiSlice";
+import {
+  useFetchAllCompetitionsQuery
+} from "../../slices/api/competitionApiSlice";
 import {getToastMessage} from "../../app/utils";
 import {toast} from "react-toastify";
 import {FillSpinner} from "../../components/Spinner";

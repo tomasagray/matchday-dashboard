@@ -1,5 +1,5 @@
 import {createEntityAdapter, createSlice} from "@reduxjs/toolkit";
-import {createEnum} from "../../app/utils";
+import {createEnum} from "../app/utils";
 
 export const videoSourceAdapter = createEntityAdapter()
 

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {useFetchAllTeamsQuery} from "./teamApiSlice";
+import {useFetchAllTeamsQuery} from "../../slices/api/teamApiSlice";
 import {FillSpinner} from "../../components/Spinner";
 import TeamTile from "./TeamTile";
 import {ErrorMessage} from "../../components/ErrorMessage";

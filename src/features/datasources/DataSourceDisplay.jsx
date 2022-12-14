@@ -1,18 +1,38 @@
 import React, {useEffect, useState} from "react";
 import {CollapsableContainer} from "../../components/CollapsableContainer";
 import {PatternKitTypeGroup} from "./PatternKitTypeGroup";
-import {dataSourceReset, dataSourceUpdated, selectCleanDataSourceById, selectDataSourceById,} from "./dataSourceSlice";
+import {
+  dataSourceReset,
+  dataSourceUpdated,
+  selectCleanDataSourceById,
+  selectDataSourceById,
+} from "../../slices/dataSourceSlice";
 import {useDispatch, useSelector} from "react-redux";
-import {getClassName, getDownloadableJson, getToastMessage, isValidUrl, isValidUuid} from "../../app/utils";
+import {
+  getClassName,
+  getDownloadableJson,
+  getToastMessage,
+  isValidUrl,
+  isValidUuid
+} from "../../app/utils";
 import {InfoMessage} from "../../components/InfoMessage";
 import {PatternKitDisplay} from "./PatternKitDisplay";
 import Modal, {Body, Footer, Header} from "../../components/Modal";
 import {CancelButton} from "../../components/controls/CancelButton";
 import {OKButton} from "../../components/controls/OKButton";
-import {useDeleteDataSourceMutation, useUpdateDataSourceMutation} from "./dataSourceApiSlice";
+import {
+  useDeleteDataSourceMutation,
+  useUpdateDataSourceMutation
+} from "../../slices/api/dataSourceApiSlice";
 import {AddPatternKitForm} from "./AddPatternKitForm";
-import {clearNewPatternKit, selectIsNewPatternKitValid, selectNewPatternKitForUpload} from "./patternKitSlice";
-import {useGetTemplateForTypeQuery} from "./patternKitTemplateApiSlice";
+import {
+  clearNewPatternKit,
+  selectIsNewPatternKitValid,
+  selectNewPatternKitForUpload
+} from "../../slices/patternKitSlice";
+import {
+  useGetTemplateForTypeQuery
+} from "../../slices/api/patternKitTemplateApiSlice";
 import {FloatingMenu} from "../../components/FloatingMenu";
 import {MenuItem} from "../../components/MenuItem";
 import {SaveButton} from "../../components/controls/SaveButton";
@@ -20,7 +40,6 @@ import {DeleteButton} from "../../components/controls/DeleteButton";
 import {ClearButton} from "../../components/controls/ClearButton";
 import {validateFields} from "./PatternKitFieldEditor";
 import {toast} from "react-toastify";
-
 
 const groupPatternKits = (patternKits) => {
     return patternKits.reduce((reducer, patternKit) => {

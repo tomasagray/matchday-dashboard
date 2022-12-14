@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from "react";
-import {useFetchVideoPlaylistQuery} from "./videoSourceApiSlice";
+import {useFetchVideoPlaylistQuery} from "../../slices/api/videoSourceApiSlice";
 import 'video.js/dist/video-js.css';
 import {VideoJsWrapper} from "./VideoJsWrapper";
 import {formatTime, getToastMessage} from "../../app/utils";

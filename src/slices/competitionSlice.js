@@ -1,5 +1,5 @@
 import {createEntityAdapter, createSelector, createSlice} from "@reduxjs/toolkit";
-import {formatArtworkData, updateSelectedArtwork} from "../../app/utils";
+import {formatArtworkData, updateSelectedArtwork} from "../app/utils";
 
 
 export const competitionAdapter = createEntityAdapter()

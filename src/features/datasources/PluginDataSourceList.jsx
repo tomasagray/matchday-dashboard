@@ -1,15 +1,21 @@
 import React, {useEffect, useState} from 'react'
 import {useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {useAddDataSourceMutation} from "./dataSourceApiSlice";
-import {selectDataSourcePluginById} from "../datasource-plugins/dataSourcePluginSlice";
-import {useGetAllDataSourcePluginsQuery} from "../datasource-plugins/dataSourcePluginApiSlice";
+import {useAddDataSourceMutation} from "../../slices/api/dataSourceApiSlice";
+import {selectDataSourcePluginById} from "../../slices/dataSourcePluginSlice";
+import {
+  useGetAllDataSourcePluginsQuery
+} from "../../slices/api/dataSourcePluginApiSlice";
 import {PluginId} from "../../components/PluginId";
 import {Spinner} from "../../components/Spinner";
 import Modal, {Body, Footer, Header} from "../../components/Modal";
 import {CancelButton} from "../../components/controls/CancelButton";
 import {AddDataSourceForm} from "./AddDataSourceForm";
-import {clearNewDataSource, selectIsNewDataSourceValid, selectNewDataSource} from "./dataSourceSlice";
+import {
+  clearNewDataSource,
+  selectIsNewDataSourceValid,
+  selectNewDataSource
+} from "../../slices/dataSourceSlice";
 import {DataSourceList} from "./DataSourceList";
 import {SaveButton} from "../../components/controls/SaveButton";
 import {toast} from "react-toastify";

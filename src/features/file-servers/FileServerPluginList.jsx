@@ -1,13 +1,16 @@
 import React, {useEffect} from "react";
 import {
-    useDisableFileServerPluginMutation,
-    useEnableFileServerPluginMutation,
-    useGetAllFileServerPluginsQuery
-} from "./fileServerPluginApiSlice";
+  useDisableFileServerPluginMutation,
+  useEnableFileServerPluginMutation,
+  useGetAllFileServerPluginsQuery
+} from "../../slices/api/fileServerPluginApiSlice";
 import {FillSpinner} from "../../components/Spinner";
 import {FileServerPluginTile} from "./FileServerPluginTile";
 import {useSelector} from "react-redux";
-import {selectFileServerPluginById, selectSelectedPluginId} from "./fileServerPluginSlice";
+import {
+  selectFileServerPluginById,
+  selectSelectedPluginId
+} from "../../slices/fileServerPluginSlice";
 import {InfoMessage} from "../../components/InfoMessage";
 import {SettingsGroup} from "../../components/SettingsGroup";
 import {SettingContainer} from "../../components/SettingContainer";
@@ -16,7 +19,6 @@ import {SettingsLink} from "../../components/SettingsLink";
 import {getToastMessage} from "../../app/utils";
 import {toast} from "react-toastify";
 import {ErrorMessage} from "../../components/ErrorMessage";
-
 
 export const FileServerPluginList = () => {
 

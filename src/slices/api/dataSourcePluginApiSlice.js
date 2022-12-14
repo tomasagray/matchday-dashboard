@@ -1,7 +1,13 @@
-import {apiSlice, competitionTag, dataSourcePluginTag, eventTag, teamTag} from "../../app/apiSlice";
 import {JsonHeaders} from "../../app/constants";
-import {dataSourcePluginSlice, pluginAdapter} from "./dataSourcePluginSlice";
+import {dataSourcePluginSlice, pluginAdapter} from "../dataSourcePluginSlice";
 import store from "../../app/store";
+import {
+    apiSlice,
+    competitionTag,
+    dataSourcePluginTag,
+    eventTag,
+    teamTag
+} from "./apiSlice";
 
 const getSnapshotRequest = (refreshParams) => {
     return {

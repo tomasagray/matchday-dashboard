@@ -4,14 +4,14 @@ import {CenteredSpinner} from "../../components/Spinner";
 import DatePicker from "react-datepicker";
 import {CompetitionSelect} from "./CompetitionSelect";
 import {
-    EditWizard,
-    EditWizardDisplay,
-    EditWizardMenu
+  EditWizard,
+  EditWizardDisplay,
+  EditWizardMenu
 } from "../edit-wizard/EditWizard";
 import {WizardMenuItem} from "../edit-wizard/WizardMenuItem";
 import {useDispatch, useSelector} from "react-redux";
-import {selectEditedMatch, updateEditedMatch} from "./matchSlice";
-import {useRefreshMatchArtworkMutation} from "./eventApiSlice";
+import {selectEditedMatch, updateEditedMatch} from "../../slices/matchSlice";
+import {useRefreshMatchArtworkMutation} from "../../slices/api/eventApiSlice";
 import {formatDateTime, getToastMessage} from "../../app/utils";
 import {toast} from "react-toastify";
 import {TeamSelect} from "./TeamSelect";

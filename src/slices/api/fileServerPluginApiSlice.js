@@ -1,6 +1,9 @@
-import {apiSlice, fileServerPluginTag} from "../../app/apiSlice";
+import {apiSlice, fileServerPluginTag} from "./apiSlice";
 import store from "../../app/store";
-import {fileServerPluginAdapter, fileServerPluginSlice} from "./fileServerPluginSlice";
+import {
+    fileServerPluginAdapter,
+    fileServerPluginSlice
+} from "../fileServerPluginSlice";
 import {JsonHeaders} from "../../app/constants";
 
 export const fileServerPluginApiSlice = apiSlice.injectEndpoints({

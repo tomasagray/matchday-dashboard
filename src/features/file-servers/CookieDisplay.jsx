@@ -1,6 +1,6 @@
 import React from "react";
 import {useSelector} from "react-redux";
-import {selectCookiesForUser} from "./fileServerUserSlice";
+import {selectCookiesForUser} from "../../slices/fileServerUserSlice";
 import Modal, {Body, Footer, Header} from "../../components/Modal";
 import {DownloadButton} from "../../components/controls/DownloadButton";
 import {OKButton} from "../../components/controls/OKButton";

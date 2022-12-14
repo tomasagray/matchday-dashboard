@@ -1,6 +1,8 @@
 import React, {useEffect} from "react";
-import {useFetchCompetitionByIdQuery} from "../competitions/competitionApiSlice";
-import {useFetchTeamByIdQuery} from "../teams/teamApiSlice";
+import {
+  useFetchCompetitionByIdQuery
+} from "../../slices/api/competitionApiSlice";
+import {useFetchTeamByIdQuery} from "../../slices/api/teamApiSlice";
 import {getToastMessage} from "../../app/utils";
 import {toast} from "react-toastify";
 import {CenteredSpinner} from "../../components/Spinner";

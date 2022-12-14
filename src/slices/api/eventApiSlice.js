@@ -1,6 +1,6 @@
-import {apiSlice, competitionTag, eventTag} from "../../app/apiSlice";
+import {apiSlice, competitionTag, eventTag} from "./apiSlice";
 import store from "../../app/store";
-import {matchAdapter, matchLoaded, matchSlice} from "./matchSlice";
+import {matchAdapter, matchLoaded, matchSlice} from "../matchSlice";
 import {JsonHeaders} from "../../app/constants";
 
 const getNormalizedEvents = (response) => {

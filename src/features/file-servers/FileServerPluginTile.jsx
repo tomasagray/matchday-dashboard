@@ -1,7 +1,10 @@
 import React from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {PluginId} from "../../components/PluginId";
-import {pluginSelected, selectSelectedPluginId} from "./fileServerPluginSlice";
+import {
+  pluginSelected,
+  selectSelectedPluginId
+} from "../../slices/fileServerPluginSlice";
 
 export const FileServerPluginTile = (props) => {
 

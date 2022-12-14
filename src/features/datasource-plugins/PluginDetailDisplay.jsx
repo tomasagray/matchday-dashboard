@@ -1,8 +1,11 @@
 import {Status, ToggleSwitch} from "../../components/controls/ToggleSwitch";
 import React, {useEffect} from "react";
 import {useSelector} from "react-redux";
-import {useDisableDataSourcePluginMutation, useEnableDataSourcePluginMutation} from "./dataSourcePluginApiSlice";
-import {selectDataSourcePluginById} from "./dataSourcePluginSlice";
+import {
+  useDisableDataSourcePluginMutation,
+  useEnableDataSourcePluginMutation
+} from "../../slices/api/dataSourcePluginApiSlice";
+import {selectDataSourcePluginById} from "../../slices/dataSourcePluginSlice";
 import {SettingContainer} from "../../components/SettingContainer";
 import {SettingsGroup} from "../../components/SettingsGroup";
 import {SettingsLink} from "../../components/SettingsLink";

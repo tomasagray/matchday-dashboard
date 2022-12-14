@@ -1,11 +1,14 @@
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {newUserUpdated, selectNewUser} from "./fileServerUserSlice";
+import {newUserUpdated, selectNewUser} from "../../slices/fileServerUserSlice";
 import {FileUploadButton} from "../../components/controls/FileUploadButton";
 import Modal, {Body, Footer, Header} from "../../components/Modal";
 import {CancelButton} from "../../components/controls/CancelButton";
 import {SaveButton} from "../../components/controls/SaveButton";
-import {useLoginUserMutation, useUploadCredentialsMutation} from "./fileServerUserApiSlice";
+import {
+  useLoginUserMutation,
+  useUploadCredentialsMutation
+} from "../../slices/api/fileServerUserApiSlice";
 import {toast} from "react-toastify";
 import {getToastMessage} from "../../app/utils";
 

@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from "react";
 import {StatusBubble} from "../../components/StatusBubble";
 import {useStompClient, useSubscription} from "react-stomp-hooks";
-import {JobStatus} from "../video/videoSourceSlice";
+import {JobStatus} from "../../slices/videoSourceSlice";
 import {
-    useDeleteStreamMutation,
-    useKillStreamMutation
-} from "../video/videoSourceApiSlice";
+  useDeleteStreamMutation,
+  useKillStreamMutation
+} from "../../slices/api/videoSourceApiSlice";
 import {toast} from "react-toastify";
 import {getToastMessage} from "../../app/utils";
 import {SmallSpinner} from "../../components/Spinner";

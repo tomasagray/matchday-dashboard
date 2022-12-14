@@ -1,5 +1,5 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/dist/query/react"
-import properties from "./properties"
+import properties from "../../app/properties"
 
 const {baseUrl} = properties
 

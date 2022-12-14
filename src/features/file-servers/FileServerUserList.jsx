@@ -1,14 +1,18 @@
 import React, {useEffect, useState} from "react";
 import {UserList} from "./UserList";
 import {useParams} from "react-router-dom";
-import {useGetFileServerUsersQuery} from "./fileServerUserApiSlice";
+import {
+  useGetFileServerUsersQuery
+} from "../../slices/api/fileServerUserApiSlice";
 import {Spinner} from "../../components/Spinner";
 import {useDispatch, useSelector} from "react-redux";
-import {selectFileServerPluginById} from "./fileServerPluginSlice";
+import {selectFileServerPluginById} from "../../slices/fileServerPluginSlice";
 import {PluginId} from "../../components/PluginId";
-import {useGetAllFileServerPluginsQuery} from "./fileServerPluginApiSlice";
+import {
+  useGetAllFileServerPluginsQuery
+} from "../../slices/api/fileServerPluginApiSlice";
 import {AddNewUserForm} from "./AddNewUserForm";
-import {newUserCleared} from "./fileServerUserSlice";
+import {newUserCleared} from "../../slices/fileServerUserSlice";
 import {getToastMessage} from "../../app/utils";
 import {toast} from "react-toastify";
 import {InfoMessage} from "../../components/InfoMessage";

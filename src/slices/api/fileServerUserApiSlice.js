@@ -1,6 +1,6 @@
-import {apiSlice, fileServerUserTag} from "../../app/apiSlice";
+import {apiSlice, fileServerUserTag} from "./apiSlice";
 import store from "../../app/store";
-import {fileServerUserSlice, userAdapter} from "./fileServerUserSlice";
+import {fileServerUserSlice, userAdapter} from "../fileServerUserSlice";
 import {JsonHeaders} from "../../app/constants";
 
 export const fileServerUserApiSlice = apiSlice.injectEndpoints({

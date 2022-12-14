@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from "react";
-import {useFetchAllEventsQuery} from "./eventApiSlice";
+import {useFetchAllEventsQuery} from "../../slices/api/eventApiSlice";
 import {EventsDisplay} from "./EventsDisplay";
 import {useSelector} from "react-redux";
-import {selectMatches} from "./matchSlice";
+import {selectMatches} from "../../slices/matchSlice";
 import {CenteredSpinner} from "../../components/Spinner";
 import {getToastMessage} from "../../app/utils";
 import {toast} from "react-toastify";

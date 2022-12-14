@@ -1,11 +1,12 @@
 import React, {useEffect} from "react";
-import {useFetchAllCompetitionsQuery} from "./competitionApiSlice";
+import {
+  useFetchAllCompetitionsQuery
+} from "../../slices/api/competitionApiSlice";
 import {FillSpinner} from "../../components/Spinner";
 import CompetitionTile from "./CompetitionTile";
 import {toast} from "react-toastify";
 import {getToastMessage} from "../../app/utils";
 import {EmptyMessage} from "../../components/EmptyMessage";
-
 
 export const CompetitionsDisplay = () => {
 

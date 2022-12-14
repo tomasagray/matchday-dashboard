@@ -1,41 +1,47 @@
 import React, {useEffect, useState} from "react";
 import {Link, useNavigate, useParams} from "react-router-dom";
 import {
-    useAddCompetitionEmblemMutation,
-    useAddCompetitionFanartMutation,
-    useDeleteCompetitionEmblemMutation,
-    useDeleteCompetitionFanartMutation,
-    useDeleteCompetitionMutation,
-    useFetchCompetitionByIdQuery,
-    useFetchTeamsForCompetitionQuery,
-    useUpdateCompetitionMutation,
-} from "./competitionApiSlice";
+  useAddCompetitionEmblemMutation,
+  useAddCompetitionFanartMutation,
+  useDeleteCompetitionEmblemMutation,
+  useDeleteCompetitionFanartMutation,
+  useDeleteCompetitionMutation,
+  useFetchCompetitionByIdQuery,
+  useFetchTeamsForCompetitionQuery,
+  useUpdateCompetitionMutation,
+} from "../../slices/api/competitionApiSlice";
 import {CenteredSpinner, FillSpinner} from "../../components/Spinner";
 import ContentBar from "../../components/ContentBar";
-import {useFetchEventsForCompetitionQuery} from "../events/eventApiSlice";
+import {
+  useFetchEventsForCompetitionQuery
+} from "../../slices/api/eventApiSlice";
 import EventTile from "../events/EventTile";
 import TeamTile from "../teams/TeamTile";
 import {EditButton} from "../../components/controls/EditButton";
 import {toast} from "react-toastify";
 import {getArtworkUrl, getToastMessage} from "../../app/utils";
 import Modal, {Body, Footer, Header} from "../../components/Modal";
-import {EditWizard, EditWizardDisplay, EditWizardMenu} from "../edit-wizard/EditWizard";
+import {
+  EditWizard,
+  EditWizardDisplay,
+  EditWizardMenu
+} from "../edit-wizard/EditWizard";
 import {CancelButton} from "../../components/controls/CancelButton";
 import {SaveButton} from "../../components/controls/SaveButton";
 import {WizardMenuItem} from "../edit-wizard/WizardMenuItem";
 import {GeneralEditor} from "../edit-wizard/GeneralEditor";
 import {
-    addCompetitionSynonym,
-    beginEditingCompetition,
-    deleteCompetitionSynonym,
-    editCompetitionTitle,
-    editNewSynonym,
-    selectArtwork,
-    selectEditedCompetition,
-    selectEditedCompetitionForUpload,
-    setCompetitionCountry,
-    uploadArtwork
-} from "./competitionSlice";
+  addCompetitionSynonym,
+  beginEditingCompetition,
+  deleteCompetitionSynonym,
+  editCompetitionTitle,
+  editNewSynonym,
+  selectArtwork,
+  selectEditedCompetition,
+  selectEditedCompetitionForUpload,
+  setCompetitionCountry,
+  uploadArtwork
+} from "../../slices/competitionSlice";
 import {useDispatch, useSelector} from "react-redux";
 import {ArtworkEditor} from "../edit-wizard/ArtworkEditor";
 import {SoftLoadImage} from "../../components/SoftLoadImage";

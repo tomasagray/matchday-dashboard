@@ -1,17 +1,19 @@
 import React, {useEffect} from "react"
 import {
-    newPatternKitFieldsUpdated,
-    newPatternKitTypeSelected,
-    newPatternKitUpdated,
-    selectNewPatternKit,
-} from "./patternKitSlice";
+  newPatternKitFieldsUpdated,
+  newPatternKitTypeSelected,
+  newPatternKitUpdated,
+  selectNewPatternKit,
+} from "../../slices/patternKitSlice";
 import {useDispatch, useSelector} from "react-redux";
 import {PatternKitFieldEditor, validateFields} from "./PatternKitFieldEditor";
 import {Spinner} from "../../components/Spinner";
 import Select from "../../components/controls/Select";
 import {Option} from "../../components/controls/Option";
 import {InfoMessage} from "../../components/InfoMessage";
-import {useGetTemplateForTypeQuery} from "./patternKitTemplateApiSlice";
+import {
+  useGetTemplateForTypeQuery
+} from "../../slices/api/patternKitTemplateApiSlice";
 import {toast} from "react-toastify";
 import {getToastMessage} from "../../app/utils";
 

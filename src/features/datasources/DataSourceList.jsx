@@ -1,4 +1,6 @@
-import {useGetDataSourcesForPluginQuery} from "./dataSourceApiSlice";
+import {
+  useGetDataSourcesForPluginQuery
+} from "../../slices/api/dataSourceApiSlice";
 import {DataSourceDisplay} from "./DataSourceDisplay";
 import {InfoMessage} from "../../components/InfoMessage";
 import {FillSpinner} from "../../components/Spinner";

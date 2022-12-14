@@ -1,6 +1,10 @@
 import React, {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {patternKitDeleted, patternKitUpdated, selectPatternKitById} from "./dataSourceSlice";
+import {
+  patternKitDeleted,
+  patternKitUpdated,
+  selectPatternKitById
+} from "../../slices/dataSourceSlice";
 import {PatternKitFieldEditor} from "./PatternKitFieldEditor";
 import Modal, {Body, Footer, Header} from "../../components/Modal";
 import {CancelButton} from "../../components/controls/CancelButton";

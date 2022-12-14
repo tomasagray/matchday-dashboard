@@ -1,4 +1,4 @@
-import {apiSlice} from "../../app/apiSlice";
+import {apiSlice} from "./apiSlice";
 
 export const patternKitTemplateApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => {

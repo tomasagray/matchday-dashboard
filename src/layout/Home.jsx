@@ -1,8 +1,8 @@
 import React, {useEffect} from "react";
 import ContentBar from "../components/ContentBar";
-import {useFetchAllEventsQuery} from "../features/events/eventApiSlice";
-import {useFetchAllCompetitionsQuery} from "../features/competitions/competitionApiSlice";
-import {useFetchAllTeamsQuery} from "../features/teams/teamApiSlice";
+import {useFetchAllEventsQuery} from "../slices/api/eventApiSlice";
+import {useFetchAllCompetitionsQuery} from "../slices/api/competitionApiSlice";
+import {useFetchAllTeamsQuery} from "../slices/api/teamApiSlice";
 import {CenteredSpinner} from "../components/Spinner";
 import EventTile from "../features/events/EventTile";
 import CompetitionTile from "../features/competitions/CompetitionTile";
@@ -11,7 +11,6 @@ import {toast} from "react-toastify";
 import {getToastMessage} from "../app/utils";
 import {EmptyMessage} from "../components/EmptyMessage";
 import {Link} from "react-router-dom";
-
 
 export const Home = () => {
 

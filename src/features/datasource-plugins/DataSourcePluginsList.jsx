@@ -1,7 +1,10 @@
 import React, {useEffect, useRef, useState} from 'react'
 import {useSelector} from "react-redux";
 import {FillSpinner} from "../../components/Spinner";
-import {useGetAllDataSourcePluginsQuery, useRefreshAllDataSourcePluginsMutation} from "./dataSourcePluginApiSlice";
+import {
+  useGetAllDataSourcePluginsQuery,
+  useRefreshAllDataSourcePluginsMutation
+} from "../../slices/api/dataSourcePluginApiSlice";
 import {PluginDetailDisplay} from "./PluginDetailDisplay";
 import {ErrorMessage} from "../../components/ErrorMessage";
 import {DataSourcePluginTile} from "./DataSourcePluginTile";

@@ -3,7 +3,9 @@ import {getClassName} from "../../app/utils";
 import {InfoMessage} from "../../components/InfoMessage";
 import {Spinner} from "../../components/Spinner";
 import {PatternKitFieldRow} from "./PatternKitFieldRow";
-import {useGetTemplateForTypeQuery} from "./patternKitTemplateApiSlice";
+import {
+  useGetTemplateForTypeQuery
+} from "../../slices/api/patternKitTemplateApiSlice";
 
 export const validateFields = (fields, template) => {
     if (!fields || !template) {

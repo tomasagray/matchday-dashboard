@@ -1,7 +1,12 @@
 import React, {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {newDataSourceUpdated, selectNewDataSource} from "./dataSourceSlice";
-import {useGetAllTemplatesQuery} from "./patternKitTemplateApiSlice";
+import {
+  newDataSourceUpdated,
+  selectNewDataSource
+} from "../../slices/dataSourceSlice";
+import {
+  useGetAllTemplatesQuery
+} from "../../slices/api/patternKitTemplateApiSlice";
 import Select from "../../components/controls/Select";
 import {Option} from "../../components/controls/Option";
 import {toast} from "react-toastify";

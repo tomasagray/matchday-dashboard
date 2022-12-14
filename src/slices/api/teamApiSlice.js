@@ -1,7 +1,7 @@
-import {apiSlice, competitionTag, eventTag, teamTag} from "../../app/apiSlice";
-import {teamAdapter, teamLoaded, teamsLoaded, updateArtworkCollection} from "./teamSlice";
+import {apiSlice, competitionTag, eventTag, teamTag} from "./apiSlice";
+import {teamAdapter, teamLoaded, teamsLoaded, updateArtworkCollection} from "../teamSlice";
 import store from "../../app/store";
-import {competitionAdapter, competitionsLoaded} from "../competitions/competitionSlice";
+import {competitionAdapter, competitionsLoaded} from "../competitionSlice";
 import {JsonHeaders} from "../../app/constants";
 
 const getNormalizedTeams = (response) => {

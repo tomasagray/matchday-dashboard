@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from "react";
 import TeamTile from "../teams/TeamTile";
-import {useFetchAllTeamsQuery} from "../teams/teamApiSlice";
+import {useFetchAllTeamsQuery} from "../../slices/api/teamApiSlice";
 import {CenteredSpinner} from "../../components/Spinner";
 import {ErrorMessage} from "../../components/ErrorMessage";
 import {getToastMessage} from "../../app/utils";

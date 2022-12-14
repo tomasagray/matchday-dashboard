@@ -1,9 +1,13 @@
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {newUserUpdated, selectUserById} from "./fileServerUserSlice";
+import {newUserUpdated, selectUserById} from "../../slices/fileServerUserSlice";
 import {FloatingMenu} from "../../components/FloatingMenu";
 import {MenuItem} from "../../components/MenuItem";
-import {useDeleteUserMutation, useLogoutUserMutation, useReloginUserMutation} from "./fileServerUserApiSlice";
+import {
+  useDeleteUserMutation,
+  useLogoutUserMutation,
+  useReloginUserMutation
+} from "../../slices/api/fileServerUserApiSlice";
 import Modal, {Body, Footer, Header} from "../../components/Modal";
 import {CancelButton} from "../../components/controls/CancelButton";
 import {DeleteButton} from "../../components/controls/DeleteButton";

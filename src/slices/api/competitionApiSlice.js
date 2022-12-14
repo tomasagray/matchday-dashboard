@@ -1,14 +1,13 @@
-import {apiSlice, competitionTag, eventTag, teamTag} from "../../app/apiSlice";
+import {apiSlice, competitionTag, eventTag, teamTag} from "./apiSlice";
 import {
-    allCompetitionsLoaded,
-    competitionAdapter,
-    competitionLoaded,
-    updateArtworkCollection
-} from "./competitionSlice";
+  allCompetitionsLoaded,
+  competitionAdapter,
+  competitionLoaded,
+  updateArtworkCollection
+} from "../competitionSlice";
 import store from "../../app/store";
-import {teamAdapter, teamsLoaded} from "../teams/teamSlice";
+import {teamAdapter, teamsLoaded} from "../teamSlice";
 import {JsonHeaders} from "../../app/constants";
-
 
 export const competitionApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => {

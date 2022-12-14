@@ -1,5 +1,5 @@
 import {createEntityAdapter, createSlice} from "@reduxjs/toolkit";
-import {dataSourcePluginTag} from "../../app/apiSlice";
+import {dataSourcePluginTag} from "./api/apiSlice";
 
 export const pluginAdapter = createEntityAdapter()
 

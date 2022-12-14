@@ -1,9 +1,9 @@
-import {apiSlice, videoSourceTag} from "../../app/apiSlice";
+import {apiSlice, videoSourceTag} from "./apiSlice";
 import {
     initialState,
     videoSourceAdapter,
     videoSourcesLoaded
-} from "./videoSourceSlice";
+} from "../videoSourceSlice";
 import store from "../../app/store";
 import {JsonHeaders} from "../../app/constants";
 

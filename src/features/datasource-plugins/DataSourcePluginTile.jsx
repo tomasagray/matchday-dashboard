@@ -1,5 +1,8 @@
 import {useDispatch, useSelector} from "react-redux";
-import {pluginSelected, selectDataSourcePluginById} from "./dataSourcePluginSlice";
+import {
+  pluginSelected,
+  selectDataSourcePluginById
+} from "../../slices/dataSourcePluginSlice";
 import {PluginId} from "../../components/PluginId";
 import React from "react";
 

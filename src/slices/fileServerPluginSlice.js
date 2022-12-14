@@ -3,7 +3,7 @@ import {
     createSelector,
     createSlice
 } from "@reduxjs/toolkit";
-import {pluginAdapter} from "../datasource-plugins/dataSourcePluginSlice";
+import {pluginAdapter} from "./dataSourcePluginSlice";
 
 export const fileServerPluginAdapter = createEntityAdapter()
 

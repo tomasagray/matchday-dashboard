@@ -2,11 +2,10 @@ import React, {useEffect} from "react";
 import {Option} from "../../components/controls/Option";
 import Select from "../../components/controls/Select";
 import {CountryTile} from "../../components/CountryTile";
-import {useFetchAllCountriesQuery} from "../../slices/countryApiSlice";
+import {useFetchAllCountriesQuery} from "../../slices/api/countryApiSlice";
 import {getToastMessage} from "../../app/utils";
 import {toast} from "react-toastify";
 import {SmallSpinner} from "../../components/Spinner";
-
 
 export const CountrySelect = (props) => {
 

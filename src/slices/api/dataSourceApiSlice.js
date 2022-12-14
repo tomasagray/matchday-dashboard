@@ -1,7 +1,11 @@
-import {apiSlice, dataSourceTag} from "../../app/apiSlice";
+import {apiSlice, dataSourceTag} from "./apiSlice";
 import store from "../../app/store";
 import {JsonHeaders} from "../../app/constants";
-import {allDataSourcesLoaded, dataSourceAdapter, dataSourcesLoaded} from "./dataSourceSlice";
+import {
+    allDataSourcesLoaded,
+    dataSourceAdapter,
+    dataSourcesLoaded
+} from "../dataSourceSlice";
 
 let initialState = dataSourceAdapter.getInitialState()
 

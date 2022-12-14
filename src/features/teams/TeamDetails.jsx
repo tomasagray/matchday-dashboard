@@ -1,17 +1,17 @@
 import ContentBar from "../../components/ContentBar";
 import {Link, useNavigate, useParams} from "react-router-dom";
 import {
-    useAddTeamEmblemMutation,
-    useAddTeamFanartMutation,
-    useDeleteTeamEmblemMutation,
-    useDeleteTeamFanartMutation,
-    useDeleteTeamMutation,
-    useFetchCompetitionsForTeamQuery,
-    useFetchTeamByIdQuery,
-    useUpdateTeamMutation
-} from "./teamApiSlice";
+  useAddTeamEmblemMutation,
+  useAddTeamFanartMutation,
+  useDeleteTeamEmblemMutation,
+  useDeleteTeamFanartMutation,
+  useDeleteTeamMutation,
+  useFetchCompetitionsForTeamQuery,
+  useFetchTeamByIdQuery,
+  useUpdateTeamMutation
+} from "../../slices/api/teamApiSlice";
 import {CenteredSpinner, FillSpinner} from "../../components/Spinner";
-import {useFetchMatchesForTeamQuery} from "../events/eventApiSlice";
+import {useFetchMatchesForTeamQuery} from "../../slices/api/eventApiSlice";
 import EventTile from "../events/EventTile";
 import CompetitionTile from "../competitions/CompetitionTile";
 import {EditButton} from "../../components/controls/EditButton";
@@ -23,22 +23,26 @@ import {SoftLoadImage} from "../../components/SoftLoadImage";
 import {GeneralEditor} from "../edit-wizard/GeneralEditor";
 import {useDispatch, useSelector} from "react-redux";
 import {
-    addTeamColor,
-    addTeamSynonym,
-    beginEditingTeam,
-    deleteTeamColor,
-    deleteTeamSynonym,
-    editNewSynonym,
-    editTeamTitle,
-    selectEditedTeam,
-    selectEditedTeamForUpload,
-    selectTeamArtwork,
-    setTeamColor,
-    setTeamCountry,
-    uploadTeamArtwork
-} from "./teamSlice";
+  addTeamColor,
+  addTeamSynonym,
+  beginEditingTeam,
+  deleteTeamColor,
+  deleteTeamSynonym,
+  editNewSynonym,
+  editTeamTitle,
+  selectEditedTeam,
+  selectEditedTeamForUpload,
+  selectTeamArtwork,
+  setTeamColor,
+  setTeamCountry,
+  uploadTeamArtwork
+} from "../../slices/teamSlice";
 import Modal, {Body, Footer, Header} from "../../components/Modal";
-import {EditWizard, EditWizardDisplay, EditWizardMenu} from "../edit-wizard/EditWizard";
+import {
+  EditWizard,
+  EditWizardDisplay,
+  EditWizardMenu
+} from "../edit-wizard/EditWizard";
 import {WizardMenuItem} from "../edit-wizard/WizardMenuItem";
 import {CancelButton} from "../../components/controls/CancelButton";
 import {SaveButton} from "../../components/controls/SaveButton";
@@ -47,7 +51,6 @@ import {ColorsEditor} from "../edit-wizard/ColorsEditor";
 import {DeleteWizard} from "../edit-wizard/DeleteWizard";
 import {DeleteButton} from "../../components/controls/DeleteButton";
 import {WarningMessage} from "../../components/WarningMessage";
-
 
 export const TeamDetails = () => {
 
