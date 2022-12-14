@@ -6,100 +6,106 @@ const jsonPrefix = 'data:text/json;charset=utf-8,'
 const uuidPattern = /[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}/
 const urlPattern = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=+$,\w]+@)?[A-Za-z\d.-]+|(?:www\.|[-;:&=+$,\w]+@)[A-Za-z\d.-]+)((?:\/[+~%/.\w\-_]*)?\??[-+=&;%@.\w_]*#?[.!/\\\w]*)?)/
 
+export const createEnum = (values) => {
+  const enumObject = {}
+  for (let i = 0; i < values.length; i++) {
+    let key = values[i]
+    enumObject[key] = i
+  }
+  return Object.freeze(enumObject)
+}
+
+export const formatArtworkData = (art) => {
+  let collection = []
+  let {artwork, ...metadata} = art
+  if (artwork !== null) {
+    let {_embedded: embedded} = artwork
+    collection = embedded ? embedded['artworks'] : []
+  }
+  return {...metadata, collection}
+}
 
 export const formatDate = (date) => dayjs(date).format(dateFormatter)
 
 export const formatDateTime = (date) => dayjs(date).format(dateTimeFormatter)
 
 export const formatTime = (s) => {
-    if (isNaN(s) || s === Infinity) {
-        return 0
-    }
-    let seconds = Math.round(s);
-    let dateStr = new Date(seconds * 1000).toISOString()
-    if (seconds < 3600) {
-        return dateStr.substring(14, 19)
-    } else {
-        return dateStr.substring(11, 16)
-    }
-}
-
-export const getClassName = (clazz) => {
-    if (!clazz) return null
-    if (clazz.includes('.')) {
-        let packages = clazz.split('.')
-        let className = packages[packages.length - 1]
-        return className.trim()
-    } else {
-        return clazz.trim()
-    }
-}
-
-export const getDownloadableJson = (data) => jsonPrefix + encodeURIComponent(JSON.stringify(data))
-
-export const getToastMessage = (msg) => {
-    if (msg.data) {
-        console.log(msg.data)
-        return msg.data
-    } else {
-        console.error(msg.error)
-        return msg.error
-    }
-}
-
-export const isValidUuid = (str) => {
-    return uuidPattern.test(str)
-}
-
-export const isValidUrl = (url) => {
-    return urlPattern.test(url)
+  if (isNaN(s) || s === Infinity) {
+    return 0
+  }
+  let seconds = Math.round(s);
+  let dateStr = new Date(seconds * 1000).toISOString()
+  if (seconds < 3600) {
+    return dateStr.substring(14, 19)
+  } else {
+    return dateStr.substring(11, 16)
+  }
 }
 
 export const getArtworkUrl = (entity, role) => {
-    if (entity) {
-        let {_links: links} = entity
-        if (links) {
-            return links[role]['href']
-        }
+  if (entity) {
+    let {_links: links} = entity
+    if (links) {
+      return links[role]['href']
     }
+  }
 }
 
-export const formatArtworkData = (art) => {
-    let collection = []
-    let {artwork, ...metadata} = art
-    if (artwork !== null) {
-        let {_embedded: embedded} = artwork
-        collection = embedded ? embedded['artworks'] : []
-    }
-    return {...metadata, collection}
+export const getClassName = (clazz) => {
+  if (!clazz) {
+    return null
+  }
+  if (clazz.includes('.')) {
+    let packages = clazz.split('.')
+    let className = packages[packages.length - 1]
+    return className.trim()
+  } else {
+    return clazz.trim()
+  }
+}
+
+export const getDownloadableJson = (data, pretty = true) => {
+  let json = pretty ?
+      encodeURIComponent(JSON.stringify(data, null, 1)) :
+      encodeURIComponent(JSON.stringify(data))
+  return jsonPrefix + json
+}
+
+export const getToastMessage = (msg) => {
+  if (msg.data) {
+    console.log(msg.data)
+    return msg.data
+  } else {
+    console.error(msg.error)
+    return msg.error
+  }
+}
+
+export const isValidUrl = (url) => {
+  return urlPattern.test(url)
+}
+
+export const isValidUuid = (str) => {
+  return uuidPattern.test(str)
 }
 
 export const updateSelectedArtwork = (selectedId, artworkCollection) => {
-    let collection = Object.values(artworkCollection)
-    let selectedIndex = 0
-    let updatedCollection = []
-    for (let i = 0; i < collection.length; i++) {
-        if (collection[i].id === selectedId) {
-            selectedIndex = i
-            updatedCollection[i] = {
-                ...collection[i],
-                selected: true,
-            }
-        } else {
-            updatedCollection[i] = {
-                ...collection[i],
-                selected: false,
-            }
-        }
+  let collection = Object.values(artworkCollection)
+  let selectedIndex = 0
+  let updatedCollection = []
+  for (let i = 0; i < collection.length; i++) {
+    if (collection[i].id === selectedId) {
+      selectedIndex = i
+      updatedCollection[i] = {
+        ...collection[i],
+        selected: true,
+      }
+    } else {
+      updatedCollection[i] = {
+        ...collection[i],
+        selected: false,
+      }
     }
-    return {selectedIndex, updatedCollection}
-}
-
-export const createEnum = (values) => {
-    const enumObject = {}
-    for (let i=0; i < values.length; i++) {
-        let key = values[i]
-        enumObject[key] = i
-    }
-    return Object.freeze(enumObject)
+  }
+  return {selectedIndex, updatedCollection}
 }

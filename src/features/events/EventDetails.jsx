@@ -24,6 +24,7 @@ import {WarningMessage} from "../../components/WarningMessage";
 import {DeleteButton} from "../../components/controls/DeleteButton";
 import {VideoSourceDisplay} from "./VideoSourceDisplay";
 import {StompSessionProvider} from "react-stomp-hooks";
+import properties from "../../app/properties";
 
 const getFindMoreDisplay = (event) => {
     let competitionId, homeTeamId, awayTeamId
@@ -121,8 +122,6 @@ export const EventDetails = () => {
     }
 
     // state
-    const webSocketProtocol = 'http'
-    const webSocketUrl = `${webSocketProtocol}://localhost:8080/api/ws`
     const imagePlaceholderUrl = process.env.PUBLIC_URL + '/img/default_event_poster.png'
     const params = useParams()
     const {eventId} = params
@@ -315,7 +314,7 @@ export const EventDetails = () => {
                                         Video sources
                                     </h3>
                                 </div>
-                                <StompSessionProvider url={webSocketUrl}>
+                                <StompSessionProvider url={properties.websocketUrl}>
                                     {videoSourceOptions}
                                 </StompSessionProvider>
                             </div>
