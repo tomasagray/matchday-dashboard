@@ -307,10 +307,10 @@ export const EventDetails = () => {
                             <div className="Video-source-display-container">
                                 <div style={{display: 'flex', alignItems: 'center', marginBottom: '1rem'}}>
                                     <img
-                                        src="/img/icon/video/video_32.png"
+                                        src="/img/icon/video-source/video-source_32.png"
                                         alt="Video sources"
                                         style={{
-                                            marginRight: '.7rem',
+                                            margin: '0 1rem 0 .5rem',
                                             opacity: .7,
                                             width: '24px',
                                         }}
