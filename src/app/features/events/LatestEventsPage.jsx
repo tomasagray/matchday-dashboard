@@ -6,11 +6,10 @@ import {selectMatches} from "../../slices/matchSlice";
 import {CenteredSpinner} from "../../components/Spinner";
 import {getToastMessage} from "../../utils";
 import {toast} from "react-toastify";
-import {useDetectPageBottom} from "../../hooks/useDetectPageBottom";
+import {useDetectElementBottom} from "../../hooks/useDetectElementBottom";
 
 export const LatestEventsPage = (props) => {
 
-    // TODO: make it possible to pass in a starting URL via react-router-dom
     let {startingUrl} =  props
     let [next, setNext] = useState(startingUrl)
     const {
@@ -23,7 +22,7 @@ export const LatestEventsPage = (props) => {
     let nextUrl = data?.next
     let events = useSelector(state => selectMatches(state))
     // handle soft load of more events
-    useDetectPageBottom(() => setNext(nextUrl))
+    useDetectElementBottom(document.getElementById('Content-stage'), () => setNext(nextUrl))
 
     // toast messages
     useEffect(() => {

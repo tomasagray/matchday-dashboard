@@ -6,7 +6,7 @@ import {ErrorMessage} from "../../components/ErrorMessage";
 import {getToastMessage} from "../../utils";
 import {toast} from "react-toastify";
 import {useSelector} from "react-redux";
-import {useDetectPageBottom} from "../../hooks/useDetectPageBottom";
+import {useDetectElementBottom} from "../../hooks/useDetectElementBottom";
 import {EmptyMessage} from "../../components/EmptyMessage";
 
 export const TeamsDisplay = () => {
@@ -21,7 +21,7 @@ export const TeamsDisplay = () => {
     } = useFetchAllTeamsQuery(next)
     const nextUrl = data?.next
     let teams = useSelector(state => state.teams)
-    useDetectPageBottom(() => setNext(nextUrl))
+    useDetectElementBottom(document.getElementById('Content-stage'), () => setNext(nextUrl))
 
     useEffect(() => {
         if (isError) {

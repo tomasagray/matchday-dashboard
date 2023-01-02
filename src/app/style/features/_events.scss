@@ -289,6 +289,10 @@ $posterHeight: calc($posterWidth / (16 / 9));
     display: flex;
     flex-direction: row;
 
+    & > * {
+      margin-right: 4rem;
+    }
+
     .Team-tile a .Entity-poster img {
       height: 225px !important;
       width: 225px !important;

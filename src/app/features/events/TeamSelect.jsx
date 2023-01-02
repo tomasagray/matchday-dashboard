@@ -6,6 +6,7 @@ import {ErrorMessage} from "../../components/ErrorMessage";
 import {getToastMessage} from "../../utils";
 import {toast} from "react-toastify";
 import {FloatingMenu} from "../../components/FloatingMenu";
+import {useDetectElementBottom} from "../../hooks/useDetectElementBottom";
 
 export const TeamSelect = (props) => {
 
@@ -25,6 +26,7 @@ export const TeamSelect = (props) => {
 
     // state
     let {selectedTeam, onSelectTeam} = props
+    let [next, setNext] = useState()
     let [isTeamMenuHidden, setIsTeamMenuHidden] = useState(true)
     let {
         data: teams,
@@ -32,8 +34,11 @@ export const TeamSelect = (props) => {
         isSuccess,
         isError,
         error
-    } = useFetchAllTeamsQuery()
+    } = useFetchAllTeamsQuery(next)
+    let nextUrl = teams?.next
     let selectedRef = useRef()
+    let teamsRef = useRef()
+    useDetectElementBottom(teamsRef.current, () => setNext(nextUrl))
 
     // toast messages
     useEffect(() => {
@@ -53,7 +58,7 @@ export const TeamSelect = (props) => {
             >
                 <div className="Team-select-menu">
                     <div className="Team-select-arrow"><div></div></div>
-                    <div className="Team-select-container">
+                    <div className="Team-select-container" ref={teamsRef}>
                         {
                             isLoading ?
                                 <CenteredSpinner/> :

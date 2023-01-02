@@ -1,8 +1,6 @@
 import {useEffect} from "react";
 
-export const useDetectPageBottom = (action) => {
-    const pageElement = 'Content-stage'
-    const contentStage = document.getElementById(pageElement)
+export const useDetectElementBottom = (contentStage, action) => {
 
     useEffect(() => {
         const handlePageScroll = () => {
