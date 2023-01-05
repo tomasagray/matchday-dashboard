@@ -5,7 +5,6 @@ import {
 } from "../../slices/api/settingsApiSlice";
 import {getToastMessage} from "../../utils";
 import {toast} from "react-toastify";
-import {CancelButton} from "../../components/controls/CancelButton";
 import {SaveButton} from "../../components/controls/SaveButton";
 import {useDispatch, useSelector} from "react-redux";
 import {
@@ -17,6 +16,7 @@ import {
 import {ApplicationSetting} from "./ApplicationSetting";
 import {CenteredSpinner} from "../../components/Spinner";
 import {ErrorMessage} from "../../components/ErrorMessage";
+import {ResetButton} from "../../components/controls/ResetButton";
 
 export const Settings = () => {
 
@@ -179,7 +179,7 @@ export const Settings = () => {
         <div className="Settings-save-dialog">
           {
             JSON.stringify(settings) !== JSON.stringify(editedSettings) ?
-                <CancelButton onClick={onResetSettings} disabled={isInFlight}/>
+                <ResetButton onClick={onResetSettings} disabled={isInFlight}/>
                 :
                 null
           }
