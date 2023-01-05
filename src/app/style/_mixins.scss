@@ -67,9 +67,9 @@
 }
 
 @mixin disabled-input {
-  background-color: colors.$defaultComponentBg;
-  border: 1px solid colors.$mediumBg;
-  color: colors.$mediumBg;
+  background-color: purple;
+  border: 1px solid colors.$darkBorder;
+  color: colors.$disabledFont;
 }
 
 @mixin dropdown-arrow {

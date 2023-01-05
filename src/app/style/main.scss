@@ -11,6 +11,7 @@
 @use "fonts";
 @use "components";
 @use "layout";
+@use "settings";
 @use "spinner";
 @use "variables";
 @use "video-player";
@@ -70,15 +71,18 @@ code {
 }
 
 
-input[type=text],
-input[type=password],
-input[type=url] {
-  border: 1px solid #333;
+input {
+  border: 1px solid colors.$darkBorder;
   background-color: colors.$darkBg !important;
-  border-radius: 3px;
+  border-radius: 5px;
   padding: .5em;
-  color: colors.$lightFontColor !important;
+  color: colors.$mediumFontColor !important;
   font-size: 16px;
+
+  &:focus {
+    color: colors.$lightFontColor !important;
+    border-color: colors.$border;
+  }
 
   &:disabled {
     @include disabled-input;

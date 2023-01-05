@@ -11,6 +11,7 @@ export const dataSourceTag = 'DataSource'
 export const dataSourcePluginTag = 'DataSourcePlugin'
 export const fileServerPluginTag = 'FileServerPlugin'
 export const fileServerUserTag = 'FileServerUser'
+export const settingsTag = 'Settings'
 export const teamTag = 'Team'
 export const videoSourceTag = 'VideoSource'
 

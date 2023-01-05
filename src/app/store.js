@@ -8,6 +8,7 @@ import dataSourcePluginReducer from "./slices/dataSourcePluginSlice";
 import patternKitReducer from "./slices/patternKitSlice";
 import fileServerPluginReducer from "./slices/fileServerPluginSlice";
 import fileServerUsersReducer from "./slices/fileServerUserSlice";
+import settingsReducer from "./slices/settingsSlice";
 import {apiSlice} from "./slices/api/apiSlice";
 
 export default configureStore({
@@ -21,6 +22,7 @@ export default configureStore({
         patternKits: patternKitReducer,
         fileServerPlugins: fileServerPluginReducer,
         fileServerUsers: fileServerUsersReducer,
+        settings: settingsReducer,
         [apiSlice['reducerPath']]: apiSlice['reducer']
     },
     middleware: getDefaultMiddleware => getDefaultMiddleware().concat(apiSlice['middleware'])

@@ -1,12 +1,16 @@
 import {dataSourceTag} from "./api/apiSlice";
-import {createEntityAdapter, createSelector, createSlice} from "@reduxjs/toolkit";
+import {
+  createEntityAdapter,
+  createSelector,
+  createSlice
+} from "@reduxjs/toolkit";
 
 export const dataSourceAdapter = createEntityAdapter({
     selectId: dataSource => dataSource.dataSourceId
 })
 
 let initialState = dataSourceAdapter.getInitialState()
-let initialNewDataSource = {
+const initialNewDataSource = {
     type: {
         value: 'placeholder',
         valid: false,

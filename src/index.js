@@ -6,18 +6,30 @@ import store from "./app/store";
 import {Provider} from "react-redux";
 import {BrowserRouter, Route, Routes,} from "react-router-dom";
 import {Home} from "./app/layout/Home";
-import {CompetitionsDisplay} from "./app/features/competitions/CompetitionsDisplay";
+import {
+  CompetitionsDisplay
+} from "./app/features/competitions/CompetitionsDisplay";
 import {TeamsDisplay} from "./app/features/teams/TeamsDisplay";
-import {DataSourcePluginsList} from "./app/features/datasource-plugins/DataSourcePluginsList";
-import {Settings} from "./app/layout/Settings";
+import {
+  DataSourcePluginsList
+} from "./app/features/datasource-plugins/DataSourcePluginsList";
+import {Settings} from "./app/features/settings/Settings";
 import {Alerts} from "./app/components/Alerts";
 import {Search} from "./app/layout/Search";
 import {TeamDetails} from "./app/features/teams/TeamDetails";
-import {CompetitionDetails} from "./app/features/competitions/CompetitionDetails";
-import {PluginDataSourceList} from "./app/features/datasources/PluginDataSourceList";
+import {
+  CompetitionDetails
+} from "./app/features/competitions/CompetitionDetails";
+import {
+  PluginDataSourceList
+} from "./app/features/datasources/PluginDataSourceList";
 import {createRoot} from "react-dom/client";
-import {FileServerPluginList} from "./app/features/file-servers/FileServerPluginList";
-import {FileServerUserList} from "./app/features/file-servers/FileServerUserList";
+import {
+  FileServerPluginList
+} from "./app/features/file-servers/FileServerPluginList";
+import {
+  FileServerUserList
+} from "./app/features/file-servers/FileServerUserList";
 import {EventDetails} from "./app/features/events/EventDetails";
 import {LatestEventsPage} from "./app/features/events/LatestEventsPage";
 
