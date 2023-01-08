@@ -51,7 +51,7 @@ export const VideoSourceDisplay = (props) => {
                 completionRatio: finalStatus.completionRatio + videoStatus.completionRatio,
                 status:
                     finalStatus.status !== null &&
-                    JobStatus[finalStatus.status] > JobStatus[videoStatus.status] ?
+                    JobStatus[finalStatus.status] < JobStatus[videoStatus.status] ?
                         finalStatus.status : videoStatus.status
             }
         }, {

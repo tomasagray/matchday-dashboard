@@ -37,7 +37,6 @@ export const eventApiSlice = apiSlice.injectEndpoints({
                 query: (teamId) => `/teams/team/${teamId}/matches`,
                 providesTags: [eventTag],
                 transformResponse: (response) => {
-                    // TODO: standardize data shape - use matchAdapter, etc.
                     let {_embedded: embedded} = response
                     if (embedded) {
                         return getNormalizedEvents(embedded)
