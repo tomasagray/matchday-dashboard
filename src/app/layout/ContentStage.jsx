@@ -3,7 +3,6 @@ import React from "react";
 
 export const ContentStage = () => {
     // let transition = 'fade';
-
     return (
         <>
             <div id="Content-stage">

@@ -1,12 +1,16 @@
 // Application properties
-const apiProtocol = 'http'
-const websocketProtocol = 'http'
-const serverAddress = '192.168.0.100'
-const port = 8080
+import Cookies from "universal-cookie/es6";
+import {serverAddressCookie} from "./constants";
+
+const minimumServerVersion = '0.0.1-SNAPSHOT'
 const websocketUrl = '/api/ws'
 
+const cookies = new Cookies()
+const serverCookie = cookies.get(serverAddressCookie)
+
 export const properties = {
-  baseUrl: `${apiProtocol}://${serverAddress}:${port}`,
-  websocketUrl: `${websocketProtocol}://${serverAddress}:${port}${websocketUrl}`,
+    minimumServerVersion,
+    baseUrl: serverCookie,
+    websocketUrl: `${serverCookie}${websocketUrl}`,
 }
 export default properties

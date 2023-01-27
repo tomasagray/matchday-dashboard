@@ -3,4 +3,4 @@ export const JsonHeaders = {
     'Content-Type': 'application/json',
 }
 
-
+export const serverAddressCookie = '__Server-address'

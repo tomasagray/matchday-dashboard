@@ -19,6 +19,8 @@
   overflow: hidden;
   width: variables.$navigationSquare;
   height: 100vh;
+  position: fixed;
+  top: variables.$navigationSquare;
 }
 
 #Content-stage {
