@@ -1,18 +1,10 @@
 import React, {useEffect} from "react";
-import {
-  useFetchSettingsQuery,
-  useUpdateSettingsMutation
-} from "../../slices/api/settingsApiSlice";
+import {useFetchSettingsQuery, useUpdateSettingsMutation} from "../../slices/api/settingsApiSlice";
 import {getToastMessage} from "../../utils";
 import {toast} from "react-toastify";
 import {SaveButton} from "../../components/controls/SaveButton";
 import {useDispatch, useSelector} from "react-redux";
-import {
-  editSettings,
-  loadSettings,
-  selectEditedSettings,
-  selectUploadSettings
-} from "../../slices/settingsSlice";
+import {editSettings, loadSettings, selectEditedSettings, selectUploadSettings} from "../../slices/settingsSlice";
 import {ApplicationSetting} from "./ApplicationSetting";
 import {CenteredSpinner} from "../../components/Spinner";
 import {ErrorMessage} from "../../components/ErrorMessage";
@@ -174,16 +166,16 @@ export const Settings = () => {
                     </ErrorMessage>
           }
         </div>
-
         <br/>
         <div className="Settings-save-dialog">
           {
             JSON.stringify(settings) !== JSON.stringify(editedSettings) ?
-                <ResetButton onClick={onResetSettings} disabled={isInFlight}/>
-                :
+                <>
+                  <ResetButton onClick={onResetSettings} disabled={isInFlight}/>
+                  <SaveButton onClick={onSaveSettings} isLoading={isInFlight}/>
+                </> :
                 null
           }
-          <SaveButton onClick={onSaveSettings} isLoading={isInFlight}/>
         </div>
       </>
   );
