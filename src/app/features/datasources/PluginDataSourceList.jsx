@@ -1,23 +1,13 @@
 import React, {useEffect, useState} from 'react'
 import {useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {useAddDataSourceMutation} from "../../slices/api/dataSourceApiSlice";
 import {selectDataSourcePluginById} from "../../slices/dataSourcePluginSlice";
-import {
-    useGetAllDataSourcePluginsQuery
-} from "../../slices/api/dataSourcePluginApiSlice";
+import {useGetAllDataSourcePluginsQuery} from "../../slices/api/dataSourcePluginApiSlice";
 import {PluginId} from "../../components/PluginId";
 import {Spinner} from "../../components/Spinner";
-import Modal, {Body, Footer, Header} from "../../components/Modal";
-import {CancelButton} from "../../components/controls/CancelButton";
 import {AddDataSourceForm} from "./AddDataSourceForm";
-import {
-    clearNewDataSource,
-    selectIsNewDataSourceValid,
-    selectNewDataSource
-} from "../../slices/dataSourceSlice";
+import {clearNewDataSource} from "../../slices/dataSourceSlice";
 import {DataSourceList} from "./DataSourceList";
-import {SaveButton} from "../../components/controls/SaveButton";
 import {toast} from "react-toastify";
 import {getToastMessage} from "../../utils";
 
@@ -31,33 +21,12 @@ export const PluginDataSourceList = () => {
         dispatch(clearNewDataSource({}))
         setShowAddDataSourceModal(false)
     }
-    const onSaveNewDataSource = async () => {
-        // transform form data into DataSource
-        let dataSource = {
-            dataSourceId: null,
-            clazz: newDataSource.type.value,
-            title: newDataSource.title.value,
-            baseUri: newDataSource.baseUri.value,
-            pluginId: pluginId,
-            patternKits: [],
-        }
-        console.log('saving:', dataSource)
-        await addDataSource(dataSource)
-        dispatch(clearNewDataSource({}))
-        setShowAddDataSourceModal(false)
-    }
+
 
     const params = useParams()
     let {pluginId} = params
-    let newDataSource = useSelector(state => selectNewDataSource(state))
     let [showAddDataSourceModal, setShowAddDataSourceModal] = useState(false)
 
-    let [addDataSource, {
-        isLoading: isDataSourceSaving,
-        isSuccess: isDataSourceSaveSuccess,
-        isError: isSaveDataSourceError,
-        error: saveDataSourceError
-    }] = useAddDataSourceMutation()
     // ensure data is loaded into store
     let {
         isLoading: pluginLoading,
@@ -71,7 +40,6 @@ export const PluginDataSourceList = () => {
             return selectDataSourcePluginById(state, pluginId)
         }
     })
-    let isFormValid = useSelector(state => pluginSuccess && selectIsNewDataSourceValid(state))
 
 
     useEffect(() => {
@@ -79,17 +47,8 @@ export const PluginDataSourceList = () => {
             let msg = 'Error loading data source plugins: ' + getToastMessage(pluginError)
             toast.error(msg)
         }
-        if (isSaveDataSourceError) {
-            let msg = 'Could not save data source: ' + getToastMessage(saveDataSourceError)
-            toast.error(msg);
-        }
-        if (isDataSourceSaveSuccess) {
-            toast('DataSource was successfully uploaded')
-        }
-    },  [
-        isSaveDataSourceError,
-        saveDataSourceError,
-        isDataSourceSaveSuccess,
+
+    }, [
         isPluginError,
         pluginError
     ])
@@ -101,27 +60,15 @@ export const PluginDataSourceList = () => {
         pluginTitle = <h1>{plugin.title}</h1>
     }
     if (isDataFetching) {
-        pluginTitle = <Spinner size={32} text={''} />
+        pluginTitle = <Spinner size={'32px'} text={''}/>
     }
 
     return (
         <>
-            <Modal show={showAddDataSourceModal}>
-                <Header onHide={onHideAddDataSourceModal}>Add New Data Source</Header>
-                <Body>
-                    <AddDataSourceForm pluginId={pluginId} disabled={isDataSourceSaving} />
-                </Body>
-                <Footer>
-                    <CancelButton onClick={onHideAddDataSourceModal} disabled={isDataSourceSaving}>
-                        Discard
-                    </CancelButton>
-                    <SaveButton
-                        onClick={onSaveNewDataSource}
-                        disabled={!isFormValid || isDataSourceSaving}
-                        isLoading={isDataSourceSaving}
-                    />
-                </Footer>
-            </Modal>
+            <AddDataSourceForm
+                pluginId={pluginId}
+                onHide={onHideAddDataSourceModal}
+                isShown={showAddDataSourceModal}/>
             {
                 pluginSuccess ?
                     <>
