@@ -105,6 +105,11 @@ export const AddDataSourceForm = (props) => {
             <Modal show={isShown}>
                 <Header onHide={onHide}>Add New Data Source</Header>
                 <Body>
+                    <div className="Add-datasource-container">
+                        <div className="Add-datasource-header">
+
+                        </div>
+                    </div>
                     <form>
                         <table className={"Add-data-source-form"}>
                             <tbody>

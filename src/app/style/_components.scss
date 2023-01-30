@@ -420,3 +420,36 @@
     }
   }
 }
+
+.Toggle-group {
+  margin: 1rem 0;
+  border: variables.$lightBorder;
+  padding: 2rem;
+
+  .Toggle-group-header {
+    .Toggle-group-header-button {
+      background-color: colors.$defaultComponentBg;
+      border: none;
+      padding: 1rem 2rem;
+      color: colors.$mediumFontColor;
+
+      &.selected {
+        background-color: colors.$selectedCredential;
+
+        &:hover {
+          background-color: colors.$selectedCredentialHover;
+        }
+      }
+
+      &:hover {
+        background-color: colors.$credentialHover;
+        color: colors.$defaultFontColor;
+      }
+    }
+  }
+
+  .Toggle-group-display {
+    border: variables.$lightBorder;
+    padding: 1rem;
+  }
+}
