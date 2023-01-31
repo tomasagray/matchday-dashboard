@@ -1,9 +1,5 @@
 import {dataSourceTag} from "./api/apiSlice";
-import {
-  createEntityAdapter,
-  createSelector,
-  createSlice
-} from "@reduxjs/toolkit";
+import {createEntityAdapter, createSelector, createSlice} from "@reduxjs/toolkit";
 
 export const dataSourceAdapter = createEntityAdapter({
     selectId: dataSource => dataSource.dataSourceId
@@ -23,6 +19,10 @@ const initialNewDataSource = {
         value: "",
         valid: false,
     },
+    dataSourceJson: {
+        value: null,
+        valid: false,
+    }
 }
 
 const isFieldValid = (payload) => {
@@ -33,6 +33,8 @@ const isFieldValid = (payload) => {
             return payload.value !== '' && payload.value.length < 256
         case 'baseUri':
             return payload.value !== '' && /https?:\/\/\w+/.test(payload.value)
+        case 'dataSourceJson':
+            return payload.value !== null
         default:
             return false
     }
@@ -140,10 +142,14 @@ export const selectNewDataSource = createSelector(
 
 export const selectIsNewDataSourceValid = createSelector(
     selectNewDataSource,
-    newDataSource =>
-        Object.values(newDataSource)
-            .map(field => field.valid)
-            .reduce((isValid, fieldValid) => isValid && fieldValid)
+    newDataSource => {
+        return newDataSource.dataSourceJson.valid ||
+            (
+                newDataSource.type.valid &&
+                newDataSource.title.valid &&
+                newDataSource.baseUri.valid
+            )
+    }
 )
 
 export const selectPatternKitById = createSelector(

@@ -9,9 +9,14 @@ export const FileUploadButton = (props) => {
         ref.current.value = ''
     }
 
+    const onClearFile = (e) => {
+        e.preventDefault()
+        onClear && onClear(e)
+    }
+
     // state
     let {value, accept, onChange, onClear} = props
-    let clearButton = value ? <ClearButton onClick={onClear}/> : null
+    let clearButton = value ? <ClearButton onClick={onClearFile}/> : null
     const ref = useRef()
 
     return (

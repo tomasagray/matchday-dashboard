@@ -38,8 +38,7 @@ export const AddNewUserForm = (props) => {
         dispatch(newUserUpdated({field, value}))
         setCookieFileData(file)
     }
-    const onClearCookieFile = (e) => {
-        e.preventDefault()
+    const onClearCookieFile = () => {
         dispatch(newUserUpdated({field: 'cookieFile', value: {}}))
         setCookieFileData(new Blob())
     }

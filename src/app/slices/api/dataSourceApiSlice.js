@@ -1,11 +1,7 @@
 import {apiSlice, dataSourceTag} from "./apiSlice";
 import store from "../../store";
 import {JsonHeaders} from "../../constants";
-import {
-    allDataSourcesLoaded,
-    dataSourceAdapter,
-    dataSourcesLoaded
-} from "../dataSourceSlice";
+import {allDataSourcesLoaded, dataSourceAdapter, dataSourcesLoaded} from "../dataSourceSlice";
 
 let initialState = dataSourceAdapter.getInitialState()
 
@@ -20,11 +16,7 @@ export const dataSourceApiSlice = apiSlice.injectEndpoints({
                     store.dispatch(allDataSourcesLoaded(data_source))
                     return dataSourceAdapter.setAll(initialState, data_source)
                 },
-                providesTags: (result) =>
-                    result.ids.map(dataSourceId => ({
-                        type: dataSourceTag,
-                        id: dataSourceId
-                    }))
+                providesTags: [dataSourceTag],
             }),
             getDataSourcesForPlugin: builder.query({
                 query: (pluginId) => ({url: `/data-sources/plugin/${pluginId}`}),
@@ -38,11 +30,7 @@ export const dataSourceApiSlice = apiSlice.injectEndpoints({
                         }
                     }
                 },
-                providesTags: (result) =>
-                    result?.ids?.map(dataSourceId => ({
-                        type: dataSourceTag,
-                        id: dataSourceId
-                    })) ?? []
+                providesTags: [dataSourceTag],
             }),
             addDataSource: builder.mutation({
                 query: (dataSource) => ({
@@ -51,7 +39,7 @@ export const dataSourceApiSlice = apiSlice.injectEndpoints({
                     headers: JsonHeaders,
                     body: dataSource,
                 }),
-                invalidatesTags: [dataSourceTag]
+                invalidatesTags: [dataSourceTag],
             }),
             updateDataSource: builder.mutation({
                 query: dataSource => ({

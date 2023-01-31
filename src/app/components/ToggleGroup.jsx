@@ -17,7 +17,7 @@ const ToggleButton = (props) => {
     )
 }
 
-export const ToggleGroupHeader = (props) => {
+const ToggleGroupHeader = (props) => {
     return (
         <div className={"Toggle-group-header"}>
             {props.children}
