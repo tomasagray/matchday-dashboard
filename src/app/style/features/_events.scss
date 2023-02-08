@@ -221,6 +221,15 @@ $posterHeight: calc($posterWidth / (16 / 9));
         visibility: hidden;
       }
 
+      .Error-modal-button {
+        color: red;
+        padding: .5rem;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+
       &:hover {
         .Video-file-url,
         .Video-file-controls-container {
@@ -416,6 +425,28 @@ $posterHeight: calc($posterWidth / (16 / 9));
       &.selected {
         @include selected;
       }
+    }
+  }
+}
+
+.Error-message-table {
+  $errorTblBorder: 1px solid colors.$darkBorder;
+  border-collapse: collapse;
+
+  td {
+    padding: 1rem;
+
+    &:first-child {
+      border-right: $errorTblBorder;
+      font-weight: bold;
+      color: colors.$mediumFontColor;
+      vertical-align: top;
+    }
+  }
+
+  tr:not(:last-child) {
+    td {
+      border-bottom: $errorTblBorder;
     }
   }
 }

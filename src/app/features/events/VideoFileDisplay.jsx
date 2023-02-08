@@ -2,13 +2,11 @@ import React, {useEffect, useState} from "react";
 import {StatusBubble} from "../../components/StatusBubble";
 import {useStompClient, useSubscription} from "react-stomp-hooks";
 import {JobStatus} from "../../slices/videoSourceSlice";
-import {
-  useDeleteStreamMutation,
-  useKillStreamMutation
-} from "../../slices/api/videoSourceApiSlice";
+import {useDeleteStreamMutation, useKillStreamMutation} from "../../slices/api/videoSourceApiSlice";
 import {toast} from "react-toastify";
 import {getToastMessage} from "../../utils";
 import {SmallSpinner} from "../../components/Spinner";
+import {VideoStreamingErrorDisplay} from "./VideoStreamingErrorDisplay";
 
 export const VideoFileDisplay = (props) => {
 
@@ -23,6 +21,12 @@ export const VideoFileDisplay = (props) => {
         await deleteStream({eventId, videoFileId})
         console.log('done deleting data')
     }
+    const onShowErrorModal = () => {
+        setErrorModalShown(true)
+    }
+    const onHideErrorModal = () => {
+        setErrorModalShown(false)
+    }
 
     // state
     let {
@@ -30,9 +34,10 @@ export const VideoFileDisplay = (props) => {
         eventId,
         onUpdateStream,
         onStartStream,
-     } = props
+    } = props
     let {videoFileId} = videoFile
     const [streamStatus, setStreamStatus] = useState({})
+    const [isErrorModalShown, setErrorModalShown] = useState(false)
 
     // hooks
     useSubscription('/status/video-stream', (msg) => {
@@ -95,7 +100,7 @@ export const VideoFileDisplay = (props) => {
                 isKillingStream || isDeletingStream ?
                     <SmallSpinner
                         size={'23px'}
-                        style={{margin: '.25rem 1.5rem .25rem .5rem', width: '23px'}} /> :
+                        style={{margin: '.25rem 1.5rem .25rem .5rem', width: '23px'}}/> :
                     <StatusBubble
                         progress={streamStatus['completionRatio']}
                         status={streamStatus['status']}
@@ -109,14 +114,14 @@ export const VideoFileDisplay = (props) => {
                         {
                             videoStreamStatus <= JobStatus['CREATED'] ?
                                 <button onClick={() => onStartStream(videoFileId)}>
-                                    <img src={'/img/icon/download/download_16.png'} alt="Begin streaming" />
+                                    <img src={'/img/icon/download/download_16.png'} alt="Begin streaming"/>
                                 </button> :
                                 null
                         }
                         {
                             videoStreamStatus === JobStatus['BUFFERING'] || videoStreamStatus === JobStatus['STREAMING'] ?
                                 <button onClick={() => onStopStream(videoFileId)}>
-                                    <img src={'/img/icon/stop/stop_16.png'} alt="Stop streaming" />
+                                    <img src={'/img/icon/stop/stop_16.png'} alt="Stop streaming"/>
                                 </button> :
                                 null
                         }
@@ -124,15 +129,26 @@ export const VideoFileDisplay = (props) => {
                             videoStreamStatus === JobStatus['ERROR'] ||
                             videoStreamStatus === JobStatus['STOPPED'] ||
                             videoStreamStatus === JobStatus['COMPLETED'] ?
-                                <button onClick={() => onDeleteStream(videoFileId)} className="Video-source-extra-control delete">
-                                    <img src={'/img/icon/delete/delete_16.png'} alt="Delete stream" />
+                                <button onClick={() => onDeleteStream(videoFileId)}
+                                        className="Video-source-extra-control delete">
+                                    <img src={'/img/icon/delete/delete_16.png'} alt="Delete stream"/>
                                 </button> :
                                 null
                         }
                     </div>
                 </div>
-                <span className="Video-file-url">{videoFile['externalUrl']}</span>
+                {
+                    videoStreamStatus === JobStatus['ERROR'] ?
+                        <button className="Error-modal-button" onClick={onShowErrorModal}>
+                            Show error details
+                        </button> :
+                        <span className="Video-file-url">{videoFile['externalUrl']}</span>
+                }
             </div>
+            <VideoStreamingErrorDisplay
+                isShown={isErrorModalShown}
+                onHide={onHideErrorModal}
+                error={streamStatus.error}/>
         </div>
     );
 }
