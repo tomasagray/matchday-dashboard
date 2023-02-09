@@ -29,7 +29,7 @@ export const VideoStreamingErrorDisplay = (props) => {
                         </tr>
                         <tr>
                             <td>stacktrace</td>
-                            <td>
+                            <td className="Stacktrace-display">
                                 {
                                     error?.stackTrace.length > 0 ?
                                         <pre> {

@@ -449,4 +449,13 @@ $posterHeight: calc($posterWidth / (16 / 9));
       border-bottom: $errorTblBorder;
     }
   }
+
+  .Stacktrace-display {
+    margin: 1rem;
+    display: flex;
+    overflow: scroll;
+    box-sizing: border-box;
+    max-height: 25vh;
+    max-width: 100%;
+  }
 }
