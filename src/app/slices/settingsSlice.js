@@ -9,6 +9,7 @@ const editedSettings = {
   timestamp: '',
   videoExpiredDays: 0,
   videoStorageLocation: '',
+  backupLocation: '',
 }
 
 export const settingsSlice = createSlice({

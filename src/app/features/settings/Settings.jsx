@@ -40,6 +40,11 @@ export const Settings = () => {
     dispatch(
         editSettings({field: 'videoStorageLocation', value: e.target.value}))
   }
+  const onUpdateBackupLocation = e => {
+    dispatch(
+        editSettings({field: 'backupLocation', value: e.target.value})
+    )
+  }
   const onResetSettings = () => {
     dispatch(loadSettings({settings}))
   }
@@ -159,6 +164,13 @@ export const Settings = () => {
                             original={settings['videoStorageLocation']}
                             current={editedSettings['videoStorageLocation']}
                             onChange={onUpdateVideoLocation}/>
+                        <ApplicationSetting
+                            type="text"
+                            title="Backup Location"
+                            disabled={isInFlight}
+                            original={settings['backupLocation']}
+                            current={editedSettings['backupLocation']}
+                            onChange={onUpdateBackupLocation}/>
                       </div>
                     </> :
                     <ErrorMessage>
