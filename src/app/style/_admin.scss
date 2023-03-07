@@ -1,0 +1,104 @@
+@use "colors";
+@use "fonts";
+@use "variables";
+
+.App-settings-group {
+  display: flex;
+  flex-direction: column;
+  margin: 1.5rem 0;
+  padding: 2rem;
+  border: 1px solid colors.$border;
+  border-radius: .75rem;
+  max-width: 400px;
+  min-width: 250px;
+
+  .App-setting-container {
+    padding: 1rem 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+
+    label {
+      margin-bottom: .5rem;
+    }
+  }
+}
+
+.Settings-save-dialog {
+  $spacing: calc(#{variables.$navigationSquare} * 2);
+  position: fixed;
+  top: $spacing;
+  right: $spacing;
+  display: flex;
+}
+
+.Settings-input {
+  font-family: fonts.$technical;
+
+  &.modified {
+    border-color: colors.$highlight;
+  }
+}
+
+.About-table {
+
+  td {
+    padding: 1rem 0;
+
+    &:nth-of-type(even) {
+      color: #aaa;
+    }
+  }
+}
+
+.Sanity-report-display {
+  padding-top: 2rem;
+  padding-bottom: variables.$navigationSquare;
+
+  .Dangling-entry-display {
+    display: none;
+    flex-wrap: wrap;
+    position: relative;
+
+    &.displayed {
+      display: flex;
+    }
+
+    .Dangling-entry {
+      color: colors.$darkFontColor;
+      background-color: colors.$darkTransparent;
+      border: 1px solid colors.$darkBorder;
+      padding: .5rem .25rem;
+      margin: 0;
+      font-size: small;
+    }
+
+    .Floating-copy-button {
+      position: fixed;
+      right: variables.$navigationSquare;
+      background-color: colors.$darkTransparent;
+      padding: 1.5rem;
+      border-radius: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 32px;
+      height: 32px;
+    }
+  }
+}
+
+.Accordion-button {
+  display: block;
+  padding: 1rem;
+  margin: .5rem 0;
+  color: colors.$lightFontColor;
+  text-align: left;
+  font-size: medium;
+  width: 100%;
+  border-radius: 5px;
+
+  &:hover {
+    background-color: rgba(180, 180, 180, .2);
+  }
+}

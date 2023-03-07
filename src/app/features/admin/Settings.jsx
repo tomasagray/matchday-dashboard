@@ -1,5 +1,5 @@
 import React, {useEffect} from "react";
-import {useFetchSettingsQuery, useUpdateSettingsMutation} from "../../slices/api/settingsApiSlice";
+import {useFetchSettingsQuery, useUpdateSettingsMutation} from "../../slices/api/adminApiSlice";
 import {getToastMessage} from "../../utils";
 import {toast} from "react-toastify";
 import {SaveButton} from "../../components/controls/SaveButton";
@@ -49,7 +49,7 @@ export const Settings = () => {
     dispatch(loadSettings({settings}))
   }
   const onSaveSettings = async () => {
-    console.log('updating settings...')
+      console.log('updating admin...')
     let updated = await updateSettings(uploadSettings)
     dispatch(loadSettings({updated}))
     console.log('done updating')
@@ -79,16 +79,16 @@ export const Settings = () => {
   // toast messages
   useEffect(() => {
     if (isError) {
-      let msg = 'Error loading settings: ' + getToastMessage(error)
+        let msg = 'Error loading admin: ' + getToastMessage(error)
       toast.error(msg)
     }
     if (isUpdateError) {
-      let msg = 'Error updating settings: ' + getToastMessage(updateError)
+        let msg = 'Error updating admin: ' + getToastMessage(updateError)
       toast.error(msg)
     }
     if (isUpdateSuccess) {
-      toast('Settings updated successfully')
-      console.log('updated settings', updatedSettings)
+        toast('Settings updated successfully')
+        console.log('updated admin', updatedSettings)
     }
     if (isSuccess) {
       dispatch(loadSettings({settings}))

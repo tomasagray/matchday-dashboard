@@ -1,8 +1,21 @@
-import UserMenu from "./UserMenu";
 import {Link} from "react-router-dom";
+import React, {useState} from "react";
+import {FloatingMenu} from "../components/FloatingMenu";
+import {MenuItem} from "../components/MenuItem";
 
 export const HeaderNav = () => {
+
     let PLACEHOLDER_IMG = process.env.PUBLIC_URL + '/img/_tmp.png';  // todo: create Matchday logo, use
+
+    const setAdminMenuVisible = (e) => {
+        e.preventDefault()
+        setIsMenuHidden(false)
+    }
+    const setAdminMenuHidden = () => {
+        setIsMenuHidden(true)
+    }
+
+    let [isMenuHidden, setIsMenuHidden] = useState(true)
 
     return (
         <header className="App-header">
@@ -26,13 +39,6 @@ export const HeaderNav = () => {
                 <div className="Admin-nav-menu-wrapper">
                     <ul className="Admin-nav-menu">
                         <li>
-                            <Link to="/settings">
-                                <button className="Nav-link">
-                                    <img src={process.env.PUBLIC_URL + '/img/icon/config/config_64.png'} alt="Config"/>
-                                </button>
-                            </Link>
-                        </li>
-                        <li>
                             <Link to="/alerts">
                                 <button className="Nav-link">
                                     <img src={process.env.PUBLIC_URL + '/img/icon/alerts/alerts_64.png'} alt="Alerts"/>
@@ -40,7 +46,27 @@ export const HeaderNav = () => {
                             </Link>
                         </li>
                         <li>
-                            <UserMenu/>
+                            <button onClick={setAdminMenuVisible} className="Nav-link">
+                                <img src={process.env.PUBLIC_URL + '/img/icon/avatar/avatar_64.png'} alt="User menu"/>
+                            </button>
+                            <FloatingMenu
+                                className='User-menu-wrapper'
+                                hidden={isMenuHidden}
+                                onClickOutside={setAdminMenuHidden}>
+                                <Link to="/settings">
+                                    <MenuItem onClick={setAdminMenuHidden}>Settings</MenuItem>
+                                </Link>
+                                <Link to="/sanity-report">
+                                    <MenuItem onClick={setAdminMenuHidden}>Sanity Report</MenuItem>
+                                </Link>
+                                <Link to="/backup">
+                                    <MenuItem onClick={setAdminMenuHidden}>Backup</MenuItem>
+                                </Link>
+                                <Link to="/about">
+                                    <MenuItem onClick={setAdminMenuHidden}>About</MenuItem>
+                                </Link>
+                                <MenuItem>Sign out</MenuItem>
+                            </FloatingMenu>
                         </li>
                     </ul>
                 </div>

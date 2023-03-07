@@ -17,7 +17,7 @@ $searchToolAnimationDuration: .4s;
     flex-direction: row;
     justify-content: space-between;
 
-    div {
+    & > div {
       display: flex;
       flex-direction: row;
       align-items: center;
@@ -119,7 +119,7 @@ $searchToolAnimationDuration: .4s;
         overflow: hidden;
         margin-right: variables.$navMenuHeight;
 
-        li {
+        & > li {
           height: variables.$navigationSquare;
           width: variables.$navigationSquare;
           display: flex;
@@ -152,12 +152,21 @@ $searchToolAnimationDuration: .4s;
         .User-menu-wrapper {
           position: fixed;
           top: variables.$navigationSquare;
+          right: calc(#{variables.$navigationSquare} / 2);
           background-color: colors.$navBackgroundColor;
           box-shadow: -2px 3px 3px colors.$shadow;
 
-          .User-menu {
-            list-style: none;
+          a {
+            text-decoration: none;
+          }
 
+          .Menu-item {
+            font-size: medium;
+            padding: .5rem 2rem;
+
+            &:hover {
+              background-color: colors.$darkTransparent;
+            }
           }
         }
       }

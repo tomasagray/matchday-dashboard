@@ -1,7 +1,7 @@
 import {apiSlice, settingsTag} from "./apiSlice";
 import {JsonHeaders} from "../../constants";
 
-export const settingsApiSlice = apiSlice.injectEndpoints({
+export const adminApiSlice = apiSlice.injectEndpoints({
   endpoints: builder => {
     return ({
       fetchSettings: builder.query({
@@ -17,6 +17,15 @@ export const settingsApiSlice = apiSlice.injectEndpoints({
         }),
         invalidatesTags: [settingsTag],
       }),
+      appInfo: builder.query({
+        query: () => '/info',
+      }),
+      generateSanityReport: builder.mutation({
+        query: () => ({
+          url: '/sanity-report/generate/json',
+          method: 'GET',
+        }),
+      }),
     })
   }
 })
@@ -24,4 +33,6 @@ export const settingsApiSlice = apiSlice.injectEndpoints({
 export const {
   useFetchSettingsQuery,
   useUpdateSettingsMutation,
-} = settingsApiSlice
+  useAppInfoQuery,
+  useGenerateSanityReportMutation,
+} = adminApiSlice
