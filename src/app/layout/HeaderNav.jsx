@@ -2,6 +2,10 @@ import {Link} from "react-router-dom";
 import React, {useState} from "react";
 import {FloatingMenu} from "../components/FloatingMenu";
 import {MenuItem} from "../components/MenuItem";
+import Modal, {Footer, Header} from "../components/Modal";
+import {CancelButton} from "../components/controls/CancelButton";
+import Cookies from "universal-cookie/es6";
+import {serverAddressCookie} from "../constants";
 
 export const HeaderNav = () => {
 
@@ -14,8 +18,19 @@ export const HeaderNav = () => {
     const setAdminMenuHidden = () => {
         setIsMenuHidden(true)
     }
+    const onShowLogoutModal = () => {
+        setAdminMenuHidden()
+        setIsLogoutModalShown(true)
+    }
+    const onLogout = () => {
+        cookies.remove(serverAddressCookie)
+        setIsLogoutModalShown(false)
+        window.location = '/login'
+    }
 
+    let cookies = new Cookies()
     let [isMenuHidden, setIsMenuHidden] = useState(true)
+    let [isLogoutModalShown, setIsLogoutModalShown] = useState(false)
 
     return (
         <header className="App-header">
@@ -65,12 +80,25 @@ export const HeaderNav = () => {
                                 <Link to="/about">
                                     <MenuItem onClick={setAdminMenuHidden}>About</MenuItem>
                                 </Link>
-                                <MenuItem>Sign out</MenuItem>
+                                <MenuItem onClick={onShowLogoutModal}>
+                                    Sign out
+                                </MenuItem>
                             </FloatingMenu>
                         </li>
                     </ul>
                 </div>
             </nav>
+            <Modal show={isLogoutModalShown}>
+                <Header onHide={() => setIsLogoutModalShown(false)}>
+                    Sign out?
+                </Header>
+                <Footer>
+                    <CancelButton onClick={() => setIsLogoutModalShown(false)}/>
+                    <button className="Small-button" onClick={onLogout}>
+                        Sign out
+                    </button>
+                </Footer>
+            </Modal>
         </header>
     )
 }
