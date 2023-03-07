@@ -10,6 +10,28 @@ export const compareVersions = (v1, v2) => {
     return v1.localeCompare(v2, undefined, {numeric: true, sensitivity: 'base'})
 }
 
+export const copyToClipboard = (txt) => {
+
+    if (navigator.clipboard && window.isSecureContext) {
+        return navigator.clipboard.writeText(txt)
+    } else {
+        // non-SSL
+        let textArea = document.createElement('textarea')
+        textArea.value = txt
+        // make the textarea out of viewport
+        textArea.style.position = 'fixed'
+        textArea.style.left = '-999999px'
+        textArea.style.top = '-999999px'
+        document.body.appendChild(textArea)
+        textArea.focus()
+        textArea.select()
+        return new Promise((res, rej) => {
+            document.execCommand('copy') ? res() : rej()
+            textArea.remove()
+        })
+    }
+}
+
 export const createEnum = (values) => {
     const enumObject = {}
     for (let i = 0; i < values.length; i++) {
