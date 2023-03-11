@@ -28,7 +28,6 @@ export const adminApiSlice = apiSlice.injectEndpoints({
       }),
       getAllRestorePoints: builder.query({
         query: () => '/system/restore-points/all',
-        providesTags: [restorePointTag],
         transformResponse: response => {
           let {_embedded: embedded} = response
           if (embedded) {
@@ -36,7 +35,8 @@ export const adminApiSlice = apiSlice.injectEndpoints({
             return restore_points
           }
           return []
-        }
+        },
+        providesTags: [restorePointTag],
       }),
       createRestorePoint: builder.mutation({
         query: () => ({
@@ -54,6 +54,13 @@ export const adminApiSlice = apiSlice.injectEndpoints({
         }),
         invalidatesTags: [restorePointTag],
       }),
+      deleteRestorePoint: builder.mutation({
+        query: (restorePointId) => ({
+          url: `/system/restore-points/${restorePointId}/delete`,
+          method: 'DELETE',
+        }),
+        invalidatesTags: [restorePointTag],
+      }),
     })
   }
 })
@@ -66,4 +73,5 @@ export const {
   useGetAllRestorePointsQuery,
   useCreateRestorePointMutation,
   useRestoreSystemMutation,
+  useDeleteRestorePointMutation,
 } = adminApiSlice

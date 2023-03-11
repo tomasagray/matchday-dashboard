@@ -8,31 +8,20 @@ import {
     selectDataSourceById,
 } from "../../slices/dataSourceSlice";
 import {useDispatch, useSelector} from "react-redux";
-import {
-    getClassName,
-    getDownloadableJson,
-    getToastMessage,
-    isValidUrl,
-    isValidUuid
-} from "../../utils";
+import {getClassName, getDownloadableJson, getToastMessage, isValidUrl, isValidUuid} from "../../utils";
 import {InfoMessage} from "../../components/InfoMessage";
 import {PatternKitDisplay} from "./PatternKitDisplay";
 import Modal, {Body, Footer, Header} from "../../components/Modal";
 import {CancelButton} from "../../components/controls/CancelButton";
 import {OKButton} from "../../components/controls/OKButton";
-import {
-    useDeleteDataSourceMutation,
-    useUpdateDataSourceMutation
-} from "../../slices/api/dataSourceApiSlice";
+import {useDeleteDataSourceMutation, useUpdateDataSourceMutation} from "../../slices/api/dataSourceApiSlice";
 import {AddPatternKitForm} from "./AddPatternKitForm";
 import {
     clearNewPatternKit,
     selectIsNewPatternKitValid,
     selectNewPatternKitForUpload
 } from "../../slices/patternKitSlice";
-import {
-    useGetTemplateForTypeQuery
-} from "../../slices/api/patternKitTemplateApiSlice";
+import {useGetTemplateForTypeQuery} from "../../slices/api/patternKitTemplateApiSlice";
 import {FloatingMenu} from "../../components/FloatingMenu";
 import {MenuItem} from "../../components/MenuItem";
 import {SaveButton} from "../../components/controls/SaveButton";
@@ -190,8 +179,8 @@ export const DataSourceDisplay = (props) => {
     }
     const onExportDataSource = () => {
         const a = document.createElement('a')
-        a.href = getDownloadableJson(dataSource)
         const filename = `data-source_${dataSourceId}.json`
+        a.setAttribute('href', getDownloadableJson(dataSource))
         a.setAttribute('download', filename)
         a.click()
         setEditMenuHidden(true)
