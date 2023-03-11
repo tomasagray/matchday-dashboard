@@ -11,6 +11,7 @@ export const dataSourceTag = 'DataSource'
 export const dataSourcePluginTag = 'DataSourcePlugin'
 export const fileServerPluginTag = 'FileServerPlugin'
 export const fileServerUserTag = 'FileServerUser'
+export const restorePointTag = 'RestorePoint'
 export const settingsTag = 'Settings'
 export const teamTag = 'Team'
 export const videoSourceTag = 'VideoSource'
@@ -25,7 +26,10 @@ export const apiSlice = createApi({
         dataSourcePluginTag,
         fileServerPluginTag,
         fileServerUserTag,
-        teamTag
+        restorePointTag,
+        settingsTag,
+        teamTag,
+        videoSourceTag,
     ],
     endpoints: () => ({})
 })

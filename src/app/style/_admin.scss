@@ -88,6 +88,57 @@
   }
 }
 
+.Database-table-container {
+  width: 100%;
+  max-height: 75vh;
+  overflow-x: auto;
+  margin-bottom: 1rem;
+
+  .Database-table {
+    font-family: fonts.$technical;
+    font-size: small;
+    color: colors.$mediumFontColor;
+    border-collapse: collapse;
+    margin-bottom: 1rem;
+
+    th {
+      text-align: start;
+      border: 1px solid colors.$darkBorder;
+      background-color: colors.$lessDarkTransparent;
+      padding: .25rem .5rem;
+    }
+
+    td {
+      padding: .25rem .5rem;
+      background-color: colors.$darkTransparent;
+      border: 1px solid colors.$border;
+    }
+
+    tr {
+      &.selected {
+        background-color: rgba(120, 120, 120, .4);
+      }
+
+      &:hover {
+        cursor: pointer;
+
+        td {
+          background-color: colors.$lessDarkTransparent;
+        }
+      }
+    }
+  }
+}
+
+.Restore-button-container {
+  display: flex;
+
+  .Small-button {
+    margin: 0;
+  }
+}
+
+// TODO - move to more general location
 .Accordion-button {
   display: block;
   padding: 1rem;

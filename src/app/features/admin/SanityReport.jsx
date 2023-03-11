@@ -18,8 +18,8 @@ export const SanityReport = (props) => {
     const onTogglePlaylistsDisplayed = () => {
         setIsPlaylistsDisplayed(!isPlaylistsDisplayed)
     }
-    const onCopyEntries = async (entries) => {
-        let formatted = entries.map(entry => entry + "\n").reduce((a, b) => a + b)
+    const onCopyEntries = async (entries, joiner = "\n") => {
+        let formatted = entries.reduce((a, b) => a + joiner + b)
         copyToClipboard(formatted)
             .then(() => toast('Copied data to clipboard', {autoClose: 1000}))
             .catch(err => console.error('ERROR copying text to clipboard', err))
@@ -53,14 +53,40 @@ export const SanityReport = (props) => {
                     {
                         artwork['danglingDbEntries'].length > 0 ?
                             <>
-                                {
-                                    artwork['danglingDbEntries'].map(entry =>
-                                        <span key={entry} className="Dangling-entry">{entry}</span>
-                                    )
-                                }
+                                <div className="Database-table-container">
+                                    <table className="Database-table">
+                                        <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>File</th>
+                                            <th>Filesize</th>
+                                            <th>Media type</th>
+                                            <th>Width</th>
+                                            <th>Height</th>
+                                            <th>Created</th>
+                                            <th>Modified</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {
+                                            artwork['danglingDbEntries'].map(entry =>
+                                                <tr key={entry.id}>
+                                                    {
+                                                        Object.values(entry).map(value =>
+                                                            <td key={entry.id + value}>{value}</td>
+                                                        )
+                                                    }
+                                                </tr>
+                                            )
+                                        }
+                                        </tbody>
+                                    </table>
+                                </div>
                                 <button
                                     className="Floating-copy-button"
-                                    onClick={() => onCopyEntries(artwork['danglingDbEntries'])}>
+                                    onClick={
+                                        () => onCopyEntries(artwork['danglingDbEntries'].map(entry => entry.id), ", ")
+                                    }>
                                     <img src="/img/icon/copy/copy_16.png" alt="Copy"/>
                                 </button>
                             </> :
@@ -106,7 +132,7 @@ export const SanityReport = (props) => {
                             <>
                                 {
                                     video['danglingStreamLocators'].map(locator =>
-                                        <span key={locator} className="Dangling-entry">{locator}</span>
+                                        <span key={locator.id} className="Dangling-entry">{locator}</span>
                                     )
                                 }
                                 <button

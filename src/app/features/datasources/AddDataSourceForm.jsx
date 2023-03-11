@@ -52,7 +52,7 @@ export const AddDataSourceForm = (props) => {
         // transform form data into DataSource
         if (jsonData.size > 0) {
             let dataSource = await getJsonFileData()
-            console.log('saving:', JSON.stringify(dataSource))
+            console.log('saving:', dataSource.dataSourceId)
             await addDataSource(dataSource)
         } else {
             let dataSource = getFormData()
