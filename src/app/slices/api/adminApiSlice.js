@@ -1,4 +1,4 @@
-import {apiSlice, restorePointTag, settingsTag} from "./apiSlice";
+import {apiSlice, restorePointTag, settingsTag, tagTypes} from "./apiSlice";
 import {JsonHeaders} from "../../constants";
 
 export const adminApiSlice = apiSlice.injectEndpoints({
@@ -61,6 +61,18 @@ export const adminApiSlice = apiSlice.injectEndpoints({
         }),
         invalidatesTags: [restorePointTag],
       }),
+      dehydrateSystem: builder.query({
+        query: () => '/system/dehydrate'
+      }),
+      rehydrateSystem: builder.mutation({
+        query: (systemImage) => ({
+          url: '/system/rehydrate',
+          method: 'POST',
+          headers: JsonHeaders,
+          body: systemImage,
+        }),
+        invalidatesTags: [tagTypes],  // all tags
+      })
     })
   }
 })
@@ -74,4 +86,6 @@ export const {
   useCreateRestorePointMutation,
   useRestoreSystemMutation,
   useDeleteRestorePointMutation,
+  useLazyDehydrateSystemQuery,
+  useRehydrateSystemMutation,
 } = adminApiSlice

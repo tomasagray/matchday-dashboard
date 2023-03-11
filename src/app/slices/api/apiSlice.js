@@ -16,20 +16,22 @@ export const settingsTag = 'Settings'
 export const teamTag = 'Team'
 export const videoSourceTag = 'VideoSource'
 
+export const tagTypes = [
+    artworkTag,
+    eventTag,
+    competitionTag,
+    dataSourceTag,
+    dataSourcePluginTag,
+    fileServerPluginTag,
+    fileServerUserTag,
+    restorePointTag,
+    settingsTag,
+    teamTag,
+    videoSourceTag,
+]
+
 export const apiSlice = createApi({
     baseQuery: fetchBaseQuery({baseUrl}),
-    tagTypes: [
-        artworkTag,
-        eventTag,
-        competitionTag,
-        dataSourceTag,
-        dataSourcePluginTag,
-        fileServerPluginTag,
-        fileServerUserTag,
-        restorePointTag,
-        settingsTag,
-        teamTag,
-        videoSourceTag,
-    ],
+    tagTypes,
     endpoints: () => ({})
 })
