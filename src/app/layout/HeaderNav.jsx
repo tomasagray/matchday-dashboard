@@ -9,7 +9,7 @@ import {serverAddressCookie} from "../constants";
 
 export const HeaderNav = () => {
 
-    let PLACEHOLDER_IMG = process.env.PUBLIC_URL + '/img/_tmp.png';  // todo: create Matchday logo, use
+    const LOGO = process.env.PUBLIC_URL + '/img/logo/logo_64.png'
 
     const setAdminMenuVisible = (e) => {
         e.preventDefault()
@@ -38,7 +38,7 @@ export const HeaderNav = () => {
                 <div className="Home-wrapper">
                     <Link to="/">
                         <button className="Home-button Nav-link">
-                            <img src={PLACEHOLDER_IMG} alt="Matchday Dashboard" className="Home-button-img"
+                            <img src={LOGO} alt="Matchday Dashboard" className="Home-button-img"
                                  id="home-button"/>
                         </button>
                     </Link>

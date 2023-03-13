@@ -21,7 +21,11 @@ export const LoginPage = () => {
     return (
         <div className="Login-container">
             <div className="Login-form-container">
-                <img src={process.env.PUBLIC_URL + '/img/logo192.png'} alt="Matchday"/>
+                <img
+                    width={512}
+                    src={process.env.PUBLIC_URL + '/img/title/title_1024.png'}
+                    alt="Matchday"
+                />
                 <div className="Login-form">
                     {
                         serverCookie ?
