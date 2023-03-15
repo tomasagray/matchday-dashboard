@@ -10,12 +10,13 @@ import {SmallSpinner} from "../../components/Spinner";
 export const CountrySelect = (props) => {
 
     // handlers
-    const onSelectCountry = (e, country) => {
+    const onSelectCountry = (e, name) => {
+        let country = countries.find(country => country['name'] === name)
         onSelect && onSelect(country)
     }
 
     // state
-    let { selected, onSelect} = props
+    let {selected, onSelect} = props
 
     // hooks
     let {
@@ -36,20 +37,23 @@ export const CountrySelect = (props) => {
 
     return (
         isCountriesLoading ?
-            <SmallSpinner /> :
+            <SmallSpinner/> :
             isCountriesSuccess ?
-            <Select onChange={onSelectCountry} placeholder="No country set" selectedValue={selected}>
-                {
-                    countries.map(country => {
-                        let {name, _links} = country
-                        return (
-                            <Option value={name} key={name}>
-                                <CountryTile name={name} flag={_links.flag.href} />
-                            </Option>
-                        )
-                    })
-                }
-            </Select> :
-            null
+                <Select
+                    onChange={onSelectCountry}
+                    placeholder="No country set"
+                    selectedValue={selected?.name}>
+                    {
+                        countries.map(country => {
+                            let {name, _links: links} = country
+                            return (
+                                <Option value={name} key={name}>
+                                    <CountryTile name={name} flag={links.flag.href}/>
+                                </Option>
+                            )
+                        })
+                    }
+                </Select> :
+                null
     )
 }

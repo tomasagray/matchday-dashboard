@@ -1,8 +1,4 @@
-import {
-    createEntityAdapter,
-    createSelector,
-    createSlice
-} from "@reduxjs/toolkit";
+import {createEntityAdapter, createSelector, createSlice} from "@reduxjs/toolkit";
 import {formatArtworkData, updateSelectedArtwork} from "../utils";
 
 export const teamAdapter = createEntityAdapter()
@@ -56,7 +52,7 @@ export const teamSlice = createSlice({
                     ...state.editedTeam,
                     id,
                     name,
-                    country: country?.name,
+                    country,
                     colors,
                     emblem: formatArtworkData(emblem),
                     fanart: formatArtworkData(fanart)

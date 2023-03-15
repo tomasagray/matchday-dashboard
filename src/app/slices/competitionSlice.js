@@ -33,7 +33,7 @@ export const competitionSlice = createSlice({
                     ...state.editedCompetition,
                     id,
                     name,
-                    country: country?.name,
+                    country,
                     emblem: formatArtworkData(emblem),
                     fanart: formatArtworkData(fanart),
                 },
