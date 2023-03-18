@@ -41,12 +41,14 @@
 }
 
 .About-table {
+  display: flex;
 
   td {
-    padding: 1rem 0;
+    padding: .5rem 3rem .5rem 0;
 
     &:nth-of-type(even) {
-      color: #aaa;
+      color: #777;
+      padding-left: 1rem;
     }
   }
 }
