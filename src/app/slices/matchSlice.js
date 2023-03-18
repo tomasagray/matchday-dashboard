@@ -55,24 +55,5 @@ export const selectEditedMatch = createSelector(
 
 export const selectEditedMatchForUpload = createSelector(
     selectEditedMatch,
-    editedMatch => {
-        if (editedMatch === null) {
-            return null
-        }
-        return {
-            ...editedMatch,
-            competition: {
-                ...editedMatch.competition,
-                country: editedMatch.competition.country?.name,
-            },
-            homeTeam: {
-                ...editedMatch.homeTeam,
-                country: editedMatch.homeTeam.country?.name,
-            },
-            awayTeam: {
-                ...editedMatch.awayTeam,
-                country: editedMatch.awayTeam.country?.name,
-            },
-        }
-    }
+    editedMatch => editedMatch,
 )

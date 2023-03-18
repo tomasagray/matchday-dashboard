@@ -23,8 +23,9 @@ export const GeneralEditor = (props) => {
     } = props
 
     // components
+    console.log('synonyms', synonyms)
     let synonymTags = synonyms?.map(synonym =>
-        <Tag key={synonym.name} onDelete={onDeleteSynonym}>
+        <Tag key={synonym.id + synonym.name} onDelete={() => onDeleteSynonym(synonym)}>
             {synonym.name}
         </Tag>
     )

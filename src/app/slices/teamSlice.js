@@ -90,7 +90,8 @@ export const teamSlice = createSlice({
             let {payload} = action
             let {synonym} = payload
             // check for presence of synonym
-            if (state.editedTeam.name.synonyms.includes(synonym)) {
+            let names = state.editedTeam.name.synonyms.map(syn => syn.name)
+            if (names.includes(synonym.name)) {
                 // if so, discard, clear input
                 return {
                     ...state,
@@ -118,15 +119,17 @@ export const teamSlice = createSlice({
         deleteTeamSynonym: (state, action) => {
             let {payload} = action
             let {synonym} = payload
+            console.log('deleting synonym', synonym)
             // get a mutable copy
             const existingSynonyms = [...state.editedTeam.name.synonyms]
+            let newSynonyms = existingSynonyms.filter(syn => syn.name !== synonym.name)
             return {
                 ...state,
                 editedTeam: {
                     ...state.editedTeam,
                     name: {
                         ...state.editedTeam.name,
-                        synonyms: existingSynonyms.filter(sy => sy.name !== synonym),
+                        synonyms: newSynonyms,
                     }
                 }
             }

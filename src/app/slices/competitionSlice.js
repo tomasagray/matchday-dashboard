@@ -70,7 +70,8 @@ export const competitionSlice = createSlice({
             let {payload} = action
             let {synonym} = payload
             // synonym already present for this entity?
-            if (state.editedCompetition.name.synonyms.includes(synonym)) {
+            let names = state.editedCompetition.name.synonyms.map(syn => syn.name)
+            if (names.includes(synonym.name)) {
                 // if so, discard, clear input
                 return {
                     ...state,
@@ -106,7 +107,7 @@ export const competitionSlice = createSlice({
                     ...state.editedCompetition,
                     name: {
                         ...state.editedCompetition.name,
-                        synonyms: existingSynonyms.filter(sy => sy.name !== synonym),
+                        synonyms: existingSynonyms.filter(sy => sy.name !== synonym.name),
                     }
                 }
             }

@@ -48,7 +48,7 @@ export const Tag = (props) => {
 
     // handlers
     const onDeleteTag = () => {
-        onDelete && onDelete(children)
+        onDelete && onDelete()
     }
     // state
     let {children, onDelete} = props
