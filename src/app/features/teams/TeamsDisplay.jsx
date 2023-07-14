@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {useFetchAllTeamsQuery} from "../../slices/api/teamApiSlice";
+import {selectAllTeams} from "../../slices/teamSlice"
 import {FillSpinner} from "../../components/Spinner";
 import TeamTile from "./TeamTile";
 import {ErrorMessage} from "../../components/ErrorMessage";
@@ -20,7 +21,7 @@ export const TeamsDisplay = () => {
         error
     } = useFetchAllTeamsQuery(next)
     const nextUrl = data?.next
-    let teams = useSelector(state => state.teams)
+    let teams = useSelector(state => selectAllTeams(state))
     useDetectElementBottom(document.getElementById('Content-stage'), () => setNext(nextUrl))
 
     useEffect(() => {

@@ -7,6 +7,8 @@ import {getToastMessage} from "../../utils";
 import {toast} from "react-toastify";
 import {FloatingMenu} from "../../components/FloatingMenu";
 import {useDetectElementBottom} from "../../hooks/useDetectElementBottom";
+import {useSelector} from "react-redux";
+import {selectAllTeams} from "../../slices/teamSlice";
 
 export const TeamSelect = (props) => {
 
@@ -27,6 +29,7 @@ export const TeamSelect = (props) => {
     // state
     let {selectedTeam, onSelectTeam} = props
     let [next, setNext] = useState()
+    let teamsList = useSelector(state => selectAllTeams(state))
     let [isTeamMenuHidden, setIsTeamMenuHidden] = useState(true)
     let {
         data: teams,
@@ -46,37 +49,39 @@ export const TeamSelect = (props) => {
             let msg = 'Error loading Teams data: ' + getToastMessage(error)
             toast.error(msg)
         }
-        selectedRef.current?.scrollIntoView()
     }, [selectedRef, error, isError])
 
     return (
         <div className="Team-select">
-            <TeamTile team={selectedTeam} onClick={onShowTeamMenu} />
+            <TeamTile team={selectedTeam} onClick={onShowTeamMenu}/>
             <FloatingMenu
                 hidden={isTeamMenuHidden}
                 onClickOutside={onHideTeamMenu}
             >
                 <div className="Team-select-menu">
-                    <div className="Team-select-arrow"><div></div></div>
+                    <div className="Team-select-arrow">
+                        <div></div>
+                    </div>
                     <div className="Team-select-container" ref={teamsRef}>
                         {
                             isLoading ?
                                 <CenteredSpinner/> :
                                 isSuccess ?
-                                    Object.values(teams.entities).map(team => {
-                                        const isSelected = selectedTeam.id === team.id
-                                        const className = "Team-tile-selector" + (isSelected ? " selected" : "")
-                                        return (
-                                            <div
-                                                className={className}
-                                                ref={isSelected ? selectedRef : null}
-                                                key={team.id}
-                                            >
-                                                <TeamTile team={team} key={team.id} onClick={handleSelectTeam}/>
-                                            </div>
-                                        )
-                                        }
-                                    ) :
+                                    Object.values(teamsList.entities)
+                                        .map(team => {
+                                                const isSelected = selectedTeam.id === team.id
+                                                const className = "Team-tile-selector" + (isSelected ? " selected" : "")
+                                                return (
+                                                    <div
+                                                        className={className}
+                                                        ref={isSelected ? selectedRef : null}
+                                                        key={team.id}
+                                                    >
+                                                        <TeamTile team={team} key={team.id} onClick={handleSelectTeam}/>
+                                                    </div>
+                                                )
+                                            }
+                                        ) :
                                     <ErrorMessage>{error}</ErrorMessage>
                         }
                     </div>
