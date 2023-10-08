@@ -270,6 +270,10 @@
 
 .Save-button {
   @include hover-button;
+
+  & > img {
+    margin-left: .5rem;
+  }
 }
 
 .Small-button {

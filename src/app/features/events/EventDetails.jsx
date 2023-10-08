@@ -1,14 +1,8 @@
 import React, {useEffect, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
-import {
-    useDeleteMatchMutation,
-    useFetchMatchByIdQuery,
-    useUpdateMatchMutation
-} from "../../slices/api/eventApiSlice";
+import {useDeleteMatchMutation, useFetchMatchByIdQuery, useUpdateMatchMutation} from "../../slices/api/eventApiSlice";
 import {CenteredSpinner} from "../../components/Spinner";
-import {
-    useFetchVideoSourcesForEventQuery
-} from "../../slices/api/videoSourceApiSlice";
+import {useFetchVideoSourcesForEventQuery} from "../../slices/api/videoSourceApiSlice";
 import {VideoPlayer} from "../video/VideoPlayer";
 import dayjs from "dayjs";
 import {ErrorMessage} from "../../components/ErrorMessage";
@@ -18,10 +12,7 @@ import {FindMoreContainer} from "./FindMoreContainer";
 import {SoftLoadImage} from "../../components/SoftLoadImage";
 import Modal, {Body, Footer, Header} from "../../components/Modal";
 import {useDispatch, useSelector} from "react-redux";
-import {
-    beginEditMatch,
-    selectEditedMatchForUpload
-} from "../../slices/matchSlice";
+import {beginEditMatch, selectEditedMatchForUpload} from "../../slices/matchSlice";
 import {MatchEditWizard} from "./MatchEditWizard";
 import {SaveButton} from "../../components/controls/SaveButton";
 import {CancelButton} from "../../components/controls/CancelButton";
@@ -249,8 +240,8 @@ export const EventDetails = () => {
                     <MatchEditWizard eventId={eventId} onDelete={onDeleteEvent} />
                 </Body>
                 <Footer>
-                    <SaveButton onClick={onSaveEditedEvent} isLoading={isMatchUpdating} />
                     <CancelButton onClick={onHideEditModal}/>
+                    <SaveButton onClick={onSaveEditedEvent} isLoading={isMatchUpdating}/>
                 </Footer>
             </Modal>
             <Modal show={isDeleteConfirmShown}>
