@@ -3,7 +3,8 @@ import {useSelector} from "react-redux";
 import {FillSpinner} from "../../components/Spinner";
 import {
     useGetAllDataSourcePluginsQuery,
-    useRefreshAllDataSourcePluginsMutation
+    useRefreshAllDataSourcePluginsMutation,
+    useRefreshDataSourcesOnUrlMutation
 } from "../../slices/api/dataSourcePluginApiSlice";
 import {PluginDetailDisplay} from "./PluginDetailDisplay";
 import {ErrorMessage} from "../../components/ErrorMessage";
@@ -16,11 +17,13 @@ import {toast} from "react-toastify";
 import {getToastMessage} from "../../utils";
 import {LabelRefreshTool} from "./LabelRefreshTool";
 import {InfoMessage} from "../../components/InfoMessage";
+import {UrlRefreshTool} from "./UrlRefreshTool";
 
 const DEFAULT_LABEL = ''
 const DEFAULT_DATE = new Date()
-const DATE_MODE = 'date'
 const LABEL_MODE = 'label'
+const DATE_MODE = 'date'
+const URL_MODE = 'url'
 
 export const DataSourcePluginsList = () => {
 
@@ -44,23 +47,36 @@ export const DataSourcePluginsList = () => {
         e.preventDefault()
         setRefreshMode(DATE_MODE)
     }
+    const onShowUrlRefresh = (e) => {
+        e.preventDefault()
+        setRefreshMode(URL_MODE)
+    }
+    const onUpdateRefreshUrl = (e) => {
+        console.log('refresh URL', e.target.value)
+        setRefreshUrl(e.target.value)
+    }
     const onClearRefreshTool = () => {
         setRefreshMode(null)
         setRefreshLabel(DEFAULT_LABEL)
         setRefreshDate(DEFAULT_DATE)
+        setRefreshUrl('')
     }
     const onRefreshAllPlugins = async () => {
         onClearRefreshTool()
-        const query = getRefreshQuery()
-        await refreshAllPlugins(query)
+        if (refreshMode === URL_MODE) {
+            await refreshOnUrl(refreshUrl)
+        } else {
+            const query = getRefreshQuery()
+            await refreshAllPlugins(query)
+        }
     }
     const getRefreshQuery = () => {
-        const endDate = refreshDate != null ?
-            dayjs(new Date(refreshDate)).format( 'YYYY-MM-DDThh:mm:ss') :
+        const startDate = refreshDate != null ?
+            dayjs(new Date(refreshDate)).format('YYYY-MM-DDThh:mm:ss') :
             null
         return {
             labels: [refreshLabel],
-            endDate,
+            startDate,
         }
     }
 
@@ -78,11 +94,17 @@ export const DataSourcePluginsList = () => {
         isError: isRefreshError,
         error: refreshError
     }] = useRefreshAllDataSourcePluginsMutation()
-    
+    const [refreshOnUrl, {
+        isLoading: urlRefreshing,
+        isSuccess: isUrlRefreshSuccess,
+        isError: isUrlRefreshError,
+        error: urlRefreshError
+    }] = useRefreshDataSourcesOnUrlMutation()
+
     // toast messages
     useEffect(() => {
         // success
-        if (isRefreshSuccess) {
+        if (isRefreshSuccess || isUrlRefreshSuccess) {
             toast('Data sources successfully refreshed')
         }
         // error
@@ -94,20 +116,28 @@ export const DataSourcePluginsList = () => {
             let msg = 'Error refreshing data sources: ' + getToastMessage(refreshError)
             toast.error(msg)
         }
+        if (isUrlRefreshError) {
+            let msg = 'Error refreshing data sources: ' + getToastMessage(urlRefreshError)
+            toast.error(msg)
+        }
     }, [
         isRefreshSuccess,
         isRefreshError,
+        isUrlRefreshSuccess,
+        isUrlRefreshError,
         refreshError,
+        urlRefreshError,
         isPluginError,
         pluginError
     ])
-    
+
     // state
     const selectedPluginId = useSelector(state => state['dataSourcePlugins']['selectedPluginId'])
     let [refreshHover, setRefreshHover] = useState(false)
     let [refreshMode, setRefreshMode] = useState(null)
     let [refreshLabel, setRefreshLabel] = useState(DEFAULT_LABEL)
     let [refreshDate, setRefreshDate] = useState(DEFAULT_DATE)
+    let [refreshUrl, setRefreshUrl] = useState('')
     const labelRef = useRef(null)
 
     // components
@@ -127,6 +157,7 @@ export const DataSourcePluginsList = () => {
     } else if (pluginLoaded) {
         pluginData = <InfoMessage>Please select a Data Source plugin from above.</InfoMessage>
     }
+
     // refresh tools
     const getRefreshTool = (refreshMode) => {
         switch (refreshMode) {
@@ -146,28 +177,39 @@ export const DataSourcePluginsList = () => {
                         <ClearButton onClick={onClearRefreshTool}/>
                     </div>
                 )
+            case URL_MODE:
+                return (
+                    <UrlRefreshTool
+                        refreshUrl={refreshUrl}
+                        onUpdateRefreshUrl={onUpdateRefreshUrl}
+                        onClearRefreshUrl={onClearRefreshTool}
+                        onSubmit={onRefreshAllPlugins}
+                    />
+                )
             default:
                 return (
                     <p>
                         Refresh using:
                         <button className={"Refresh-option"} onClick={onShowLabelRefresh}>Label</button> |
-                        <button className={"Refresh-option"} onClick={onShowDatePicker}>Date</button>
+                        <button className={"Refresh-option"} onClick={onShowDatePicker}>Date</button> |
+                        <button className={"Refresh-option"} onClick={onShowUrlRefresh}>URL</button>
                     </p>
                 )
         }
     }
 
-    let refreshDisabled = pluginsLoading || isPluginError || refreshing;
-    let refreshButtonStyle = pluginsLoading || refreshing ? {cursor: 'wait'} : {}
+    let refreshDisabled = pluginsLoading || isPluginError || refreshing || urlRefreshing
+    let refreshButtonStyle = pluginsLoading || refreshing || urlRefreshing ? {cursor: 'wait'} : {}
     let refreshTool = getRefreshTool(refreshMode)
     let refreshOptionsVisibility =
-        (refreshHover || refreshMode === LABEL_MODE || refreshMode === DATE_MODE) ? 'visible' : 'hidden'
+        (refreshHover || refreshMode === LABEL_MODE || refreshMode === DATE_MODE || refreshMode === URL_MODE)
+            ? 'visible' : 'hidden'
 
     return (
         <>
             {
                 pluginsLoading ?
-                    <FillSpinner /> :
+                    <FillSpinner/> :
                     <div>
                         <div className="section-header">
                             <img
@@ -177,8 +219,11 @@ export const DataSourcePluginsList = () => {
                             />
                             <h1>Data Source Plugins</h1>
                         </div>
-                        <div className={"Refresh-container"} onMouseEnter={onRefreshHover} onMouseLeave={onRefreshUnHover}>
-                            <button className="Small-button" style={refreshButtonStyle} disabled={refreshDisabled}
+                        <div className={"Refresh-container"} onMouseEnter={onRefreshHover}
+                             onMouseLeave={onRefreshUnHover}>
+                            <button className="Small-button"
+                                    style={refreshButtonStyle}
+                                    disabled={refreshDisabled}
                                     onClick={onRefreshAllPlugins}>
                                 Refresh All
                             </button>

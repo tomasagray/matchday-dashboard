@@ -1,13 +1,7 @@
 import {JsonHeaders} from "../../constants";
 import {dataSourcePluginSlice, pluginAdapter} from "../dataSourcePluginSlice";
 import store from "../../store";
-import {
-    apiSlice,
-    competitionTag,
-    dataSourcePluginTag,
-    eventTag,
-    teamTag
-} from "./apiSlice";
+import {apiSlice, competitionTag, dataSourcePluginTag, eventTag, teamTag} from "./apiSlice";
 
 const getSnapshotRequest = (refreshParams) => {
     return {
@@ -65,6 +59,15 @@ export const dataSourcePluginApiSlice = apiSlice.injectEndpoints({
             }),
             invalidatesTags: [eventTag, competitionTag, teamTag]
         }),
+        refreshDataSourcesOnUrl: builder.mutation({
+            query: url => ({
+                url: '/data-sources/refresh/on-url',
+                method: 'POST',
+                headers: JsonHeaders,
+                body: {url}
+            }),
+            invalidatesTags: [eventTag, competitionTag, teamTag]
+        }),
     })
 })
 
@@ -73,5 +76,6 @@ export const {
     useRefreshAllDataSourcePluginsMutation,
     useEnableDataSourcePluginMutation,
     useDisableDataSourcePluginMutation,
+    useRefreshDataSourcesOnUrlMutation,
 } = dataSourcePluginApiSlice
 
