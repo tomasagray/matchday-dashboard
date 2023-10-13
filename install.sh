@@ -17,15 +17,16 @@ fi
 echo "This will PERMANENTLY delete the previous installation."
 read -rp "Are you SURE you want to proceed? [y/N]: " proceed
 
-if [[ "yes" == *${proceed,,}* ]]; then
-  echo "Cleaning up previous build(s)..."
-  if [[ -d ./build/ ]]; then
-      rm ./build/ -rf
-      fi
-  echo "Building..."
-  npm run build
-  rm "${INSTALL_DIR:?}/*" -rf
-  cp -r ./build/* "$INSTALL_DIR"
+if [[ "" != "${proceed}" ]] && [[ "yes" == *${proceed,,}* ]]; then
+  BUILD_COUNT=$(find ./build -printf '.' | wc -m)
+  # '.' and '..' will be counted as 2
+  if ((BUILD_COUNT < 3)); then
+    echo "No build files found; please build with: npm run build"
+    exit 1
+  fi
+
+  rm -rfv "${INSTALL_DIR:?}"/*
+  cp -rv ./build/* "$INSTALL_DIR"
   echo "Installation completed successfully."
 else
   echo "Quitting..."
