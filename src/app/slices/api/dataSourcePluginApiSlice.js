@@ -5,14 +5,14 @@ import {apiSlice, competitionTag, dataSourcePluginTag, eventTag, teamTag} from "
 
 const getSnapshotRequest = (refreshParams) => {
     return {
-        ...refreshParams,
         startDate: "",
         fetchBodies: true,
         fetchImages: false,
         maxResults: 50,
         orderBy: "",
         pageToken: "",
-        status: ""
+        status: "",
+        ...refreshParams
     }
 }
 
