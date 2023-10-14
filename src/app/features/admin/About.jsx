@@ -17,8 +17,11 @@ export const About = () => {
     return (
         <>
             <h1>About</h1>
-            <p style={{padding: '1rem 0 2rem 0', color: '#999'}}>
-                <strong>Matchday server</strong> &nbsp; A simple content gathering service.
+            <p style={{padding: '1rem 0 2rem 0', color: '#777'}}>
+                <strong style={{color: '#999'}}>
+                    Matchday server
+                </strong> <br/>
+                A simple content gathering service.
             </p>
             {
                 isLoading ?
@@ -27,20 +30,24 @@ export const About = () => {
                         <table className="About-table">
                             <tbody>
                             <tr>
-                                <td>PID</td>
-                                <td>{data.pid}</td>
+                                <td>Dashboard version</td>
+                                <td>{version}</td>
                             </tr>
                             <tr>
                                 <td>Server version</td>
                                 <td>{data.version}</td>
                             </tr>
                             <tr>
-                                <td>Dashboard version</td>
-                                <td>{version}</td>
+                                <td>PID</td>
+                                <td>{data.pid}</td>
                             </tr>
                             <tr>
                                 <td>System</td>
                                 <td>{data.system}</td>
+                            </tr>
+                            <tr>
+                                <td>IP Address</td>
+                                <td>{data.ip}</td>
                             </tr>
                             </tbody>
                         </table> :
