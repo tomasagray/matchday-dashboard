@@ -26,7 +26,7 @@ if [[ "" != "${proceed}" ]] && [[ "yes" == *${proceed,,}* ]]; then
   fi
 
   rm -rfv "${INSTALL_DIR:?}"/*
-  cp -rv ./build/* "$INSTALL_DIR"
+  mv -v ./build/* "$INSTALL_DIR"
   echo "Installation completed successfully."
 else
   echo "Quitting..."
