@@ -4,7 +4,7 @@ import {serverAddressCookie} from "./constants";
 
 const minimumServerVersion = '0.0.1-SNAPSHOT'
 const websocketUrl = '/api/ws'
-const version = '0.1.0'
+const version = process.env.REACT_APP_VERSION
 
 const cookies = new Cookies()
 const serverCookie = cookies.get(serverAddressCookie)
