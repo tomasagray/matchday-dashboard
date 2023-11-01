@@ -194,9 +194,8 @@
 
     .Dialog {
       margin: 5rem;
-      min-width: 30vw;
-      max-width: 45vw;
-      max-height: 75vh;
+      width: 50%;
+      height: 75%;
       background-color: colors.$appBg;
       border: 1px solid colors.$border;
       border-radius: .4rem;
@@ -214,6 +213,7 @@
 
     .Modal-body {
       padding: 3rem 2rem;
+      height: 50vh;
     }
 
     .Modal-footer {

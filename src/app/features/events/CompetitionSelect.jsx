@@ -1,7 +1,5 @@
 import React, {useEffect} from "react";
-import {
-  useFetchAllCompetitionsQuery
-} from "../../slices/api/competitionApiSlice";
+import {useFetchAllCompetitionsQuery} from "../../slices/api/competitionApiSlice";
 import {getToastMessage} from "../../utils";
 import {toast} from "react-toastify";
 import {FillSpinner} from "../../components/Spinner";
@@ -43,7 +41,7 @@ export const CompetitionSelect = (props) => {
         isError,
         error
     } = useFetchAllCompetitionsQuery()
-    
+
     // toast messages
     useEffect(() => {
         if (isError) {
@@ -51,31 +49,29 @@ export const CompetitionSelect = (props) => {
             toast.error(msg)
         }
     }, [error, isError])
-    
+
     return (
         <>
             {
                 isLoading ?
                     <FillSpinner/> :
                     isSuccess && competitions ?
-                        <div>
-                            <div className="Entity-display Competition-select">
-                                {
-                                    Object.values(competitions.entities).map(competition => {
-                                        const id = competition.id
-                                        return (
-                                            <CompetitionSelectTile
-                                                key={id}
-                                                competition={competition}
-                                                onClick={onSelectCompetition(competition)}
-                                                isSelected={id === selectedCompetition.id}
-                                            />
-                                        )
-                                    })
-                                }
-                            </div>
+                        <div className="Entity-display Competition-select">
+                            {
+                                Object.values(competitions.entities).map(competition => {
+                                    const id = competition.id
+                                    return (
+                                        <CompetitionSelectTile
+                                            key={id}
+                                            competition={competition}
+                                            onClick={onSelectCompetition(competition)}
+                                            isSelected={id === selectedCompetition.id}
+                                        />
+                                    )
+                                })
+                            }
                         </div> :
-                        <EmptyMessage noun="competitions" />
+                        <EmptyMessage noun="competitions"/>
             }
         </>
     )

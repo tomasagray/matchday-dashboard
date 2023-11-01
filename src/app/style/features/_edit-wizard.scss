@@ -10,7 +10,7 @@
   flex-direction: row;
 
   .Edit-wizard-menu {
-    width: 10vw;
+    width: 180px;
     border-right: 1px solid rgba(100, 100, 100, .5);
     height: 100%;
 
@@ -41,9 +41,10 @@
   }
 
   .Edit-wizard-display {
-    padding: 2rem;
     width: 100%;
-    min-height: 30vh;
+    height: 50vh;
+    padding: 3rem;
+    overflow: auto;
 
     .react-datepicker__triangle {
       transform: translateX(3rem) !important;
@@ -152,8 +153,7 @@ $uploadContainerHeight: 2rem;
       padding: .5rem 1.25rem;
 
       &:hover {
-        filter: brightness(0) saturate(100%) invert(16%) sepia(97%) saturate(7077%)
-          hue-rotate(359deg) brightness(102%) contrast(109%);
+        filter: brightness(0) saturate(100%) invert(16%) sepia(97%) saturate(7077%) hue-rotate(359deg) brightness(102%) contrast(109%);
       }
 
       span {
@@ -225,7 +225,10 @@ $uploadContainerHeight: 2rem;
 
 .Competition-select {
   overflow-y: scroll;
-  height: 40vh;
+
+  .Competition-select-tile {
+    width: 150px;
+  }
 }
 
 .Delete-wizard {
@@ -250,7 +253,7 @@ $uploadContainerHeight: 2rem;
     flex-direction: column;
 
     .Soft-load-container {
-      width: 200px;
+      width: 300px;
       margin-bottom: 1rem;
     }
 

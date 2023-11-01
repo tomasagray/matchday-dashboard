@@ -320,6 +320,9 @@ $posterHeight: calc($posterWidth / (16 / 9));
   display: flex;
 
   .Event-editor-artwork {
+    position: relative;
+    margin: 1rem 0;
+
     .Soft-load-container {
       width: 350px;
       display: flex;
