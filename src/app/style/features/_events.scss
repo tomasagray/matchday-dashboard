@@ -154,6 +154,10 @@ $posterHeight: calc($posterWidth / (16 / 9));
         cursor: default;
       }
 
+      .Video-source-play-button {
+        opacity: 1;
+      }
+
       .Video-source-display-close-button {
         visibility: visible;
       }
@@ -251,18 +255,20 @@ $posterHeight: calc($posterWidth / (16 / 9));
   }
 
   .Video-source-play-button {
+    $size: 28px;
+
     display: flex;
-    width: 24px;
-    height: 24px;
+    opacity: 0;
+    width: $size;
+    height: $size;
     justify-content: center;
     align-items: center;
     border-radius: 100%;
-    //margin: 0 2rem;
     background-color: colors.$active;
     border: 0;
 
     &:hover {
-      filter: brightness(90%);
+      filter: brightness(80%);
     }
 
     img {
@@ -279,8 +285,7 @@ $posterHeight: calc($posterWidth / (16 / 9));
 
     &.delete {
       &:hover {
-        filter: brightness(0) saturate(100%) invert(21%) sepia(72%) saturate(6426%)
-          hue-rotate(355deg) brightness(97%) contrast(122%);
+        filter: brightness(0) saturate(100%) invert(21%) sepia(72%) saturate(6426%) hue-rotate(355deg) brightness(97%) contrast(122%);
       }
     }
   }
