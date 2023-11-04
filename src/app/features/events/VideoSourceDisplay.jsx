@@ -1,18 +1,20 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect} from "react";
 import {VideoFileDisplay} from "./VideoFileDisplay";
 import {useSelector} from "react-redux";
 import {JobStatus, selectVideoSourceById} from "../../slices/videoSourceSlice";
 import {StatusBubble} from "../../components/StatusBubble";
-import {
-    useDeleteStreamsForSourceMutation,
-    useKillStreamsForSourceMutation
-} from "../../slices/api/videoSourceApiSlice";
+import {useDeleteStreamsForSourceMutation, useKillStreamsForSourceMutation} from "../../slices/api/videoSourceApiSlice";
 import {toast} from "react-toastify";
 import {getToastMessage} from "../../utils";
 import {SmallSpinner} from "../../components/Spinner";
+import {selectVideoStreams} from "../../slices/videoStreamSlice";
 
 export const VideoSourceDisplay = (props) => {
 
+    const defaultStatus = {
+        status: null,
+        completionRatio: 0,
+    }
     // handlers
     const handlePlayVideoSource = () => {
         let {stream} = links
@@ -33,34 +35,20 @@ export const VideoSourceDisplay = (props) => {
         toast('TODO: Implement individual download')
         console.log('id', id)
     }
-    const onUpdateStreamStatus = (status) => {
-        setFileStatuses({
-            ...fileStatuses,
-            [status['videoFileId']]: status,
-        })
-    }
-    const computeStreamStatus = (statuses) => {
-        if (statuses.length === 0) {
+    const computeStreamStatus = (statuses, partCount) => {
+        if (statuses.length === 0) return defaultStatus
+        let cumulativeStatus = statuses.reduce((cumulativeStatus, videoStatus) => {
             return {
-                status: null,
-                progress: 0,
-            }
-        }
-        let finalStatus = statuses.reduce((finalStatus, videoStatus) => {
-            return {
-                completionRatio: finalStatus.completionRatio + videoStatus.completionRatio,
+                completionRatio: cumulativeStatus.completionRatio + videoStatus.completionRatio,
                 status:
-                    finalStatus.status !== null &&
-                    JobStatus[finalStatus.status] < JobStatus[videoStatus.status] ?
-                        finalStatus.status : videoStatus.status
+                    cumulativeStatus.status !== null &&
+                    JobStatus[cumulativeStatus.status] < JobStatus[videoStatus.status] ?
+                        cumulativeStatus.status : videoStatus.status
             }
-        }, {
-            status: null,
-            completionRatio: 0,
-        })
+        }, defaultStatus)
         return {
-            status: finalStatus.status,
-            progress: finalStatus.completionRatio / statuses.length
+            status: cumulativeStatus.status,
+            completionRatio: (cumulativeStatus.completionRatio / partCount)
         }
     }
 
@@ -73,9 +61,7 @@ export const VideoSourceDisplay = (props) => {
         onHide,
         onPlay,
     } = props
-    let videoSource = useSelector(
-        state => selectVideoSourceById(state, videoSourceId)
-    )
+    let videoSource = useSelector(state => selectVideoSourceById(state, videoSourceId))
     let {
         audioCodec,
         bitrate,
@@ -89,10 +75,11 @@ export const VideoSourceDisplay = (props) => {
         videoFiles,
         _links: links,
     } = videoSource
-    let [fileStatuses, setFileStatuses] = useState({})
     // computed state
-    let sourceStatus = computeStreamStatus(Object.values(fileStatuses))
     let parts = Object.values(videoFiles)
+    let ids = parts.map(part => part.videoFileId)
+    let streamStatuses = useSelector(state => selectVideoStreams(state, ids))
+    let sourceStatus = streamStatuses ? computeStreamStatus(streamStatuses, parts.length) : defaultStatus
 
     // hooks
     let [
@@ -102,7 +89,7 @@ export const VideoSourceDisplay = (props) => {
             isSuccess: isKillAllSuccess,
             isError: isKillAllError,
             error: killAllError,
-    }] = useKillStreamsForSourceMutation()
+        }] = useKillStreamsForSourceMutation()
     let [
         deleteStreams, {
             data: deleteStreamsData,
@@ -110,7 +97,7 @@ export const VideoSourceDisplay = (props) => {
             isSuccess: isDeleteAllSuccess,
             isError: isDeleteAllError,
             error: deleteAllError,
-    }] = useDeleteStreamsForSourceMutation()
+        }] = useDeleteStreamsForSourceMutation()
 
     // toast messages
     useEffect(() => {
@@ -138,7 +125,7 @@ export const VideoSourceDisplay = (props) => {
     ])
 
     // components
-    let className = "Video-source-display" + (isSelected ? ' selected' : '')
+    let className = 'Video-source-display' + (isSelected ? ' selected' : '')
     let streamStatus = JobStatus[sourceStatus.status] ?? JobStatus['CREATED']
     return (
         <div className={className} onClick={onSelect}>
@@ -149,23 +136,23 @@ export const VideoSourceDisplay = (props) => {
                         isKillingAll || isDeletingAll ?
                             <SmallSpinner
                                 size={'22px'}
-                                style={{width: '22px', padding: '5px'}} /> :
+                                style={{width: '22px', padding: '5px'}}/> :
                             <StatusBubble
                                 status={sourceStatus.status}
-                                progress={sourceStatus.progress}
+                                progress={sourceStatus.completionRatio}
                             />
                     }
                     {
                         streamStatus !== JobStatus['ERROR'] ?
                             <button className="Video-source-play-button" onClick={handlePlayVideoSource}>
-                                <img src="/img/icon/play/play_16.png" alt="Play" />
+                                <img src="/img/icon/play/play_16.png" alt="Play"/>
                             </button> :
                             null
                     }
                     {
                         streamStatus === JobStatus['BUFFERING'] || streamStatus === JobStatus['STREAMING'] ?
                             <button onClick={onStopAllStreams} className="Video-source-extra-control">
-                                <img src={'/img/icon/stop/stop_16.png'} alt="Stop streaming" />
+                                <img src={'/img/icon/stop/stop_16.png'} alt="Stop streaming"/>
                             </button> :
                             null
                     }
@@ -174,7 +161,7 @@ export const VideoSourceDisplay = (props) => {
                         streamStatus === JobStatus['STOPPED'] ||
                         streamStatus === JobStatus['COMPLETED'] ?
                             <button onClick={onDeleteAllStreams} className="Video-source-extra-control delete">
-                                <img src={'/img/icon/delete/delete_16.png'} alt="Delete stream" />
+                                <img src={'/img/icon/delete/delete_16.png'} alt="Delete stream"/>
                             </button> :
                             null
                     }
@@ -196,7 +183,6 @@ export const VideoSourceDisplay = (props) => {
                                 key={part['videoFileId']}
                                 videoFile={part}
                                 eventId={eventId}
-                                onUpdateStream={onUpdateStreamStatus}
                                 onStartStream={onDownloadStream}
                             />
                         )

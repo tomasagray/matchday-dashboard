@@ -1,14 +1,15 @@
 import React from "react";
+import properties from "../properties";
 
 export const StatusBubble = (props) => {
 
     const size = 32
     const radius = 12
     const stroke = 2 * Math.PI * radius
-    const primaryColor = '#6e86ff'
+    const primaryColor = properties.primaryColor
 
     // state
-    let {style, progress = 0, status} = props
+    let {style, progress = 0, status = 'CREATED'} = props
     let isError = status === 'ERROR';
     let isStopped = status === 'STOPPED'
     let isQueued = status === 'CREATED' || status === 'QUEUED'
@@ -37,13 +38,13 @@ export const StatusBubble = (props) => {
     let bubbleColor =
         isError ? 'red' :
             isStopped ? 'yellow' :
-                isStreaming || isComplete ? primaryColor
-        : 'transparent'
+                isQueued || isStreaming || isComplete ? primaryColor
+                    : 'transparent'
     let bubbleText =
         isError ? 'X' :
             isStopped ? '!' :
-                isStreaming ? `${progressRatio}%`
-        : ''
+                isQueued || isStreaming ? `${progressRatio}%`
+                    : ''
 
     return (
         <div className="Status-bubble" style={style}>

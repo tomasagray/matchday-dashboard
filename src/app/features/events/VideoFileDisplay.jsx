@@ -7,10 +7,15 @@ import {toast} from "react-toastify";
 import {getToastMessage} from "../../utils";
 import {SmallSpinner} from "../../components/Spinner";
 import {VideoStreamingErrorDisplay} from "./VideoStreamingErrorDisplay";
+import {useDispatch, useSelector} from "react-redux";
+import {selectVideoStream, videoStreamUpdated} from "../../slices/videoStreamSlice";
 
 export const VideoFileDisplay = (props) => {
 
     // handlers
+    const onUpdateStream = (status) => {
+        dispatch(videoStreamUpdated(status))
+    }
     const onStopStream = async (videoFileId) => {
         console.log('killing video stream...', videoFileId)
         await killStream({eventId, videoFileId})
@@ -32,22 +37,19 @@ export const VideoFileDisplay = (props) => {
     let {
         videoFile,
         eventId,
-        onUpdateStream,
         onStartStream,
     } = props
-    let {videoFileId} = videoFile
-    const [streamStatus, setStreamStatus] = useState({})
     const [isErrorModalShown, setErrorModalShown] = useState(false)
+    let {videoFileId} = videoFile
+    let streamStatus = useSelector(state => selectVideoStream(state, videoFileId))
+    // computed state
+    let videoStreamStatus = streamStatus ? streamStatus['status'] : JobStatus['CREATED']
+    let completionRatio = streamStatus ? streamStatus['completionRatio'] : 0
 
     // hooks
-    useSubscription('/status/video-stream', (msg) => {
-        let status = JSON.parse(msg.body)
-        if (videoFileId === status['videoFileId']) {
-            setStreamStatus(status)
-            onUpdateStream(status)
-        }
-    })
+    const dispatch = useDispatch()
     const stompClient = useStompClient()
+    // request data ...
     useEffect(() => {
         if (stompClient) {
             stompClient.publish({
@@ -56,6 +58,13 @@ export const VideoFileDisplay = (props) => {
             })
         }
     }, [stompClient, videoFile, videoFileId])
+    // ... get data
+    useSubscription('/status/video-stream', (msg) => {
+        let status = JSON.parse(msg.body)
+        if (videoFileId === status['videoFileId']) {
+            onUpdateStream(status)
+        }
+    })
     let [
         killStream, {
             isLoading: isKillingStream,
@@ -93,7 +102,6 @@ export const VideoFileDisplay = (props) => {
     ])
 
     // components
-    let videoStreamStatus = JobStatus[streamStatus['status']] ?? JobStatus['CREATED']
     return (
         <div className="Video-file-display">
             {
@@ -102,8 +110,8 @@ export const VideoFileDisplay = (props) => {
                         size={'23px'}
                         style={{margin: '.25rem 1.5rem .25rem .5rem', width: '23px'}}/> :
                     <StatusBubble
-                        progress={streamStatus['completionRatio']}
-                        status={streamStatus['status']}
+                        status={videoStreamStatus}
+                        progress={completionRatio}
                         style={{marginRight: '1rem'}}
                     />
             }
@@ -119,7 +127,9 @@ export const VideoFileDisplay = (props) => {
                                 null
                         }
                         {
-                            videoStreamStatus === JobStatus['BUFFERING'] || videoStreamStatus === JobStatus['STREAMING'] ?
+                            videoStreamStatus === JobStatus['BUFFERING'] ||
+                            videoStreamStatus === JobStatus['QUEUED'] ||
+                            videoStreamStatus === JobStatus['STREAMING'] ?
                                 <button onClick={() => onStopStream(videoFileId)}>
                                     <img src={'/img/icon/stop/stop_16.png'} alt="Stop streaming"/>
                                 </button> :
@@ -148,7 +158,7 @@ export const VideoFileDisplay = (props) => {
             <VideoStreamingErrorDisplay
                 isShown={isErrorModalShown}
                 onHide={onHideErrorModal}
-                error={streamStatus.error}/>
+                error={streamStatus?.error}/>
         </div>
     );
 }

@@ -1,6 +1,7 @@
 import {configureStore} from "@reduxjs/toolkit";
 import eventsReducer from "./slices/matchSlice";
 import videoSourceReducer from "./slices/videoSourceSlice";
+import videoStreamReducer from "./slices/videoStreamSlice";
 import competitionReducer from "./slices/competitionSlice";
 import teamReducer from "./slices/teamSlice";
 import dataSourceReducer from "./slices/dataSourceSlice";
@@ -15,6 +16,7 @@ export default configureStore({
     reducer: {
         events: eventsReducer,
         videoSources: videoSourceReducer,
+        videoStreams: videoStreamReducer,
         competitions: competitionReducer,
         teams: teamReducer,
         dataSources: dataSourceReducer,

@@ -10,9 +10,10 @@ const cookies = new Cookies()
 const serverCookie = cookies.get(serverAddressCookie)
 
 export const properties = {
+    version,
     minimumServerVersion,
     baseUrl: serverCookie,
     websocketUrl: `${serverCookie}${websocketUrl}`,
-    version,
+    primaryColor: '#6e86ff',
 }
 export default properties
