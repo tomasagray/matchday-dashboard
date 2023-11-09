@@ -1,5 +1,6 @@
 import React from "react";
 import properties from "../properties";
+import {JobStatus} from "../slices/videoSourceSlice";
 
 export const StatusBubble = (props) => {
 
@@ -9,12 +10,14 @@ export const StatusBubble = (props) => {
     const primaryColor = properties.primaryColor
 
     // state
-    let {style, progress = 0, status = 'CREATED'} = props
-    let isError = status === 'ERROR';
-    let isStopped = status === 'STOPPED'
-    let isQueued = status === 'CREATED' || status === 'QUEUED'
-    let isStreaming = status === 'STARTED' || status === 'BUFFERING' || status === 'STREAMING'
-    let isComplete = status === 'COMPLETED'
+    let {style, progress = 0, status = JobStatus['CREATED']} = props
+    let isError = status === JobStatus['ERROR'];
+    let isStopped = status === JobStatus['STOPPED']
+    let isQueued = status === JobStatus['QUEUED']
+    let isStreaming = status === JobStatus['STARTED']
+        || status === JobStatus['BUFFERING']
+        || status === JobStatus['STREAMING']
+    let isComplete = status === JobStatus['COMPLETED']
 
     let fill = (stroke * progress) - stroke
     let bubbleStyle = {
@@ -34,7 +37,7 @@ export const StatusBubble = (props) => {
     }
     let progressRatio = Math.round(progress * 100)
 
-    let strokeWidth = !status ? 1 : 3
+    let strokeWidth = status === JobStatus['CREATED'] ? 1 : 3
     let bubbleColor =
         isError ? 'red' :
             isStopped ? 'yellow' :
@@ -81,15 +84,15 @@ export const StatusBubble = (props) => {
                                     <span style={{fontWeight: 'bold', color: bubbleColor}}>
                                         {bubbleText}
                                     </span> :
-                                isStreaming || isQueued ?
-                                    <span style={{fontSize: '6pt'}}>
+                                    isStreaming || isQueued ?
+                                        <span style={{fontSize: '6pt'}}>
                                         {bubbleText}
                                     </span> :
-                                isComplete ?
-                                    <span style={{fontWeight: 'bold', color: 'black'}}>
+                                        isComplete ?
+                                            <span style={{fontWeight: 'bold', color: 'black'}}>
                                         &#10003;
                                     </span> :
-                                null
+                                            null
                             }
                         </div>
                     </>

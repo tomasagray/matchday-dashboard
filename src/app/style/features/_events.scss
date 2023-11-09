@@ -140,15 +140,18 @@ $posterHeight: calc($posterWidth / (16 / 9));
     position: relative;
     display: inline-block;
     background-color: colors.$darkTransparent;
+    opacity: .8;
     border-radius: .65em;
     margin: 0 2rem 2rem 0;
-    padding: 1rem;
+    padding: 2rem;
 
     &:hover {
       cursor: pointer;
+      opacity: 1;
     }
 
     &.selected {
+      opacity: 1;
 
       &:hover {
         cursor: default;
@@ -180,7 +183,7 @@ $posterHeight: calc($posterWidth / (16 / 9));
         align-items: center;
 
         & > * {
-          margin: 0 .25rem;
+          margin: 0 .75rem;
         }
       }
     }
@@ -249,6 +252,12 @@ $posterHeight: calc($posterWidth / (16 / 9));
 
         & > * {
           margin-right: 1rem;
+        }
+
+        & button {
+          $size: 18px;
+          width: $size;
+          height: $size;
         }
       }
     }

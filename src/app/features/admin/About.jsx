@@ -7,6 +7,7 @@ import properties from "../../properties";
 export const About = () => {
 
     const version = properties.version
+    const baseUrl = properties.baseUrl
     const {
         data,
         isLoading,
@@ -30,6 +31,14 @@ export const About = () => {
                         <table className="About-table">
                             <tbody>
                             <tr>
+                                <td>Connected to</td>
+                                <td>{baseUrl}</td>
+                            </tr>
+                            <tr>
+                                <td>Server IP Address</td>
+                                <td>{data.ip}</td>
+                            </tr>
+                            <tr>
                                 <td>Dashboard version</td>
                                 <td>{version}</td>
                             </tr>
@@ -44,10 +53,6 @@ export const About = () => {
                             <tr>
                                 <td>System</td>
                                 <td>{data.system}</td>
-                            </tr>
-                            <tr>
-                                <td>IP Address</td>
-                                <td>{data.ip}</td>
                             </tr>
                             </tbody>
                         </table> :

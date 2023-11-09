@@ -16,6 +16,7 @@ export const VideoFileDisplay = (props) => {
     const onUpdateStream = (status) => {
         dispatch(videoStreamUpdated(status))
     }
+    // TODO: Add confirmation modal for stop stream
     const onStopStream = async (videoFileId) => {
         console.log('killing video stream...', videoFileId)
         await killStream({eventId, videoFileId})
@@ -43,7 +44,7 @@ export const VideoFileDisplay = (props) => {
     let {videoFileId} = videoFile
     let streamStatus = useSelector(state => selectVideoStream(state, videoFileId))
     // computed state
-    let videoStreamStatus = streamStatus ? streamStatus['status'] : JobStatus['CREATED']
+    let videoStreamStatus = streamStatus ? JobStatus[streamStatus['status']] : JobStatus['CREATED']
     let completionRatio = streamStatus ? streamStatus['completionRatio'] : 0
 
     // hooks
@@ -117,7 +118,10 @@ export const VideoFileDisplay = (props) => {
             }
             <div>
                 <div style={{display: 'flex'}}>
-                    {videoFile.title} <br/>
+                    <span style={{width: '5rem'}}>
+                        {videoFile.title}
+                    </span>
+                    <br/>
                     <div className="Video-file-controls-container">
                         {
                             videoStreamStatus <= JobStatus['CREATED'] ?

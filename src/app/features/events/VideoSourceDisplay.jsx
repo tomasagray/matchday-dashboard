@@ -12,7 +12,7 @@ import {selectVideoStreams} from "../../slices/videoStreamSlice";
 export const VideoSourceDisplay = (props) => {
 
     const defaultStatus = {
-        status: null,
+        status: 'CREATED',
         completionRatio: 0,
     }
     // handlers
@@ -21,6 +21,7 @@ export const VideoSourceDisplay = (props) => {
         console.log('playing stream at', stream.href)
         onPlay && onPlay(stream.href)
     }
+    // TODO: add confirmation modal for stop stream
     const onStopAllStreams = async () => {
         console.log('stop all video streams for video source...', eventId, videoSourceId)
         let streams = await killStreams({eventId, videoSourceId})
@@ -41,7 +42,7 @@ export const VideoSourceDisplay = (props) => {
             return {
                 completionRatio: cumulativeStatus.completionRatio + videoStatus.completionRatio,
                 status:
-                    cumulativeStatus.status !== null &&
+                    cumulativeStatus.status !== 'CREATED' &&
                     JobStatus[cumulativeStatus.status] < JobStatus[videoStatus.status] ?
                         cumulativeStatus.status : videoStatus.status
             }
@@ -76,10 +77,15 @@ export const VideoSourceDisplay = (props) => {
         _links: links,
     } = videoSource
     // computed state
+    let primaryMetadata = [resolution, videoCodec, bitrate].filter(datum => datum !== undefined)
+    let secondaryMetadata = [source, audioCodec, mediaContainer].filter(datum => datum !== undefined)
     let parts = Object.values(videoFiles)
     let ids = parts.map(part => part.videoFileId)
     let streamStatuses = useSelector(state => selectVideoStreams(state, ids))
-    let sourceStatus = streamStatuses ? computeStreamStatus(streamStatuses, parts.length) : defaultStatus
+    let sourceStatus = streamStatuses ?
+        computeStreamStatus(streamStatuses, parts.length) : defaultStatus
+    let className = 'Video-source-display' + (isSelected ? ' selected' : '')
+    let streamStatus = JobStatus[sourceStatus.status] ?? JobStatus['CREATED']
 
     // hooks
     let [
@@ -125,8 +131,6 @@ export const VideoSourceDisplay = (props) => {
     ])
 
     // components
-    let className = 'Video-source-display' + (isSelected ? ' selected' : '')
-    let streamStatus = JobStatus[sourceStatus.status] ?? JobStatus['CREATED']
     return (
         <div className={className} onClick={onSelect}>
             <div className="Video-source-display-header">
@@ -138,7 +142,7 @@ export const VideoSourceDisplay = (props) => {
                                 size={'22px'}
                                 style={{width: '22px', padding: '5px'}}/> :
                             <StatusBubble
-                                status={sourceStatus.status}
+                                status={streamStatus}
                                 progress={sourceStatus.completionRatio}
                             />
                     }
@@ -150,7 +154,9 @@ export const VideoSourceDisplay = (props) => {
                             null
                     }
                     {
-                        streamStatus === JobStatus['BUFFERING'] || streamStatus === JobStatus['STREAMING'] ?
+                        streamStatus === JobStatus['QUEUED'] ||
+                        streamStatus === JobStatus['BUFFERING'] ||
+                        streamStatus === JobStatus['STREAMING'] ?
                             <button onClick={onStopAllStreams} className="Video-source-extra-control">
                                 <img src={'/img/icon/stop/stop_16.png'} alt="Stop streaming"/>
                             </button> :
@@ -190,19 +196,14 @@ export const VideoSourceDisplay = (props) => {
                 </div>
             </div>
             <div className="Video-source-metadata-fields" style={{color: '#ccc'}}>
-                <span>{resolution}</span>
-                <span>{videoCodec}</span>
-                <span>{bitrate}</span>
+                {
+                    primaryMetadata.map(datum => <span>{datum}</span>)
+                }
                 {
                     isSelected ?
-                        <>
-                            <span>{source}</span>
-                            <span>{mediaContainer}</span>
-                            <span>{audioCodec}</span>
-                        </> :
+                        secondaryMetadata.map(datum => <span>{datum}</span>) :
                         null
                 }
-
             </div>
             <div className="Video-source-display-close-button">
                 <button className={"Close-button"} onClick={onHide}></button>
