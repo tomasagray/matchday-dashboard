@@ -32,7 +32,8 @@
     "react-scripts": "^5.0.1"
   },
   "overrides": {
-    "@svgr/webpack": "$@svgr/webpack"
+    "@svgr/webpack": "$@svgr/webpack",
+    "postcss": "^8.4.31"
   },
   "scripts": {
     "start": "react-scripts start",
