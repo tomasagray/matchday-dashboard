@@ -1,10 +1,10 @@
 import dayjs from "dayjs";
 
+
 const dateFormatter = 'MM/DD/YYYY'
 const dateTimeFormatter = 'YYYY-MM-DDTHH:mm:ss'
 const jsonPrefix = 'data:text/json;charset=utf-8,'
 const uuidPattern = /[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}/
-
 
 export const compareVersions = (v1, v2) => {
     return v1.localeCompare(v2, undefined, {numeric: true, sensitivity: 'base'})

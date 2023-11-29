@@ -8,6 +8,7 @@ import {toast} from "react-toastify";
 import {getToastMessage} from "../../utils";
 import {SmallSpinner} from "../../components/Spinner";
 import {selectVideoStreams} from "../../slices/videoStreamSlice";
+import md5 from "md5";
 
 export const VideoSourceDisplay = (props) => {
 
@@ -197,11 +198,15 @@ export const VideoSourceDisplay = (props) => {
             </div>
             <div className="Video-source-metadata-fields" style={{color: '#ccc'}}>
                 {
-                    primaryMetadata.map(datum => <span>{datum}</span>)
+                    primaryMetadata.map(datum =>
+                        <span key={md5(datum)}>{datum}</span>
+                    )
                 }
                 {
                     isSelected ?
-                        secondaryMetadata.map(datum => <span>{datum}</span>) :
+                        secondaryMetadata.map(datum =>
+                            <span key={md5(datum)}>{datum}</span>
+                        ) :
                         null
                 }
             </div>
