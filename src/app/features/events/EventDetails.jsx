@@ -276,14 +276,12 @@ export const EventDetails = () => {
                             title={event['title']}
                             subtitle={formattedDate}
                         />
-
                         <div className="Event-detail-header-container">
                             <h2 className="Event-detail-header">
                                 {eventTitle}
                             </h2>
                             <span style={{color: '#888', fontSize: '11pt '}}>{formattedDate}</span><br/>
                         </div>
-
                         <div className="Event-details-container">
                             <div className="Event-poster-container">
                                 <SoftLoadImage placeholderUrl={imagePlaceholderUrl}

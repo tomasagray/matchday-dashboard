@@ -6,6 +6,10 @@ $active: #6e86ff;
 $checkMark: rgba(30, 30, 30, .7);
 $ok: #00cc66;
 
+// filters
+$greenFilter: brightness(0) invert(34%) sepia(98%) saturate(1090%) hue-rotate(122deg) brightness(92%) contrast(94%);
+$redFilter: brightness(0) invert(12%) sepia(76%) saturate(6815%) hue-rotate(358deg) brightness(109%) contrast(112%);
+
 // background
 $appBg: #282c34;
 $mediumBg: #888;

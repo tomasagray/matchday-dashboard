@@ -9,6 +9,7 @@ import {SmallSpinner} from "../../components/Spinner";
 import {VideoStreamingErrorDisplay} from "./VideoStreamingErrorDisplay";
 import {useDispatch, useSelector} from "react-redux";
 import {selectVideoStream, videoStreamUpdated} from "../../slices/videoStreamSlice";
+import properties from "../../properties";
 
 export const VideoFileDisplay = (props) => {
 
@@ -54,13 +55,13 @@ export const VideoFileDisplay = (props) => {
     useEffect(() => {
         if (stompClient) {
             stompClient.publish({
-                destination: '/api/ws/streams/status',
+                destination: properties.websocketRoot + '/subscribe/video-stream-status',
                 body: JSON.stringify(videoFileId)
             })
         }
     }, [stompClient, videoFile, videoFileId])
     // ... get data
-    useSubscription('/status/video-stream', (msg) => {
+    useSubscription(properties.websocketRoot + '/subscription/video-stream-status', (msg) => {
         let status = JSON.parse(msg.body)
         if (videoFileId === status['videoFileId']) {
             onUpdateStream(status)

@@ -1,4 +1,4 @@
-import {apiSlice, restorePointTag, settingsTag, tagTypes} from "./apiSlice";
+import {apiSlice, infoTag, restorePointTag, settingsTag, tagTypes} from "./apiSlice";
 import {JsonHeaders} from "../../constants";
 
 export const adminApiSlice = apiSlice.injectEndpoints({
@@ -18,7 +18,8 @@ export const adminApiSlice = apiSlice.injectEndpoints({
         invalidatesTags: [settingsTag],
       }),
       appInfo: builder.query({
-        query: () => '/info',
+          query: () => '/info',
+          providesTags: [infoTag],
       }),
       generateSanityReport: builder.mutation({
         query: () => ({

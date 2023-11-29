@@ -2,6 +2,19 @@
 @use "fonts";
 @use "variables";
 
+
+.About-description {
+  display: flex;
+  align-items: center;
+  padding: 2rem 0;
+  color: #777;
+
+  img {
+    width: 32px;
+    margin-right: 1rem;
+  }
+}
+
 .App-settings-group {
   display: flex;
   flex-direction: column;
@@ -159,18 +172,43 @@
   }
 }
 
-// TODO - move to more general location
-.Accordion-button {
-  display: block;
-  padding: 1rem;
-  margin: .5rem 0;
-  color: colors.$lightFontColor;
-  text-align: left;
-  font-size: medium;
-  width: 100%;
-  border-radius: 5px;
+.Vpn-control {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
 
-  &:hover {
-    background-color: rgba(180, 180, 180, .2);
+  .Vpn-icon {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 10rem;
+    margin-right: 1rem;
+
+    .icon {
+      display: flex;
+      align-items: center;
+      opacity: .5;
+      font-size: small;
+      font-weight: bold;
+      filter: colors.$redFilter;
+
+      img {
+        width: 1.5rem;
+        margin-right: .5rem;
+      }
+
+      &.connected {
+        filter: colors.$greenFilter;
+        opacity: 1;
+        font-weight: normal;
+      }
+    }
+
+    .Vpn-server {
+      font-size: x-small;
+      font-style: italic;
+      color: colors.$darkFontColor;
+      margin-left: 1rem;
+    }
   }
 }
