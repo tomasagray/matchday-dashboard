@@ -123,6 +123,11 @@
     input[type=password] {
       max-width: 75%;
       background: none;
+
+      &.invalid {
+        border: 2px solid red;
+        color: red !important;
+      }
     }
 
     .Hover-label {

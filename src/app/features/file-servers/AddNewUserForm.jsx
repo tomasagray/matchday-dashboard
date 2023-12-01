@@ -120,7 +120,9 @@ export const AddNewUserForm = (props) => {
             <Body>
                 <div>
                     <h3>Enter credentials</h3>
-                    <p>Enter a username & password combination, or upload credentials (i.e., cookies, etc.)</p>
+                    <p style={{color: '#888'}}>
+                        Enter a username & password combination, or upload credentials (i.e., cookies, etc.)
+                    </p>
                 </div>
                 <form className={"Add-new-user-form"}>
                     <ToggleGroup>
@@ -128,6 +130,7 @@ export const AddNewUserForm = (props) => {
                             <div className={"Form-row"}>
                                 <label htmlFor={"new-user-name"} className={"Hover-label"}>Username</label>
                                 <input type="text" name="new-user-name" value={username.value}
+                                       className={username.value === '' || username.valid ? '' : 'invalid'}
                                        onChange={onNewUserNameChanged} placeholder={"Enter a username or email"}
                                        autoComplete={'username'}/>
                             </div>
@@ -136,6 +139,7 @@ export const AddNewUserForm = (props) => {
                                     Password
                                 </label>
                                 <input type="password" name="new-user-password" value={password.value}
+                                       className={password.value === '' || password.valid ? '' : 'invalid'}
                                        placeholder={"Enter the user's password"} onChange={onNewPasswordChanged}
                                        autoComplete={'current-password'}/>
                             </div>
@@ -144,6 +148,7 @@ export const AddNewUserForm = (props) => {
                             <div className={"Form-row"}>
                                 <label htmlFor={"cookie-new-user-name"} className={"Hover-label"}>Username</label>
                                 <input type="text" name="cookie-new-user-name" value={username.value}
+                                       className={username.value === '' || username.valid ? '' : 'invalid'}
                                        onChange={onNewUserNameChanged} placeholder={"Enter a username or email"}
                                        autoComplete={'username'}/>
                             </div>
