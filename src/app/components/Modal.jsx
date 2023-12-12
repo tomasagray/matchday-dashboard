@@ -48,7 +48,7 @@ export const Header = (props) => {
 export const Body = (props) => {
 
     return (
-        <div className={"Modal-body"}>
+        <div className={"Modal-body"} style={props.style}>
             {props.children}
         </div>
     )

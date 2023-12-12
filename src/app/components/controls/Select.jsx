@@ -3,7 +3,7 @@ import {FloatingMenu} from "../FloatingMenu";
 
 export const Select = (props) => {
 
-    let {disabled: isDisabled, selectedIndex, selectedValue, onChange} = props
+    let {disabled: isDisabled, selectedIndex, selectedValue, onChange, style} = props
     let [isFocused, setIsFocused] = useState(false)
     let [menuHidden, setMenuHidden] = useState(true)
 
@@ -33,10 +33,7 @@ export const Select = (props) => {
         selectedItem = props.placeholder
     }
 
-
     const selectedContainerStyle = {
-        // maxWidth: '90%',
-        overflow: 'hidden',
         whiteSpace: 'nowrap',
         textOverflow: 'ellipses',
     }
@@ -46,7 +43,10 @@ export const Select = (props) => {
     let isPlaceholder = selected === props.placeholder ? 'placeholder' : ''
     let disabled = isDisabled ? ' disabled' : ''
     return (
-        <div className={'Select' + disabled + focused} onFocus={onFocus(true)} onBlur={onFocus(false)}>
+        <div className={'Select' + disabled + focused}
+             style={style}
+             onFocus={onFocus(true)}
+             onBlur={onFocus(false)}>
             <button onClick={onMenuButtonClick} className={'Selected-item-button ' + isPlaceholder}>
                 <div style={selectedContainerStyle}>
                     {selected}

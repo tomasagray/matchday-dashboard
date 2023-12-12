@@ -4,9 +4,15 @@
 @import "mixins";
 
 .Add-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 20px;
+  height: 20px;
   border: 1px solid colors.$border;
   background: none;
   color: colors.$border;
+  font-family: monospace;
 
   &:hover {
     color: colors.$defaultFontColor;

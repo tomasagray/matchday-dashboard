@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {StatusBubble} from "../../components/StatusBubble";
 import {useStompClient, useSubscription} from "react-stomp-hooks";
 import {JobStatus} from "../../slices/videoSourceSlice";
-import {useDeleteStreamMutation, useKillStreamMutation} from "../../slices/api/videoSourceApiSlice";
+import {useDeleteStreamMutation, useKillStreamMutation} from "../../slices/api/videoStreamApiSlice";
 import {toast} from "react-toastify";
 import {getToastMessage} from "../../utils";
 import {SmallSpinner} from "../../components/Spinner";
@@ -20,12 +20,12 @@ export const VideoFileDisplay = (props) => {
     // TODO: Add confirmation modal for stop stream
     const onStopStream = async (videoFileId) => {
         console.log('killing video stream...', videoFileId)
-        await killStream({eventId, videoFileId})
+        await killStream({videoFileId})
         console.log('done killing stream')
     }
     const onDeleteStream = async (videoFileId) => {
         console.log('deleting video stream data...', videoFileId)
-        await deleteStream({eventId, videoFileId})
+        await deleteStream({videoFileId})
         console.log('done deleting data')
     }
     const onShowErrorModal = () => {
@@ -38,7 +38,6 @@ export const VideoFileDisplay = (props) => {
     // state
     let {
         videoFile,
-        eventId,
         onStartStream,
     } = props
     const [isErrorModalShown, setErrorModalShown] = useState(false)

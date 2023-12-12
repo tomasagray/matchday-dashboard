@@ -88,6 +88,11 @@ input {
   &:disabled {
     @include disabled-input;
   }
+
+  &::placeholder {
+    opacity: .15;
+    font-style: italic;
+  }
 }
 
 select {

@@ -98,9 +98,12 @@ export const getDownloadableJson = (data, pretty = true) => {
 }
 
 export const getToastMessage = (msg) => {
+    console.log('toast', msg)
     if (msg.data) {
-        console.log(msg.data)
-        return msg.data
+        if (typeof msg.data === 'object') {
+            return `(${msg.data.status}) ${msg.data.message}`
+        }
+        return msg.data;
     } else {
         console.error(msg.error)
         return msg.error

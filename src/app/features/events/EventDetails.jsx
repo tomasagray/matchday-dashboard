@@ -21,6 +21,8 @@ import {DeleteButton} from "../../components/controls/DeleteButton";
 import {VideoSourceDisplay} from "./VideoSourceDisplay";
 import {StompSessionProvider} from "react-stomp-hooks";
 import properties from "../../properties";
+import {AddButton} from "../../components/controls/AddButton";
+import {AddEditVideoSource} from "./AddEditVideoSource";
 
 const getFindMoreDisplay = (event) => {
     let competitionId, homeTeamId, awayTeamId
@@ -36,9 +38,9 @@ const getFindMoreDisplay = (event) => {
             awayTeamId = awayTeam['id']
         }
         return <FindMoreContainer
-                competitionId={competitionId}
-                homeTeamId={homeTeamId}
-                awayTeamId={awayTeamId} />
+            competitionId={competitionId}
+            homeTeamId={homeTeamId}
+            awayTeamId={awayTeamId}/>
     }
     return null
 }
@@ -116,6 +118,12 @@ export const EventDetails = () => {
             .catch(err => console.error('ERROR deleting Event', err))
         console.log('done deleting')
     }
+    const onShowVideoSourceEdit = () => {
+        setIsEditVideoSourceShown(true)
+    }
+    const onHideEditVideoSourceModal = () => {
+        setIsEditVideoSourceShown(false)
+    }
 
     // state
     const imagePlaceholderUrl = process.env.PUBLIC_URL + '/img/default_event_poster.png'
@@ -123,10 +131,11 @@ export const EventDetails = () => {
     const {eventId} = params
     let editedMatchForUpload = useSelector(state => selectEditedMatchForUpload(state))
     let [videoSrc, setVideoSrc] = useState(null)
+    let [selectedVideoSource, setSelectedVideoSource] = useState(null)
     let [showVideoPlayer, setShowVideoPlayer] = useState(false)
     let [isEditModalShown, setIsEditModalShown] = useState(false)
     let [isDeleteConfirmShown, setIsDeleteConfirmShown] = useState(false)
-    let [selectedVideoSource, setSelectedVideoSource] = useState(null)
+    let [isEditVideoSourceShown, setIsEditVideoSourceShown] = useState(false)
 
     // hooks
     const {
@@ -207,25 +216,26 @@ export const EventDetails = () => {
     let eventTitle = event != null ? getEventTitle(event) : null
     let videoSourceOptions =
         isVideoSourcesLoading ?
-            <CenteredSpinner /> :
+            <CenteredSpinner/> :
             isVideoSourceSuccess ?
                 selectedVideoSource !== null ?
                     <VideoSourceDisplay
                         eventId={eventId}
                         videoSourceId={videoSources.entities[selectedVideoSource].id}
-                        onHide={() => setSelectedVideoSource(null)}
                         isSelected={true}
+                        onHide={() => setSelectedVideoSource(null)}
                         onPlay={onPlayVideo}
+                        onEdit={onShowVideoSourceEdit}
                     /> :
-                Object.values(videoSources.ids).sort().map(videoSourceId =>
-                    <VideoSourceDisplay
-                        eventId={eventId}
-                        videoSourceId={videoSourceId}
-                        key={videoSourceId}
-                        onSelect={() => setSelectedVideoSource(videoSourceId)}
-                    />
-                ) :
-            <ErrorMessage>Could not load video source data</ErrorMessage>
+                    Object.values(videoSources.ids).sort().map(videoSourceId =>
+                        <VideoSourceDisplay
+                            eventId={eventId}
+                            videoSourceId={videoSourceId}
+                            key={videoSourceId}
+                            onSelect={() => setSelectedVideoSource(videoSourceId)}
+                        />
+                    ) :
+                <ErrorMessage>Could not load video source data</ErrorMessage>
 
     return (
         <>
@@ -237,7 +247,7 @@ export const EventDetails = () => {
                     </span>
                 </Header>
                 <Body>
-                    <MatchEditWizard eventId={eventId} onDelete={onDeleteEvent} />
+                    <MatchEditWizard eventId={eventId} onDelete={onDeleteEvent}/>
                 </Body>
                 <Footer>
                     <CancelButton onClick={onHideEditModal}/>
@@ -260,62 +270,67 @@ export const EventDetails = () => {
                     </div>
                 </Body>
                 <Footer>
-                    <DeleteButton onClick={onConfirmDeleteEvent} isLoading={isDeletingMatch} />
-                    <CancelButton onClick={onCancelDeleteEvent} />
+                    <DeleteButton onClick={onConfirmDeleteEvent} isLoading={isDeletingMatch}/>
+                    <CancelButton onClick={onCancelDeleteEvent}/>
                 </Footer>
             </Modal>
+            <AddEditVideoSource
+                eventId={eventId}
+                isShown={isEditVideoSourceShown}
+                onHide={onHideEditVideoSourceModal}/>
             {
                 isEventLoading ?
-                    <CenteredSpinner /> :
+                    <CenteredSpinner/> :
                     isEventSuccess ?
-                    <div className="Content-container">
-                        <VideoPlayer
-                            src={videoSrc}
-                            hidden={!showVideoPlayer}
-                            onStop={onStopVideo}
-                            title={event['title']}
-                            subtitle={formattedDate}
-                        />
-                        <div className="Event-detail-header-container">
-                            <h2 className="Event-detail-header">
-                                {eventTitle}
-                            </h2>
-                            <span style={{color: '#888', fontSize: '11pt '}}>{formattedDate}</span><br/>
-                        </div>
-                        <div className="Event-details-container">
-                            <div className="Event-poster-container">
-                                <SoftLoadImage placeholderUrl={imagePlaceholderUrl}
-                                               imageUrl={posterUrl} className="Event-poster"/>
-                                <div className="Edit-event-button" onClick={onEditEvent}>
-                                    <div className="Spinner-container">
-                                        <img src={process.env.PUBLIC_URL + '/img/icon/edit/edit_32.png'}
-                                             alt="Refresh artwork"/>
+                        <div className="Content-container">
+                            <VideoPlayer
+                                src={videoSrc}
+                                hidden={!showVideoPlayer}
+                                onStop={onStopVideo}
+                                title={event['title']}
+                                subtitle={formattedDate}
+                            />
+                            <div className="Event-detail-header-container">
+                                <h2 className="Event-detail-header">
+                                    {eventTitle}
+                                </h2>
+                                <span style={{color: '#888', fontSize: '11pt '}}>{formattedDate}</span><br/>
+                            </div>
+                            <div className="Event-details-container">
+                                <div className="Event-poster-container">
+                                    <SoftLoadImage placeholderUrl={imagePlaceholderUrl}
+                                                   imageUrl={posterUrl} className="Event-poster"/>
+                                    <div className="Edit-event-button" onClick={onEditEvent}>
+                                        <div className="Spinner-container">
+                                            <img src={process.env.PUBLIC_URL + '/img/icon/edit/edit_32.png'}
+                                                 alt="Refresh artwork"/>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div className="Video-source-display-container">
-                                <div style={{display: 'flex', alignItems: 'center', marginBottom: '1rem'}}>
-                                    <img
-                                        src="/img/icon/video-source/video-source_32.png"
-                                        alt="Video sources"
-                                        style={{
-                                            margin: '0 1rem 0 .5rem',
-                                            opacity: .7,
-                                            width: '24px',
-                                        }}
-                                    />
-                                    <h3 style={{color: 'rgba(180,180,180,.75)'}}>
-                                        Video sources
-                                    </h3>
+                                <div className="Video-source-display-container">
+                                    <div style={{display: 'flex', alignItems: 'center', marginBottom: '1rem'}}>
+                                        <img
+                                            src="/img/icon/video-source/video-source_32.png"
+                                            alt="Video sources"
+                                            style={{
+                                                margin: '0 1rem 0 .5rem',
+                                                opacity: .7,
+                                                width: '24px',
+                                            }}
+                                        />
+                                        <h3 style={{color: 'rgba(180,180,180,.75)', marginRight: '1rem'}}>
+                                            Video sources
+                                        </h3>
+                                        <AddButton onClick={onShowVideoSourceEdit}/>
+                                    </div>
+                                    <StompSessionProvider url={properties.websocketUrl}>
+                                        {videoSourceOptions}
+                                    </StompSessionProvider>
                                 </div>
-                                <StompSessionProvider url={properties.websocketUrl}>
-                                    {videoSourceOptions}
-                                </StompSessionProvider>
                             </div>
-                        </div>
-                        {findMore}
-                    </div> :
-                    <ErrorMessage>Could not load Event data</ErrorMessage>
+                            {findMore}
+                        </div> :
+                        <ErrorMessage>Could not load Event data</ErrorMessage>
             }
         </>
     )

@@ -1,9 +1,5 @@
-import {apiSlice, videoSourceTag} from "./apiSlice";
-import {
-    initialState,
-    videoSourceAdapter,
-    videoSourcesLoaded
-} from "../videoSourceSlice";
+import {apiSlice, eventTag, videoSourceTag} from "./apiSlice";
+import {initialState, videoSourceAdapter, videoSourcesLoaded} from "../videoSourceSlice";
 import store from "../../store";
 import {JsonHeaders} from "../../constants";
 
@@ -19,36 +15,21 @@ export const videoSourceApiSlice = apiSlice.injectEndpoints({
                     return videoSourceAdapter.setAll(initialState, sources)
                 }
             }),
-            fetchVideoPlaylist: builder.query({
-                query: (url) => url,
-            }),
-            killStreamsForSource: builder.mutation({
-                query: ({eventId, videoSourceId}) => ({
-                    url: `/events/event/${eventId}/video/stream/${videoSourceId}/kill-streams`,
+            uploadVideoSource: builder.mutation({
+                query: (req) => ({
+                    url: `/events/event/${req.eventId}/video/stream/update`,
                     headers: JsonHeaders,
-                    method: 'POST',
+                    method: 'PATCH',
+                    body: req.videoSource,
                 }),
+                invalidatesTags: [videoSourceTag, eventTag],
             }),
-            deleteStreamsForSource: builder.mutation({
-                query: ({eventId, videoSourceId}) => ({
-                    url: `/events/event/${eventId}/video/stream/${videoSourceId}/delete-streams`,
-                    headers: JsonHeaders,
+            deleteVideoSource: builder.mutation({
+                query: (req) => ({
+                    url: `/events/event/${req.eventId}/video/stream/${req.videoSourceId}/delete`,
                     method: 'DELETE',
                 }),
-            }),
-            killStream: builder.mutation({
-                query: ({eventId, videoFileId}) => ({
-                    url: `/events/event/${eventId}/video/stream/${videoFileId}/kill-stream`,
-                    headers: JsonHeaders,
-                    method: 'POST',
-                }),
-            }),
-            deleteStream: builder.mutation({
-                query: ({eventId, videoFileId}) => ({
-                    url: `/events/event/${eventId}/video/stream/${videoFileId}/delete-stream`,
-                    headers: JsonHeaders,
-                    method: 'DELETE',
-                }),
+                invalidatesTags: [videoSourceTag, eventTag]
             }),
         })
     }
@@ -56,9 +37,6 @@ export const videoSourceApiSlice = apiSlice.injectEndpoints({
 
 export const {
     useFetchVideoSourcesForEventQuery,
-    useFetchVideoPlaylistQuery,
-    useKillStreamsForSourceMutation,
-    useDeleteStreamsForSourceMutation,
-    useKillStreamMutation,
-    useDeleteStreamMutation,
+    useUploadVideoSourceMutation,
+    useDeleteVideoSourceMutation,
 } = videoSourceApiSlice

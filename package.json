@@ -1,6 +1,6 @@
 {
   "name": "matchday-dashboard",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "private": true,
   "dependencies": {
     "@redux-devtools/extension": "^3.2.2",
@@ -26,16 +26,17 @@
     "react-toastify": "^9.0.8",
     "sass": "^1.54.0",
     "universal-cookie": "^4.0.4",
+    "uuid": "^9.0.1",
     "web-vitals": "^2.1.4"
   },
   "devDependencies": {
-    "@svgr/webpack": "^6.5.1",
-    "react-scripts": "^5.0.1",
-    "@babel/plugin-transform-private-property-in-object": "^7.21.11",
     "@babel/core": "^7.23.3",
     "@babel/eslint-parser": "^7.23.3",
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-    "@babel/preset-env": "^7.23.3"
+    "@babel/plugin-transform-private-property-in-object": "^7.21.11",
+    "@babel/preset-env": "^7.23.3",
+    "@svgr/webpack": "^6.5.1",
+    "react-scripts": "^5.0.1"
   },
   "overrides": {
     "@svgr/webpack": "$@svgr/webpack",
