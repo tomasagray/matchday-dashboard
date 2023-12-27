@@ -43,7 +43,7 @@ export const createEnum = (values) => {
 
 export const formatArtworkData = (art) => {
     let collection = []
-    let {artwork, ...metadata} = art
+    let {collection: artwork, ...metadata} = art
     if (artwork !== null) {
         let {_embedded: embedded} = artwork
         collection = embedded ? embedded['artworks'] : []
@@ -73,6 +73,18 @@ export const getArtworkUrl = (entity, role) => {
         let {_links: links} = entity
         if (links) {
             return links[role]['href']
+        }
+    }
+}
+
+export const getUploadArtwork = (collection) => {
+    let artworks = collection ? [...collection.collection] : []
+    return {
+        ...collection,
+        collection: {
+            _embedded: {
+                artworks,
+            }
         }
     }
 }
@@ -122,6 +134,13 @@ export const isValidUrl = (url) => {
 
 export const isValidUuid = (str) => {
     return uuidPattern.test(str)
+}
+
+export const setBackgroundImage = (url) => {
+    const bg = document.getElementsByClassName('Background-container')[0]
+    if (bg) {
+        bg['style'].backgroundImage = `url(${url})`
+    }
 }
 
 export const updateSelectedArtwork = (selectedId, artworkCollection) => {

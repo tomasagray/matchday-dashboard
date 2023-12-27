@@ -9,6 +9,7 @@ import store from "../../store";
 import {teamAdapter, teamsLoaded} from "../teamSlice";
 import {JsonHeaders} from "../../constants";
 
+
 export const competitionApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => {
         return ({
@@ -43,6 +44,15 @@ export const competitionApiSlice = apiSlice.injectEndpoints({
                         return teamAdapter.setAll(teamAdapter.getInitialState(), teams)
                     }
                 }
+            }),
+            addNewCompetition: builder.mutation({
+                query: (competition) => ({
+                    url: '/competitions/competition/add',
+                    method: 'POST',
+                    headers: JsonHeaders,
+                    body: competition,
+                }),
+                invalidatesTags: [competitionTag, eventTag],
             }),
             updateCompetition: builder.mutation({
                 query: (competition) =>
@@ -107,6 +117,7 @@ export const {
     useFetchAllCompetitionsQuery,
     useFetchCompetitionByIdQuery,
     useFetchTeamsForCompetitionQuery,
+    useAddNewCompetitionMutation,
     useUpdateCompetitionMutation,
     useAddCompetitionEmblemMutation,
     useAddCompetitionFanartMutation,

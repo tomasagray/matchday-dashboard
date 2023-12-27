@@ -335,11 +335,6 @@ $posterHeight: calc($posterWidth / (16 / 9));
   }
 }
 
-.Entity-display {
-  display: flex;
-  flex-wrap: wrap;
-}
-
 .Find-more-container {
   margin: 2rem 0;
 
@@ -358,9 +353,25 @@ $posterHeight: calc($posterWidth / (16 / 9));
   }
 }
 
-.Artwork-metadata-container {
+.Event-metadata-container {
   display: flex;
   flex-direction: column;
+
+  .Event-additional-metadata-container {
+    margin-bottom: 2rem;
+
+    & > div {
+      display: flex;
+      align-items: center;
+      margin: 1rem 0;
+      //border: 3px solid pink;
+
+      h4 {
+        margin-right: 1.5rem;
+        width: 4rem;
+      }
+    }
+  }
 }
 
 .Refresh-event-artwork-container {
@@ -569,6 +580,23 @@ $posterHeight: calc($posterWidth / (16 / 9));
 
     & > * {
       margin-right: 1rem;
+    }
+  }
+}
+
+.Video-source-list {
+  margin-top: 1rem;
+  list-style: none;
+
+  .Video-source-list-item {
+    display: flex;
+    justify-content: space-between;
+    padding: .5rem 0;
+    width: 100%;
+    opacity: .5;
+
+    &:hover {
+      opacity: 1;
     }
   }
 }

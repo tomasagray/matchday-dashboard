@@ -226,3 +226,22 @@
     }
   }
 }
+
+.Entity-header {
+  display: flex;
+  align-items: center;
+
+  h1 {
+    margin-right: 2rem;
+  }
+
+  .Add-new-button {
+    position: relative;
+    top: 5px;
+  }
+}
+
+.Entity-display {
+  display: flex;
+  flex-wrap: wrap;
+}

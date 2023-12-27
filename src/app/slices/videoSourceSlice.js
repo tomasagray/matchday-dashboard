@@ -64,9 +64,9 @@ const getObjectForUpload = (o) => {
     let obj = {}
     Object.entries(o).forEach(entry => {
         if (entry[0] === 'title') {
-            obj['title'] = uploadPartIdentifier[entry[1].value]
+            obj['title'] = entry[1].value
         } else if (entry[0] === 'videoFiles') {
-            let videoFiles = {};
+            let videoFiles = {}
             entry[1].forEach(videoFile => {
                 videoFiles = {
                     ...videoFiles,
@@ -121,75 +121,77 @@ const getInitialVideoFile = () => {
     }
 }
 
-const initialVideoSource = {
-    id: {
-        value: uuidv4(),
-        valid: true,
-    },
-    channel: {
-        value: '',
-        valid: true,
-    },
-    resolution: {
-        value: '',
-        valid: true,
-    },
-    source: {
-        value: 'DVB-S2',
-        valid: true,
-    },
-    duration: {
-        value: '90min',
-        valid: true,
-    },
-    languages: {
-        value: '',
-        valid: true,
-    },
-    mediaContainer: {
-        value: '',
-        valid: true,
-    },
-    bitrate: {
-        value: 8,
-        valid: true,
-    },
-    frameRate: {
-        value: 0,
-        valid: true,
-    },
-    videoCodec: {
-        value: 'H.264',
-        valid: true,
-    },
-    videoBitrate: {
-        value: 8,
-        valid: true,
-    },
-    audioCodec: {
-        value: 'AC3',
-        valid: true,
-    },
-    audioBitrate: {
-        value: 0,
-        valid: true,
-    },
-    audioChannels: {
-        value: '',
-        valid: true,
-    },
-    filesize: {
-        value: 0,
-        valid: true,
-    },
-    videoFiles: [getInitialVideoFile()]
+const getInitialVideoSource = () => {
+    return {
+        id: {
+            value: uuidv4(),
+            valid: true,
+        },
+        channel: {
+            value: '',
+            valid: true,
+        },
+        resolution: {
+            value: '',
+            valid: true,
+        },
+        source: {
+            value: 'DVB-S2',
+            valid: true,
+        },
+        approximateDuration: {
+            value: '90min',
+            valid: true,
+        },
+        languages: {
+            value: '',
+            valid: true,
+        },
+        mediaContainer: {
+            value: '',
+            valid: true,
+        },
+        bitrate: {
+            value: 8,
+            valid: true,
+        },
+        frameRate: {
+            value: 0,
+            valid: true,
+        },
+        videoCodec: {
+            value: 'H.264',
+            valid: true,
+        },
+        videoBitrate: {
+            value: 8,
+            valid: true,
+        },
+        audioCodec: {
+            value: 'AC3',
+            valid: true,
+        },
+        audioBitrate: {
+            value: 0,
+            valid: true,
+        },
+        audioChannels: {
+            value: '',
+            valid: true,
+        },
+        filesize: {
+            value: 0,
+            valid: true,
+        },
+        videoFiles: [getInitialVideoFile()]
+    }
 }
 
 // create slice
 export const videoSourceAdapter = createEntityAdapter()
 
 export const initialState = videoSourceAdapter.getInitialState({
-    editedVideoSource: initialVideoSource,
+    editedVideoSource: getInitialVideoSource(),
 })
 
 export const videoSourceSlice = createSlice({
@@ -267,7 +269,7 @@ export const videoSourceSlice = createSlice({
             // reset form data
             return {
                 ...state,
-                editedVideoSource: initialVideoSource,
+                editedVideoSource: getInitialVideoSource(),
             }
         }
     }
@@ -287,10 +289,10 @@ export const {
 
 export const {
     selectById: selectVideoSourceById,
-} = videoSourceAdapter.getSelectors(state => state.videoSources ?? initialState)
+} = videoSourceAdapter.getSelectors(state => state.fileSources ?? initialState)
 
 export const selectEditedVideoSource = createSelector(
-    state => state.videoSources,
+    state => state.fileSources,
     state => state.editedVideoSource
 )
 

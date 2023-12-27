@@ -2,13 +2,14 @@ import {formatDate} from "../../utils";
 import {Link} from "react-router-dom";
 import {SoftLoadImage} from "../../components/SoftLoadImage";
 
+
 export default function EventTile(props) {
 
     const placeholderUrl = process.env.PUBLIC_URL + '/img/default_event_poster.png'
 
     const {event} = props
     let {eventId, title, competition, homeTeam, awayTeam, date, _links: links} = event
-    let imageUrl = links['artwork'].href
+    let imageUrl = links['artwork']?.href ?? placeholderUrl
 
     const details = homeTeam ?
         <>

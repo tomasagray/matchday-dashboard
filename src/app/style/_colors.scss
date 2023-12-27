@@ -18,6 +18,7 @@ $darkBg: #222;
 $defaultComponentBg: rgba(40, 40, 40, .8);
 $darkTransparent: rgba(0, 0, 0, .3);
 $lessDarkTransparent: rgba(40, 40, 40, .3);
+$lightTransparent: rgba(160, 160, 160, .3);
 $dimmed: radial-gradient(transparent, rgba(10, 10, 10, .75));
 
 // fonts
@@ -26,7 +27,7 @@ $defaultFontColor: whitesmoke;
 $lightFontColor: #ccc;
 $mediumFontColor: #aaa;
 $darkFontColor: #666;
-$disabledFont: rgba(80,80,80,.6);
+$disabledFont: rgba(80, 80, 80, .6);
 $pluginButtonTitle: #777;
 $pluginButtonTitleHover: whitesmoke;
 $entityButtonFontColor: rgba(220, 220, 220, .7);

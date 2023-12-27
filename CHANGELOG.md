@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] - (upcoming changes)
 
+## [0.5.0]
+
+### Added
+
+- Add/edit VideoSource dialog
+- Add new Match, Competition & Team functionality
+
+### Fixed
+
+- Improved File Server User login form
+
 ## [0.4.0] - 2023-11-28
 
 ### Added

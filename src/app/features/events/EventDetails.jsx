@@ -6,14 +6,14 @@ import {useFetchVideoSourcesForEventQuery} from "../../slices/api/videoSourceApi
 import {VideoPlayer} from "../video/VideoPlayer";
 import dayjs from "dayjs";
 import {ErrorMessage} from "../../components/ErrorMessage";
-import {getToastMessage} from "../../utils";
+import {getToastMessage, setBackgroundImage} from "../../utils";
 import {toast} from "react-toastify";
 import {FindMoreContainer} from "./FindMoreContainer";
 import {SoftLoadImage} from "../../components/SoftLoadImage";
 import Modal, {Body, Footer, Header} from "../../components/Modal";
 import {useDispatch, useSelector} from "react-redux";
-import {beginEditMatch, selectEditedMatchForUpload} from "../../slices/matchSlice";
-import {MatchEditWizard} from "./MatchEditWizard";
+import {beginEditMatch, finishEditMatch, selectEditedMatchForUpload} from "../../slices/matchSlice";
+import {AddEditMatchWizard} from "./AddEditMatchWizard";
 import {SaveButton} from "../../components/controls/SaveButton";
 import {CancelButton} from "../../components/controls/CancelButton";
 import {WarningMessage} from "../../components/WarningMessage";
@@ -23,6 +23,7 @@ import {StompSessionProvider} from "react-stomp-hooks";
 import properties from "../../properties";
 import {AddButton} from "../../components/controls/AddButton";
 import {AddEditVideoSource} from "./AddEditVideoSource";
+
 
 const getFindMoreDisplay = (event) => {
     let competitionId, homeTeamId, awayTeamId
@@ -67,7 +68,7 @@ export const getEventPosterUrl = (event) => {
         return null
     }
     let {_links: links} = event
-    return links['artwork'].href
+    return links['artwork']?.href ?? '/img/default_event_poster.png'
 }
 
 export const EventDetails = () => {
@@ -91,6 +92,7 @@ export const EventDetails = () => {
     }
     const onHideEditModal = () => {
         setIsEditModalShown(false)
+        dispatch(finishEditMatch())
     }
     const onSaveEditedEvent = async () => {
         await updateMatch(editedMatchForUpload)
@@ -113,6 +115,7 @@ export const EventDetails = () => {
             .unwrap()
             .then(() => {
                 setIsDeleteConfirmShown(false)
+                dispatch(finishEditMatch())
                 navigate('/events')
             })
             .catch(err => console.error('ERROR deleting Event', err))
@@ -174,9 +177,8 @@ export const EventDetails = () => {
     // toast messages
     useEffect(() => {
         if (isEventSuccess) {
-            const bg = document.getElementsByClassName('Background-container')[0]
-            let art = event.competition['_links']['fanart'].href
-            bg['style'].backgroundImage = `url(${art})`
+            let artworkUrl = event.competition['_links']['fanart'].href
+            setBackgroundImage(artworkUrl)
         }
         if (isEventError) {
             let msg = `Failed to load data for Event ${eventId}: ` + getToastMessage(eventError);
@@ -247,7 +249,7 @@ export const EventDetails = () => {
                     </span>
                 </Header>
                 <Body>
-                    <MatchEditWizard eventId={eventId} onDelete={onDeleteEvent}/>
+                    <AddEditMatchWizard eventId={eventId} onDelete={onDeleteEvent}/>
                 </Body>
                 <Footer>
                     <CancelButton onClick={onHideEditModal}/>
@@ -294,7 +296,21 @@ export const EventDetails = () => {
                                 <h2 className="Event-detail-header">
                                     {eventTitle}
                                 </h2>
-                                <span style={{color: '#888', fontSize: '11pt '}}>{formattedDate}</span><br/>
+                                <div style={{display: 'flex', alignItems: 'center'}}>
+                                    <span style={{color: '#888', fontSize: '11pt '}}>
+                                        {formattedDate}
+                                    </span>
+                                    {
+                                        event.fixture ?
+                                            <span style={{color: '#aaa'}}>
+                                                &nbsp;&mdash;&nbsp;
+                                                Matchday #{event.fixture.fixtureNumber}
+                                            </span> :
+                                            null
+                                    }
+                                    <span>
+                                    </span>
+                                </div>
                             </div>
                             <div className="Event-details-container">
                                 <div className="Event-poster-container">

@@ -98,7 +98,7 @@ export const VideoSourceDisplay = (props) => {
         audioCodec,
         bitrate,
         channel,
-        duration,
+        approximateDuration,
         languages,
         mediaContainer,
         resolution,
@@ -277,7 +277,7 @@ export const VideoSourceDisplay = (props) => {
             <div className="Video-source-metadata-fields">
                 {/* todo - get flag for language */}
                 <span>{languages}</span>
-                <span>{duration}</span>
+                <span>{approximateDuration}</span>
             </div>
             <div style={{display: 'flex'}}>
                 <div className="Video-file-container">

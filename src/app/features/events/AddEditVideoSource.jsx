@@ -18,6 +18,7 @@ import {useUploadVideoSourceMutation} from "../../slices/api/videoSourceApiSlice
 import {SmallSpinner} from "../../components/Spinner";
 import {toast} from "react-toastify";
 import {getToastMessage} from "../../utils";
+import {addVideoSource} from "../../slices/matchSlice";
 
 
 const $infoMsgColor = '#888'
@@ -53,7 +54,12 @@ export const AddEditVideoSource = (props) => {
         dispatch(editedVideoSourceUpdated({field: 'audioChannels', value}))
     }
     const onSaveVideoSource = async () => {
-        await uploadVideoSource({eventId, videoSource: uploadableVideoSource})
+        if (eventId === undefined || eventId === null) {
+            // we're editing a new Match...
+            dispatch(addVideoSource(uploadableVideoSource))
+        } else {
+            await uploadVideoSource({eventId, videoSource: uploadableVideoSource});
+        }
         dispatch(videoSourceDialogFinished())
         onHide && onHide()
     }
@@ -152,10 +158,10 @@ export const AddEditVideoSource = (props) => {
                                 <input type="text"
                                        autoComplete={'video-source-duration'}
                                        required={true}
-                                       className={videoSource.duration.valid ? '' : 'invalid'}
-                                       value={videoSource.duration.value}
+                                       className={videoSource.approximateDuration.valid ? '' : 'invalid'}
+                                       value={videoSource.approximateDuration.value}
                                        placeholder={'ex: 90min ...'}
-                                       onChange={(e) => onUpdateField('duration', e)}
+                                       onChange={(e) => onUpdateField('approximateDuration', e)}
                                        id="duration"/>
                             </li>
                             <li>

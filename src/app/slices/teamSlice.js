@@ -1,5 +1,6 @@
 import {createEntityAdapter, createSelector, createSlice} from "@reduxjs/toolkit";
-import {formatArtworkData, updateSelectedArtwork} from "../utils";
+import {formatArtworkData, getUploadArtwork, updateSelectedArtwork} from "../utils";
+
 
 export const teamAdapter = createEntityAdapter()
 // white
@@ -29,6 +30,9 @@ const DEFAULT_COLOR = {
 const editedTeam = {
     newSynonym: null,
     colors: [],
+    name: {
+        synonyms: [],
+    },
 }
 
 export const initialState = teamAdapter.getInitialState({
@@ -148,7 +152,7 @@ export const teamSlice = createSlice({
         uploadTeamArtwork: (state, action) => {
             let {payload} = action
             let {artwork: _artworks} = payload
-            let {id, role, selectedIndex, artwork} = _artworks
+            let {id, role, selectedIndex, collection: artwork} = _artworks
             return {
                 ...state,
                 editedTeam: {
@@ -202,7 +206,7 @@ export const teamSlice = createSlice({
                     colors: Object.assign(
                         [],
                         state.editedTeam.colors,
-                        { [priority]: color }
+                        {[priority]: color}
                     )
                 }
             }
@@ -228,9 +232,15 @@ export const teamSlice = createSlice({
                     ...state.editedTeam,
                     colors: [
                         ...state.editedTeam.colors.slice(0, priority),
-                        ...state.editedTeam.colors.slice(priority+1)
+                        ...state.editedTeam.colors.slice(priority + 1)
                     ]
                 }
+            }
+        },
+        finishEditingTeam: (state) => {
+            return {
+                ...state,
+                editedTeam: editedTeam,
             }
         },
     }
@@ -251,6 +261,7 @@ export const {
     setTeamColor,
     addTeamColor,
     deleteTeamColor,
+    finishEditingTeam,
 } = teamSlice.actions
 
 export default teamSlice.reducer
@@ -265,6 +276,33 @@ export const selectEditedTeam = createSelector(
     state => state.editedTeam,
 )
 
+export const selectIsEditedTeamValid = createSelector(
+    selectEditedTeam,
+    editedTeam => {
+        if (editedTeam.name?.name === undefined || editedTeam.name.name === '') {
+            return {
+                isValid: false,
+                reason: 'A name is required',
+            }
+        }
+        if (editedTeam.country === undefined) {
+            return {
+                isValid: false,
+                reason: 'Please specify a country',
+            }
+        }
+        if (editedTeam.colors.length < 1) {
+            return {
+                isValid: false,
+                reason: 'Please set at least one color'
+            }
+        }
+        return {
+            isValid: true,
+        }
+    }
+)
+
 export const selectEditedTeamForUpload = createSelector(
     selectEditedTeam,
     editedTeam => {
@@ -273,12 +311,16 @@ export const selectEditedTeamForUpload = createSelector(
             ...uploadTeam,
             colors: uploadTeam.colors?.map(color => {
                 return {
-                    red: color.rgb.r,
-                    green: color.rgb.g,
-                    blue: color.rgb.b,
-                    alpha: color.rgb.a,
+                    rgb: {
+                        r: color.rgb.r,
+                        g: color.rgb.g,
+                        b: color.rgb.b,
+                        a: color.rgb.a,
+                    }
                 }
-            })
+            }),
+            emblem: getUploadArtwork(uploadTeam.emblem),
+            fanart: getUploadArtwork(uploadTeam.fanart),
         }
     }
 )

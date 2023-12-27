@@ -4,6 +4,7 @@ import store from "../../store";
 import {competitionAdapter, competitionsLoaded} from "../competitionSlice";
 import {JsonHeaders} from "../../constants";
 
+
 const getNormalizedTeams = (response) => {
     let {teams} = response
     if (teams && teams.length > 0) {
@@ -57,9 +58,18 @@ export const teamApiSlice = apiSlice.injectEndpoints({
                     }
                 }
             }),
+            addNewTeam: builder.mutation({
+                query: (team) => ({
+                    url: '/teams/team/add',
+                    method: 'POST',
+                    headers: JsonHeaders,
+                    body: team,
+                }),
+                invalidatesTags: [teamTag, eventTag],
+            }),
             updateTeam: builder.mutation({
                 query: (team) => ({
-                    url: `/teams/team/${team.id}/update`,
+                    url: `/teams/team/update`,
                     method: 'PATCH',
                     headers: JsonHeaders,
                     body: team,
@@ -120,6 +130,7 @@ export const {
     useFetchAllTeamsQuery,
     useFetchTeamByIdQuery,
     useFetchCompetitionsForTeamQuery,
+    useAddNewTeamMutation,
     useUpdateTeamMutation,
     useAddTeamEmblemMutation,
     useAddTeamFanartMutation,

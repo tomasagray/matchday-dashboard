@@ -80,15 +80,15 @@ export const ServerConnect = (props) => {
                        ref={addressRef}
                 />
                 {
-                    <button className="Connect-button" onClick={onConnectToServer} style={{marginLeft: '1rem'}}
-                            disabled={!isAddressValid || isLoading}>
-                        {
-                            isLoading ?
-                                <SmallSpinner size='24px'/> :
+                    isLoading ?
+                        <SmallSpinner size='24px'/> :
+                        <button className="Connect-button" onClick={onConnectToServer} style={{marginLeft: '1rem'}}
+                                disabled={!isAddressValid || isLoading}>
+                            {
                                 <img src={process.env.PUBLIC_URL + '/img/icon/link-arrow/link-arrow_64.png'}
                                      alt="Connect"/>
-                        }
-                    </button>
+                            }
+                        </button>
                 }
             </div>
         </>

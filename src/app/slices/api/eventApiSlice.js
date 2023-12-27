@@ -3,6 +3,7 @@ import store from "../../store";
 import {matchAdapter, matchLoaded, matchSlice} from "../matchSlice";
 import {JsonHeaders} from "../../constants";
 
+
 const getNormalizedEvents = (response) => {
     // todo - handle highlights, other types?
     let {matches, _links: links} = response
@@ -13,6 +14,27 @@ const getNormalizedEvents = (response) => {
             ...normalized,
             next: links?.next?.href
         }
+    }
+}
+
+const removeVideoFileIds = (event) => {
+    return {
+        ...event,
+        fileSources: event.fileSources.map(source => {
+            return {
+                ...source,
+                videoFilePacks: source.videoFilePacks.map(pack => {
+                    // get a mutable copy
+                    let uploadPack = JSON.parse(JSON.stringify(pack))
+                    for (let partName in pack.videoFiles) {
+                        if (pack.videoFiles.hasOwnProperty(partName)) {
+                            uploadPack.videoFiles[partName].videoFileId = null
+                        }
+                    }
+                    return uploadPack
+                })
+            }
+        })
     }
 }
 
@@ -65,6 +87,15 @@ export const eventApiSlice = apiSlice.injectEndpoints({
                 }),
                 invalidatesTags: [eventTag],
             }),
+            addMatch: builder.mutation({
+                query: match => ({
+                    url: '/matches/match/add',
+                    method: 'POST',
+                    headers: JsonHeaders,
+                    body: removeVideoFileIds(match),
+                }),
+                invalidatesTags: [eventTag],
+            }),
             updateMatch: builder.mutation({
                 query: match => ({
                     url: '/matches/match/update',
@@ -91,6 +122,7 @@ export const {
     useFetchEventsForCompetitionQuery,
     useFetchMatchByIdQuery,
     useRefreshMatchArtworkMutation,
+    useAddMatchMutation,
     useUpdateMatchMutation,
     useDeleteMatchMutation,
 } = eventApiSlice

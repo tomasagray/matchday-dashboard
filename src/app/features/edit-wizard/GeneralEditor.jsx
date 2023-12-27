@@ -2,6 +2,7 @@ import React from "react";
 import {CountrySelect} from "./CountrySelect";
 import {Tag, TagField} from "../../components/controls/TagField";
 
+
 export const GeneralEditor = (props) => {
 
     // handlers
@@ -23,7 +24,6 @@ export const GeneralEditor = (props) => {
     } = props
 
     // components
-    console.log('synonyms', synonyms)
     let synonymTags = synonyms?.map(synonym =>
         <Tag key={synonym.id + synonym.name} onDelete={() => onDeleteSynonym(synonym)}>
             {synonym.name}
@@ -34,8 +34,8 @@ export const GeneralEditor = (props) => {
         <>
             <div className="General-editor">
                 <div className="Editor-field">
-                    <label htmlFor="general-editor-title">Title</label>
-                    <input type="text" value={title ?? ''} name="general-editor-title" onChange={onTitleModified} />
+                    <label htmlFor="general-editor-title">Name</label>
+                    <input type="text" value={title ?? ''} name="general-editor-title" onChange={onTitleModified}/>
                 </div>
 
                 <div className="Editor-field">

@@ -473,3 +473,31 @@
     padding: 1rem;
   }
 }
+
+.Wizard-footer-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+
+  .Wizard-reason-container {
+    display: flex;
+    align-items: center;
+    margin-left: 2rem;
+
+    img {
+      margin-right: 1rem;
+    }
+
+    span {
+      color: #ccc;
+      width: 15rem;
+    }
+  }
+
+  .Wizard-button-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: flex-end;
+  }
+}

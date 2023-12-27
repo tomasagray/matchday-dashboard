@@ -51,9 +51,18 @@ export const TeamSelect = (props) => {
         }
     }, [selectedRef, error, isError])
 
+    // components
+    const placeholderTeam = {
+        id: null,
+        name: {name: 'Select Team'},
+    }
     return (
         <div className="Team-select">
-            <TeamTile team={selectedTeam} onClick={onShowTeamMenu}/>
+            {
+                selectedTeam ?
+                    <TeamTile team={selectedTeam} onClick={onShowTeamMenu}/> :
+                    <TeamTile team={placeholderTeam} onClick={onShowTeamMenu}/>
+            }
             <FloatingMenu
                 hidden={isTeamMenuHidden}
                 onClickOutside={onHideTeamMenu}
@@ -69,13 +78,13 @@ export const TeamSelect = (props) => {
                                 isSuccess ?
                                     Object.values(teamsList.entities)
                                         .map(team => {
-                                                const isSelected = selectedTeam.id === team.id
-                                                const className = "Team-tile-selector" + (isSelected ? " selected" : "")
+                                            const isSelected = selectedTeam?.id === team?.id
+                                            const className = "Team-tile-selector" + (isSelected ? " selected" : "")
                                                 return (
                                                     <div
                                                         className={className}
                                                         ref={isSelected ? selectedRef : null}
-                                                        key={team.id}
+                                                        key={team?.id}
                                                     >
                                                         <TeamTile team={team} key={team.id} onClick={handleSelectTeam}/>
                                                     </div>

@@ -3,6 +3,8 @@ import {SoftLoadImage} from "../../components/SoftLoadImage";
 
 export default function TeamTile(props) {
 
+    const placeholderUrl = process.env.PUBLIC_URL + '/img/default_team_emblem.png'
+
     // handlers
     const handleClick = (e) => {
         if (onClick) {
@@ -12,10 +14,9 @@ export default function TeamTile(props) {
     }
 
     // props
-    const placeholderUrl = process.env.PUBLIC_URL + '/img/default_team_emblem.png'
     let {team, onClick} = props
-    let {id, name, _links: links} = team
-    let imageUrl = links['emblem'].href
+    let {id, name: teamName, _links: links} = team
+    let imageUrl = links ? links['emblem'].href : placeholderUrl
 
     // components
     let poster =
@@ -25,7 +26,7 @@ export default function TeamTile(props) {
                 placeholderUrl={placeholderUrl}
                 className="Entity-poster"
             />
-            <div>{name?.name}</div>
+            <div>{teamName?.name}</div>
         </>
     return (
         <div className="Team-tile" onClick={handleClick}>

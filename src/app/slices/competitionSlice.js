@@ -1,11 +1,13 @@
 import {createEntityAdapter, createSelector, createSlice} from "@reduxjs/toolkit";
-import {formatArtworkData, updateSelectedArtwork} from "../utils";
+import {formatArtworkData, getUploadArtwork, updateSelectedArtwork} from "../utils";
 
 
 export const competitionAdapter = createEntityAdapter()
 export const editedCompetition = {
     id: null,
-    name: null,
+    name: {
+        synonyms: []
+    },
     country: null,
     emblem: null,
     fanart: null,
@@ -126,7 +128,7 @@ export const competitionSlice = createSlice({
         uploadArtwork: (state, action) => {
             let {payload} = action
             let {artwork: _artworks} = payload
-            let {id, role, selectedIndex, artwork} = _artworks
+            let {id, role, selectedIndex, collection: artwork} = _artworks
             return {
                 ...state,
                 editedCompetition: {
@@ -169,7 +171,13 @@ export const competitionSlice = createSlice({
                     [role]: formatArtworkData(collection)
                 }
             }
-        }
+        },
+        finishEditingCompetition: (state) => {
+            return {
+                ...state,
+                editedCompetition: editedCompetition,
+            }
+        },
     }
 })
 
@@ -186,6 +194,7 @@ export const {
     uploadArtwork,
     selectArtwork,
     updateArtworkCollection,
+    finishEditingCompetition,
 } = competitionSlice.actions
 
 export default competitionSlice.reducer
@@ -195,10 +204,35 @@ export const selectEditedCompetition = createSelector(
     state => state.editedCompetition,
 )
 
+export const selectIsEditedCompetitionValid = createSelector(
+    selectEditedCompetition,
+    editedCompetition => {
+        if (editedCompetition.name?.name === undefined || editedCompetition.name.name === '') {
+            return {
+                isValid: false,
+                reason: 'A name is required',
+            }
+        }
+        if (editedCompetition.country === undefined || editedCompetition.country === null) {
+            return {
+                isValid: false,
+                reason: 'Please specify a country',
+            }
+        }
+        return {
+            isValid: true,
+        }
+    }
+)
+
 export const selectEditedCompetitionForUpload = createSelector(
     selectEditedCompetition,
     editedCompetition => {
         const {newSynonym, ...uploadCompetition} = editedCompetition
-        return uploadCompetition
+        return {
+            ...uploadCompetition,
+            emblem: getUploadArtwork(uploadCompetition.emblem),
+            fanart: getUploadArtwork(uploadCompetition.fanart),
+        }
     }
 )

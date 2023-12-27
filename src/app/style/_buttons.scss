@@ -20,6 +20,25 @@
   }
 }
 
+.Add-new-button {
+  display: flex;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  font-size: medium;
+  color: colors.$lightFontColor;
+  border: 2px solid transparent;
+
+  &:hover {
+    border-color: colors.$lightTransparent;
+  }
+
+  .Add-button {
+    color: colors.$defaultFontColor;
+    border-color: colors.$defaultFontColor;
+    margin-right: 1rem;
+  }
+}
+
 .Button-container {
   display: flex;
   justify-content: flex-end;

@@ -15,7 +15,7 @@ import {apiSlice} from "./slices/api/apiSlice";
 export default configureStore({
     reducer: {
         events: eventsReducer,
-        videoSources: videoSourceReducer,
+        fileSources: videoSourceReducer,
         videoStreams: videoStreamReducer,
         competitions: competitionReducer,
         teams: teamReducer,

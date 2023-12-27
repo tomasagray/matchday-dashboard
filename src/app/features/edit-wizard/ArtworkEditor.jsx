@@ -121,7 +121,7 @@ export const ArtworkEditor = (props) => {
         <div className="Artwork-collection-container">
           <div className="Artwork-collection-display">
             {
-              artwork.collection != null ?
+              artwork?.collection != null ?
                   artwork.collection.map(artwork =>
                       <ArtworkDisplay
                           className={artwork.selected ? 'selected' : ''}
