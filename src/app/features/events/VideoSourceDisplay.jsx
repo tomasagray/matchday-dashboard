@@ -294,9 +294,10 @@ export const VideoSourceDisplay = (props) => {
             </div>
             <div className="Video-source-metadata-fields" style={{color: '#ccc'}}>
                 {
-                    primaryMetadata.map(datum =>
-                        <span key={md5(datum)}>{datum}</span>
-                    )
+                    primaryMetadata.filter(datum => datum !== null)
+                        .map(datum =>
+                            <span key={md5(datum)}>{datum}</span>
+                        )
                 }
                 {
                     isSelected ?
