@@ -109,8 +109,8 @@ export const VideoSourceDisplay = (props) => {
     } = videoSource
 
     // computed state
-    let primaryMetadata = [resolution, videoCodec, bitrate]
-    let secondaryMetadata = [source, audioCodec, mediaContainer]
+    let primaryMetadata = [resolution, videoCodec, bitrate].filter(datum => datum !== undefined)
+    let secondaryMetadata = [source, audioCodec, mediaContainer].filter(datum => datum !== undefined)
     let parts = Object.values(videoFiles)
     let ids = parts.map(part => part.videoFileId)
     let streamStatuses = useSelector(state => selectVideoStreams(state, ids))
@@ -294,17 +294,16 @@ export const VideoSourceDisplay = (props) => {
             </div>
             <div className="Video-source-metadata-fields" style={{color: '#ccc'}}>
                 {
-                    primaryMetadata.filter(datum => datum !== undefined && datum !== null)
+                    primaryMetadata.filter(datum => datum !== null)
                         .map(datum =>
                             <span key={md5(datum)}>{datum}</span>
                         )
                 }
                 {
                     isSelected ?
-                        secondaryMetadata.filter(datum => datum !== undefined && datum !== null)
-                            .map(datum =>
-                                <span key={md5(datum)}>{datum}</span>
-                            ) :
+                        secondaryMetadata.map(datum =>
+                            <span key={md5(datum)}>{datum}</span>
+                        ) :
                         null
                 }
             </div>
