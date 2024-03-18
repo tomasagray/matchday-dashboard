@@ -41,6 +41,13 @@ export const createEnum = (values) => {
     return Object.freeze(enumObject)
 }
 
+export const downloadData = (data, filename) => {
+    const a = document.createElement('a')
+    a.href = 'data:text;charset=utf-8,' + data
+    a.setAttribute('download', filename)
+    a.click()
+}
+
 export const formatArtworkData = (art) => {
     let collection = []
     let {collection: artwork, ...metadata} = art

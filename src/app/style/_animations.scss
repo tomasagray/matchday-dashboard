@@ -1,0 +1,38 @@
+@use "variables";
+
+
+@keyframes rotate45 {
+  from {
+    rotate: 0deg;
+  }
+  to {
+    rotate: 45deg;
+  }
+}
+
+@keyframes rotate0 {
+  from {
+    rotate: 45deg;
+  }
+  to {
+    rotate: 0deg;
+  }
+}
+
+@keyframes expandAccordion {
+  from {
+    max-height: 0;
+  }
+  to {
+    max-height: variables.$accordionHeight;
+  }
+}
+
+@keyframes contractAccordion {
+  from {
+    max-height: variables.$accordionHeight;
+  }
+  to {
+    max-height: 0;
+  }
+}

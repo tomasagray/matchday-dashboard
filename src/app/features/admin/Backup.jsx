@@ -7,7 +7,7 @@ import {
 } from "../../slices/api/adminApiSlice";
 import {CenteredSpinner} from "../../components/Spinner";
 import {ErrorMessage} from "../../components/ErrorMessage";
-import {getDownloadableJson, getToastMessage} from "../../utils";
+import {downloadData, getDownloadableJson, getToastMessage} from "../../utils";
 import {toast} from "react-toastify";
 import {RestorePointTable} from "./RestorePointTable";
 import {FileUploadButton} from "../../components/controls/FileUploadButton";
@@ -27,10 +27,7 @@ export const Backup = () => {
             let json = getDownloadableJson(response)
             let timestamp = dayjs().format('YYYY-MM-DD_HH-mm-ss')
             let filename = `matchday_system-image_${timestamp}.json`
-            let a = document.createElement('a')
-            a.setAttribute('href', json)
-            a.setAttribute('download', filename)
-            a.click()
+            downloadData(json, filename)
             toast('Downloaded dehydrated System Image to: ' + filename)
         })
         console.log('done dehydrating')

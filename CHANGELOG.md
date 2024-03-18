@@ -7,9 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] - (upcoming changes)
 
+## [0.5.1]
+
 ### Changed
 
 - Improved Video Source icon
+- Improved Sanity report & Datasource displays
+
+### Added
+
+- Download button for sanity reports
+- Accordion, Datasource table components
 
 ## [0.5.0]
 
