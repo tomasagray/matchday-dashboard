@@ -109,8 +109,8 @@ export const VideoSourceDisplay = (props) => {
     } = videoSource
 
     // computed state
-    let primaryMetadata = [resolution, videoCodec, bitrate].filter(datum => datum !== undefined)
-    let secondaryMetadata = [source, audioCodec, mediaContainer].filter(datum => datum !== undefined)
+    let primaryMetadata = [resolution, videoCodec, bitrate].filter(datum => datum !== undefined && datum !== null)
+    let secondaryMetadata = [source, audioCodec, mediaContainer].filter(datum => datum !== undefined && datum !== null)
     let parts = Object.values(videoFiles)
     let ids = parts.map(part => part.videoFileId)
     let streamStatuses = useSelector(state => selectVideoStreams(state, ids))
