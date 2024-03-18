@@ -4,11 +4,12 @@ import {selectCookiesForUser} from "../../slices/fileServerUserSlice";
 import Modal, {Body, Footer, Header} from "../../components/Modal";
 import {DownloadButton} from "../../components/controls/DownloadButton";
 import {OKButton} from "../../components/controls/OKButton";
+import {downloadData} from "../../utils";
 
 export const CookieDisplay = (props) => {
 
     const onDownloadCookies = () => {
-        const a = document.createElement('a')
+        let filename = `cookies_${userId}.txt`
         let data =
             cookies.map(cookie =>
                 Object.entries(cookie)
@@ -22,15 +23,13 @@ export const CookieDisplay = (props) => {
                     file += "\n" + line
                     return file
                 })
-        a.href = 'data:text;charset=utf-8,' + data
-        a.setAttribute('download', `cookies_${userId}.txt`)
-        a.click()
+        downloadData(data, filename)
         onHide()
     }
 
     const {userId, show, onHide} = props
     const cookies = useSelector(state => selectCookiesForUser(state, userId))
-    const hayCookies = cookies.length > 0
+    const foundCookies = cookies.length > 0
 
     return (
         <Modal show={show}>
@@ -39,7 +38,7 @@ export const CookieDisplay = (props) => {
             </Header>
             <Body>
             {
-                hayCookies ?
+                foundCookies ?
                     <div className={"Cookie-display"}>
                         <table className={"Cookie-display-table"}>
                             <thead>
@@ -81,7 +80,7 @@ export const CookieDisplay = (props) => {
             }
             </Body>
             <Footer>
-                {hayCookies ? <DownloadButton onClick={onDownloadCookies}/> : null}
+                {foundCookies ? <DownloadButton onClick={onDownloadCookies}/> : null}
                 <OKButton onClick={onHide}/>
             </Footer>
         </Modal>

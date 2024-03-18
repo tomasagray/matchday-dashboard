@@ -7,7 +7,7 @@ import {
     selectDataSourceById,
 } from "../../slices/dataSourceSlice";
 import {useDispatch, useSelector} from "react-redux";
-import {getClassName, getDownloadableJson, getToastMessage, isValidUrl, isValidUuid} from "../../utils";
+import {downloadData, getClassName, getDownloadableJson, getToastMessage, isValidUrl, isValidUuid} from "../../utils";
 import {InfoMessage} from "../../components/InfoMessage";
 import {PatternKitDisplay} from "./PatternKitDisplay";
 import Modal, {Body, Footer, Header} from "../../components/Modal";
@@ -182,12 +182,10 @@ export const DataSourceDisplay = (props) => {
         setEditMenuHidden(true)
     }
     const onExportDataSource = () => {
-        const a = document.createElement('a')
-        const filename = `data-source_${dataSourceId}.json`
-        a.setAttribute('href', getDownloadableJson(dataSource))
-        a.setAttribute('download', filename)
-        a.click()
         setEditMenuHidden(true)
+        let filename = `data-source_${dataSourceId}.json`
+        let data = getDownloadableJson(dataSource)
+        downloadData(data, filename)
         toast('Downloaded Data Source to: ' + filename)
     }
     const onShowDeleteDataSourceModal = (e) => {
