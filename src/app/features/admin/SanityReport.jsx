@@ -1,10 +1,16 @@
 import React, {useState} from "react";
 import {copyToClipboard} from "../../utils";
 import {toast} from "react-toastify";
+import {DatabaseTable} from "../../components/DatabaseTable";
+import {AccordionHeader} from "../../components/AccordionHeader";
+import {AccordionDisplay} from "../../components/AccordionDisplay";
+import md5 from "md5";
+
 
 export const SanityReport = (props) => {
 
-    const dim = {color: '#888'}
+    const dim = {color: '#888', marginLeft: '1rem'}
+
     // handlers
     const onToggleArtDbDisplay = () => {
         setIsArtDbDisplayed(!isArtDbDisplayed)
@@ -18,7 +24,12 @@ export const SanityReport = (props) => {
     const onTogglePlaylistsDisplayed = () => {
         setIsPlaylistsDisplayed(!isPlaylistsDisplayed)
     }
-    const onCopyEntries = async (entries, joiner = "\n") => {
+    const onCopyEntries = async (e, entries, joiner = "\n") => {
+        e.stopPropagation()
+        if (entries.length === 0) {
+            toast('Nothing to copy', {autoClose: 500})
+            return
+        }
         let formatted = entries.reduce((a, b) => a + joiner + b)
         copyToClipboard(formatted)
             .then(() => toast('Copied data to clipboard', {autoClose: 1000}))
@@ -45,76 +56,49 @@ export const SanityReport = (props) => {
                     Database entries: <span style={dim}>{artwork['totalDbEntries']}</span>&nbsp;&nbsp;
                     File count: <span style={dim}>{artwork['totalFiles']}</span>
                 </p>
-                <button className="Accordion-button" onClick={onToggleArtDbDisplay}>
-                    Dangling database entries &nbsp; &nbsp;
+                <AccordionHeader onClick={onToggleArtDbDisplay} isExpanded={isArtDbDisplayed}>
+                    <span>Dangling database entries</span>
                     <span style={dim}>{artwork['danglingDbEntries'].length}</span>
-                </button>
-                <div className={"Dangling-entry-display" + (isArtDbDisplayed ? ' displayed' : '')}>
+                    <button
+                        className="Floating-copy-button"
+                        onClick={
+                            (e) => onCopyEntries(e, artwork['danglingDbEntries'].map(entry => entry.id), ", ")
+                        }>
+                        <img src="/img/icon/copy/copy_16.png" alt="Copy"/>
+                    </button>
+                </AccordionHeader>
+                <AccordionDisplay isShown={isArtDbDisplayed}>
                     {
                         artwork['danglingDbEntries'].length > 0 ?
-                            <>
-                                <div className="Database-table-container">
-                                    <table className="Database-table">
-                                        <thead>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>File</th>
-                                            <th>Filesize</th>
-                                            <th>Media type</th>
-                                            <th>Width</th>
-                                            <th>Height</th>
-                                            <th>Created</th>
-                                            <th>Modified</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        {
-                                            artwork['danglingDbEntries'].map(entry =>
-                                                <tr key={entry.id}>
-                                                    {
-                                                        Object.values(entry).map(value =>
-                                                            <td key={entry.id + value}>{value}</td>
-                                                        )
-                                                    }
-                                                </tr>
-                                            )
-                                        }
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <button
-                                    className="Floating-copy-button"
-                                    onClick={
-                                        () => onCopyEntries(artwork['danglingDbEntries'].map(entry => entry.id), ", ")
-                                    }>
-                                    <img src="/img/icon/copy/copy_16.png" alt="Copy"/>
-                                </button>
-                            </> :
+                            <DatabaseTable
+                                titles={['ID', 'File', 'Filesize', 'Media Type', 'Width', 'Height', 'Created', 'Modified']}
+                                rows={artwork['danglingDbEntries']}
+                            /> :
                             <span style={dim}>None</span>
                     }
-                </div>
-                <button className="Accordion-button" onClick={onToggleArtFilesDisplay}>
-                    Dangling Artwork files &nbsp; &nbsp;
+                </AccordionDisplay>
+                <AccordionHeader onClick={onToggleArtFilesDisplay} isExpanded={isArtFilesDisplayed}>
+                    <span>Dangling Artwork files</span>
                     <span style={dim}>{artwork['danglingFiles'].length}</span>
-                </button>
-                <div className={"Dangling-entry-display" + (isArtFilesDisplayed ? ' displayed' : '')}>
+                    <button
+                        className="Floating-copy-button"
+                        onClick={(e) => onCopyEntries(e, artwork['danglingFiles'])}>
+                        <img src="/img/icon/copy/copy_16.png" alt="Copy"/>
+                    </button>
+                </AccordionHeader>
+                <AccordionDisplay isShown={isArtFilesDisplayed}>
                     {
                         artwork['danglingFiles'].length > 0 ?
                             <>
                                 {
                                     artwork['danglingFiles'].map(file =>
-                                        <span key={file} className="Dangling-entry">{file}</span>
+                                        <span key={md5(file)} className="Dangling-file-entry">{file}</span>
                                     )
                                 }
-                                <button
-                                    className="Floating-copy-button"
-                                    onClick={() => onCopyEntries(artwork['danglingFiles'])}>
-                                    <img src="/img/icon/copy/copy_16.png" alt="Copy"/>
-                                </button>
                             </> :
                             <span style={dim}>None</span>
                     }
-                </div>
+                </AccordionDisplay>
             </div>
             <div>
                 <h4>Video</h4>
@@ -122,50 +106,46 @@ export const SanityReport = (props) => {
                     VideoStreamLocator count: <span style={dim}>{video['totalStreamLocators']}</span>&nbsp;&nbsp;
                     VideoStreamLocatorPlaylist count: <span style={dim}>{video['totalLocatorPlaylists']}</span>
                 </p>
-                <button className="Accordion-button" onClick={onToggleLocatorsDisplayed}>
-                    Dangling VideoStreamLocators &nbsp; &nbsp;
+                <AccordionHeader onClick={onToggleLocatorsDisplayed} isExpanded={isVideoLocatorsDisplayed}>
+                    <span>Dangling VideoStreamLocators</span>
                     <span style={dim}>{video['danglingStreamLocators'].length}</span>
-                </button>
-                <div className={"Dangling-entry-display" + (isVideoLocatorsDisplayed ? ' displayed' : '')}>
+                    <button
+                        className="Floating-copy-button"
+                        onClick={
+                            (e) => onCopyEntries(e, video['danglingStreamLocators'].map(locator => locator['streamLocatorId']), ", ")
+                        }>
+                        <img src="/img/icon/copy/copy_16.png" alt="Copy"/>
+                    </button>
+                </AccordionHeader>
+                <AccordionDisplay isShown={isVideoLocatorsDisplayed}>
                     {
                         video['danglingStreamLocators'].length > 0 ?
-                            <>
-                                {
-                                    video['danglingStreamLocators'].map(locator =>
-                                        <span key={locator.id} className="Dangling-entry">{locator}</span>
-                                    )
-                                }
-                                <button
-                                    className="Floating-copy-button"
-                                    onClick={() => onCopyEntries(video['danglingStreamLocators'])}>
-                                    <img src="/img/icon/copy/copy_16.png" alt="Copy"/>
-                                </button>
-                            </> :
+                            <DatabaseTable
+                                rows={video['danglingStreamLocators']}
+                                titles={['Timestamp', 'ID', 'Path', 'Video Files', 'State']}
+                            /> :
                             <span style={dim}>None</span>
                     }
-                </div>
-                <button className="Accordion-button" onClick={onTogglePlaylistsDisplayed}>
-                    Dangling VideoStreamLocatorPlaylists &nbsp; &nbsp;
+                </AccordionDisplay>
+                <AccordionHeader onClick={onTogglePlaylistsDisplayed} isExpanded={isPlaylistsDisplayed}>
+                    <span>Dangling VideoStreamLocatorPlaylists</span>
                     <span style={dim}>{video['danglingPlaylists'].length}</span>
-                </button>
-                <div className={"Dangling-entry-display" + (isPlaylistsDisplayed ? ' displayed' : '')}>
+                    <button
+                        className="Floating-copy-button"
+                        onClick={(e) => onCopyEntries(e, video['danglingPlaylists'].map(playlist => playlist.id), ", ")}>
+                        <img src="/img/icon/copy/copy_16.png" alt="Copy"/>
+                    </button>
+                </AccordionHeader>
+                <AccordionDisplay isShown={isPlaylistsDisplayed}>
                     {
                         video['danglingPlaylists'].length > 0 ?
-                            <>
-                                {
-                                    video['danglingPlaylists'].map(playlist =>
-                                        <span key={playlist} className="Dangling-entry">{playlist}</span>
-                                    )
-                                }
-                                <button
-                                    className="Floating-copy-button"
-                                    onClick={() => onCopyEntries(video['danglingPlaylists'])}>
-                                    <img src="/img/icon/copy/copy_16.png" alt="Copy"/>
-                                </button>
-                            </> :
+                            <DatabaseTable
+                                rows={video['danglingPlaylists']}
+                                titles={['Video File Source', 'Stream Locators', 'Storage Location', 'Timestamp', 'ID', 'State']}
+                            /> :
                             <span style={dim}>None</span>
                     }
-                </div>
+                </AccordionDisplay>
             </div>
         </>
     )

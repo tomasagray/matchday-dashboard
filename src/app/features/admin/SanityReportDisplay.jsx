@@ -4,6 +4,25 @@ import {getToastMessage} from "../../utils";
 import {toast} from "react-toastify";
 import {SanityReport} from "./SanityReport";
 
+
+const GenerateButton = (props) => {
+    let {isLoading, onClick} = props
+    let style = {
+        width: '8rem',
+        margin: '1rem 0',
+        cursor: isLoading ? 'wait' : 'default',
+    }
+    return (
+        <button
+            disabled={isLoading}
+            className="Small-button"
+            onClick={onClick}
+            style={style}>
+            Generate
+        </button>
+    )
+}
+
 export const SanityReportDisplay = () => {
 
     // handlers
@@ -33,13 +52,7 @@ export const SanityReportDisplay = () => {
         <>
             <h1 style={{marginBottom: '1rem'}}>Sanity Report</h1>
             <p style={{color: '#aaa'}}>Click the button below to generate a System Sanity Check report.</p>
-            <button
-                disabled={isLoading}
-                className="Small-button"
-                onClick={onGenerateReport}
-                style={{width: '8rem', margin: '1rem 0'}}>
-                Generate
-            </button>
+            <GenerateButton isLoading={isLoading} onClick={onGenerateReport}/>
             <div className="Sanity-report-display">
                 {
                     isSuccess && data !== undefined ?

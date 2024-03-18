@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from "react";
-import {CollapsableContainer} from "../../components/CollapsableContainer";
 import {PatternKitTypeGroup} from "./PatternKitTypeGroup";
 import {
     dataSourceReset,
@@ -29,6 +28,8 @@ import {DeleteButton} from "../../components/controls/DeleteButton";
 import {ClearButton} from "../../components/controls/ClearButton";
 import {validateFields} from "./PatternKitFieldEditor";
 import {toast} from "react-toastify";
+import {AccordionDisplay} from "../../components/AccordionDisplay";
+import {AccordionHeader} from "../../components/AccordionHeader";
 
 const groupPatternKits = (patternKits) => {
     return patternKits.reduce((reducer, patternKit) => {
@@ -102,6 +103,9 @@ export const DataSourceDisplay = (props) => {
     const DEFAULT_FIELD_SIZE = 25
     const dispatch = useDispatch()
 
+    const toggleIsShown = () => {
+        setIsShown(!isShown)
+    }
     // save/reset data source modal
     const onBaseUriValChanged = (e) => {
         let baseUriVal = e.target.value
@@ -121,7 +125,7 @@ export const DataSourceDisplay = (props) => {
         setShowResetModal(false)
     }
     const onResetDataSource = () => {
-        dispatch( dataSourceReset({dataSourceId: dataSourceId}) )
+        dispatch(dataSourceReset({dataSourceId: dataSourceId}))
         setIsEditable(false)
         setShowResetModal(false)
     }
@@ -268,6 +272,7 @@ export const DataSourceDisplay = (props) => {
     ])
 
     // state
+    let [isShown, setIsShown] = useState(false)
     let [showTypeMenu, setShowTypeMenu] = useState(false)
     let [selectedType, setSelectedType] = useState('')
     let [editMenuHidden, setEditMenuHidden] = useState(true)
@@ -297,7 +302,8 @@ export const DataSourceDisplay = (props) => {
             patternKitData =
                 <div style={{padding: "2rem 0"}}>
                     <InfoMessage>
-                        There are currently no Pattern Kits of the selected <strong>Type</strong> for this Data Source. <br/>
+                        There are currently no Pattern Kits of the selected <strong>Type</strong> for this Data
+                        Source. <br/>
                         Click below to add one.
                     </InfoMessage>
                 </div>
@@ -313,129 +319,140 @@ export const DataSourceDisplay = (props) => {
         </MenuItem>
 
     return (
-        <CollapsableContainer _key={dataSourceId} title={title}>
-            <div id="modal-container">
-                <Modal show={showResetModal}>
-                    <Header onHide={onCloseResetWarning}>Reset changes to Data Source?</Header>
-                    <Body>
-                        <p>Are you sure you want to reset all changes to this Data Source?</p>
-                        <strong>This cannot be undone.</strong>
-                    </Body>
-                    <Footer>
-                        <CancelButton onClick={onCloseResetWarning}/>
-                        <OKButton onClick={onResetDataSource}>RESET</OKButton>
-                    </Footer>
-                </Modal>
-                <Modal show={showAddPatternKitModal}>
-                    <Header onHide={onHideAddPatternKitModal}>Add new Pattern Kit</Header>
-                    <Body>
-                        <AddPatternKitForm dataSourceType={type} dataSourceId={dataSourceId}/>
-                    </Body>
-                    <Footer>
-                        <CancelButton onClick={onHideAddPatternKitModal}>Discard</CancelButton>
-                        <SaveButton onClick={onAddPatternKit} disabled={!isNewPatternKitValid}>Add</SaveButton>
-                    </Footer>
-                </Modal>
-                <Modal show={showDeleteDataSourceModal}>
-                    <Header onHide={onHideDeleteDataSourceModal}>
-                        CONFIRM: <span style={{color: '#aaa'}}>Delete Data Source?</span>
-                    </Header>
-                    <Body>
-                        <p>
-                            Are you sure you want to <strong style={{color: 'red', fontWeight: 'bold'}}>PERMANENTLY DELETE</strong>&nbsp;
-                            this Data Source?
-                        </p>
-                        <table className={"Data-source-table"}>
-                            <tbody>
-                            <tr>
-                                <td><h3>ID</h3></td>
-                                <td>{dataSourceId}</td>
-                            </tr>
-                            <tr>
-                                <td><h3>Title</h3></td>
-                                <td>{title}</td>
-                            </tr>
-                            <tr>
-                                <td><h3>Type</h3></td>
-                                <td>{type}</td>
-                            </tr>
-                            <tr>
-                                <td><h3>Base URI</h3></td>
-                                <td>{baseUri}</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </Body>
-                    <Footer>
-                        <CancelButton onClick={onHideDeleteDataSourceModal} disabled={isDeleting}/>
-                        <DeleteButton onClick={onDeleteDataSource} isLoading={isDeleting}/>
-                    </Footer>
-                </Modal>
-            </div>
-
-            <form className="Data-source-display">
-                <div id={"data-source-edit-menu"} style={{float: 'right'}}>
-                    <button onClick={onMenuButtonClick} className="Edit-menu-button">&#8942;</button>
-                    <FloatingMenu hidden={editMenuHidden} onClickOutside={setEditMenuHidden}>
-                        {editButton}
-                        <MenuItem onClick={onExportDataSource} backgroundColor="cornflowerblue">
-                            <p>Export</p>
-                            <img src={process.env.PUBLIC_URL + '/img/icon/download/download_16.png'} alt="Export" />
-                        </MenuItem>
-                        <MenuItem onClick={onShowDeleteDataSourceModal} backgroundColor="darkred">
-                            <p>Delete</p>
-                            <img src={process.env.PUBLIC_URL + '/img/icon/delete/delete_16.png'} alt="Delete"/>
-                        </MenuItem>
-                    </FloatingMenu>
+        <>
+            <AccordionHeader isExpanded={isShown} onClick={toggleIsShown}>
+                {title}
+            </AccordionHeader>
+            <AccordionDisplay isShown={isShown}>
+                <div id="modal-container">
+                    <Modal show={showResetModal}>
+                        <Header onHide={onCloseResetWarning}>Reset changes to Data Source?</Header>
+                        <Body>
+                            <p>Are you sure you want to reset all changes to this Data Source?</p>
+                            <strong>This cannot be undone.</strong>
+                        </Body>
+                        <Footer>
+                            <CancelButton onClick={onCloseResetWarning}/>
+                            <OKButton onClick={onResetDataSource}>RESET</OKButton>
+                        </Footer>
+                    </Modal>
+                    <Modal show={showAddPatternKitModal}>
+                        <Header onHide={onHideAddPatternKitModal}>Add new Pattern Kit</Header>
+                        <Body>
+                            <AddPatternKitForm dataSourceType={type} dataSourceId={dataSourceId}/>
+                        </Body>
+                        <Footer>
+                            <CancelButton onClick={onHideAddPatternKitModal}>Discard</CancelButton>
+                            <SaveButton onClick={onAddPatternKit} disabled={!isNewPatternKitValid}>Add</SaveButton>
+                        </Footer>
+                    </Modal>
+                    <Modal show={showDeleteDataSourceModal}>
+                        <Header onHide={onHideDeleteDataSourceModal}>
+                            CONFIRM: <span style={{color: '#aaa'}}>Delete Data Source?</span>
+                        </Header>
+                        <Body>
+                            <p>
+                                Are you sure you want to <strong style={{color: 'red', fontWeight: 'bold'}}>PERMANENTLY
+                                DELETE</strong>&nbsp;
+                                this Data Source?
+                            </p>
+                            <table className={"Data-source-table"}>
+                                <tbody>
+                                <tr>
+                                    <td><h3>ID</h3></td>
+                                    <td>{dataSourceId}</td>
+                                </tr>
+                                <tr>
+                                    <td><h3>Title</h3></td>
+                                    <td>{title}</td>
+                                </tr>
+                                <tr>
+                                    <td><h3>Type</h3></td>
+                                    <td>{type}</td>
+                                </tr>
+                                <tr>
+                                    <td><h3>Base URI</h3></td>
+                                    <td>{baseUri}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </Body>
+                        <Footer>
+                            <CancelButton onClick={onHideDeleteDataSourceModal} disabled={isDeleting}/>
+                            <DeleteButton onClick={onDeleteDataSource} isLoading={isDeleting}/>
+                        </Footer>
+                    </Modal>
                 </div>
 
-                <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', margin: 0}}>
-                    <div>
-                        <p style={{fontSize: 'small'}}>
-                            <strong>ID</strong>: <span style={{color: '#aaa'}}>{dataSourceId}</span>
-                        </p>
+                <form className="Data-source-display">
+                    <div id={"data-source-edit-menu"} style={{float: 'right'}}>
+                        <button onClick={onMenuButtonClick} className="Edit-menu-button">&#8942;</button>
+                        <FloatingMenu style={{right: '0px'}} hidden={editMenuHidden} onClickOutside={setEditMenuHidden}>
+                            {editButton}
+                            <MenuItem onClick={onExportDataSource} backgroundColor="cornflowerblue">
+                                <p>Export</p>
+                                <img src={process.env.PUBLIC_URL + '/img/icon/download/download_16.png'} alt="Export"/>
+                            </MenuItem>
+                            <MenuItem onClick={onShowDeleteDataSourceModal} backgroundColor="darkred">
+                                <p>Delete</p>
+                                <img src={process.env.PUBLIC_URL + '/img/icon/delete/delete_16.png'} alt="Delete"/>
+                            </MenuItem>
+                        </FloatingMenu>
                     </div>
-                </div>
-                <div className="Data-source-field">
-                    <h3 style={{marginRight: '1rem'}}>Type<span style={{color: '#aaa'}}> : </span></h3>
-                    <p style={{fontSize: 'large'}}>{type}</p>
-                </div>
-                <div className="Data-source-field">
-                    <h3 style={{marginRight: '1rem', whiteSpace: 'nowrap'}}>
-                        Base URI<span style={{color: '#aaa'}}> :</span>
-                    </h3>
-                    <input type="text" name="data-source-base-uri" disabled={!isEditable}
-                           value={baseUri} onChange={onBaseUriValChanged}
-                           size={baseUri != null ? baseUri.length + 5 : DEFAULT_FIELD_SIZE} />
-                    <div style={{display: 'flex', justifyContent: 'flex-end', width: '-webkit-fill-available'}}>
-                        <button className="Small-button" onClick={onShowAddPatternKitModal} disabled={isUpdating}>Add Pattern Kit...</button>
-                    </div>
-                </div>
 
-                <div>
-                    <div className={"Pattern-kit-type-header"}>
-                        <h3 style={{marginRight: '2rem'}}>
-                            Pattern Kits <span style={{color: '#aaa'}}> :</span>
+                    <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', margin: 0}}>
+                        <div>
+                            <p style={{fontSize: 'small'}}>
+                                <strong>ID</strong>: <span style={{color: '#aaa'}}>{dataSourceId}</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div className="Data-source-field">
+                        <div style={{display: 'flex'}}>
+                            <h3>Type<span style={{color: '#aaa'}}> :</span></h3>
+                            <p style={{fontSize: 'large'}}>{type}</p>
+                        </div>
+                    </div>
+                    <div className="Data-source-field">
+                        <h3 style={{whiteSpace: 'nowrap'}}>
+                            Base URI<span style={{color: '#aaa'}}> :</span>
                         </h3>
-                        <button className={"Filter-by-type-button"} onClick={onShowPatternKitTypeMenu}>
-                            Filter by type
-                            <img src={process.env.PUBLIC_URL+'/img/icon/link-arrow/link-arrow_64.png'}
-                                 alt={"Filter by type"} className={showTypeMenu ? 'flipped' : ''}/>
-                        </button>
-                        <ClearButton onClick={onClearPatternKitTypeSelection} style={{display: selectedType ? '' : 'none'}} />
-                    </div>
-                    <div className={"Type-header-container"} style={{display: showTypeMenu ? '' : 'none'}}>
-                        {typeGroupHeader}
+                        <input type="text" name="data-source-base-uri" disabled={!isEditable}
+                               value={baseUri} onChange={onBaseUriValChanged}
+                               size={baseUri != null ? baseUri.length + 5 : DEFAULT_FIELD_SIZE}/>
+                        <div style={{display: 'flex', justifyContent: 'flex-end', width: '-webkit-fill-available'}}>
+                            <button className="Small-button" onClick={onShowAddPatternKitModal}
+                                    disabled={isUpdating}>Add Pattern Kit...
+                            </button>
+                        </div>
                     </div>
                     <div>
-                        {patternKitData}
+                        <div className={"Pattern-kit-type-header"}>
+                            <h3 style={{marginRight: '2rem'}}>
+                                Pattern Kits <span style={{color: '#aaa'}}> :</span>
+                            </h3>
+                            <button className={"Filter-by-type-button"} onClick={onShowPatternKitTypeMenu}>
+                                Filter by type
+                                <img src={process.env.PUBLIC_URL + '/img/icon/link-arrow/link-arrow_64.png'}
+                                     alt={"Filter by type"} className={showTypeMenu ? 'flipped' : ''}/>
+                            </button>
+                            <ClearButton onClick={onClearPatternKitTypeSelection}
+                                         style={{display: selectedType ? '' : 'none'}}/>
+                        </div>
+                        <div className={"Type-header-container"} style={{display: showTypeMenu ? '' : 'none'}}>
+                            {typeGroupHeader}
+                        </div>
+                        <div>
+                            {patternKitData}
+                        </div>
                     </div>
+                </form>
+                <div className={"Button-container"} style={{padding: '2rem', display: isModified ? '' : 'none'}}>
+                    <CancelButton onClick={onShowResetWarning} disabled={isUpdating}>Reset</CancelButton>
+                    <SaveButton onClick={onSaveDataSource} disabled={!isDataSourceValid || isUpdating}
+                                isLoading={isUpdating}/>
                 </div>
-            </form>
-            <div className={"Button-container"} style={{padding: '2rem', display: isModified ? '' : 'none'}}>
-                <CancelButton onClick={onShowResetWarning} disabled={isUpdating}>Reset</CancelButton>
-                <SaveButton onClick={onSaveDataSource} disabled={!isDataSourceValid || isUpdating} isLoading={isUpdating}/>
-            </div>
-        </CollapsableContainer>
+            </AccordionDisplay>
+        </>
     )
 }

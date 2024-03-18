@@ -89,43 +89,31 @@
   padding-top: 2rem;
   padding-bottom: variables.$navigationSquare;
 
-  .Dangling-entry-display {
-    display: none;
-    flex-wrap: wrap;
-    position: relative;
+  .Dangling-file-entry {
+    color: colors.$darkFontColor;
+    background-color: colors.$darkTransparent;
+    border: 1px solid colors.$darkBorder;
+    padding: .5rem .25rem;
+    margin: 0;
+    font-size: small;
+  }
+}
 
-    &.displayed {
-      display: flex;
-    }
+.Floating-copy-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 10px;
+  height: 100%;
+  width: 48px;
 
-    .Dangling-entry {
-      color: colors.$darkFontColor;
-      background-color: colors.$darkTransparent;
-      border: 1px solid colors.$darkBorder;
-      padding: .5rem .25rem;
-      margin: 0;
-      font-size: small;
-    }
-
-    .Floating-copy-button {
-      position: fixed;
-      right: variables.$navigationSquare;
-      background-color: colors.$darkTransparent;
-      padding: 1.5rem;
-      border-radius: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 32px;
-      height: 32px;
-    }
+  &:hover {
+    background-color: rgba(0, 0, 0, .2);
   }
 }
 
 .Database-table-container {
   width: 100%;
-  max-height: 75vh;
-  overflow-x: auto;
   margin-bottom: 1rem;
 
   .Database-table {
@@ -146,6 +134,8 @@
       padding: .25rem .5rem;
       background-color: colors.$darkTransparent;
       border: 1px solid colors.$border;
+      max-width: 25vw;
+      overflow: hidden;
     }
 
     tr {

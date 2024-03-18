@@ -44,6 +44,7 @@ $dataSourceIntBorder: 1px solid #666;
   .Data-source-field {
     display: flex;
     align-items: center;
+    justify-content: space-between;
 
     h3 {
       width: 5vw;
@@ -172,6 +173,9 @@ $dataSourceIntBorder: 1px solid #666;
 
   input[type=text] {
     width: fit-content;
+    max-width: 65vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .Pattern-kit-header {
