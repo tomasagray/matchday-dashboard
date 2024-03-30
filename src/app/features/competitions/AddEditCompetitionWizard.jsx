@@ -180,7 +180,7 @@ export const AddEditCompetitionWizard = (props) => {
             toast.error(msg)
         }
     }, [
-        isAddSuccess, isAddError, addError,
+        competitionId, isAddSuccess, isAddError, addError,
         isUpdateCompetitionSuccess, isUpdateCompetitionError,
         updateCompetitionError, isDeleteCompetitionSuccess,
         isDeleteCompetitionError, deleteCompetitionError

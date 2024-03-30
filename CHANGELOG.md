@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] - (upcoming changes)
 
+## [0.5.2]
+
+### Fixed
+
+- Merged version bumps for dependencies, security concerns
+- Fixed broken icon on Add/Edit match wizard
+
 ## [0.5.1]
 
 ### Changed
