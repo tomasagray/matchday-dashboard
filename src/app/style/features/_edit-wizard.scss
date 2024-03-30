@@ -22,8 +22,14 @@
       opacity: .4;
       border-right: .5em solid transparent;
 
-      img, p {
+      p {
         margin-right: 1rem;
+      }
+
+      img {
+        margin-right: 1rem;
+        width: 16px;
+        height: 16px;
       }
 
       &:hover {
