@@ -87,7 +87,7 @@ export const AddEditMatchWizard = (props) => {
         // set season
         let season = computeSeason(formattedDate)
         dispatch(updateEditedMatch({field: 'season', value: season}))
-        console.log('smaller year', season.startYear % 100)
+        console.log('smaller year', season['startYear'] % 100)
     }
     const onEditFixture = (e) => {
         let fixture = {
@@ -245,11 +245,11 @@ export const AddEditMatchWizard = (props) => {
                             editedMatch.fileSources.map(source =>
                                 <li className={'Video-source-list-item'} key={source.id}>
                                     <div>
-                                        <a href="#" onClick={() => onEditVideoSource(source)}>
+                                        <button onClick={() => onEditVideoSource(source)}>
                                             {source.channel} &mdash;&nbsp;
                                             {source.resolution}&nbsp;
                                             ({source.languages}, ~{source.filesize}GB)
-                                        </a>
+                                        </button>
                                     </div>
                                     <span>
                                         <ClearButton onClick={() => onDeleteVideoSource(source)}/>
@@ -293,7 +293,7 @@ export const AddEditMatchWizard = (props) => {
                     {
                         isAddNew ?
                             <WizardMenuItem
-                                imgSrc="/img/icon/video-source/video-source_16.png"
+                                imgSrc="/img/icon/video-source/video-source_32.png"
                                 onClick={onSelectEditWizard(VIDEO)}
                                 selected={selectedWizard === VIDEO}>
                                 Video Sources
