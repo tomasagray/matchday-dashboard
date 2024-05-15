@@ -4,7 +4,19 @@ import {getToastMessage} from "../../utils";
 import {toast} from "react-toastify";
 import {SaveButton} from "../../components/controls/SaveButton";
 import {useDispatch, useSelector} from "react-redux";
-import {editSettings, loadSettings, selectEditedSettings, selectUploadSettings} from "../../slices/settingsSlice";
+import {
+    ARTWORK_LOCATION,
+    BACKUP_LOCATION,
+    editSettings,
+    loadSettings,
+    LOG_FILE,
+    PRUNE_VIDEOS,
+    REFRESH_DATASOURCES,
+    selectEditedSettings,
+    selectUploadSettings,
+    VIDEO_EXPIRE_DAYS,
+    VIDEO_LOCATION
+} from "../../slices/settingsSlice";
 import {ApplicationSetting} from "./ApplicationSetting";
 import {CenteredSpinner} from "../../components/Spinner";
 import {ErrorMessage} from "../../components/ErrorMessage";
@@ -22,7 +34,7 @@ const getCronDescription = (cron) => {
        </span>
     } catch (e) {
         return <span className="Cron-description error">
-            {e}
+            {e.toString()}
         </span>
     }
 }
@@ -35,40 +47,67 @@ export const Settings = () => {
 
     // handlers
     const onUpdateRefreshCron = (e) => {
-        dispatch(editSettings({field: 'refreshEvents', value: e.target.value}))
+        let cron = {
+            ...settings[REFRESH_DATASOURCES],
+            data: e.target.value
+        }
+        dispatch(editSettings({field: REFRESH_DATASOURCES, value: cron}))
     }
     const onUpdatePruneCron = (e) => {
-        dispatch(editSettings({field: 'pruneVideos', value: e.target.value}))
+        let cron = {
+            ...settings[PRUNE_VIDEOS],
+            data: e.target.value
+        }
+        dispatch(editSettings({field: PRUNE_VIDEOS, value: cron}))
     }
     const onUpdatePruneDays = (e) => {
-        let value = e.target.value
+        let value = parseInt(e.target.value)
         if (value >= MIN_DAYS && value <= MAX_DAYS) {
-            dispatch(editSettings({field: 'videoExpiredDays', value}))
+            let days = {
+                ...settings[VIDEO_EXPIRE_DAYS],
+                data: value
+            }
+            dispatch(editSettings({field: VIDEO_EXPIRE_DAYS, value: days}))
         }
     }
     const onUpdateLogFilename = (e) => {
-        dispatch(editSettings({field: 'logFilename', value: e.target.value}))
+        let value = {
+            ...settings[LOG_FILE],
+            data: e.target.value
+        }
+        dispatch(editSettings({field: LOG_FILE, value}))
     }
     const onUpdateArtworkLocation = (e) => {
+        let value = {
+            ...settings[ARTWORK_LOCATION],
+            data: e.target.value
+        }
         dispatch(
-            editSettings({field: 'artworkStorageLocation', value: e.target.value}))
+            editSettings({field: ARTWORK_LOCATION, value}))
     }
     const onUpdateVideoLocation = (e) => {
+        let value = {
+            ...settings[VIDEO_LOCATION],
+            data: e.target.value
+        }
         dispatch(
-            editSettings({field: 'videoStorageLocation', value: e.target.value}))
+            editSettings({field: VIDEO_LOCATION, value}))
     }
     const onUpdateBackupLocation = e => {
+        let value = {
+            ...settings[BACKUP_LOCATION],
+            data: e.target.value
+        }
         dispatch(
-            editSettings({field: 'backupLocation', value: e.target.value})
+            editSettings({field: BACKUP_LOCATION, value})
         )
     }
     const onResetSettings = () => {
-        dispatch(loadSettings({settings}))
+        dispatch(loadSettings(settings))
     }
-    const onSaveSettings = async () => {
-        console.log('updating admin...')
-        let updated = await updateSettings(uploadSettings)
-        dispatch(loadSettings({updated}))
+    const onSaveSettings = () => {
+        console.log('updating settings...', uploadSettings)
+        updateSettings(uploadSettings)
         console.log('done updating')
     }
 
@@ -96,19 +135,19 @@ export const Settings = () => {
     // toast messages
     useEffect(() => {
         if (isError) {
-            let msg = 'Error loading admin: ' + getToastMessage(error)
+            let msg = 'Error loading settings: ' + getToastMessage(error)
             toast.error(msg)
         }
         if (isUpdateError) {
-            let msg = 'Error updating admin: ' + getToastMessage(updateError)
+            let msg = 'Error updating settings: ' + getToastMessage(updateError)
             toast.error(msg)
         }
         if (isUpdateSuccess) {
             toast('Settings updated successfully')
-            console.log('updated admin', updatedSettings)
+            console.log('updated settings with', updatedSettings)
         }
         if (isSuccess) {
-            dispatch(loadSettings({settings}))
+            dispatch(loadSettings(settings))
         }
     }, [dispatch, error, isError, isSuccess, isUpdateError, isUpdateSuccess,
         settings, updateError, updatedSettings])
@@ -117,7 +156,7 @@ export const Settings = () => {
     return (
         <>
             <h1>Settings</h1>
-            <div>
+            <div style={{display: 'flex'}}>
                 {
                     isLoading ?
                         <CenteredSpinner/> :
@@ -132,11 +171,11 @@ export const Settings = () => {
                                         title="Refresh events"
                                         style={{width: '164px'}}
                                         disabled={isInFlight}
-                                        original={settings['refreshEvents']}
-                                        current={editedSettings['refreshEvents']}
+                                        original={settings[REFRESH_DATASOURCES]?.data}
+                                        current={editedSettings[REFRESH_DATASOURCES]?.data}
                                         onChange={onUpdateRefreshCron}>
                                         {
-                                            getCronDescription(editedSettings['refreshEvents'])
+                                            getCronDescription(editedSettings[REFRESH_DATASOURCES]?.data)
                                         }
                                     </ApplicationSetting>
                                     <ApplicationSetting
@@ -144,25 +183,25 @@ export const Settings = () => {
                                         title="Prune video data"
                                         style={{width: '164px'}}
                                         disabled={isInFlight}
-                                        original={settings['pruneVideos']}
-                                        current={editedSettings['pruneVideos']}
+                                        original={settings[PRUNE_VIDEOS]?.data}
+                                        current={editedSettings[PRUNE_VIDEOS]?.data}
                                         onChange={onUpdatePruneCron}>
                                         {
-                                            getCronDescription(editedSettings['pruneVideos'])
+                                            getCronDescription(editedSettings[PRUNE_VIDEOS]?.data)
                                         }
                                         <span style={{marginLeft: '1rem', marginTop: '.5rem'}}>
-              expires after &nbsp;
+                                            expires after &nbsp;
                                             <input type="number" className={'Settings-input'
-                                                + (settings['videoExpiredDays']
-                                                === editedSettings['videoExpiredDays'] ? ''
+                                                + (settings[VIDEO_EXPIRE_DAYS]
+                                                === editedSettings[VIDEO_EXPIRE_DAYS] ? ''
                                                     : ' modified')}
                                                    id="prune-days"
                                                    disabled={isInFlight}
                                                    min={MIN_DAYS} max={MAX_DAYS} style={{width: '48px'}}
-                                                   value={editedSettings['videoExpiredDays']}
+                                                   value={editedSettings[VIDEO_EXPIRE_DAYS]?.data ?? ''}
                                                    onChange={onUpdatePruneDays}/>
                                             &nbsp; days
-                  </span>
+                                        </span>
                                     </ApplicationSetting>
                                 </div>
                                 <div className="App-settings-group">
@@ -171,29 +210,29 @@ export const Settings = () => {
                                         type="text"
                                         title="Log filename"
                                         disabled={isInFlight}
-                                        original={settings['logFilename']}
-                                        current={editedSettings['logFilename']}
+                                        original={settings[LOG_FILE]?.data}
+                                        current={editedSettings[LOG_FILE]?.data}
                                         onChange={onUpdateLogFilename}/>
                                     <ApplicationSetting
                                         type="text"
                                         title="Artwork storage location"
                                         disabled={isInFlight}
-                                        original={settings['artworkStorageLocation']}
-                                        current={editedSettings['artworkStorageLocation']}
+                                        original={settings[ARTWORK_LOCATION]?.data}
+                                        current={editedSettings[ARTWORK_LOCATION]?.data}
                                         onChange={onUpdateArtworkLocation}/>
                                     <ApplicationSetting
                                         type="text"
                                         title="Video storage location"
                                         disabled={isInFlight}
-                                        original={settings['videoStorageLocation']}
-                                        current={editedSettings['videoStorageLocation']}
+                                        original={settings[VIDEO_LOCATION]?.data}
+                                        current={editedSettings[VIDEO_LOCATION]?.data}
                                         onChange={onUpdateVideoLocation}/>
                                     <ApplicationSetting
                                         type="text"
                                         title="Backup Location"
                                         disabled={isInFlight}
-                                        original={settings['backupLocation']}
-                                        current={editedSettings['backupLocation']}
+                                        original={settings[BACKUP_LOCATION]?.data}
+                                        current={editedSettings[BACKUP_LOCATION]?.data}
                                         onChange={onUpdateBackupLocation}/>
                                 </div>
                             </> :
@@ -214,5 +253,5 @@ export const Settings = () => {
                 }
             </div>
         </>
-    );
+    )
 }

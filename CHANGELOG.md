@@ -7,14 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] - (upcoming changes)
 
-## [0.5.2]
+## [0.5.3] - 2024-05-15
+
+### Changed
+
+- Updated to new server application settings
+
+## [0.5.2] - 2024-03-30
 
 ### Fixed
 
 - Merged version bumps for dependencies, security concerns
 - Fixed broken icon on Add/Edit match wizard
 
-## [0.5.1]
+## [0.5.1] - 2024-03-18
 
 ### Changed
 
@@ -26,7 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Download button for sanity reports
 - Accordion, Datasource table components
 
-## [0.5.0]
+## [0.5.0] - 2024-01-16
 
 ### Added
 

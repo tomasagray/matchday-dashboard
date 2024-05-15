@@ -18,12 +18,11 @@
 .App-settings-group {
   display: flex;
   flex-direction: column;
-  margin: 1.5rem 0;
+  margin: 1.5rem 5rem 0 0;
   padding: 2rem;
   border: 1px solid colors.$border;
   border-radius: .75rem;
-  max-width: 400px;
-  min-width: 250px;
+  width: 400px;
 
   .App-setting-container {
     padding: 1rem 0;
@@ -33,6 +32,10 @@
 
     label {
       margin-bottom: .5rem;
+    }
+
+    input {
+      max-width: 300px;
     }
 
     .Cron-description {

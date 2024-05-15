@@ -21,7 +21,7 @@ export const ApplicationSetting = (props) => {
           <input type={type} className={className} id={title}
                  style={style}
                  disabled={disabled}
-                 value={current}
+                 value={current ?? ''}
                  onChange={onChange}/>
           {children}
         </div>
