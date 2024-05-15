@@ -6,6 +6,7 @@ export const adminApiSlice = apiSlice.injectEndpoints({
     return ({
       fetchSettings: builder.query({
         query: () => '/settings',
+        transformResponse: (response) => response['settings'],
         providesTags: [settingsTag],
       }),
       updateSettings: builder.mutation({
