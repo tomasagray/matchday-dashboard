@@ -86,45 +86,14 @@
 }
 
 .Delete-button {
-  @include button;
-  background-color: transparent;
+  @include icon-button(red);
   color: red;
   border-color: red;
-
-  .Delete-icon {
-    visibility: hidden;
-    margin-left: .7em;
-    opacity: .7;
-  }
-
-  &:not(:disabled):hover {
-    background-color: red;
-    border-color: colors.$defaultFontColor;
-
-    img {
-      visibility: visible;
-    }
-  }
 }
 
 .Download-button {
-  @include button;
-  background-color: transparent;
+  @include icon-button(colors.$active);
   border-color: colors.$border;
-
-  .Download-icon {
-    visibility: hidden;
-    margin-left: .7em;
-    opacity: .7;
-  }
-
-  &:hover:not(:disabled) {
-    background-color: colors.$active;
-
-    .Download-icon {
-      visibility: visible;
-    }
-  }
 }
 
 .Edit-menu-button {
@@ -159,10 +128,11 @@
 .File-upload {
   display: flex;
   align-items: center;
+  justify-content: center;
 
   .File-upload-button {
     margin-right: 1rem;
-    padding: .5em .7em;
+    padding: .5em 1.2em;
     display: flex;
     align-items: center;
     width: fit-content;
@@ -183,7 +153,6 @@
 
     img {
       width: 1rem;
-      margin-right: 1rem;
       opacity: .5;
     }
 
@@ -286,19 +255,11 @@
 }
 
 .Reset-button {
-  @include hover-button;
-
-  &:not(:disabled):hover {
-    background-color: colors.$active;
-  }
+  @include icon-button(colors.$active);
 }
 
 .Save-button {
-  @include hover-button;
-
-  & > img {
-    margin-left: .5rem;
-  }
+  @include icon-button(colors.$highlight);
 }
 
 .Small-button {

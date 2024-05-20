@@ -15,6 +15,7 @@ export const VideoFileDisplay = (props) => {
 
     // handlers
     const onUpdateStream = (status) => {
+        console.log('video status', status)
         dispatch(videoStreamUpdated(status))
     }
     // TODO: Add confirmation modal for stop stream
@@ -61,6 +62,7 @@ export const VideoFileDisplay = (props) => {
     }, [stompClient, videoFile, videoFileId])
     // ... get data
     useSubscription(properties.websocketRoot + '/subscription/video-stream-status', (msg) => {
+        console.log('got msg', msg)
         let status = JSON.parse(msg.body)
         if (videoFileId === status['videoFileId']) {
             onUpdateStream(status)

@@ -5,7 +5,7 @@
 @mixin button {
   margin: auto .5rem;
   padding: .5rem 1.2rem;
-  border: 2px solid transparent;
+  border: 2px solid colors.$border;
   border-radius: .4em;
   background-color: colors.$defaultButtonBg;
   color: whitesmoke;
@@ -26,6 +26,31 @@
     color: whitesmoke;
     border-color: colors.$currentNavItemBg;
     background-color: colors.$currentNavItemBg;
+  }
+}
+
+@mixin icon-button($color) {
+  @include button;
+
+  background-color: transparent;
+
+  .Button-icon {
+    visibility: hidden;
+    margin-left: .7em;
+    opacity: .7;
+  }
+
+  &.loading:not(:disabled) {
+    cursor: wait;
+  }
+
+  &:not(:disabled):hover {
+    background-color: $color;
+    border-color: colors.$defaultFontColor;
+
+    .Button-icon {
+      visibility: visible;
+    }
   }
 }
 
@@ -98,9 +123,7 @@
 }
 
 @mixin selected {
-  //position: relative;
   border-color: colors.$highlight;
-  //border-width: 3px;
 
   &::before {
     content: '';
@@ -127,33 +150,4 @@
 @mixin toggle-switch($height) {
   height: $height;
   width: calc(2 * $height);
-}
-
-@mixin hover-button {
-  @include button;
-  width: fit-content;
-  border-radius: 4px;
-  border: 1px solid #666;
-
-  img {
-    visibility: hidden;
-    opacity: .5;
-  }
-
-  &[disabled] {
-    background: none;
-    color: rgba(160, 160, 160, .75);
-  }
-
-  &:not(:disabled):hover {
-    background-color: colors.$highlight;
-
-    img {
-      visibility: visible;
-    }
-  }
-
-  &.loading:not(:disabled) {
-    cursor: wait;
-  }
 }
