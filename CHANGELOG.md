@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] - (upcoming changes)
 
+## [0.5.4] - 2024-05-21
+
+### Added
+
+- Auto-heal sanity report button
+- Add change log level on the fly control
+
 ## [0.5.3] - 2024-05-15
 
 ### Changed
