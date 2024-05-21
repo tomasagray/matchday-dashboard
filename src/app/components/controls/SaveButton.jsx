@@ -9,7 +9,7 @@ export const SaveButton = (props) => {
     let className = 'Save-button' + (isLoading ? ' loading' : '')
     return (
         <IconButton
-            iconUrl={'/img/icon/save/save_16.png'}
+            iconUrl={'/img/icon/save/save_32.png'}
             onClick={onClick}
             disabled={disabled}
             className={className}

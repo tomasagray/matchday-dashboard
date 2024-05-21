@@ -1,9 +1,11 @@
 import React, {useEffect} from "react";
-import {useGenerateSanityReportMutation} from "../../slices/api/adminApiSlice";
+import {useAttemptAutoHealMutation, useGenerateSanityReportMutation} from "../../slices/api/adminApiSlice";
 import {downloadData, getToastMessage} from "../../utils";
 import {toast} from "react-toastify";
 import {SanityReport} from "./SanityReport";
 import {DownloadButton} from "../../components/controls/DownloadButton";
+import {IconButton} from "../../components/controls/IconButton";
+import {SmallSpinner} from "../../components/Spinner";
 
 
 const GenerateButton = (props) => {
@@ -24,6 +26,19 @@ const GenerateButton = (props) => {
     )
 }
 
+const HealButton = (props) => {
+    let {isLoading, onClick} = props
+    let content = isLoading ? <SmallSpinner/> : 'Attempt auto-heal'
+    return (
+        <IconButton
+            onClick={onClick}
+            iconUrl={'/img/icon/heal/heal_32.png'}
+            className={'Heal-button'}>
+            {content}
+        </IconButton>
+    )
+}
+
 export const SanityReportDisplay = () => {
 
     // handlers
@@ -40,37 +55,59 @@ export const SanityReportDisplay = () => {
         console.log('Downloading sanity report...', filename)
         downloadData(reportData, filename)
     }
+    const onAutoHeal = () => {
+        autoHeal(report)
+    }
 
     const [generate, {
-        data,
-        isLoading,
-        isSuccess,
-        isError,
-        error
+        data: generated,
+        isLoading: isGenerating,
+        isSuccess: isGenerated,
+        isError: isGenerateError,
+        error: generateError
     }] = useGenerateSanityReportMutation()
-    let reportExists = isSuccess && data !== undefined && data !== null
+    const [autoHeal, {
+        data: healed,
+        isLoading: isHealing,
+        isSuccess: isHealed,
+        isError: isHealError,
+        error: healError
+    }] = useAttemptAutoHealMutation()
+    let report = healed ?? generated
+    let reportExists = (isGenerated || isHealed) && report !== undefined && report !== null
+    let requiresHealing = report?.requiresHealing ?? false
 
     // toast messages
     useEffect(() => {
-        if (isError) {
-            let msg = 'Error generating sanity report: ' + getToastMessage(error)
+        if (isGenerateError) {
+            let msg = 'Error generating sanity report: ' + getToastMessage(generateError)
             toast.error(msg)
         }
-    }, [isError, error])
+        if (isHealed) {
+            toast('Successfully healed system')
+        }
+        if (isHealError) {
+            let msg = 'Error healing system: ' + getToastMessage(healError)
+            toast.error(msg)
+        }
+    }, [isGenerateError, isHealed, isHealError, generateError, healError])
 
     return (
         <>
             <h1 style={{marginBottom: '1rem'}}>Sanity Report</h1>
             <p style={{color: '#aaa'}}>Click the button below to generate a System Sanity Check report.</p>
             <div style={{display: 'flex', alignItems: 'center', marginTop: '1rem'}}>
-                <GenerateButton isLoading={isLoading} onClick={onGenerateReport}/>
+                <GenerateButton isLoading={isGenerating} onClick={onGenerateReport}/>
                 {
-                    reportExists ? <DownloadButton onClick={() => onDownloadReport(data)}/> : null
+                    reportExists ? <DownloadButton onClick={() => onDownloadReport(report)}/> : null
+                }
+                {
+                    requiresHealing ? <HealButton onClick={onAutoHeal} isLoading={isHealing}/> : null
                 }
             </div>
             <div className="Sanity-report-display">
                 {
-                    reportExists ? <SanityReport report={data}/> : null
+                    reportExists ? <SanityReport report={report}/> : null
                 }
             </div>
         </>

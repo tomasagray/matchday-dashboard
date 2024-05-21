@@ -35,9 +35,12 @@
   background-color: transparent;
 
   .Button-icon {
+    $iconSize: 18px;
     visibility: hidden;
     margin-left: .7em;
     opacity: .7;
+    width: $iconSize;
+    height: $iconSize;
   }
 
   &.loading:not(:disabled) {

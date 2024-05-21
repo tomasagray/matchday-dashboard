@@ -122,7 +122,7 @@ export const SanityReport = (props) => {
                         video['danglingStreamLocators'].length > 0 ?
                             <DatabaseTable
                                 rows={video['danglingStreamLocators']}
-                                titles={['Timestamp', 'ID', 'Path', 'Video Files', 'State']}
+                                titles={['Timestamp', 'ID', 'Path', 'Video File', 'State']}
                             /> :
                             <span style={dim}>None</span>
                     }

@@ -8,7 +8,7 @@ export const DeleteButton = (props) => {
     let content = isLoading ? <SmallSpinner/> : children ?? 'DELETE'
     return (
         <IconButton
-            iconUrl={'/img/icon/delete/delete_16.png'}
+            iconUrl={'/img/icon/delete/delete_32.png'}
             onClick={onClick}
             disabled={disabled}
             className={"Delete-button"}

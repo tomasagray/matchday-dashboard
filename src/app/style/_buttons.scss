@@ -178,6 +178,10 @@
   }
 }
 
+.Heal-button {
+  @include icon-button(red);
+}
+
 .Link-button {
   border: 0;
   background: none;
