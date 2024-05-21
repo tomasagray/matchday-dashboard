@@ -28,11 +28,17 @@ const GenerateButton = (props) => {
 
 const HealButton = (props) => {
     let {isLoading, onClick} = props
-    let content = isLoading ? <SmallSpinner/> : 'Attempt auto-heal'
+    let content = <>
+        <span>Attempt auto-heal</span>
+        {
+            isLoading ? <SmallSpinner style={{marginLeft: '.5rem'}}/> : null
+        }
+    </>
     return (
         <IconButton
             onClick={onClick}
             iconUrl={'/img/icon/heal/heal_32.png'}
+            disabled={isLoading}
             className={'Heal-button'}>
             {content}
         </IconButton>
@@ -76,6 +82,7 @@ export const SanityReportDisplay = () => {
     let report = healed ?? generated
     let reportExists = (isGenerated || isHealed) && report !== undefined && report !== null
     let requiresHealing = report?.requiresHealing ?? false
+    let isInFlight = isGenerating || isHealing
 
     // toast messages
     useEffect(() => {
@@ -97,12 +104,13 @@ export const SanityReportDisplay = () => {
             <h1 style={{marginBottom: '1rem'}}>Sanity Report</h1>
             <p style={{color: '#aaa'}}>Click the button below to generate a System Sanity Check report.</p>
             <div style={{display: 'flex', alignItems: 'center', marginTop: '1rem'}}>
-                <GenerateButton isLoading={isGenerating} onClick={onGenerateReport}/>
+                <GenerateButton isLoading={isInFlight} onClick={onGenerateReport}/>
                 {
-                    reportExists ? <DownloadButton onClick={() => onDownloadReport(report)}/> : null
+                    reportExists ?
+                        <DownloadButton onClick={() => onDownloadReport(report)} disabled={isInFlight}/> : null
                 }
                 {
-                    requiresHealing ? <HealButton onClick={onAutoHeal} isLoading={isHealing}/> : null
+                    requiresHealing ? <HealButton onClick={onAutoHeal} isLoading={isInFlight}/> : null
                 }
             </div>
             <div className="Sanity-report-display">
