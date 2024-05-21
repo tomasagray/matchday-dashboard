@@ -1,4 +1,4 @@
-import {apiSlice, infoTag, restorePointTag, settingsTag, tagTypes} from "./apiSlice";
+import {apiSlice, infoTag, logLevelTag, restorePointTag, settingsTag, tagTypes} from "./apiSlice";
 import {JsonHeaders} from "../../constants";
 
 export const adminApiSlice = apiSlice.injectEndpoints({
@@ -82,7 +82,20 @@ export const adminApiSlice = apiSlice.injectEndpoints({
                     body: systemImage,
                 }),
                 invalidatesTags: [tagTypes],  // all tags
-            })
+            }),
+            getLogLevel: builder.query({
+                query: () => '/actuator/loggers/self.me.matchday',
+                providesTags: [logLevelTag],
+            }),
+            setLogLevel: builder.mutation({
+                query: (level) => ({
+                    url: '/actuator/loggers/self.me.matchday',
+                    method: 'POST',
+                    headers: JsonHeaders,
+                    body: level,
+                }),
+                invalidatesTags: [logLevelTag],
+            }),
         })
     }
 })
@@ -99,4 +112,6 @@ export const {
     useDeleteRestorePointMutation,
     useLazyDehydrateSystemQuery,
     useRehydrateSystemMutation,
+    useGetLogLevelQuery,
+    useSetLogLevelMutation,
 } = adminApiSlice

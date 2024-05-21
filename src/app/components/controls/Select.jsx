@@ -3,9 +3,10 @@ import {FloatingMenu} from "../FloatingMenu";
 
 export const Select = (props) => {
 
-    let {disabled: isDisabled, selectedIndex, selectedValue, onChange, style} = props
-    let [isFocused, setIsFocused] = useState(false)
-    let [menuHidden, setMenuHidden] = useState(true)
+    const selectedContainerStyle = {
+        whiteSpace: 'nowrap',
+        textOverflow: 'ellipses',
+    }
 
     const onFocus = (focused) => () => {
         setIsFocused(focused)
@@ -21,6 +22,16 @@ export const Select = (props) => {
         onChange && onChange(e, option.props.value)
     }
 
+    let {
+        disabled: isDisabled,
+        selectedIndex,
+        selectedValue,
+        onChange,
+        style,
+        className,
+    } = props
+    let [isFocused, setIsFocused] = useState(false)
+    let [menuHidden, setMenuHidden] = useState(true)
     let selectedItem
     const items = React.Children.map(props.children, child =>
         <div onClick={onMenuItemSelected(child)}>{child}</div>
@@ -32,18 +43,13 @@ export const Select = (props) => {
     } else {
         selectedItem = props.placeholder
     }
-
-    const selectedContainerStyle = {
-        whiteSpace: 'nowrap',
-        textOverflow: 'ellipses',
-    }
-
     let selected = selectedItem?.props?.children?.props.children ?? props.placeholder
     let focused = isFocused ? ' focused' : ''
     let isPlaceholder = selected === props.placeholder ? 'placeholder' : ''
     let disabled = isDisabled ? ' disabled' : ''
+
     return (
-        <div className={'Select' + disabled + focused}
+        <div className={`Select ${disabled} ${focused} ${className}`}
              style={style}
              onFocus={onFocus(true)}
              onBlur={onFocus(false)}>
