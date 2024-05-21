@@ -22,8 +22,8 @@ export const FileUploadButton = (props) => {
     return (
         <div className={"File-upload"} style={style}>
             <label className={"File-upload-button"}>
-                <img src={process.env.PUBLIC_URL + '/img/icon/upload/upload_32.png'} alt={'Upload'}/>
-                Upload
+                <span style={{marginRight: '1rem'}}>Upload</span>
+                <img src={'/img/icon/upload/upload_32.png'} alt={'Upload'}/>
                 <input
                     style={{display: 'none'}}
                     type={"file"}

@@ -1,5 +1,6 @@
 @use "variables";
 @use "colors";
+@use "fonts";
 @use "layers";
 @import "mixins";
 
@@ -150,6 +151,16 @@
   ul {
     list-style: none;
   }
+}
+
+.Log-level-selector {
+  .Select-option, button {
+    font-family: fonts.$technical;
+    font-weight: lighter
+  }
+
+  width: 100px !important;
+  margin-right: 2rem;
 }
 
 .Menu-item {
@@ -387,29 +398,29 @@
 .Settings-group {
   margin: 4rem 0;
   max-width: 75%;
+}
 
-  .Setting-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 1rem;
-    margin: 1.6rem 0;
-    background-color: colors.$defaultComponentBg;
-    border-radius: 1rem;
+.Setting-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1rem;
+  margin: 1.6rem 0;
+  background-color: colors.$defaultComponentBg;
+  border-radius: 1rem;
+}
+
+.Settings-link {
+  font-size: medium;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, .2);
+    cursor: pointer;
   }
 
-  .Settings-link {
-    font-size: medium;
-
-    &:hover {
-      background-color: rgba(255, 255, 255, .2);
-      cursor: pointer;
-    }
-
-    .link-arrow {
-      max-height: 1rem;
-      opacity: .3;
-    }
+  .link-arrow {
+    max-height: 1rem;
+    opacity: .3;
   }
 }
 

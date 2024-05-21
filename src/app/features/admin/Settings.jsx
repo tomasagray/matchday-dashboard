@@ -1,5 +1,10 @@
 import React, {useEffect} from "react";
-import {useFetchSettingsQuery, useUpdateSettingsMutation} from "../../slices/api/adminApiSlice";
+import {
+    useFetchSettingsQuery,
+    useGetLogLevelQuery,
+    useSetLogLevelMutation,
+    useUpdateSettingsMutation
+} from "../../slices/api/adminApiSlice";
 import {getToastMessage} from "../../utils";
 import {toast} from "react-toastify";
 import {SaveButton} from "../../components/controls/SaveButton";
@@ -22,6 +27,9 @@ import {CenteredSpinner} from "../../components/Spinner";
 import {ErrorMessage} from "../../components/ErrorMessage";
 import {ResetButton} from "../../components/controls/ResetButton";
 import cronstrue from "cronstrue";
+import {SettingContainer} from "../../components/SettingContainer";
+import Select from "../../components/controls/Select";
+import {Option} from "../../components/controls/Option";
 
 const getCronDescription = (cron) => {
     try {
@@ -110,6 +118,13 @@ export const Settings = () => {
         updateSettings(uploadSettings)
         console.log('done updating')
     }
+    const onChangeLogLevel = (e, level) => {
+        console.log('setting log level...', level)
+        let logLevel = {
+            configuredLevel: level
+        }
+        setLogLevel(logLevel)
+    }
 
     // hooks
     const dispatch = useDispatch()
@@ -131,6 +146,19 @@ export const Settings = () => {
     ] = useUpdateSettingsMutation()
     let editedSettings = useSelector(state => selectEditedSettings(state))
     let uploadSettings = useSelector(state => selectUploadSettings(state))
+    let {
+        data: logLevel,
+        isLoading: isLoadingLogLevel,
+        isError: isLogLevelError,
+        error: logLevelError
+    } = useGetLogLevelQuery()
+    let [
+        setLogLevel, {
+            isLoading: isSettingLogLevel,
+            isError: isSetLogLevelError,
+            error: setLogLevelError
+        }
+    ] = useSetLogLevelMutation()
 
     // toast messages
     useEffect(() => {
@@ -149,10 +177,22 @@ export const Settings = () => {
         if (isSuccess) {
             dispatch(loadSettings(settings))
         }
+        if (isLogLevelError) {
+            let msg = 'Error changing log level: ' + getToastMessage(logLevelError)
+            toast.error(msg)
+        }
+        if (isSetLogLevelError) {
+            let msg = 'Error changing log level: ' + getToastMessage(setLogLevelError)
+            toast.error(msg)
+        }
     }, [dispatch, error, isError, isSuccess, isUpdateError, isUpdateSuccess,
-        settings, updateError, updatedSettings])
+        settings, updateError, updatedSettings, isLogLevelError, logLevelError,
+        isSetLogLevelError, setLogLevelError
+    ])
 
     let isInFlight = isLoading || isUpdating
+    let isLogLevelInFlight = isLoadingLogLevel || isSettingLogLevel
+
     return (
         <>
             <h1>Settings</h1>
@@ -241,7 +281,25 @@ export const Settings = () => {
                             </ErrorMessage>
                 }
             </div>
-            <br/>
+            <SettingContainer style={{width: '450px'}}>
+                <span>Application log level</span>
+                {
+                    isLogLevelInFlight ?
+                        <CenteredSpinner/> :
+                        <Select className={'Log-level-selector'}
+                                disabled={isLogLevelError}
+                                placeholder={'Select log level'}
+                                onChange={onChangeLogLevel}
+                                selectedValue={logLevel['configuredLevel']}>
+                            <Option value={"OFF"}>OFF</Option>
+                            <Option value={"ERROR"}>ERROR</Option>
+                            <Option value={"WARN"}>WARN</Option>
+                            <Option value={"INFO"}>INFO</Option>
+                            <Option value={"DEBUG"}>DEBUG</Option>
+                            <Option value={"TRACE"}>TRACE</Option>
+                        </Select>
+                }
+            </SettingContainer>
             <div className="Settings-save-dialog">
                 {
                     JSON.stringify(settings) !== JSON.stringify(editedSettings) ?

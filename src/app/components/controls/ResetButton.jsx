@@ -1,5 +1,6 @@
 import React from "react";
 import {SmallSpinner} from "../Spinner";
+import {IconButton} from "./IconButton";
 
 export const ResetButton = (props) => {
 
@@ -7,11 +8,13 @@ export const ResetButton = (props) => {
   let content = isLoading ? <SmallSpinner/> : children ?? 'Reset'
   let className = 'Reset-button' + (isLoading ? ' loading' : '')
   return (
-      <button className={className} onClick={onClick} style={style}
-              disabled={disabled}>
-        {content}
-        <img src={process.env.PUBLIC_URL + '/img/icon/refresh/refresh_16.png'}
-             alt={"Reset"} style={{marginLeft: '.7em'}}/>
-      </button>
+      <IconButton
+          iconUrl={'/img/icon/refresh/refresh_32.png'}
+          onClick={onClick}
+          disabled={disabled}
+          className={className}
+          style={style}>
+          {content}
+      </IconButton>
   )
 }

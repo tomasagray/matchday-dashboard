@@ -11,7 +11,6 @@ export const compareVersions = (v1, v2) => {
 }
 
 export const copyToClipboard = (txt) => {
-
     if (navigator.clipboard && window.isSecureContext) {
         return navigator.clipboard.writeText(txt)
     } else {

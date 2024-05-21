@@ -1,15 +1,19 @@
 import React from "react";
 import {SmallSpinner} from "../Spinner";
+import {IconButton} from "./IconButton";
 
 export const DeleteButton = (props) => {
 
     const {style, onClick, disabled, isLoading, children} = props
     let content = isLoading ? <SmallSpinner/> : children ?? 'DELETE'
     return (
-        <button onClick={onClick} disabled={disabled} className={"Delete-button"} style={style}>
+        <IconButton
+            iconUrl={'/img/icon/delete/delete_32.png'}
+            onClick={onClick}
+            disabled={disabled}
+            className={"Delete-button"}
+            style={style}>
             {content}
-            <img src={process.env.PUBLIC_URL + '/img/icon/delete/delete_16.png'} alt={"Delete"}
-                className={"Delete-icon"}/>
-        </button>
+        </IconButton>
     )
 }

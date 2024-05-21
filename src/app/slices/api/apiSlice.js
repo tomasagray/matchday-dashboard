@@ -12,6 +12,7 @@ export const dataSourcePluginTag = 'DataSourcePlugin'
 export const fileServerPluginTag = 'FileServerPlugin'
 export const fileServerUserTag = 'FileServerUser'
 export const infoTag = 'AppInfo'
+export const logLevelTag = 'LogLevel'
 export const restorePointTag = 'RestorePoint'
 export const settingsTag = 'Settings'
 export const teamTag = 'Team'
@@ -27,6 +28,7 @@ export const tagTypes = [
     fileServerPluginTag,
     fileServerUserTag,
     infoTag,
+    logLevelTag,
     restorePointTag,
     settingsTag,
     teamTag,

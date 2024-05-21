@@ -1,5 +1,6 @@
 import React from "react";
 import {SmallSpinner} from "../Spinner";
+import {IconButton} from "./IconButton";
 
 export const SaveButton = (props) => {
 
@@ -7,9 +8,13 @@ export const SaveButton = (props) => {
     let content = isLoading ? <SmallSpinner/> : children ?? 'Save'
     let className = 'Save-button' + (isLoading ? ' loading' : '')
     return (
-        <button className={className} onClick={onClick} style={style} disabled={disabled}>
+        <IconButton
+            iconUrl={'/img/icon/save/save_32.png'}
+            onClick={onClick}
+            disabled={disabled}
+            className={className}
+            style={style}>
             {content}
-            <img src={process.env.PUBLIC_URL + '/img/icon/save/save_16.png'} alt={"Save"} className={"Save-icon"} />
-        </button>
+        </IconButton>
     )
 }
