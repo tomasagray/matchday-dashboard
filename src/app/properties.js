@@ -4,7 +4,7 @@ import {serverAddressCookie} from "./constants";
 
 const version = process.env.REACT_APP_VERSION
 const minimumServerVersion = '0.2.0'
-const apiVersion = '1.0'
+const apiVersion = 'v1.0'
 const apiRoot = '/api/' + apiVersion
 const websocketRoot = apiRoot + '/ws'
 const websocketUrl = websocketRoot + '/stomp'
