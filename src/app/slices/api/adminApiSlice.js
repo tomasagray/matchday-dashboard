@@ -84,12 +84,12 @@ export const adminApiSlice = apiSlice.injectEndpoints({
                 invalidatesTags: [tagTypes],  // all tags
             }),
             getLogLevel: builder.query({
-                query: () => '/actuator/loggers/self.me.matchday',
+                query: () => '/actuator/loggers/net.tomasbot.matchday',
                 providesTags: [logLevelTag],
             }),
             setLogLevel: builder.mutation({
                 query: (level) => ({
-                    url: '/actuator/loggers/self.me.matchday',
+                    url: '/actuator/loggers/net.tomasbot.matchday',
                     method: 'POST',
                     headers: JsonHeaders,
                     body: level,

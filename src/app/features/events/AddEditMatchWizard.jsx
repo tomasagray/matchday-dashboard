@@ -190,7 +190,7 @@ export const AddEditMatchWizard = (props) => {
                     <div>
                         <h4>Fixture</h4>
                         <input type="number"
-                               min={1}
+                               min={0}
                                max={50}
                                size={4}
                                id="event-fixture"
