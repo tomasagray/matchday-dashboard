@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] - (upcoming changes)
 
+## [0.5.5] - 2024-06-11
+
+### Changed
+
+- Update to versioned Matchday server API (/api/<api_version>/)
+
 ## [0.5.4] - 2024-05-21
 
 ### Added
