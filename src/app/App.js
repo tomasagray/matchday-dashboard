@@ -7,7 +7,7 @@ import {ContentStage} from "./layout/ContentStage";
 import "react-toastify/dist/ReactToastify.min.css";
 import {ToastContainer} from "react-toastify";
 import {BackgroundContainer} from "./layout/BackgroundContainer";
-import Cookies from "universal-cookie/es6";
+import Cookies from "universal-cookie";
 import {serverAddressCookie} from "./constants";
 
 

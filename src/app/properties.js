@@ -1,5 +1,5 @@
 // Application properties
-import Cookies from "universal-cookie/es6";
+import Cookies from "universal-cookie";
 import {serverAddressCookie} from "./constants";
 
 const version = process.env.REACT_APP_VERSION
