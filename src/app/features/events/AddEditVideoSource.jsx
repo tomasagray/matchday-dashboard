@@ -15,7 +15,6 @@ import {
 import Select from "../../components/controls/Select";
 import {Option} from "../../components/controls/Option";
 import {useUploadVideoSourceMutation} from "../../slices/api/videoSourceApiSlice";
-import {SmallSpinner} from "../../components/Spinner";
 import {toast} from "react-toastify";
 import {getToastMessage} from "../../utils";
 import {addVideoSource} from "../../slices/matchSlice";
@@ -274,11 +273,9 @@ export const AddEditVideoSource = (props) => {
             <Footer>
                 <CancelButton onClick={onCancelEdit}/>
                 {
-                    isLoading ?
-                        <SmallSpinner/> :
-                        isValid ?
-                            <SaveButton onClick={onSaveVideoSource}/> :
-                            <InfoMessage/>
+                    isValid ?
+                        <SaveButton onClick={onSaveVideoSource} isLoading={isLoading}/> :
+                        <InfoMessage/>
                 }
             </Footer>
         </Modal>
