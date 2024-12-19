@@ -598,5 +598,10 @@ $posterHeight: calc($posterWidth / (16 / 9));
     &:hover {
       opacity: 1;
     }
+
+    button {
+      color: colors.$defaultFontColor;
+      font-size: medium;
+    }
   }
 }
