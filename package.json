@@ -38,9 +38,11 @@
     "@svgr/webpack": "^6.5.1",
     "react-scripts": "^5.0.1"
   },
+  "peerDependencies": {
+    "postcss": "^8.4.49"
+  },
   "overrides": {
-    "@svgr/webpack": "$@svgr/webpack",
-    "postcss": "^8.4.31"
+    "@svgr/webpack": "$@svgr/webpack"
   },
   "scripts": {
     "start": "react-scripts start",
