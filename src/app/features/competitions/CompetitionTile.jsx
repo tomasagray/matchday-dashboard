@@ -20,7 +20,7 @@ export default function CompetitionTile(props) {
                     imageUrl={imageUrl}
                     className="Entity-poster"
                 />
-                <div>{name?.name}</div>
+                <div className="Limited-label">{name?.name}</div>
             </Link>
         </div>
     );

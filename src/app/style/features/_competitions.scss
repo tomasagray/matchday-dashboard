@@ -19,23 +19,27 @@ $posterHeight: 270px;
 
 .Competition-select-tile {
   @include entity-button;
-  height: $posterHeight;
+  margin: 1rem .5rem;
 
   img {
     height: $imageHeight !important;
+    width: 145px !important;
     position: relative;
   }
 
   .Soft-load-container {
-    border: 3px solid transparent;
+    border: 5px solid transparent;
     position: relative;
     height: $imageHeight !important;
   }
 
   &.selected {
-   .Soft-load-container {
-     //height: $imageHeight !important;
-     @include selected;
-   }
+    .Soft-load-container {
+      @include selected;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
   }
 }

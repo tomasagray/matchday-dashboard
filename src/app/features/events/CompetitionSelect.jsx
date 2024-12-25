@@ -5,6 +5,7 @@ import {toast} from "react-toastify";
 import {FillSpinner} from "../../components/Spinner";
 import {EmptyMessage} from "../../components/EmptyMessage";
 import {SoftLoadImage} from "../../components/SoftLoadImage";
+import {ErrorMessage} from "../../components/ErrorMessage";
 
 export const CompetitionSelect = (props) => {
 
@@ -25,7 +26,7 @@ export const CompetitionSelect = (props) => {
                     imageUrl={imageUrl}
                     className="Entity-poster"
                 />
-                <div>{competitionName?.name}</div>
+                <div className="Limited-label">{competitionName?.name}</div>
             </div>
         )
     }
@@ -53,25 +54,27 @@ export const CompetitionSelect = (props) => {
     return (
         <>
             {
-                isLoading ?
-                    <FillSpinner/> :
-                    isSuccess && competitions ?
-                        <div className="Entity-display Competition-select">
-                            {
-                                Object.values(competitions.entities).map(competition => {
-                                    const id = competition.id
-                                    return (
-                                        <CompetitionSelectTile
-                                            key={id}
-                                            competition={competition}
-                                            onClick={onSelectCompetition(competition)}
-                                            isSelected={id === selectedCompetition?.id}
-                                        />
-                                    )
-                                })
-                            }
-                        </div> :
-                        <EmptyMessage noun="competitions"/>
+                isError ?
+                    <ErrorMessage>Could not load competitions data.</ErrorMessage> :
+                    isLoading ?
+                        <FillSpinner/> :
+                        isSuccess && competitions ?
+                            <div className="Entity-display Competition-select">
+                                {
+                                    Object.values(competitions.entities).map(competition => {
+                                        const id = competition.id
+                                        return (
+                                            <CompetitionSelectTile
+                                                key={id}
+                                                competition={competition}
+                                                onClick={onSelectCompetition(competition)}
+                                                isSelected={id === selectedCompetition?.id}
+                                            />
+                                        )
+                                    })
+                                }
+                            </div> :
+                            <EmptyMessage noun="competitions"/>
             }
         </>
     )

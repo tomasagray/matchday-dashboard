@@ -26,13 +26,13 @@ export default function TeamTile(props) {
                 placeholderUrl={placeholderUrl}
                 className="Entity-poster"
             />
-            <div>{teamName?.name}</div>
+            <div className="Limited-label">{teamName?.name}</div>
         </>
     return (
         <div className="Team-tile" onClick={handleClick}>
             {
                 !onClick ?
-                    <Link to={
+                    <Link style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}} to={
                         {
                             pathname: '/teams/team/' + id,
                         }
