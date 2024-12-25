@@ -1,15 +1,15 @@
 import React, {useEffect} from "react";
 import {
-  useDisableFileServerPluginMutation,
-  useEnableFileServerPluginMutation,
-  useGetAllFileServerPluginsQuery
+    useDisableFileServerPluginMutation,
+    useEnableFileServerPluginMutation,
+    useGetAllFileServerPluginsQuery
 } from "../../slices/api/fileServerPluginApiSlice";
 import {FillSpinner} from "../../components/Spinner";
 import {FileServerPluginTile} from "./FileServerPluginTile";
 import {useSelector} from "react-redux";
 import {
-  selectFileServerPluginById,
-  selectSelectedPluginId
+    selectFileServerPluginById,
+    selectSelectedPluginId
 } from "../../slices/fileServerPluginSlice";
 import {InfoMessage} from "../../components/InfoMessage";
 import {SettingsGroup} from "../../components/SettingsGroup";
@@ -84,13 +84,13 @@ export const FileServerPluginList = () => {
         Status()['Unchecked']
 
     let plugins = isPluginsSuccess ?
-            Object.values(fileServerPlugins.entities)
-                .map(plugin =>
-                    <FileServerPluginTile pluginId={plugin.id} title={plugin.title} key={plugin.id}/>
-                ) :
-            <ErrorMessage style={{marginTop: '2rem'}}>
-                Could not load file server plugins
-            </ErrorMessage>
+        Object.values(fileServerPlugins.entities)
+            .map(plugin =>
+                <FileServerPluginTile pluginId={plugin.id} title={plugin.title} key={plugin.id}/>
+            ) :
+        <ErrorMessage style={{marginTop: '2rem'}}>
+            Could not load file server plugins
+        </ErrorMessage>
 
     let pluginDetails =
         selectedPlugin ?
@@ -107,21 +107,23 @@ export const FileServerPluginList = () => {
     return (
         <>
             {
-                isPluginsLoading ?
-                <FillSpinner/> :
-                <div>
-                    <div className={"section-header"}>
-                        <img src={process.env.PUBLIC_URL + '/img/icon/plugins/plugins_64.png'} alt="Plugins"
-                             style={{height: 'fit-content'}}/>
-                        <h1>File Server Plugins</h1>
-                    </div>
-                    <div className={"Plugin-tile-container"}>
-                        {plugins}
-                    </div>
-                    <div className={"Plugin-details-container"}>
-                        {pluginDetails}
-                    </div>
-                </div>
+                isPluginsError ?
+                    <ErrorMessage>Could not load file server plugins.</ErrorMessage> :
+                    isPluginsLoading ?
+                        <FillSpinner/> :
+                        <div>
+                            <div className={"section-header"}>
+                                <img src={process.env.PUBLIC_URL + '/img/icon/plugins/plugins_64.png'} alt="Plugins"
+                                     style={{height: 'fit-content'}}/>
+                                <h1>File Server Plugins</h1>
+                            </div>
+                            <div className={"Plugin-tile-container"}>
+                                {plugins}
+                            </div>
+                            <div className={"Plugin-details-container"}>
+                                {pluginDetails}
+                            </div>
+                        </div>
             }
         </>
     );

@@ -3,19 +3,20 @@ import {useFetchAllEventsQuery} from "../../slices/api/eventApiSlice";
 import {EventsDisplay} from "./EventsDisplay";
 import {useSelector} from "react-redux";
 import {selectMatches} from "../../slices/matchSlice";
-import {CenteredSpinner} from "../../components/Spinner";
+import {FillSpinner} from "../../components/Spinner";
 import {getToastMessage} from "../../utils";
 import {toast} from "react-toastify";
 import {useDetectElementBottom} from "../../hooks/useDetectElementBottom";
+import {ErrorMessage} from "../../components/ErrorMessage";
 
 export const LatestEventsPage = (props) => {
 
-    let {startingUrl} =  props
+    let {startingUrl} = props
     let [next, setNext] = useState(startingUrl)
     const {
         data,
         isLoading,
-        // isSuccess,
+        isSuccess,
         isError,
         error
     } = useFetchAllEventsQuery(next)
@@ -34,9 +35,16 @@ export const LatestEventsPage = (props) => {
 
     // components
     return (
-        <div>
-            <EventsDisplay events={events} />
-            { isLoading ? <CenteredSpinner /> : null}
+        <div style={{height: '100%'}}>
+            {
+                isError ?
+                    <ErrorMessage>Could not load latest events.</ErrorMessage> :
+                    isLoading ?
+                        <div style={{display: 'flex', alignItems: 'center', height: '100%'}}>
+                            <FillSpinner/>
+                        </div> :
+                        <EventsDisplay events={events}/>
+            }
         </div>
     )
 }

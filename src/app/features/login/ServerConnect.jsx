@@ -81,7 +81,7 @@ export const ServerConnect = (props) => {
                 />
                 {
                     isLoading ?
-                        <SmallSpinner size='24px'/> :
+                        <SmallSpinner size='24px' style={{marginLeft: '1rem'}}/> :
                         <button className="Connect-button" onClick={onConnectToServer} style={{marginLeft: '1rem'}}
                                 disabled={!isAddressValid || isLoading}>
                             {
