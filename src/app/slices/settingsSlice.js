@@ -10,6 +10,8 @@ export const VIDEO_LOCATION = '/filesystem/video_location'
 export const ARTWORK_LOCATION = '/filesystem/artwork/storage_location'
 export const LOG_FILE = '/filesystem/log_location'
 export const FFMPEG_ARGS = '/plugin/ffmpeg/ffmpeg/base-args'
+export const VPN_HEARTBEAT = '/tasks/vpn_heartbeat'
+export const UNPROTECTED_IP = '/system/network/address/unprotected'
 
 
 const editedSettings = {
@@ -21,6 +23,8 @@ const editedSettings = {
     [ARTWORK_LOCATION]: null,
     [LOG_FILE]: null,
     [FFMPEG_ARGS]: null,
+    [VPN_HEARTBEAT]: null,
+    [UNPROTECTED_IP]: null,
 }
 
 export const settingsSlice = createSlice({

@@ -22,8 +22,10 @@ import {
     REFRESH_DATASOURCES,
     selectEditedSettings,
     selectUploadSettings,
+    UNPROTECTED_IP,
     VIDEO_EXPIRE_DAYS,
-    VIDEO_LOCATION
+    VIDEO_LOCATION,
+    VPN_HEARTBEAT
 } from "../../slices/settingsSlice";
 import {ApplicationSetting} from "./ApplicationSetting";
 import {CenteredSpinner, FillSpinner} from "../../components/Spinner";
@@ -142,6 +144,24 @@ export const Settings = () => {
     const onAddArgument = (arg) => {
         dispatch(addNewFFmpegArg(arg))
         setNewFFmpegArg('')
+    }
+    const onUpdateVpnHeartBeat = (e) => {
+        let value = {
+            ...settings[VPN_HEARTBEAT],
+            data: e.target.value
+        }
+        dispatch(
+            editSettings({field: VPN_HEARTBEAT, value})
+        )
+    }
+    const onUpdateUnprotectedIp = (e) => {
+        let value = {
+            ...settings[UNPROTECTED_IP],
+            data: e.target.value
+        }
+        dispatch(
+            editSettings({field: UNPROTECTED_IP, value})
+        )
     }
 
     // hooks
@@ -345,6 +365,29 @@ export const Settings = () => {
                                                                 getArgumentTags(editedSettings[FFMPEG_ARGS]?.data)
                                                             }
                                                         </TagField>
+                                                    </div>
+                                                </div>
+                                                <div className="App-settings-group">
+                                                    <h3>VPN</h3>
+                                                    <div className="App-setting-container">
+                                                        <ApplicationSetting
+                                                            type="text"
+                                                            title="Heartbeat check"
+                                                            disabled={isInFlight}
+                                                            original={settings[VPN_HEARTBEAT]?.data}
+                                                            current={editedSettings[VPN_HEARTBEAT]?.data}
+                                                            onChange={onUpdateVpnHeartBeat}>
+                                                            {
+                                                                getCronDescription(editedSettings[VPN_HEARTBEAT]?.data)
+                                                            }
+                                                        </ApplicationSetting>
+                                                        <ApplicationSetting
+                                                            type="text"
+                                                            title="Unprotected IP"
+                                                            disabled={isInFlight}
+                                                            original={settings[UNPROTECTED_IP]?.data}
+                                                            current={editedSettings[UNPROTECTED_IP]?.data}
+                                                            onChange={onUpdateUnprotectedIp}/>
                                                     </div>
                                                 </div>
                                             </> :

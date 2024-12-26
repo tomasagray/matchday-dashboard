@@ -43,7 +43,7 @@ export const VpnControl = (props) => {
     // ... receive data
     useSubscription(properties.websocketRoot + '/subscription/vpn-status', (msg) => {
         let status = JSON.parse(msg.body)
-        onUpdate(status['ipAddress'])
+        onUpdate && onUpdate(status['ipAddress'])
         setConnectionStatus(status['connectionStatus'])
         setVpnServer(status['vpnServer'])
     })
@@ -92,8 +92,9 @@ export const VpnControl = (props) => {
     return (
         <div className="Vpn-control">
             <VpnIcon
-                isConnected={isConnected}
                 isInFlight={isInFlight}
+                isConnected={isConnected}
+                isError={connectionStatus === 'ERROR'}
                 vpnServer={vpnServer}
             />
             {
