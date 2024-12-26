@@ -208,7 +208,7 @@ export const AddEditVideoSource = (props) => {
                                 <span style={unitHintStyle}>fps</span>
                             </li>
                             <li>
-                                <label htmlFor="bitrate">Video bitrate</label>
+                                <label htmlFor="video-bitrate">Video bitrate</label>
                                 <input type="number"
                                        className={videoSource.videoBitrate.valid ? '' : 'invalid'}
                                        min={1}

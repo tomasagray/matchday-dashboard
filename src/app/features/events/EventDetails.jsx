@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
 import {useDeleteMatchMutation, useFetchMatchByIdQuery, useUpdateMatchMutation} from "../../slices/api/eventApiSlice";
-import {CenteredSpinner} from "../../components/Spinner";
+import {CenteredSpinner, FillSpinner} from "../../components/Spinner";
 import {useFetchVideoSourcesForEventQuery} from "../../slices/api/videoSourceApiSlice";
 import {VideoPlayer} from "../video/VideoPlayer";
 import dayjs from "dayjs";
@@ -282,7 +282,7 @@ export const EventDetails = () => {
                 onHide={onHideEditVideoSourceModal}/>
             {
                 isEventLoading ?
-                    <CenteredSpinner/> :
+                    <FillSpinner/> :
                     isEventSuccess ?
                         <div className="Content-container">
                             <VideoPlayer
@@ -304,7 +304,7 @@ export const EventDetails = () => {
                                         event.fixture ?
                                             <span style={{color: '#aaa'}}>
                                                 &nbsp;&mdash;&nbsp;
-                                                Matchday #{event.fixture.fixtureNumber}
+                                                {event?.fixture?.title}
                                             </span> :
                                             null
                                     }

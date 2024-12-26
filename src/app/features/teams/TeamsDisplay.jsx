@@ -50,26 +50,24 @@ export const TeamsDisplay = () => {
             />
             {
                 isError ?
-                    <ErrorMessage>Could not load Teams data</ErrorMessage> :
+                    <ErrorMessage>Could not load teams data.</ErrorMessage> :
                     isLoading ?
                         <FillSpinner/> :
-                        isSuccess ?
-                            teams && Object.keys(teams.entities).length > 0 ?
-                                <div>
-                                    <div className={'Entity-header'}>
-                                        <h1>Teams</h1>
-                                        <AddNewButton onClick={onShowAddModal}/>
-                                    </div>
-                                    <div className={"Entity-display"}>
-                                        {
-                                            Object.values(teams.entities)
-                                                .sort((t1, t2) => t1.name.name.localeCompare(t2.name.name))
-                                                .map(team => <TeamTile team={team} key={team.id}/>)
-                                        }
-                                    </div>
-                                </div> :
-                                <EmptyMessage noun={'teams'}/> :
-                            null
+                        isSuccess && teams && Object.keys(teams.entities).length > 0 ?
+                            <div>
+                                <div className={'Entity-header'}>
+                                    <h1>Teams</h1>
+                                    <AddNewButton onClick={onShowAddModal}/>
+                                </div>
+                                <div className={"Entity-display"}>
+                                    {
+                                        Object.values(teams.entities)
+                                            .sort((t1, t2) => t1.name.name.localeCompare(t2.name.name))
+                                            .map(team => <TeamTile team={team} key={team.id}/>)
+                                    }
+                                </div>
+                            </div> :
+                            <EmptyMessage noun={'teams'}/>
             }
         </>
     )

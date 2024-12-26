@@ -4,7 +4,7 @@ import {FloatingMenu} from "../components/FloatingMenu";
 import {MenuItem} from "../components/MenuItem";
 import Modal, {Footer, Header} from "../components/Modal";
 import {CancelButton} from "../components/controls/CancelButton";
-import Cookies from "universal-cookie/es6";
+import Cookies from "universal-cookie";
 import {serverAddressCookie} from "../constants";
 
 export const HeaderNav = () => {
@@ -53,7 +53,8 @@ export const HeaderNav = () => {
                 </div>
                 <div className="Admin-nav-menu-wrapper">
                     <ul className="Admin-nav-menu">
-                        <li>
+                        {/* todo: implement alerts/notifications */}
+                        <li style={{display: 'none'}}>
                             <Link to="/alerts">
                                 <button className="Nav-link">
                                     <img src={process.env.PUBLIC_URL + '/img/icon/alerts/alerts_64.png'} alt="Alerts"/>

@@ -208,37 +208,39 @@ export const DataSourcePluginsList = () => {
     return (
         <>
             {
-                pluginsLoading ?
-                    <FillSpinner/> :
-                    <div>
-                        <div className="section-header">
-                            <img
-                                src={process.env.PUBLIC_URL + '/img/icon/plugins/plugins_64.png'}
-                                alt="Plugins"
-                                style={{height: 'fit-content'}}
-                            />
-                            <h1>Data Source Plugins</h1>
-                        </div>
-                        <div className={"Refresh-container"} onMouseEnter={onRefreshHover}
-                             onMouseLeave={onRefreshUnHover}>
-                            <button className="Small-button"
-                                    style={refreshButtonStyle}
-                                    disabled={refreshDisabled}
-                                    onClick={onRefreshAllPlugins}>
-                                Refresh All
-                            </button>
-                            <div className={"Refresh-options-container"}
-                                 style={{visibility: refreshOptionsVisibility}}>
-                                {refreshTool}
+                isPluginError ?
+                    <ErrorMessage>Could not load data source plugins.</ErrorMessage> :
+                    pluginsLoading ?
+                        <FillSpinner/> :
+                        <div>
+                            <div className="section-header">
+                                <img
+                                    src={process.env.PUBLIC_URL + '/img/icon/plugins/plugins_64.png'}
+                                    alt="Plugins"
+                                    style={{height: 'fit-content'}}
+                                />
+                                <h1>Data Source Plugins</h1>
+                            </div>
+                            <div className={"Refresh-container"} onMouseEnter={onRefreshHover}
+                                 onMouseLeave={onRefreshUnHover}>
+                                <button className="Small-button"
+                                        style={refreshButtonStyle}
+                                        disabled={refreshDisabled}
+                                        onClick={onRefreshAllPlugins}>
+                                    Refresh All
+                                </button>
+                                <div className={"Refresh-options-container"}
+                                     style={{visibility: refreshOptionsVisibility}}>
+                                    {refreshTool}
+                                </div>
+                            </div>
+                            <div className={"Plugin-tile-container"}>
+                                {pluginList}
+                            </div>
+                            <div className="Plugin-details-container">
+                                {pluginData}
                             </div>
                         </div>
-                        <div className={"Plugin-tile-container"}>
-                            {pluginList}
-                        </div>
-                        <div className="Plugin-details-container">
-                            {pluginData}
-                        </div>
-                    </div>
             }
         </>
     );

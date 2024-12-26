@@ -91,7 +91,7 @@ export const TeamSelect = (props) => {
                                                 )
                                             }
                                         ) :
-                                    <ErrorMessage>{error}</ErrorMessage>
+                                    <ErrorMessage>{error?.error}</ErrorMessage>
                         }
                     </div>
                 </div>

@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import Cookies from "universal-cookie/es6";
+import Cookies from "universal-cookie";
 import {ServerConnect} from "./ServerConnect";
 import {serverAddressCookie} from "../../constants";
 import {Navigate} from "react-router-dom";

@@ -11,6 +11,7 @@ import {toast} from "react-toastify";
 import {getToastMessage} from "../utils";
 import {EmptyMessage} from "../components/EmptyMessage";
 import {Link} from "react-router-dom";
+import {ErrorMessage} from "../components/ErrorMessage";
 
 export const Home = () => {
 
@@ -39,36 +40,40 @@ export const Home = () => {
 
     // item lists
     let eventTiles = (isEventsSuccess && eventsData) ?
-        Object.values(eventsData.entities).map(event => <EventTile event={event} />) :
+        Object.values(eventsData.entities).map(event => <EventTile event={event}/>) :
         []
     if (eventTiles.length >= 16) {
         eventTiles.push(
             <Link to={"/events"}>
                 <div style={{padding: '1.5rem'}}>
                     <div className="More-button">
-                        <img src={'/img/icon/more/more_32.png'} alt="More..." />
+                        <img src={'/img/icon/more/more_32.png'} alt="More..."/>
                     </div>
                 </div>
             </Link>
         )
     }
     let eventsList =
-        isEventsLoading ?
-           <CenteredSpinner /> :
-           isEventsSuccess && eventsData ?
-                <ContentBar title="Latest Events" items={eventTiles}/> :
-                <EmptyMessage noun="events"/>
+        isEventsError ?
+            <ErrorMessage>Could not load events data.</ErrorMessage> :
+            isEventsLoading ?
+                <CenteredSpinner/> :
+                isEventsSuccess && eventsData ?
+                    <ContentBar title="Latest Events" items={eventTiles}/> :
+                    <EmptyMessage noun="events"/>
 
     let competitionTiles = (isCompetitionsSuccess && competitionsData) ?
         Object.values(competitionsData.entities)
             .map(competition => <CompetitionTile competition={competition}/>) :
         []
     let competitionsList =
-        isCompetitionsLoading ?
-            <CenteredSpinner /> :
-            isCompetitionsSuccess && competitionsData ?
-                <ContentBar title="Competitions" items={competitionTiles} /> :
-                <EmptyMessage noun="competitions" />;
+        isCompetitionsError ?
+            <ErrorMessage>Could not load competitions data.</ErrorMessage> :
+            isCompetitionsLoading ?
+                <CenteredSpinner/> :
+                isCompetitionsSuccess && competitionsData ?
+                    <ContentBar title="Competitions" items={competitionTiles}/> :
+                    <EmptyMessage noun="competitions"/>;
 
     let teamTiles = (isTeamsSuccess && teamsData) ?
         Object.values(teamsData.entities)
@@ -79,18 +84,20 @@ export const Home = () => {
             <Link to={"/teams"}>
                 <div style={{padding: '1.5rem'}}>
                     <div className="More-button">
-                        <img src={'/img/icon/more/more_32.png'} alt="More..." />
+                        <img src={'/img/icon/more/more_32.png'} alt="More..."/>
                     </div>
                 </div>
             </Link>
         )
     }
     let teamsList =
-        isTeamsLoading ?
-            <CenteredSpinner /> :
-            isTeamsSuccess && teamsData ?
-                <ContentBar title="Teams" items={teamTiles} /> :
-                <EmptyMessage noun="teams" />
+        isTeamsError ?
+            <ErrorMessage>Could not load teams data.</ErrorMessage> :
+            isTeamsLoading ?
+                <CenteredSpinner/> :
+                isTeamsSuccess && teamsData ?
+                    <ContentBar title="Teams" items={teamTiles}/> :
+                    <EmptyMessage noun="teams"/>
 
     // toast messages
     useEffect(() => {

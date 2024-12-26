@@ -202,7 +202,7 @@ export const AddEditMatchWizard = (props) => {
                 </div>
             </div>,
         competition:
-            <div>
+            <div style={{height: '100%'}}>
                 <CompetitionSelect
                     onSelectCompetition={onSelectCompetition}
                     selectedCompetition={editedMatch?.competition}

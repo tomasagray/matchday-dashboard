@@ -1,6 +1,6 @@
 {
   "name": "matchday-dashboard",
-  "version": "0.5.5",
+  "version": "0.6.0",
   "private": true,
   "dependencies": {
     "@redux-devtools/extension": "^3.2.2",
@@ -25,7 +25,7 @@
     "react-stomp-hooks": "^2.1.0",
     "react-toastify": "^9.0.8",
     "sass": "^1.54.0",
-    "universal-cookie": "^4.0.4",
+    "universal-cookie": "^7.2.2",
     "uuid": "^9.0.1",
     "web-vitals": "^2.1.4"
   },
@@ -38,9 +38,11 @@
     "@svgr/webpack": "^6.5.1",
     "react-scripts": "^5.0.1"
   },
+  "peerDependencies": {
+    "postcss": "^8.4.49"
+  },
   "overrides": {
-    "@svgr/webpack": "$@svgr/webpack",
-    "postcss": "^8.4.31"
+    "@svgr/webpack": "$@svgr/webpack"
   },
   "scripts": {
     "start": "react-scripts start",
