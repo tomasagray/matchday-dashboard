@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] - (upcoming changes)
 
+## [0.6.0] - 2024-12-26
+
+### Added
+
+- ffmpeg settings editor
+- VPN settings editor
+- A proper (albeit minimal) README
+
+### Fixed
+
+- Competition selection border
+- Vulnerable dependencies
+
 ## [0.5.5] - 2024-06-11
 
 ### Changed

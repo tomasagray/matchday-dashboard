@@ -304,7 +304,7 @@ export const EventDetails = () => {
                                         event.fixture ?
                                             <span style={{color: '#aaa'}}>
                                                 &nbsp;&mdash;&nbsp;
-                                                Matchday #{event.fixture.fixtureNumber}
+                                                {event?.fixture?.title}
                                             </span> :
                                             null
                                     }
