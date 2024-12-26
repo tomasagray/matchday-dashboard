@@ -53,7 +53,8 @@ export const HeaderNav = () => {
                 </div>
                 <div className="Admin-nav-menu-wrapper">
                     <ul className="Admin-nav-menu">
-                        <li>
+                        {/* todo: implement alerts/notifications */}
+                        <li style={{display: 'none'}}>
                             <Link to="/alerts">
                                 <button className="Nav-link">
                                     <img src={process.env.PUBLIC_URL + '/img/icon/alerts/alerts_64.png'} alt="Alerts"/>
