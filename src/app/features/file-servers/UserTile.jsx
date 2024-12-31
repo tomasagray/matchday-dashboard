@@ -5,16 +5,19 @@ import {FloatingMenu} from "../../components/FloatingMenu";
 import {MenuItem} from "../../components/MenuItem";
 import {
     useDeleteUserMutation,
+    useGetUserBandwidthQuery,
     useLogoutUserMutation,
     useReloginUserMutation
 } from "../../slices/api/fileServerUserApiSlice";
 import Modal, {Body, Footer, Header} from "../../components/Modal";
 import {CancelButton} from "../../components/controls/CancelButton";
 import {DeleteButton} from "../../components/controls/DeleteButton";
-import {SmallSpinner} from "../../components/Spinner";
+import {CenteredSpinner, SmallSpinner} from "../../components/Spinner";
 import {CookieDisplay} from "./CookieDisplay";
 import {getToastMessage} from "../../utils";
 import {toast} from "react-toastify";
+import {ErrorMessage} from "../../components/ErrorMessage";
+import {BandwidthDisplay} from "./BandwidthDisplay";
 
 export const UserTile = (props) => {
 
@@ -30,7 +33,7 @@ export const UserTile = (props) => {
         await logoutUser(userId)
     }
     const onUserLogin = async () => {
-        console.log('relogging in user', userId, user)
+        console.log('re-logging in user', userId, user)
         setEditMenuHidden(true)
         if (user['hasPassword']) {
             loginUser(userId)
@@ -78,6 +81,13 @@ export const UserTile = (props) => {
         isError: isDeleteError,
         error: deleteError
     }] = useDeleteUserMutation()
+    const {
+        data: bandwidth,
+        isSuccess: isBandwidthSuccess,
+        isLoading: isBandwidthLoading,
+        isError: isBandwidthError,
+        error: bandwidthError,
+    } = useGetUserBandwidthQuery(userId)
 
     // toast messages
     useEffect(() => {
@@ -158,12 +168,15 @@ export const UserTile = (props) => {
                     </table>
                 </Body>
                 <Footer>
-                    <CancelButton onClick={onHideDeleteUserConfirm} style={{display: isDeleting ? 'none': ''}}/>
-                    <DeleteButton onClick={onDeleteUser} isLoading={isDeleting} disabled={isDeleting} />
+                    <CancelButton onClick={onHideDeleteUserConfirm} style={{display: isDeleting ? 'none' : ''}}/>
+                    <DeleteButton onClick={onDeleteUser} isLoading={isDeleting} disabled={isDeleting}/>
                 </Footer>
             </Modal>
-            <CookieDisplay userId={userId} show={showCookiesModal} onHide={onHideCookiesModal} />
-            <img src={process.env.PUBLIC_URL + '/img/default_avatar.png'} alt="" className="User-avatar" />
+            <CookieDisplay userId={userId} show={showCookiesModal} onHide={onHideCookiesModal}/>
+            <div style={{height: '100%', width: '100px'}}>
+                <img width="100px" src={process.env.PUBLIC_URL + '/img/default_avatar.png'} alt=""
+                     className="User-avatar"/>
+            </div>
             <div className="User-data">
                 <p>
                     <strong style={{fontSize: 'large'}}>{username}</strong>
@@ -174,8 +187,28 @@ export const UserTile = (props) => {
                 <p style={{display: 'inline-flex', alignItems: 'center', width: 'fit-content'}}>
                     Logged In:
                 </p>
-                <div style={{marginLeft: '1rem', display: 'inline-flex', justifyContent: 'center', width: 'fit-content'}}>
+                <div style={{
+                    marginLeft: '1rem',
+                    display: 'inline-flex',
+                    justifyContent: 'center',
+                    width: 'fit-content'
+                }}>
                     {checkbox}
+                </div>
+                <div>
+                    Remaining bandwidth:
+                    {
+                        isBandwidthLoading ?
+                            <CenteredSpinner/> :
+                            isBandwidthSuccess ?
+                                <BandwidthDisplay bandwidth={bandwidth}/> :
+                                isBandwidthError ?
+                                    <ErrorMessage>
+                                        Remaining bandwidth unavailable:<br/>
+                                        <span>{bandwidthError?.error}</span>
+                                    </ErrorMessage> : null
+                    }
+
                 </div>
             </div>
             <div id={"user-edit-menu"} style={{float: 'right'}}>

@@ -50,8 +50,9 @@ $posterHeight: calc($posterWidth / (16 / 9));
   .Event-title {
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 100%;
     font-weight: normal;
+    max-width: 100%;
+    width: calc(#{variables.$eventPosterWidth} - 10px);
 
     span {
       color: colors.$eventTitle;
