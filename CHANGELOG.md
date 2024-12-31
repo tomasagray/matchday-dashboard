@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] - (upcoming changes)
 
+## [0.6.1] - 2024-12-30
+
+### Added
+
+- File server user remaining bandwidth display
+
+### Fixed
+
+- Redundant header on some JSON exports
+
 ## [0.6.0] - 2024-12-26
 
 ### Added
