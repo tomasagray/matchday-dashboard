@@ -3,7 +3,6 @@ import React from 'react'
 export const ErrorMessage = (props) => {
 
     let {children, code} = props
-    console.log('props', props)
 
     return (
         <div className="Message">

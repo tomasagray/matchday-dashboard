@@ -3,7 +3,6 @@ import dayjs from "dayjs";
 
 const dateFormatter = 'MM/DD/YYYY'
 const dateTimeFormatter = 'YYYY-MM-DDTHH:mm:ss'
-const jsonPrefix = 'data:text/json;charset=utf-8,'
 const uuidPattern = /[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}/
 
 export const compareVersions = (v1, v2) => {
@@ -109,10 +108,9 @@ export const getClassName = (clazz) => {
 }
 
 export const getDownloadableJson = (data, pretty = true) => {
-    let json = pretty ?
+    return pretty ?
         encodeURIComponent(JSON.stringify(data, null, 1)) :
         encodeURIComponent(JSON.stringify(data))
-    return jsonPrefix + json
 }
 
 export const getToastMessage = (msg) => {

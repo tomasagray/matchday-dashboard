@@ -84,6 +84,9 @@ export const fileServerUserApiSlice = apiSlice.injectEndpoints({
                 return response
             }
         }),
+        getUserBandwidth: builder.query({
+            query: userId => `/file-server-users/user/${userId}/bandwidth`,
+        }),
     })
 })
 
@@ -94,4 +97,5 @@ export const {
     useLogoutUserMutation,
     useReloginUserMutation,
     useDeleteUserMutation,
+    useGetUserBandwidthQuery,
 } = fileServerUserApiSlice
