@@ -10,14 +10,15 @@ import {toast} from "react-toastify";
 import {SaveButton} from "../../components/controls/SaveButton";
 import {useDispatch, useSelector} from "react-redux";
 import {
-    addNewFFmpegArg,
+    addFFmpegAdditionalArg,
+    addNewFFmpegBaseArg,
     ARTWORK_LOCATION,
-    BACKUP_LOCATION,
-    deleteFFmpegArg,
-    editSettings,
-    FFMPEG_ARGS,
+    BACKUP_LOCATION, deleteFFmpegAdditionalArg,
+    deleteFFmpegBaseArg,
+    editSettings, FFMPEG_ADD_ARGS,
+    FFMPEG_BASE_ARGS,
     loadSettings,
-    LOG_FILE,
+    LOG_FILE, moveFFmpegAdditionalArg, moveFFmpegBaseArg,
     PRUNE_VIDEOS,
     REFRESH_DATASOURCES,
     selectEditedSettings,
@@ -35,7 +36,8 @@ import cronstrue from "cronstrue";
 import {SettingContainer} from "../../components/SettingContainer";
 import Select from "../../components/controls/Select";
 import {Option} from "../../components/controls/Option";
-import {Tag, TagField} from "../../components/controls/TagField";
+import {TagField} from "../../components/controls/TagField";
+import {Tag} from "../../components/controls/Tag";
 
 const getCronDescription = (cron) => {
     try {
@@ -131,19 +133,19 @@ export const Settings = () => {
         }
         setLogLevel(logLevel)
     }
-    const getArgumentTags = (args) => {
-        if (!args) return
-        return args.map(arg =>
-            <Tag onDelete={() => onDeleteArg(arg)} key={arg}>
-                {arg}
-            </Tag>
-        )
+    const onDeleteFFmpegBaseArg = (arg) => dispatch(deleteFFmpegBaseArg(arg))
+    const onMoveFFmpegBaseArg = (from, to) => dispatch(moveFFmpegBaseArg({from, to}))
+    const onEditFFmpegBaseArgument = (arg) => setNewFFmpegBaseArg(arg)
+    const onAddFFmpegBaseArgument = (arg) => {
+        dispatch(addNewFFmpegBaseArg(arg))
+        setNewFFmpegBaseArg('')
     }
-    const onDeleteArg = (arg) => dispatch(deleteFFmpegArg(arg))
-    const onEditArgument = (arg) => setNewFFmpegArg(arg)
-    const onAddArgument = (arg) => {
-        dispatch(addNewFFmpegArg(arg))
-        setNewFFmpegArg('')
+    const onDeleteFFmpegAddArg = (arg) => dispatch(deleteFFmpegAdditionalArg(arg))
+    const onMoveFFmpegAddArg = (from, to) => dispatch(moveFFmpegAdditionalArg({from, to}))
+    const onEditFFmpegAddArg = (arg) => setNewFFmpegAddArg(arg)
+    const onAddFFmpegAddArg = (arg) => {
+        dispatch(addFFmpegAdditionalArg(arg))
+        setNewFFmpegAddArg('')
     }
     const onUpdateVpnHeartBeat = (e) => {
         let value = {
@@ -227,7 +229,8 @@ export const Settings = () => {
     ])
 
     // state
-    const [newFFmpegArg, setNewFFmpegArg] = useState('')
+    let [newFFmpegBaseArg, setNewFFmpegBaseArg] = useState('')
+    let [newFFmpegAddArg, setNewFFmpegAddArg] = useState('')
     let editedSettings = useSelector(state => selectEditedSettings(state))
     let uploadSettings = useSelector(state => selectUploadSettings(state))
 
@@ -359,10 +362,37 @@ export const Settings = () => {
                                                         <label htmlFor="ffmpeg-base-args-container">FFmpeg base
                                                             arguments</label>
                                                         <TagField id="ffmpeg-base-args-container"
-                                                                  editorValue={newFFmpegArg}
-                                                                  onEditTag={onEditArgument} onAddTag={onAddArgument}>
+                                                                  editorValue={newFFmpegBaseArg}
+                                                                  onEditTag={onEditFFmpegBaseArgument}
+                                                                  onAddTag={onAddFFmpegBaseArgument}
+                                                                  onMoveTag={(current, req) => onMoveFFmpegBaseArg(current, req)}
+                                                        >
                                                             {
-                                                                getArgumentTags(editedSettings[FFMPEG_ARGS]?.data)
+                                                                editedSettings[FFMPEG_BASE_ARGS]?.data.map(arg =>
+                                                                    <Tag onDelete={() => onDeleteFFmpegBaseArg(arg)}
+                                                                         key={arg}>
+                                                                        {arg}
+                                                                    </Tag>
+                                                                )
+                                                            }
+                                                        </TagField>
+                                                    </div>
+                                                    <div className="App-setting-container">
+                                                        <label htmlFor="ffmpeg-add-args-container">FFmpeg additional
+                                                            arguments</label>
+                                                        <TagField id="ffmpeg-add-args-container"
+                                                                  editorValue={newFFmpegAddArg}
+                                                                  onEditTag={onEditFFmpegAddArg}
+                                                                  onAddTag={onAddFFmpegAddArg}
+                                                                  onMoveTag={(current, req) => onMoveFFmpegAddArg(current, req)}
+                                                        >
+                                                            {
+                                                                editedSettings[FFMPEG_ADD_ARGS]?.data.map(arg =>
+                                                                    <Tag onDelete={() => onDeleteFFmpegAddArg(arg)}
+                                                                         key={arg}>
+                                                                        {arg}
+                                                                    </Tag>
+                                                                )
                                                             }
                                                         </TagField>
                                                     </div>

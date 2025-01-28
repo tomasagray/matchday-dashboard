@@ -1,6 +1,7 @@
 import React from "react";
 import {CountrySelect} from "./CountrySelect";
-import {Tag, TagField} from "../../components/controls/TagField";
+import {TagField} from "../../components/controls/TagField";
+import {Tag} from "../../components/controls/Tag";
 
 
 export const GeneralEditor = (props) => {
