@@ -10,7 +10,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {finishEditMatch, selectEditedMatchForUpload, selectIsEditedMatchValid} from "../../slices/matchSlice";
 import {useAddMatchMutation} from "../../slices/api/eventApiSlice";
 import {toast} from "react-toastify";
-import {getToastMessage} from "../../utils";
+import {getToastMessage, setBackgroundImage} from "../../utils";
 
 
 export const EventsDisplay = (props) => {
@@ -58,6 +58,7 @@ export const EventsDisplay = (props) => {
     }, [isAddSuccess, isAddError, addError])
 
     // components
+    setBackgroundImage('none')
     return (
         <>
             <Modal show={isAddModalShown}>

@@ -4,7 +4,7 @@ import {selectAllTeams} from "../../slices/teamSlice"
 import {FillSpinner} from "../../components/Spinner";
 import TeamTile from "./TeamTile";
 import {ErrorMessage} from "../../components/ErrorMessage";
-import {getToastMessage} from "../../utils";
+import {getToastMessage, setBackgroundImage} from "../../utils";
 import {toast} from "react-toastify";
 import {useSelector} from "react-redux";
 import {useDetectElementBottom} from "../../hooks/useDetectElementBottom";
@@ -42,6 +42,7 @@ export const TeamsDisplay = () => {
         }
     }, [error, isError])
 
+    setBackgroundImage('none')
     return (
         <>
             <AddEditTeamWizard

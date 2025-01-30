@@ -14,7 +14,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import dayjs from "dayjs";
 import {toast} from "react-toastify";
-import {getToastMessage} from "../../utils";
+import {getToastMessage, setBackgroundImage} from "../../utils";
 import {LabelRefreshTool} from "./LabelRefreshTool";
 import {InfoMessage} from "../../components/InfoMessage";
 import {UrlRefreshTool} from "./UrlRefreshTool";
@@ -205,6 +205,7 @@ export const DataSourcePluginsList = () => {
         (refreshHover || refreshMode === LABEL_MODE || refreshMode === DATE_MODE || refreshMode === URL_MODE)
             ? 'visible' : 'hidden'
 
+    setBackgroundImage('none')
     return (
         <>
             {

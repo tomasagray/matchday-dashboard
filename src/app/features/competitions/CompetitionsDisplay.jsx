@@ -3,7 +3,7 @@ import {useFetchAllCompetitionsQuery} from "../../slices/api/competitionApiSlice
 import {FillSpinner} from "../../components/Spinner";
 import CompetitionTile from "./CompetitionTile";
 import {toast} from "react-toastify";
-import {getToastMessage} from "../../utils";
+import {getToastMessage, setBackgroundImage} from "../../utils";
 import {EmptyMessage} from "../../components/EmptyMessage";
 import {AddNewButton} from "../../components/controls/AddNewButton";
 import {AddEditCompetitionWizard} from "./AddEditCompetitionWizard";
@@ -36,6 +36,7 @@ export const CompetitionsDisplay = () => {
         }
     }, [error, isError])
 
+    setBackgroundImage('none')
     return (
         <>
             <AddEditCompetitionWizard

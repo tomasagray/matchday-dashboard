@@ -7,7 +7,7 @@ import EventTile from "../events/EventTile";
 import CompetitionTile from "../competitions/CompetitionTile";
 import {EditButton} from "../../components/controls/EditButton";
 import React, {useEffect, useState} from "react";
-import {getArtworkUrl, getToastMessage} from "../../utils";
+import {getArtworkUrl, getToastMessage, setBackgroundImage} from "../../utils";
 import {toast} from "react-toastify";
 import {ErrorMessage} from "../../components/ErrorMessage";
 import {SoftLoadImage} from "../../components/SoftLoadImage";
@@ -102,6 +102,7 @@ export const TeamDetails = () => {
                 ) :
                 null
 
+    setBackgroundImage('none')
     return (
         <>
             <AddEditTeamWizard

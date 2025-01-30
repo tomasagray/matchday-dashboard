@@ -8,7 +8,7 @@ import EventTile from "../features/events/EventTile";
 import CompetitionTile from "../features/competitions/CompetitionTile";
 import TeamTile from "../features/teams/TeamTile";
 import {toast} from "react-toastify";
-import {getToastMessage} from "../utils";
+import {getToastMessage, setBackgroundImage} from "../utils";
 import {EmptyMessage} from "../components/EmptyMessage";
 import {Link} from "react-router-dom";
 import {ErrorMessage} from "../components/ErrorMessage";
@@ -122,6 +122,7 @@ export const Home = () => {
         teamsError
     ])
 
+    setBackgroundImage('none')
     return (
         <div className="Content-container Home-container">
             {eventsList}

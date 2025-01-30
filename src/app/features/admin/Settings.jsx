@@ -5,7 +5,7 @@ import {
     useSetLogLevelMutation,
     useUpdateSettingsMutation
 } from "../../slices/api/adminApiSlice";
-import {getToastMessage} from "../../utils";
+import {getToastMessage, setBackgroundImage} from "../../utils";
 import {toast} from "react-toastify";
 import {SaveButton} from "../../components/controls/SaveButton";
 import {useDispatch, useSelector} from "react-redux";
@@ -237,6 +237,7 @@ export const Settings = () => {
     let isInFlight = isLoading || isUpdating
     let isLogLevelInFlight = isLoadingLogLevel || isSettingLogLevel
 
+    setBackgroundImage('none')
     return (
         <>
             {

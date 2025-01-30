@@ -1,6 +1,6 @@
 import React, {useEffect} from "react";
 import {useAttemptAutoHealMutation, useGenerateSanityReportMutation} from "../../slices/api/adminApiSlice";
-import {downloadData, getToastMessage} from "../../utils";
+import {downloadData, getToastMessage, setBackgroundImage} from "../../utils";
 import {toast} from "react-toastify";
 import {SanityReport} from "./SanityReport";
 import {DownloadButton} from "../../components/controls/DownloadButton";
@@ -99,6 +99,7 @@ export const SanityReportDisplay = () => {
         }
     }, [isGenerateError, isHealed, isHealError, generateError, healError])
 
+    setBackgroundImage('none')
     return (
         <>
             <h1 style={{marginBottom: '1rem'}}>Sanity Report</h1>
