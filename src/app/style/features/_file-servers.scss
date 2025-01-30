@@ -11,10 +11,10 @@
     padding: 2rem;
     margin: 1rem;
     display: flex;
-    color: colors.$mediumFontColor;
     justify-content: space-between;
-    align-items: start;
+    align-items: flex-start;
     width: revert;
+    color: colors.$mediumFontColor;
 
     .User-avatar {
       filter: brightness(90%);
@@ -134,9 +134,9 @@
     }
 
     .Hover-label {
-      align-self: start;
+      align-self: flex-start;
       position: relative;
-      transform: translateY(50%) translateX(20%);
+      margin-bottom: .25rem;
     }
   }
 }

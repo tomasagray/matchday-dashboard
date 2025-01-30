@@ -28,7 +28,7 @@ export const TeamSelect = (props) => {
 
     // state
     let {selectedTeam, onSelectTeam} = props
-    let [next, setNext] = useState()
+    let [next, setNext] = useState(null)
     let teamsList = useSelector(state => selectAllTeams(state))
     let [isTeamMenuHidden, setIsTeamMenuHidden] = useState(true)
     let {
@@ -78,8 +78,8 @@ export const TeamSelect = (props) => {
                                 isSuccess ?
                                     Object.values(teamsList.entities)
                                         .map(team => {
-                                            const isSelected = selectedTeam?.id === team?.id
-                                            const className = "Team-tile-selector" + (isSelected ? " selected" : "")
+                                                const isSelected = selectedTeam?.id === team?.id
+                                                const className = "Team-tile-selector" + (isSelected ? " selected" : "")
                                                 return (
                                                     <div
                                                         className={className}

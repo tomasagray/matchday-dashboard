@@ -5,6 +5,9 @@ import {competitionAdapter, competitionsLoaded} from "../competitionSlice";
 import {JsonHeaders} from "../../constants";
 
 
+export const DEFAULT_PAGE = 0
+export const DEFAULT_PAGE_SIZE = 16
+
 const getNormalizedTeams = (response) => {
     let {teams} = response
     if (teams && teams.length > 0) {
@@ -17,12 +20,16 @@ export const teamApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => {
         return ({
             fetchAllTeams: builder.query({
-                query: (url = null, page = 0, size = 16) => {
-                    if (url !== null) {
-                        return {url}
-                    }
+                query: (url) => {
+                    if (url != null) return {url}
+
+                    // compute next page
+                    let loadedTeams = store.getState().teams?.ids.length ?? DEFAULT_PAGE
+                    let loadedPages = Math.floor(loadedTeams / DEFAULT_PAGE_SIZE)
+                    let page = loadedPages + 1
+
                     return {
-                        url: `/teams?page=${page}&size=${size}`,
+                        url: `/teams?page=${page}&size=${DEFAULT_PAGE_SIZE}`,
                     }
                 },
                 providesTags: [teamTag],

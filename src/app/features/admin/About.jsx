@@ -5,6 +5,7 @@ import {ErrorMessage} from "../../components/ErrorMessage";
 import properties from "../../properties";
 import {VpnControl} from "./VpnControl";
 import {StompSessionProvider} from "react-stomp-hooks";
+import {setBackgroundImage} from "../../utils";
 
 
 export const About = () => {
@@ -19,6 +20,7 @@ export const About = () => {
     } = useAppInfoQuery()
     let [ipAddress, setIpAddress] = useState('?.?.?.?')
 
+    setBackgroundImage('none')
     return (
         <StompSessionProvider url={properties.websocketUrl}>
             <h1>About</h1>

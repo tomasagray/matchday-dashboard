@@ -16,7 +16,7 @@ import {SettingsGroup} from "../../components/SettingsGroup";
 import {SettingContainer} from "../../components/SettingContainer";
 import {Status, ToggleSwitch} from "../../components/controls/ToggleSwitch";
 import {SettingsLink} from "../../components/SettingsLink";
-import {getToastMessage} from "../../utils";
+import {getToastMessage, setBackgroundImage} from "../../utils";
 import {toast} from "react-toastify";
 import {ErrorMessage} from "../../components/ErrorMessage";
 
@@ -104,6 +104,7 @@ export const FileServerPluginList = () => {
                 <InfoMessage>Please select a File Server plugin from above.</InfoMessage> :
                 null
 
+    setBackgroundImage('none')
     return (
         <>
             {

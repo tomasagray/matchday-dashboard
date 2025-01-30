@@ -7,7 +7,7 @@ import {
 } from "../../slices/api/adminApiSlice";
 import {CenteredSpinner} from "../../components/Spinner";
 import {ErrorMessage} from "../../components/ErrorMessage";
-import {downloadData, getDownloadableJson, getToastMessage} from "../../utils";
+import {downloadData, getDownloadableJson, getToastMessage, setBackgroundImage} from "../../utils";
 import {toast} from "react-toastify";
 import {RestorePointTable} from "./RestorePointTable";
 import {FileUploadButton} from "../../components/controls/FileUploadButton";
@@ -104,6 +104,7 @@ export const Backup = () => {
 
     let isInFlight = isCreating || isDehydrating || isRehydrating
 
+    setBackgroundImage('none')
     return (
         <>
             <h1 style={{marginBottom: '2rem'}}>Backup</h1>

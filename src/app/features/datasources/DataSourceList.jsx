@@ -1,6 +1,4 @@
-import {
-  useGetDataSourcesForPluginQuery
-} from "../../slices/api/dataSourceApiSlice";
+import {useGetDataSourcesForPluginQuery} from "../../slices/api/dataSourceApiSlice";
 import {DataSourceDisplay} from "./DataSourceDisplay";
 import {InfoMessage} from "../../components/InfoMessage";
 import {FillSpinner} from "../../components/Spinner";
@@ -35,7 +33,7 @@ export const DataSourceList = (props) => {
         }
     }
     if (isLoading) {
-        dataSourceList = <FillSpinner />
+        dataSourceList = <FillSpinner/>
     }
     if (isError) {
         dataSourceList = <ErrorMessage code={error.status}>{error.message}</ErrorMessage>

@@ -460,7 +460,7 @@
   justify-content: flex-start;
   padding: .5em;
   border: 1px solid #333;
-  border-radius: 3px;
+  border-radius: 10px;
   background-color: colors.$darkBg !important;
   color: #ccc !important;
   font-size: 16px;
@@ -480,6 +480,8 @@
   }
 
   .Tag-container {
+    position: relative;
+
     display: flex;
     justify-content: center;
     padding: .2rem .5rem;
@@ -487,6 +489,44 @@
     background-color: colors.$darkBg;
     border-radius: 5px;
     border: 1px solid rgba(100, 100, 100, .3);
+
+    &.draggable {
+      cursor: grab;
+    }
+
+    @mixin previewPlaceholder {
+      content: ' ';
+      position: absolute;
+      border: 1px dotted colors.$highlight;
+      border-radius: 3px;
+      box-shadow: colors.$darkFontColor 0 0 4px;
+      margin-right: .5rem;
+      width: 5px;
+      height: 80%;
+      top: 2px;
+    }
+
+    &.drag-over-before {
+      margin-left: 20px;
+
+      &::before {
+        @include previewPlaceholder;
+        left: -15px;
+      }
+    }
+
+    &.drag-over-after {
+      margin-right: 20px;
+
+      &::after {
+        @include previewPlaceholder;
+        right: -25px;
+      }
+    }
+
+    .Tag {
+      margin-right: .5rem;
+    }
 
     .Clear-button {
       transform: none;

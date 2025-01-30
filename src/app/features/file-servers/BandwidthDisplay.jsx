@@ -17,7 +17,7 @@ export const BandwidthDisplay = (props) => {
 
     const options = {
         is3D: true,
-        pieStartAngle: 25, // Rotates the chart
+        pieStartAngle: 90, // Rotates the chart
         legend: {
             position: "bottom",
             alignment: "center",
