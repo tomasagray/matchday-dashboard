@@ -22,7 +22,7 @@ export const TeamsDisplay = () => {
 
     // state
     let [isAddModalShown, setIsAddModalShown] = useState(false)
-    let [next, setNext] = useState()
+    let [next, setNext] = useState(null)
     const {
         data,
         isLoading,
