@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] - (upcoming changes)
 
+## [0.6.2] - 2025-01-29
+
+### Added
+
+- Tags can now be manually sorted
+
+### Fixed
+
+- Improved team fetching
+
 ## [0.6.1] - 2024-12-30
 
 ### Added
