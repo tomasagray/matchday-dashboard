@@ -1,6 +1,6 @@
 import {apiSlice, competitionTag, eventTag} from "./apiSlice";
 import store from "../../store";
-import {matchAdapter, matchLoaded, matchSlice} from "../matchSlice";
+import {matchAdapter, matchDeleted, matchLoaded, matchSlice} from "../matchSlice";
 import {JsonHeaders} from "../../constants";
 
 
@@ -111,6 +111,10 @@ export const eventApiSlice = apiSlice.injectEndpoints({
                     method: 'DELETE',
                 }),
                 invalidatesTags: [eventTag, competitionTag],
+                transformResponse: matchId => {
+                    store.dispatch(matchDeleted(matchId))
+                    return matchId
+                },
             }),
         })
     }

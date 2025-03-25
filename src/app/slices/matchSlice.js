@@ -25,6 +25,7 @@ export const matchSlice = createSlice({
     reducers: {
         matchesLoaded: matchAdapter.setMany,
         matchLoaded: matchAdapter.setOne,
+        matchDeleted: matchAdapter.removeOne,
         beginEditMatch: (state, action) => {
             let {payload: event} = action
             return {
@@ -82,6 +83,7 @@ export default matchSlice.reducer
 
 export const {
     matchLoaded,
+    matchDeleted,
     beginEditMatch,
     updateEditedMatch,
     addVideoSource,

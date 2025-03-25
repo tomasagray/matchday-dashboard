@@ -1,5 +1,5 @@
 import {apiSlice, competitionTag, eventTag, teamTag} from "./apiSlice";
-import {teamAdapter, teamLoaded, teamsLoaded, updateArtworkCollection} from "../teamSlice";
+import {teamAdapter, teamDeleted, teamLoaded, teamsLoaded, updateArtworkCollection} from "../teamSlice";
 import store from "../../store";
 import {competitionAdapter, competitionsLoaded} from "../competitionSlice";
 import {JsonHeaders} from "../../constants";
@@ -25,8 +25,7 @@ export const teamApiSlice = apiSlice.injectEndpoints({
 
                     // compute next page
                     let loadedTeams = store.getState().teams?.ids.length ?? DEFAULT_PAGE
-                    let loadedPages = Math.floor(loadedTeams / DEFAULT_PAGE_SIZE)
-                    let page = loadedPages + 1
+                    let page = Math.floor(loadedTeams / DEFAULT_PAGE_SIZE)
 
                     return {
                         url: `/teams?page=${page}&size=${DEFAULT_PAGE_SIZE}`,
@@ -73,6 +72,10 @@ export const teamApiSlice = apiSlice.injectEndpoints({
                     body: team,
                 }),
                 invalidatesTags: [teamTag, eventTag],
+                transformResponse: response => {
+                    store.dispatch(teamLoaded(response))
+                    return response
+                }
             }),
             updateTeam: builder.mutation({
                 query: (team) => ({
@@ -127,6 +130,10 @@ export const teamApiSlice = apiSlice.injectEndpoints({
                     method: 'DELETE',
                 }),
                 invalidatesTags: [teamTag],
+                transformResponse: teamId => {
+                    store.dispatch(teamDeleted(teamId))
+                    return teamId
+                },
             }),
         })
     }
