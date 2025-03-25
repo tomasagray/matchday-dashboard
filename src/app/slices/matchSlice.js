@@ -47,6 +47,24 @@ export const matchSlice = createSlice({
                 }
             }
         },
+        artworkRefreshed: (state, action) => {
+            let {payload: url} = action
+            if (url) {
+                return {
+                    ...state,
+                    editedMatch: {
+                        ...state.editedMatch,
+                        _links: {
+                            ...state.editedMatch._links,
+                            artwork: {
+                                href: url
+                            }
+                        }
+                    }
+                }
+            }
+            return state
+        },
         addVideoSource: (state, action) => {
             let {payload: videoSource} = action
             let updatedSources =
@@ -86,6 +104,7 @@ export const {
     matchDeleted,
     beginEditMatch,
     updateEditedMatch,
+    artworkRefreshed,
     addVideoSource,
     deleteVideoSource,
     finishEditMatch,
