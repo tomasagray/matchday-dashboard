@@ -14,7 +14,7 @@
   color: colors.$border;
   font-family: monospace;
 
-  &:hover {
+  &:hover:not([disabled]) {
     color: colors.$defaultFontColor;
     border-color: colors.$defaultFontColor;
   }
