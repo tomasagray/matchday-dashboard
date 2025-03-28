@@ -24,11 +24,16 @@ export const TeamDetails = () => {
         dispatch(beginEditingTeam({team}))
         setIsEditShown(true)
     }
+    const onHideEdit = () => {
+        setEmblemHash(emblemHash + 1)
+        setIsEditShown(false)
+    }
 
     // state
     const params = useParams()
     const {teamId} = params
     let [isEditShown, setIsEditShown] = useState(false)
+    let [emblemHash, setEmblemHash] = useState(Math.random())
 
     // hooks
     const dispatch = useDispatch()
@@ -41,7 +46,7 @@ export const TeamDetails = () => {
     } = useFetchTeamByIdQuery(teamId)
     let name = team?.name
     const posterPlaceholder = process.env.PUBLIC_URL + '/img/default_team_emblem.png'
-    const imageUrl = getArtworkUrl(team, 'emblem')
+    const imageUrl = getArtworkUrl(team, 'emblem', emblemHash)
     const {
         data: matches,
         isLoading: isMatchesLoading,
@@ -108,7 +113,7 @@ export const TeamDetails = () => {
             <AddEditTeamWizard
                 teamId={teamId}
                 isShown={isEditShown}
-                setIsShown={setIsEditShown}
+                onHideWizard={onHideEdit}
                 imageUrl={imageUrl}
             />
             {
