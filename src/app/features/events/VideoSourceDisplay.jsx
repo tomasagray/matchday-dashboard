@@ -73,17 +73,19 @@ export const VideoSourceDisplay = (props) => {
         console.log('playing stream at', stream.href)
         onPlay && onPlay(stream.href)
     }
+    const onCancelStopAllStreams = () => setIsConfirmKillStreamsShown(false)
     const onStopAllStreams = async () => {
-        console.log('stop all video streams for video source...', eventId, videoSourceId)
-        let streams = await killStreams({videoSourceId})
-        console.log('streams killed', streams)
+        setIsConfirmKillStreamsShown(true)
+    }
+    const onConfirmStopAllStreams = () => {
+        console.log('stopping all video streams for video source...', eventId, videoSourceId)
+        killStreams({videoSourceId})
+        setIsConfirmKillStreamsShown(false)
     }
     const onDeleteAllStreams = () => {
         setIsConfirmDelVideoShown(true)
     }
-    const onCancelDelVideo = () => {
-        setIsConfirmDelVideoShown(false)
-    }
+    const onCancelDelVideo = () => setIsConfirmDelVideoShown(false)
     const onConfirmDeleteVideo = async () => {
         console.log('deleting all video data for video source...', eventId, videoSourceId)
         setIsConfirmDelVideoShown(false)
@@ -94,6 +96,8 @@ export const VideoSourceDisplay = (props) => {
     // state
     let [isConfirmDelSourceShown, setIsConfirmDelSourceShown] = useState(false)
     let [isConfirmDelVideoShown, setIsConfirmDelVideoShown] = useState(false)
+    let [isConfirmKillStreamsShown, setIsConfirmKillStreamsShown] = useState(false)
+
     let {
         eventId,
         videoSourceId,
@@ -193,6 +197,7 @@ export const VideoSourceDisplay = (props) => {
     return (
         <div className={className} onClick={onSelect}>
             <ConfirmationModal
+                title={'Confirm: delete video data'}
                 isShown={isConfirmDelVideoShown}
                 onCancel={onCancelDelVideo}
                 onConfirm={onConfirmDeleteVideo}>
@@ -207,6 +212,7 @@ export const VideoSourceDisplay = (props) => {
                 </div>
             </ConfirmationModal>
             <ConfirmationModal
+                title={'Confirm: delete video source'}
                 isShown={isConfirmDelSourceShown}
                 onCancel={onCancelDelSource}
                 onConfirm={onConfirmDeleteSource}>
@@ -228,6 +234,23 @@ export const VideoSourceDisplay = (props) => {
                     </div>
                 </div>
             </ConfirmationModal>
+            <ConfirmationModal
+                title={'Confirm: Stop video streams'}
+                verb={'Stop'}
+                isShown={isConfirmKillStreamsShown}
+                onCancel={onCancelStopAllStreams}
+                onConfirm={onConfirmStopAllStreams}>
+                <img src="/img/icon/warning/warning_128.png" alt="Warning"/>
+                <div>
+                    <div className="Video-source-confirm-message">
+                        <span>Are you sure you want to stop downloading this video data?</span>
+                        <strong style={{color: '#666'}}>
+                            You may not be able to access it again.
+                        </strong>
+                    </div>
+                </div>
+            </ConfirmationModal>
+
             <div className="Video-source-display-controls">
                 <button className={"Close-button"} onClick={onHide}></button>
             </div>

@@ -6,7 +6,7 @@ import {DeleteButton} from "./controls/DeleteButton";
 
 export const ConfirmationModal = (props) => {
 
-    let {isShown, onCancel, onConfirm, children} = props
+    let {title, verb, isShown, onCancel, onConfirm, children} = props
 
     const style = {
         display: 'flex',
@@ -18,7 +18,7 @@ export const ConfirmationModal = (props) => {
     return (
         <Modal show={isShown}>
             <Header onHide={onCancel}>
-                Confirm delete Video Source
+                {title}
             </Header>
             <Body style={{height: '25vh'}}>
                 <div style={style}>
@@ -27,7 +27,9 @@ export const ConfirmationModal = (props) => {
             </Body>
             <Footer>
                 <CancelButton onClick={onCancel}/>
-                <DeleteButton onClick={onConfirm}/>
+                <DeleteButton onClick={onConfirm}>
+                    {verb ?? 'Delete'}
+                </DeleteButton>
             </Footer>
         </Modal>
     )

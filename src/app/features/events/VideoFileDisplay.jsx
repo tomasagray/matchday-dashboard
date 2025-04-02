@@ -14,6 +14,7 @@ import {VideoStreamingErrorDisplay} from "./VideoStreamingErrorDisplay";
 import {useDispatch, useSelector} from "react-redux";
 import {selectVideoStream, videoStreamUpdated} from "../../slices/videoStreamSlice";
 import properties from "../../properties";
+import {ConfirmationModal} from "../../components/ConfirmationModal";
 
 export const VideoFileDisplay = (props) => {
 
@@ -22,16 +23,19 @@ export const VideoFileDisplay = (props) => {
         dispatch(videoStreamUpdated(status))
     }
     const onStartStream = (url) => downloadStream(url)
-    // TODO: Add confirmation modal for stop stream
-    const onStopStream = async (videoFileId) => {
-        console.log('killing video stream...', videoFileId)
-        await killStream({videoFileId})
-        console.log('done killing stream')
+    const onStopStream = () => setIsConfirmKillStreamShown(true)
+    const onCancelStopStream = () => setIsConfirmKillStreamShown(false)
+    const onConfirmStopStream = () => {
+        console.log('attempting to kill stream for video file:', videoFileId)
+        killStream({videoFileId})
+        setIsConfirmKillStreamShown(false)
     }
-    const onDeleteStream = async (videoFileId) => {
+    const onDeleteStream = () => setIsConfirmDeleteStreamShown(true)
+    const onCancelDeleteStream = () => setIsConfirmDeleteStreamShown(false)
+    const onConfirmDeleteStream = () => {
         console.log('deleting video stream data...', videoFileId)
-        await deleteStream({videoFileId})
-        console.log('done deleting data')
+        deleteStream({videoFileId})
+        setIsConfirmDeleteStreamShown(false)
     }
     const onShowErrorModal = () => {
         setErrorModalShown(true)
@@ -47,11 +51,15 @@ export const VideoFileDisplay = (props) => {
         return JobStatus['CREATED']
     }
 
+
     // state
     let {videoFile} = props
     let {videoFileId, _links: links} = videoFile
     let streamStatus = useSelector(state => selectVideoStream(state, videoFileId))
     let [isErrorModalShown, setErrorModalShown] = useState(false)
+    let [isConfirmKillStreamShown, setIsConfirmKillStreamShown] = useState(false)
+    let [isConfirmDeleteStreamShown, setIsConfirmDeleteStreamShown] = useState(false)
+
     // computed state
     let videoStreamStatus = getVideoStreamStatus(streamStatus)
     let completionRatio = streamStatus ? streamStatus['completionRatio'] : 0
@@ -123,70 +131,104 @@ export const VideoFileDisplay = (props) => {
         }
     }, [
         isDownloadSuccess, isDownloadError, isKillSuccess, isKillError, killError, isDeleteSuccess,
-        downloadError, isDeleteError, deleteError,
+        downloadError, isDeleteError, deleteError, videoFileId,
     ])
 
     // components
     return (
-        <div className="Video-file-display">
-            {
-                isKillingStream || isDeletingStream ?
-                    <SmallSpinner
-                        size={'23px'}
-                        style={{margin: '.25rem 1.5rem .25rem .5rem', width: '23px'}}/> :
-                    <StatusBubble
-                        status={videoStreamStatus}
-                        progress={completionRatio}
-                        style={{marginRight: '1rem'}}
-                    />
-            }
-            <div>
-                <div style={{display: 'flex'}}>
+        <>
+            <ConfirmationModal
+                title={'Confirm: Stop video stream'}
+                verb={'Stop'}
+                isShown={isConfirmKillStreamShown}
+                onCancel={onCancelStopStream}
+                onConfirm={onConfirmStopStream}>
+                <img src="/img/icon/warning/warning_128.png" alt="Warning"/>
+                <div>
+                    <div className="Video-source-confirm-message">
+                        <span>Are you sure you want to stop downloading this video data?</span>
+                        <strong style={{color: '#666'}}>
+                            You may not be able to access it again.
+                        </strong>
+                    </div>
+                </div>
+            </ConfirmationModal>
+            <ConfirmationModal
+                title={'Confirm: Delete video data'}
+                isShown={isConfirmDeleteStreamShown}
+                onCancel={onCancelDeleteStream}
+                onConfirm={onConfirmDeleteStream}>
+                <img src="/img/icon/warning/warning_128.png" alt="Warning"/>
+                <div>
+                    <div className="Video-source-confirm-message">
+                        <span>Are you sure you want to delete this video data?</span>
+                        <strong style={{color: '#666'}}>
+                            You will need to re-download it if you wish<br/> to view it in the future.
+                        </strong>
+                    </div>
+                </div>
+            </ConfirmationModal>
+
+            <div className="Video-file-display">
+                {
+                    isKillingStream || isDeletingStream ?
+                        <SmallSpinner
+                            size={'23px'}
+                            style={{margin: '.25rem 1.5rem .25rem .5rem', width: '23px'}}/> :
+                        <StatusBubble
+                            status={videoStreamStatus}
+                            progress={completionRatio}
+                            style={{marginRight: '1rem'}}
+                        />
+                }
+                <div>
+                    <div style={{display: 'flex'}}>
                     <span style={{width: '5rem'}}>
                         {videoFile.title}
                     </span>
-                    <br/>
-                    <div className="Video-file-controls-container">
-                        {
-                            videoStreamStatus <= JobStatus['CREATED'] ?
-                                <button onClick={() => onStartStream(links['video-stream'].href)}>
-                                    <img src={'/img/icon/download/download_16.png'} alt="Begin streaming"/>
-                                </button> :
-                                null
-                        }
-                        {
-                            videoStreamStatus === JobStatus['BUFFERING'] ||
-                            videoStreamStatus === JobStatus['QUEUED'] ||
-                            videoStreamStatus === JobStatus['STREAMING'] ?
-                                <button onClick={() => onStopStream(videoFileId)}>
-                                    <img src={'/img/icon/stop/stop_16.png'} alt="Stop streaming"/>
-                                </button> :
-                                null
-                        }
-                        {
-                            videoStreamStatus === JobStatus['ERROR'] ||
-                            videoStreamStatus === JobStatus['STOPPED'] ||
-                            videoStreamStatus === JobStatus['COMPLETED'] ?
-                                <button onClick={() => onDeleteStream(videoFileId)}
-                                        className="Video-source-extra-control delete">
-                                    <img src={'/img/icon/delete/delete_16.png'} alt="Delete stream"/>
-                                </button> :
-                                null
-                        }
+                        <br/>
+                        <div className="Video-file-controls-container">
+                            {
+                                videoStreamStatus <= JobStatus['CREATED'] ?
+                                    <button onClick={() => onStartStream(links['video-stream'].href)}>
+                                        <img src={'/img/icon/download/download_16.png'} alt="Begin streaming"/>
+                                    </button> :
+                                    null
+                            }
+                            {
+                                videoStreamStatus === JobStatus['BUFFERING'] ||
+                                videoStreamStatus === JobStatus['QUEUED'] ||
+                                videoStreamStatus === JobStatus['STREAMING'] ?
+                                    <button onClick={onStopStream}>
+                                        <img src={'/img/icon/stop/stop_16.png'} alt="Stop streaming"/>
+                                    </button> :
+                                    null
+                            }
+                            {
+                                videoStreamStatus === JobStatus['ERROR'] ||
+                                videoStreamStatus === JobStatus['STOPPED'] ||
+                                videoStreamStatus === JobStatus['COMPLETED'] ?
+                                    <button onClick={() => onDeleteStream(videoFileId)}
+                                            className="Video-source-extra-control delete">
+                                        <img src={'/img/icon/delete/delete_16.png'} alt="Delete stream"/>
+                                    </button> :
+                                    null
+                            }
+                        </div>
                     </div>
+                    {
+                        videoStreamStatus === JobStatus['ERROR'] ?
+                            <button className="Error-modal-button" onClick={onShowErrorModal}>
+                                Show error details
+                            </button> :
+                            <span className="Video-file-url">{videoFile['externalUrl']}</span>
+                    }
                 </div>
-                {
-                    videoStreamStatus === JobStatus['ERROR'] ?
-                        <button className="Error-modal-button" onClick={onShowErrorModal}>
-                            Show error details
-                        </button> :
-                        <span className="Video-file-url">{videoFile['externalUrl']}</span>
-                }
+                <VideoStreamingErrorDisplay
+                    isShown={isErrorModalShown}
+                    onHide={onHideErrorModal}
+                    error={streamStatus?.error}/>
             </div>
-            <VideoStreamingErrorDisplay
-                isShown={isErrorModalShown}
-                onHide={onHideErrorModal}
-                error={streamStatus?.error}/>
-        </div>
+        </>
     );
 }
