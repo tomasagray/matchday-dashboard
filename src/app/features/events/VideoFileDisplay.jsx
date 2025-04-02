@@ -2,7 +2,11 @@ import React, {useEffect, useState} from "react";
 import {StatusBubble} from "../../components/StatusBubble";
 import {useStompClient, useSubscription} from "react-stomp-hooks";
 import {JobStatus} from "../../slices/videoSourceSlice";
-import {useDeleteStreamMutation, useKillStreamMutation} from "../../slices/api/videoStreamApiSlice";
+import {
+    useDeleteStreamMutation,
+    useDownloadStreamMutation,
+    useKillStreamMutation
+} from "../../slices/api/videoStreamApiSlice";
 import {toast} from "react-toastify";
 import {getToastMessage} from "../../utils";
 import {SmallSpinner} from "../../components/Spinner";
@@ -17,6 +21,7 @@ export const VideoFileDisplay = (props) => {
     const onUpdateStream = (status) => {
         dispatch(videoStreamUpdated(status))
     }
+    const onStartStream = (url) => downloadStream(url)
     // TODO: Add confirmation modal for stop stream
     const onStopStream = async (videoFileId) => {
         console.log('killing video stream...', videoFileId)
@@ -34,17 +39,21 @@ export const VideoFileDisplay = (props) => {
     const onHideErrorModal = () => {
         setErrorModalShown(false)
     }
+    const getVideoStreamStatus = (streamStatus) => {
+        if (streamStatus) {
+            let status = streamStatus['status']
+            if (status) return JobStatus[status]
+        }
+        return JobStatus['CREATED']
+    }
 
     // state
-    let {
-        videoFile,
-        onStartStream,
-    } = props
-    const [isErrorModalShown, setErrorModalShown] = useState(false)
-    let {videoFileId} = videoFile
+    let {videoFile} = props
+    let {videoFileId, _links: links} = videoFile
     let streamStatus = useSelector(state => selectVideoStream(state, videoFileId))
+    let [isErrorModalShown, setErrorModalShown] = useState(false)
     // computed state
-    let videoStreamStatus = streamStatus ? JobStatus[streamStatus['status']] : JobStatus['CREATED']
+    let videoStreamStatus = getVideoStreamStatus(streamStatus)
     let completionRatio = streamStatus ? streamStatus['completionRatio'] : 0
 
     // hooks
@@ -66,6 +75,14 @@ export const VideoFileDisplay = (props) => {
             onUpdateStream(status)
         }
     })
+
+    let [
+        downloadStream, {
+            // isLoading: isDownloading,
+            isSuccess: isDownloadSuccess,
+            isError: isDownloadError,
+            error: downloadError
+        }] = useDownloadStreamMutation()
     let [
         killStream, {
             isLoading: isKillingStream,
@@ -83,8 +100,15 @@ export const VideoFileDisplay = (props) => {
 
     // toast messages
     useEffect(() => {
+        if (isDownloadSuccess) {
+            console.log(`Download of stream for Video File: ${videoFileId} has begun...`)
+        }
+        if (isDownloadError) {
+            let msg = 'Error downloading video stream: ' + getToastMessage(downloadError)
+            toast.error(msg)
+        }
         if (isKillSuccess) {
-            toast('Successfully killed stream')
+            toast('Successfully killed stream');
         }
         if (isKillError) {
             let msg = 'Error killing stream: ' + getToastMessage(killError);
@@ -98,8 +122,8 @@ export const VideoFileDisplay = (props) => {
             toast.error(msg)
         }
     }, [
-        isKillSuccess, isKillError, killError, isDeleteSuccess,
-        isDeleteError, deleteError,
+        isDownloadSuccess, isDownloadError, isKillSuccess, isKillError, killError, isDeleteSuccess,
+        downloadError, isDeleteError, deleteError,
     ])
 
     // components
@@ -125,7 +149,7 @@ export const VideoFileDisplay = (props) => {
                     <div className="Video-file-controls-container">
                         {
                             videoStreamStatus <= JobStatus['CREATED'] ?
-                                <button onClick={() => onStartStream(videoFileId)}>
+                                <button onClick={() => onStartStream(links['video-stream'].href)}>
                                     <img src={'/img/icon/download/download_16.png'} alt="Begin streaming"/>
                                 </button> :
                                 null

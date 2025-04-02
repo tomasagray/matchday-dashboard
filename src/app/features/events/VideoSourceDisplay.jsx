@@ -19,26 +19,36 @@ export const VideoSourceDisplay = (props) => {
         status: 'CREATED',
         completionRatio: 0,
     }
-    // handlers
     const dispatch = useDispatch()
-    const onDownloadStream = async (id) => {
-        toast('TODO: Implement individual download')
-        console.log('id', id)
+
+    // handlers
+    const determineCumulativeStatus = (statuses) => {
+        const QUEUED_STATES = ['QUEUED', 'STARTED', 'BUFFERING', 'STREAMING']
+
+        let queuedCount = 0, completeCount = 0
+        for (const streamStatus of statuses) {
+            if (streamStatus.status === 'ERROR' || streamStatus.status === 'STOPPED')
+                return streamStatus.status
+            if (QUEUED_STATES.includes(streamStatus.status))
+                queuedCount++
+            else if (streamStatus.status === 'COMPLETED')
+                completeCount++
+        }
+
+        if (completeCount === statuses.length) return 'COMPLETED'
+        if (completeCount > 0 || queuedCount > 0) return 'QUEUED'
+        return defaultStatus.status
     }
     const computeStreamStatus = (statuses, partCount) => {
         if (statuses.length === 0) return defaultStatus
-        let cumulativeStatus = statuses.reduce((cumulativeStatus, videoStatus) => {
-            return {
-                completionRatio: cumulativeStatus.completionRatio + videoStatus.completionRatio,
-                status:
-                    cumulativeStatus.status !== 'CREATED' &&
-                    JobStatus[cumulativeStatus.status] < JobStatus[videoStatus.status] ?
-                        cumulativeStatus.status : videoStatus.status
-            }
-        }, defaultStatus)
+
+        let status = determineCumulativeStatus(statuses)
+        let cumulativeRatio = statuses.reduce((cumulativeStatus, videoStatus) =>
+            cumulativeStatus + videoStatus.completionRatio, defaultStatus.completionRatio)
+
         return {
-            status: cumulativeStatus.status,
-            completionRatio: (cumulativeStatus.completionRatio / partCount)
+            status,
+            completionRatio: (cumulativeRatio / partCount)
         }
     }
     const onShowEditModal = () => {
@@ -286,7 +296,6 @@ export const VideoSourceDisplay = (props) => {
                             <VideoFileDisplay
                                 key={part['videoFileId']}
                                 videoFile={part}
-                                onStartStream={onDownloadStream}
                             />
                         )
                     }

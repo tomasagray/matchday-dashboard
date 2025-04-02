@@ -22,6 +22,13 @@ export const videoStreamApiSlice = apiSlice.injectEndpoints({
                     method: 'DELETE',
                 }),
             }),
+            downloadStream: builder.mutation({
+                query: url => ({
+                    url,
+                    headers: JsonHeaders,
+                    method: 'POST',
+                })
+            }),
             killStream: builder.mutation({
                 query: ({videoFileId}) => ({
                     url: `/video/stream/${videoFileId}/kill-stream`,
@@ -44,6 +51,7 @@ export const {
     useFetchVideoPlaylistQuery,
     useKillStreamsForSourceMutation,
     useDeleteStreamsForSourceMutation,
+    useDownloadStreamMutation,
     useKillStreamMutation,
     useDeleteStreamMutation,
 } = videoStreamApiSlice
