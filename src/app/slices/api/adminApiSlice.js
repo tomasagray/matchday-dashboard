@@ -29,11 +29,10 @@ export const adminApiSlice = apiSlice.injectEndpoints({
                 }),
             }),
             attemptAutoHeal: builder.mutation({
-                query: (report) => ({
-                    url: '/sanity-report/auto-heal',
+                query: (reportId) => ({
+                    url: `/sanity-report/auto-heal?reportId=${reportId}`,
                     method: 'POST',
                     headers: JsonHeaders,
-                    body: report,
                 })
             }),
             getAllRestorePoints: builder.query({
