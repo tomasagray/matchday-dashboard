@@ -1,6 +1,6 @@
 {
   "name": "matchday-dashboard",
-  "version": "0.6.2",
+  "version": "0.6.3",
   "private": true,
   "dependencies": {
     "@redux-devtools/extension": "^3.2.2",
@@ -39,7 +39,10 @@
     "react-scripts": "^5.0.1"
   },
   "overrides": {
-    "@svgr/webpack": "$@svgr/webpack"
+    "@svgr/webpack": "$@svgr/webpack",
+    "react-scripts": {
+      "postcss": "^8.5.3"
+    }
   },
   "scripts": {
     "start": "react-scripts start",
