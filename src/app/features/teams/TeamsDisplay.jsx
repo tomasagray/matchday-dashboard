@@ -47,7 +47,7 @@ export const TeamsDisplay = () => {
         <>
             <AddEditTeamWizard
                 isShown={isAddModalShown}
-                setIsShown={setIsAddModalShown}
+                onHideWizard={setIsAddModalShown}
             />
             {
                 isError ?

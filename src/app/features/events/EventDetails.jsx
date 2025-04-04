@@ -23,6 +23,7 @@ import {StompSessionProvider} from "react-stomp-hooks";
 import properties from "../../properties";
 import {AddButton} from "../../components/controls/AddButton";
 import {AddEditVideoSource} from "./AddEditVideoSource";
+import {InfoMessage} from "../../components/InfoMessage";
 
 
 const getFindMoreDisplay = (event) => {
@@ -184,10 +185,6 @@ export const EventDetails = () => {
             let msg = `Failed to load data for Event ${eventId}: ` + getToastMessage(eventError);
             toast.error(msg);
         }
-        if (isVideoSourceError) {
-            let msg = 'Could not load video source data: ' + getToastMessage(videoSourceError)
-            toast.error(msg)
-        }
         if (isMatchUpdateSuccess) {
             toast('Successfully updated match: ' + updatedMatch.title)
         }
@@ -216,6 +213,11 @@ export const EventDetails = () => {
     let findMore = event ? getFindMoreDisplay(event) : null
     const posterUrl = getEventPosterUrl(event)
     let eventTitle = event != null ? getEventTitle(event) : null
+
+    const ExampleButton = () => {
+        let style = {cursor: 'text', display: 'inline', margin: '0 3px 0 9px'}
+        return <AddButton disabled style={style}/>
+    }
     let videoSourceOptions =
         isVideoSourcesLoading ?
             <CenteredSpinner/> :
@@ -237,7 +239,10 @@ export const EventDetails = () => {
                             onSelect={() => setSelectedVideoSource(videoSourceId)}
                         />
                     ) :
-                <ErrorMessage>Could not load video source data</ErrorMessage>
+                <InfoMessage>
+                    There are currently no Video Sources for this Event. Add one by clicking the <ExampleButton/>
+                    button above.
+                </InfoMessage>
 
     return (
         <>

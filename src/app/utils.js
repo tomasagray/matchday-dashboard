@@ -73,11 +73,13 @@ export const formatTime = (s) => {
     }
 }
 
-export const getArtworkUrl = (entity, role) => {
+export const getArtworkUrl = (entity, role, hash) => {
     if (entity) {
         let {_links: links} = entity
         if (links) {
-            return links[role]['href']
+            let link = new URL(links[role]['href'])
+            if (hash) link.searchParams.set('hash', hash)
+            return link.toString()
         }
     }
 }

@@ -16,13 +16,14 @@ export default function TeamTile(props) {
     // props
     let {team, onClick} = props
     let {id, name: teamName, _links: links} = team
-    let imageUrl = links ? links['emblem'].href : placeholderUrl
+    let imageUrl = new URL(links['emblem'].href)
+    imageUrl.searchParams.set('hash', Math.random().toString())
 
     // components
     let poster =
         <>
             <SoftLoadImage
-                imageUrl={imageUrl}
+                imageUrl={imageUrl.toString()}
                 placeholderUrl={placeholderUrl}
                 className="Entity-poster"
             />

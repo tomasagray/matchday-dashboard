@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] - (upcoming changes)
 
+## [0.6.3] 2025-04-03
+
+### Changed
+
+- Improved user interface performance: updates are reflected immediately
+- Improved handling of Events with no Video Sources
+- Updated sanity report display to reflect new report format
+
+### Added
+
+- Download individual video stream capability
+- Confirmation modal when interrupting or deleting a video stream
+
 ## [0.6.2] - 2025-01-29
 
 ### Added

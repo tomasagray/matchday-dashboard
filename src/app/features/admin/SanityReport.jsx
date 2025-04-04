@@ -71,7 +71,7 @@ export const SanityReport = (props) => {
                     {
                         artwork['danglingDbEntries'].length > 0 ?
                             <DatabaseTable
-                                titles={['ID', 'File', 'Filesize', 'Media Type', 'Width', 'Height', 'Created', 'Modified']}
+                                titles={['ID', 'Artwork ID', 'Filesize', 'Height', 'Width', 'File Path', 'Created']}
                                 rows={artwork['danglingDbEntries']}
                             /> :
                             <span style={dim}>None</span>
@@ -103,9 +103,29 @@ export const SanityReport = (props) => {
             <div>
                 <h4>Video</h4>
                 <p>
-                    VideoStreamLocator count: <span style={dim}>{video['totalStreamLocators']}</span>&nbsp;&nbsp;
-                    VideoStreamLocatorPlaylist count: <span style={dim}>{video['totalLocatorPlaylists']}</span>
+                    VideoStreamLocatorPlaylist count: <span
+                    style={dim}>{video['totalLocatorPlaylists']}</span>&nbsp;&nbsp;
+                    VideoStreamLocator count: <span style={dim}>{video['totalStreamLocators']}</span>
                 </p>
+                <AccordionHeader onClick={onTogglePlaylistsDisplayed} isExpanded={isPlaylistsDisplayed}>
+                    <span>Dangling VideoStreamLocatorPlaylists</span>
+                    <span style={dim}>{video['danglingPlaylists'].length}</span>
+                    <button
+                        className="Floating-copy-button"
+                        onClick={(e) => onCopyEntries(e, video['danglingPlaylists'].map(playlist => playlist.id), ", ")}>
+                        <img src="/img/icon/copy/copy_16.png" alt="Copy"/>
+                    </button>
+                </AccordionHeader>
+                <AccordionDisplay isShown={isPlaylistsDisplayed}>
+                    {
+                        video['danglingPlaylists'].length > 0 ?
+                            <DatabaseTable show={true}
+                                           titles={['ID', 'Playlist ID', 'Video File Source', 'State', 'Completion Ratio', 'Storage Location']}
+                                           rows={video['danglingPlaylists'].map(({streamLocators, ...rest}) => rest)}
+                            /> :
+                            <span style={dim}>None</span>
+                    }
+                </AccordionDisplay>
                 <AccordionHeader onClick={onToggleLocatorsDisplayed} isExpanded={isVideoLocatorsDisplayed}>
                     <span>Dangling VideoStreamLocators</span>
                     <span style={dim}>{video['danglingStreamLocators'].length}</span>
@@ -121,27 +141,8 @@ export const SanityReport = (props) => {
                     {
                         video['danglingStreamLocators'].length > 0 ?
                             <DatabaseTable
+                                titles={['ID', 'Stream Locator ID', 'State', 'Completion Ratio', 'Video File ID', 'Path']}
                                 rows={video['danglingStreamLocators']}
-                                titles={['Timestamp', 'ID', 'Path', 'Video File', 'State']}
-                            /> :
-                            <span style={dim}>None</span>
-                    }
-                </AccordionDisplay>
-                <AccordionHeader onClick={onTogglePlaylistsDisplayed} isExpanded={isPlaylistsDisplayed}>
-                    <span>Dangling VideoStreamLocatorPlaylists</span>
-                    <span style={dim}>{video['danglingPlaylists'].length}</span>
-                    <button
-                        className="Floating-copy-button"
-                        onClick={(e) => onCopyEntries(e, video['danglingPlaylists'].map(playlist => playlist.id), ", ")}>
-                        <img src="/img/icon/copy/copy_16.png" alt="Copy"/>
-                    </button>
-                </AccordionHeader>
-                <AccordionDisplay isShown={isPlaylistsDisplayed}>
-                    {
-                        video['danglingPlaylists'].length > 0 ?
-                            <DatabaseTable
-                                rows={video['danglingPlaylists']}
-                                titles={['Video File Source', 'Stream Locators', 'Storage Location', 'Timestamp', 'ID', 'State']}
                             /> :
                             <span style={dim}>None</span>
                     }

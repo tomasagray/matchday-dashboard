@@ -290,6 +290,10 @@ $posterHeight: calc($posterWidth / (16 / 9));
       height: 100%;
       padding: 2rem;
 
+      span {
+        margin-bottom: 1rem;
+      }
+
       .Video-source-details {
         font-family: fonts.$technical;
         color: #666;

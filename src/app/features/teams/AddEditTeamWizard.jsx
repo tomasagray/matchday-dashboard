@@ -57,7 +57,7 @@ export const AddEditTeamWizard = (props) => {
     const navigate = useNavigate()
     const onHide = () => {
         dispatch(finishEditingTeam())
-        setIsShown && setIsShown(false)
+        onHideWizard && onHideWizard()
     }
     const onSelectWizard = (wizard) => () => {
         setSelectedWizard(wizard)
@@ -87,7 +87,7 @@ export const AddEditTeamWizard = (props) => {
         } else {
             await updateTeam(uploadTeam);
         }
-        setIsShown && setIsShown(false)
+        onHideWizard && onHideWizard()
         dispatch(finishEditingTeam())
     }
     const onUploadArtwork = (artwork) => {
@@ -112,12 +112,12 @@ export const AddEditTeamWizard = (props) => {
         setIsDeleteConfirmShown(!isDeleteConfirmShown)
     }
     const onDeleteTeam = async () => {
-        setIsShown(false)
+        onHideWizard(false)
         onShowHideDeleteConfirm()
     }
     const onCancelDeleteTeam = () => {
         onShowHideDeleteConfirm()
-        setIsShown(true)
+        onHideWizard(true)
     }
     const onConfirmDeleteTeam = () => {
         console.log('deleting team ...')
@@ -132,7 +132,7 @@ export const AddEditTeamWizard = (props) => {
     }
 
     // state
-    let {teamId, imageUrl, isShown, setIsShown} = props
+    let {teamId, imageUrl, isShown, onHideWizard} = props
     let isAddNew = teamId === undefined
     let [selectedWizard, setSelectedWizard] = useState(GENERAL)
     let [isDeleteConfirmShown, setIsDeleteConfirmShown] = useState(false)

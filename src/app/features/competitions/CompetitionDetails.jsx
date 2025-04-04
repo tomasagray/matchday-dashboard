@@ -24,11 +24,16 @@ export const CompetitionDetails = () => {
         dispatch(beginEditingCompetition({competition}))
         setIsEditModalShown(true)
     }
+    const onHideEdit = () => {
+        setPosterHash(posterHash + 1)
+        setIsEditModalShown(false)
+    }
 
     //state
     const params = useParams()
     const {competitionId} = params
     let [isEditModalShown, setIsEditModalShown] = useState(false)
+    let [posterHash, setPosterHash] = useState(Math.random())
 
     // hooks
     const dispatch = useDispatch()
@@ -40,7 +45,7 @@ export const CompetitionDetails = () => {
         error: competitionError
     } = useFetchCompetitionByIdQuery(competitionId)
     let name = competition?.name
-    let posterImageUrl = getArtworkUrl(competition, 'emblem')
+    let posterImageUrl = getArtworkUrl(competition, 'emblem', posterHash)
     const {
         data: teams,
         isLoading: isTeamsLoading,
@@ -109,7 +114,7 @@ export const CompetitionDetails = () => {
                 competitionId={competitionId}
                 imageUrl={posterImageUrl}
                 isShown={isEditModalShown}
-                setIsShown={setIsEditModalShown}
+                onHideWizard={onHideEdit}
             />
             {
                 isCompetitionLoading ?

@@ -61,9 +61,7 @@ export const SanityReportDisplay = () => {
         console.log('Downloading sanity report...', filename)
         downloadData(reportData, filename)
     }
-    const onAutoHeal = () => {
-        autoHeal(report)
-    }
+    const onAutoHeal = () => autoHeal(report.id)
 
     const [generate, {
         data: generated,

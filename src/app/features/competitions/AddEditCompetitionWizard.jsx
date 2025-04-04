@@ -51,7 +51,7 @@ export const AddEditCompetitionWizard = (props) => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const onHide = () => {
-        setIsShown && setIsShown(false)
+        onHideWizard && onHideWizard()
     }
     const onSelectWizard = (wizard) => () => {
         setSelectedWizard(wizard)
@@ -94,7 +94,7 @@ export const AddEditCompetitionWizard = (props) => {
         dispatch(finishEditingCompetition())
     }
     const onDeleteCompetition = () => {
-        setIsShown(false)
+        onHideWizard(false)
         onShowHideDeleteConfirm()
     }
     const onShowHideDeleteConfirm = () => {
@@ -102,7 +102,7 @@ export const AddEditCompetitionWizard = (props) => {
     }
     const onCancelDeleteCompetition = () => {
         onShowHideDeleteConfirm()
-        setIsShown(true)
+        onHideWizard(true)
     }
     const onConfirmDeleteCompetition = async () => {
         console.log('deleting competition...')
@@ -115,13 +115,13 @@ export const AddEditCompetitionWizard = (props) => {
             .catch(err => {
                 console.log('Error deleting Competition', err)
                 onShowHideDeleteConfirm()
-                setIsShown(true)
+                onHideWizard(true)
             })
         console.log('done deleting')
     }
 
     // state
-    let {competitionId, imageUrl, isShown, setIsShown} = props
+    let {competitionId, imageUrl, isShown, onHideWizard} = props
     let isAddNew = competitionId === undefined
     let editedCompetition = useSelector(state => selectEditedCompetition(state))
     let editedCompetitionName = editedCompetition?.name?.name

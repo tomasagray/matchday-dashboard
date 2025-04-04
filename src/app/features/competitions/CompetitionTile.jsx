@@ -6,7 +6,8 @@ export default function CompetitionTile(props) {
     const placeholderUrl = process.env.PUBLIC_URL + '/img/default_competition_poster.png'
     let {competition} = props
     let {id, name, _links: links} = competition
-    let imageUrl = links['emblem'].href
+    let imageUrl = new URL(links['emblem'].href)
+    imageUrl.searchParams.set('hash', Math.random().toString())
 
     return (
         <div className="Competition-tile">
@@ -17,7 +18,7 @@ export default function CompetitionTile(props) {
             }>
                 <SoftLoadImage
                     placeholderUrl={placeholderUrl}
-                    imageUrl={imageUrl}
+                    imageUrl={imageUrl.toString()}
                     className="Entity-poster"
                 />
                 <div className="Limited-label">{name?.name}</div>

@@ -46,6 +46,7 @@ export const teamSlice = createSlice({
         allTeamsLoaded: teamAdapter.setAll,
         teamsLoaded: teamAdapter.setMany,
         teamLoaded: teamAdapter.setOne,
+        teamDeleted: teamAdapter.removeOne,
         beginEditingTeam: (state, action) => {
             let {payload} = action
             let {team} = payload
@@ -249,6 +250,7 @@ export const teamSlice = createSlice({
 export const {
     teamsLoaded,
     teamLoaded,
+    teamDeleted,
     beginEditingTeam,
     editTeamTitle,
     editNewSynonym,

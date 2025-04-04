@@ -68,9 +68,10 @@ const getObjectForUpload = (o) => {
         } else if (entry[0] === 'videoFiles') {
             let videoFiles = {}
             entry[1].forEach(videoFile => {
+                let {_links, ...cleaned} = videoFile
                 videoFiles = {
                     ...videoFiles,
-                    [uploadPartIdentifier[videoFile.title.value]]: getObjectForUpload(videoFile)
+                    [uploadPartIdentifier[videoFile.title.value]]: getObjectForUpload(cleaned)
                 }
             })
             obj['videoFiles'] = videoFiles
