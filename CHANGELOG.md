@@ -7,7 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] - (upcoming changes)
 
-## [0.6.3] 2025-04-03
+## [0.6.4] - 2025-05-17
+
+### Fixed
+
+- Error from temporary null condition of links in TeamTile
+
+## [0.6.3] - 2025-04-03
 
 ### Changed
 
