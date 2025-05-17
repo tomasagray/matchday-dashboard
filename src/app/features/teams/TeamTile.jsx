@@ -16,8 +16,13 @@ export default function TeamTile(props) {
     // props
     let {team, onClick} = props
     let {id, name: teamName, _links: links} = team
-    let imageUrl = new URL(links['emblem'].href)
-    imageUrl.searchParams.set('hash', Math.random().toString())
+    let imageUrl
+    if (links) {
+        imageUrl = new URL(links['emblem'].href)
+        imageUrl.searchParams.set('hash', Math.random().toString())
+    } else {
+        imageUrl = placeholderUrl
+    }
 
     // components
     let poster =
