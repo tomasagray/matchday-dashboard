@@ -205,7 +205,7 @@ export const UserTile = (props) => {
                                 isBandwidthError ?
                                     <ErrorMessage>
                                         Remaining bandwidth unavailable:<br/>
-                                        <span>{bandwidthError?.error}</span>
+                                        <span>{bandwidthError}</span>
                                     </ErrorMessage> : null
                     }
 

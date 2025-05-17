@@ -7,7 +7,7 @@ export const SoftLoadImage = (props) => {
     const onImageLoadError = () => setIsLoaded(false)
 
     // state
-    let {hash, placeholderUrl, imageUrl, className} = props
+    let {placeholderUrl, imageUrl, className} = props
     let [isLoaded, setIsLoaded] = useState(false)
 
     // components

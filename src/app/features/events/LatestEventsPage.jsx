@@ -16,7 +16,7 @@ export const LatestEventsPage = (props) => {
     const {
         data,
         isLoading,
-        isSuccess,
+        // isSuccess,
         isError,
         error
     } = useFetchAllEventsQuery(next)
