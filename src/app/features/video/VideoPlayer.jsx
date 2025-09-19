@@ -22,25 +22,18 @@ export const VideoPlayer = (props) => {
     const onPlayerReady = (player) => {
         playerRef.current = player
 
-        // read state
-        if (isPaused) {
-            player.pause()
-        } else {
-            player.play()
-        }
+        if (isPaused) player.pause()
+        else player.play()
+            .then(_ => console.log('video is playing...'))
+            .catch(_ => console.log('video playback stopped'))
+
         player.volume(playerVolume / 100)
 
         // write state
         setPlayerDuration(player.duration())
-        player.on('pause', () => {
-            setIsPaused(true)
-        })
-        player.on('play', () => {
-            setIsPaused(false)
-        })
-        player.on('timeupdate', () => {
-            setPlayerCurrentTime(player.currentTime())
-        })
+        player.on('pause', () => setIsPaused(true))
+        player.on('play', () => setIsPaused(false))
+        player.on('timeupdate', () => setPlayerCurrentTime(player.currentTime()))
     }
     const updatePlayerTime = (updatedTime) => {
         playerRef.current.currentTime(updatedTime)
@@ -50,28 +43,22 @@ export const VideoPlayer = (props) => {
         let updatedTime = playerDuration * time / 100
         updatePlayerTime(updatedTime)
     }
-    const onPlayPause = () => {
-        setIsPaused(!isPaused)
-    }
+    const onPlayPause = () => setIsPaused(!isPaused)
     const onRewind = () => {
-        if (isRewindable) {
+        if (isRewindable)
             updatePlayerTime(playerCurrentTime - REWIND_SKIP)
-        }
     }
     const onFastForward = () => {
-        if (isFastForwardable) {
+        if (isFastForwardable)
             updatePlayerTime(playerCurrentTime + FF_SKIP)
-        }
     }
     const onPreviousSource = () => {
-        if (currentSrc > 0) {
+        if (currentSrc > 0)
             setCurrentSrc(currentSrc - 1)
-        }
     }
     const onNextSource = () => {
-        if (currentSrc < (videoSources['uris'].length - 1)) {
+        if (currentSrc < (videoSources['uris'].length - 1))
             setCurrentSrc(currentSrc + 1)
-        }
     }
     const onStopVideo = () => {
         setIsPaused(true)
@@ -82,6 +69,8 @@ export const VideoPlayer = (props) => {
     }
     const onGoFullscreen = () => {
         playerRef.current.requestFullscreen()
+            .then(r => console.log('video player is now fullscreen', r))
+            .catch(err => console.error('video player could not go fullscreen', err))
     }
     // audio handlers
     const onMute = () => {
@@ -136,6 +125,12 @@ export const VideoPlayer = (props) => {
         }
         if (isSuccess) {
             const uris = Object.values(videoSources['uris'])
+            if (uris.length === 0) {
+                toast.error("Video stream list was empty")
+                onStopVideo()
+                return
+            }
+
             setVideoJsOptions({
                 autoplay: true,
                 controls: false,
@@ -155,11 +150,11 @@ export const VideoPlayer = (props) => {
     return (
         <div className="Video-player-modal" style={{display: hidden ? 'none' : 'flex'}}>
             <div className="Video-player-container">
-                <VideoJsWrapper options={videoJsOptions} onReady={onPlayerReady} />
+                <VideoJsWrapper options={videoJsOptions} onReady={onPlayerReady}/>
             </div>
             <div className="Video-player-controls-container top">
                 <button className="Video-player-fullscreen-button" onClick={onGoFullscreen}>
-                    <img src="/img/icon/full-screen/full-screen_16.png" alt="Fullscreen" />
+                    <img src="/img/icon/full-screen/full-screen_16.png" alt="Fullscreen"/>
                 </button>
             </div>
             <div className="Video-player-controls-container bottom">
@@ -186,43 +181,43 @@ export const VideoPlayer = (props) => {
                         className="Video-player-nav-button previous"
                         onClick={onPreviousSource}
                         disabled={!isPrevious}>
-                        <img src="/img/icon/next/next_16.png" alt="Previous" />
+                        <img src="/img/icon/next/next_16.png" alt="Previous"/>
                     </button>
                     <button
                         className="Video-player-advance-button rewind"
                         onClick={onRewind}
                         disabled={!isRewindable}>
-                        <img src="/img/icon/advance/advance_16.png" alt="Rewind" />
+                        <img src="/img/icon/advance/advance_16.png" alt="Rewind"/>
                     </button>
                     <button className="Video-player-play-button" onClick={onPlayPause}>
                         {
                             isPaused ?
                                 <img src="/img/icon/play/play_16.png" alt="Play"/> :
-                                <img src="/img/icon/pause/pause_16.png" alt="Pause" />
+                                <img src="/img/icon/pause/pause_16.png" alt="Pause"/>
                         }
                     </button>
                     <button
                         className="Video-player-advance-button fast-forward"
                         onClick={onFastForward}
                         disabled={!isFastForwardable}>
-                        <img src="/img/icon/advance/advance_16.png" alt="Fast-forward" />
+                        <img src="/img/icon/advance/advance_16.png" alt="Fast-forward"/>
                     </button>
                     <button
                         className="Video-player-nav-button next"
                         onClick={onNextSource}
                         disabled={!isNext}>
-                        <img src="/img/icon/next/next_16.png" alt="Previous" />
+                        <img src="/img/icon/next/next_16.png" alt="Previous"/>
                     </button>
                     <button onClick={onStopVideo}>
-                        <img src="/img/icon/stop/stop_16.png" alt="Stop" />
+                        <img src="/img/icon/stop/stop_16.png" alt="Stop"/>
                     </button>
                 </div>
                 <div className="Video-player-audio-controls">
                     <button className="Video-player-mute-button" onClick={onMute}>
                         {
                             isMuted ?
-                                <img src="/img/icon/mute/mute_32.png" alt="Unmute" /> :
-                                <img src="/img/icon/audio/audio_32.png" alt="Volume" />
+                                <img src="/img/icon/mute/mute_32.png" alt="Unmute"/> :
+                                <img src="/img/icon/audio/audio_32.png" alt="Volume"/>
                         }
                     </button>
                     <ReactSlider
