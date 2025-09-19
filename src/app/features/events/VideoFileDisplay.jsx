@@ -12,16 +12,14 @@ import {getToastMessage} from "../../utils";
 import {SmallSpinner} from "../../components/Spinner";
 import {VideoStreamingErrorDisplay} from "./VideoStreamingErrorDisplay";
 import {useDispatch, useSelector} from "react-redux";
-import {selectVideoStream, videoStreamUpdated} from "../../slices/videoStreamSlice";
+import {selectVideoStream, videoStreamDeleted, videoStreamUpdated} from "../../slices/videoStreamSlice";
 import properties from "../../properties";
 import {ConfirmationModal} from "../../components/ConfirmationModal";
 
 export const VideoFileDisplay = (props) => {
 
     // handlers
-    const onUpdateStream = (status) => {
-        dispatch(videoStreamUpdated(status))
-    }
+    const onUpdateStream = (status) => dispatch(videoStreamUpdated(status))
     const onStartStream = (url) => downloadStream(url)
     const onStopStream = () => setIsConfirmKillStreamShown(true)
     const onCancelStopStream = () => setIsConfirmKillStreamShown(false)
@@ -34,15 +32,12 @@ export const VideoFileDisplay = (props) => {
     const onCancelDeleteStream = () => setIsConfirmDeleteStreamShown(false)
     const onConfirmDeleteStream = () => {
         console.log('deleting video stream data...', videoFileId)
+        dispatch(videoStreamDeleted(videoFileId))
         deleteStream({videoFileId})
         setIsConfirmDeleteStreamShown(false)
     }
-    const onShowErrorModal = () => {
-        setErrorModalShown(true)
-    }
-    const onHideErrorModal = () => {
-        setErrorModalShown(false)
-    }
+    const onShowErrorModal = () => setErrorModalShown(true)
+    const onHideErrorModal = () => setErrorModalShown(false)
     const getVideoStreamStatus = (streamStatus) => {
         if (streamStatus) {
             let status = streamStatus['status']

@@ -1,4 +1,4 @@
-import {apiSlice} from "./apiSlice";
+import {apiSlice, eventTag} from "./apiSlice";
 import {JsonHeaders} from "../../constants";
 
 
@@ -21,6 +21,7 @@ export const videoStreamApiSlice = apiSlice.injectEndpoints({
                     headers: JsonHeaders,
                     method: 'DELETE',
                 }),
+                invalidatesTags: [eventTag],
             }),
             downloadStream: builder.mutation({
                 query: url => ({
