@@ -23,7 +23,7 @@ export const LoginPage = () => {
             <div className="Login-form-container">
                 <img
                     width={512}
-                    src={process.env.PUBLIC_URL + '/img/title/title_1024.png'}
+                    src={'/img/title/title_1024.png'}
                     alt="Matchday"
                 />
                 <div className="Login-form">

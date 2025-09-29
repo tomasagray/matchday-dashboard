@@ -63,7 +63,7 @@ export const TeamDetails = () => {
         error: teamError
     } = useFetchTeamByIdQuery(teamId)
     let name = team?.name
-    const posterPlaceholder = process.env.PUBLIC_URL + '/img/default_team_emblem.png'
+    const posterPlaceholder = '/img/default_team_emblem.png'
     const imageUrl = getArtworkUrl(team, 'emblem', emblemHash)
     const {
         data: matches,

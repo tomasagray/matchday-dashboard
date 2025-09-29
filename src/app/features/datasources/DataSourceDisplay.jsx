@@ -313,7 +313,7 @@ export const DataSourceDisplay = (props) => {
     const editButton = isModified ? null :
         <MenuItem onClick={onClickEditButton} backgroundColor={hoverColor}>
             <p>{isEditable ? 'Cancel' : ''} Edit</p>
-            <img src={process.env.PUBLIC_URL + '/img/icon/' + editImg} alt="Edit"/>
+            <img src={'/img/icon/' + editImg} alt="Edit"/>
         </MenuItem>
 
     return (
@@ -389,11 +389,11 @@ export const DataSourceDisplay = (props) => {
                             {editButton}
                             <MenuItem onClick={onExportDataSource} backgroundColor="cornflowerblue">
                                 <p>Export</p>
-                                <img src={process.env.PUBLIC_URL + '/img/icon/download/download_16.png'} alt="Export"/>
+                                <img src={'/img/icon/download/download_16.png'} alt="Export"/>
                             </MenuItem>
                             <MenuItem onClick={onShowDeleteDataSourceModal} backgroundColor="darkred">
                                 <p>Delete</p>
-                                <img src={process.env.PUBLIC_URL + '/img/icon/delete/delete_16.png'} alt="Delete"/>
+                                <img src={'/img/icon/delete/delete_16.png'} alt="Delete"/>
                             </MenuItem>
                         </FloatingMenu>
                     </div>
@@ -431,7 +431,7 @@ export const DataSourceDisplay = (props) => {
                             </h3>
                             <button className={"Filter-by-type-button"} onClick={onShowPatternKitTypeMenu}>
                                 Filter by type
-                                <img src={process.env.PUBLIC_URL + '/img/icon/link-arrow/link-arrow_64.png'}
+                                <img src={'/img/icon/link-arrow/link-arrow_64.png'}
                                      alt={"Filter by type"} className={showTypeMenu ? 'flipped' : ''}/>
                             </button>
                             <ClearButton onClick={onClearPatternKitTypeSelection}

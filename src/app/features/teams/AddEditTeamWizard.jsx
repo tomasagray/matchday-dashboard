@@ -43,7 +43,7 @@ import {useNavigate} from "react-router-dom";
 
 export const AddEditTeamWizard = (props) => {
 
-    const posterPlaceholder = process.env.PUBLIC_URL + '/img/default_team_emblem.png'
+    const posterPlaceholder = '/img/default_team_emblem.png'
 
     // wizard types
     const GENERAL = 'general'

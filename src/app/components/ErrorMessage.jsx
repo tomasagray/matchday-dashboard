@@ -6,7 +6,7 @@ export const ErrorMessage = (props) => {
 
     return (
         <div className="Message">
-            <img src={process.env.PUBLIC_URL + '/img/icon/error/error_128.png'}
+            <img src={'/img/icon/error/error_128.png'}
                  alt="ERROR" className={"error"}/>
             <div className="Message-description-container">
                 <h1 className="Message-title">ERROR</h1>

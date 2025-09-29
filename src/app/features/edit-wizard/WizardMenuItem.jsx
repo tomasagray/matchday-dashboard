@@ -12,7 +12,7 @@ export const WizardMenuItem = (props) => {
         <li className={className} onClick={onClick}>
             {
                 imgSrc ?
-                    <img src={process.env.PUBLIC_URL + imgSrc} alt={title}/> :
+                    <img src={imgSrc} alt={title}/> :
                     null
             }
             <div>

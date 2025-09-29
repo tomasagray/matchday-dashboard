@@ -9,7 +9,7 @@ import {serverAddressCookie} from "../constants";
 
 export const HeaderNav = () => {
 
-    const LOGO = process.env.PUBLIC_URL + '/img/logo/logo_64.png'
+    const LOGO = '/img/logo/logo_64.png'
 
     const setAdminMenuVisible = (e) => {
         e.preventDefault()
@@ -46,7 +46,7 @@ export const HeaderNav = () => {
                         <form>
                             <input type="text" id="q" name="q" maxLength={250}/>
                             <button type="submit">
-                                <img src={process.env.PUBLIC_URL + '/img/icon/search/search_32.png'} alt={"Search"}/>
+                                <img src={'/img/icon/search/search_32.png'} alt={"Search"}/>
                             </button>
                         </form>
                     </div>
@@ -57,13 +57,13 @@ export const HeaderNav = () => {
                         <li style={{display: 'none'}}>
                             <Link to="/alerts">
                                 <button className="Nav-link">
-                                    <img src={process.env.PUBLIC_URL + '/img/icon/alerts/alerts_64.png'} alt="Alerts"/>
+                                    <img src={'/img/icon/alerts/alerts_64.png'} alt="Alerts"/>
                                 </button>
                             </Link>
                         </li>
                         <li>
                             <button onClick={setAdminMenuVisible} className="Nav-link">
-                                <img src={process.env.PUBLIC_URL + '/img/icon/avatar/avatar_64.png'} alt="User menu"/>
+                                <img src={'/img/icon/avatar/avatar_64.png'} alt="User menu"/>
                             </button>
                             <FloatingMenu
                                 className='User-menu-wrapper'

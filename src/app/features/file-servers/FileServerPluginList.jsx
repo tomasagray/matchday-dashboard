@@ -7,10 +7,7 @@ import {
 import {FillSpinner} from "../../components/Spinner";
 import {FileServerPluginTile} from "./FileServerPluginTile";
 import {useSelector} from "react-redux";
-import {
-    selectFileServerPluginById,
-    selectSelectedPluginId
-} from "../../slices/fileServerPluginSlice";
+import {selectFileServerPluginById, selectSelectedPluginId} from "../../slices/fileServerPluginSlice";
 import {InfoMessage} from "../../components/InfoMessage";
 import {SettingsGroup} from "../../components/SettingsGroup";
 import {SettingContainer} from "../../components/SettingContainer";
@@ -114,7 +111,7 @@ export const FileServerPluginList = () => {
                         <FillSpinner/> :
                         <div>
                             <div className={"section-header"}>
-                                <img src={process.env.PUBLIC_URL + '/img/icon/plugins/plugins_64.png'} alt="Plugins"
+                                <img src={'/img/icon/plugins/plugins_64.png'} alt="Plugins"
                                      style={{height: 'fit-content'}}/>
                                 <h1>File Server Plugins</h1>
                             </div>

@@ -130,7 +130,7 @@ export const EventDetails = () => {
     }
 
     // state
-    const imagePlaceholderUrl = process.env.PUBLIC_URL + '/img/default_event_poster.png'
+    const imagePlaceholderUrl = '/img/default_event_poster.png'
     const params = useParams()
     const {eventId} = params
     let editedMatchForUpload = useSelector(state => selectEditedMatchForUpload(state))
@@ -323,7 +323,7 @@ export const EventDetails = () => {
                                                    imageUrl={posterUrl} className="Event-poster"/>
                                     <div className="Edit-event-button" onClick={onEditEvent}>
                                         <div className="Spinner-container">
-                                            <img src={process.env.PUBLIC_URL + '/img/icon/edit/edit_32.png'}
+                                            <img src={'/img/icon/edit/edit_32.png'}
                                                  alt="Refresh artwork"/>
                                         </div>
                                     </div>

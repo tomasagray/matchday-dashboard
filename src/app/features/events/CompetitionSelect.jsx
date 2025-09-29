@@ -11,7 +11,7 @@ export const CompetitionSelect = (props) => {
 
     const CompetitionSelectTile = (props) => {
 
-        const placeholderUrl = process.env.PUBLIC_URL + '/img/default_competition_poster.png'
+        const placeholderUrl = '/img/default_competition_poster.png'
         let {competition, onClick, isSelected} = props
         let {name: competitionName, _links: links} = competition
         let imageUrl = links['emblem'].href

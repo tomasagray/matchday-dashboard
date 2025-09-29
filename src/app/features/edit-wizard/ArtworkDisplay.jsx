@@ -51,7 +51,7 @@ export const ArtworkDisplay = (props) => {
                         className="Artwork-delete-menu">
                     <li onClick={onDeleteArtwork}>
                         <span>Delete</span>
-                        <img src={process.env.PUBLIC_URL + '/img/icon/delete/delete_16.png'} alt="Delete" />
+                        <img src={'/img/icon/delete/delete_16.png'} alt="Delete"/>
                     </li>
                 </FloatingMenu>
             </div>

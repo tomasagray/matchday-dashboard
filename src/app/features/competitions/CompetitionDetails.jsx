@@ -19,7 +19,7 @@ import {MoreButton} from "../../components/MoreButton";
 export const CompetitionDetails = () => {
 
     const MAX_EVENTS = 6
-    const placeholderUrl = process.env.PUBLIC_URL + '/img/default_competition_poster.png'
+    const placeholderUrl = '/img/default_competition_poster.png'
 
     // handlers
     const onClickEditButton = (e) => {

@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] - (upcoming changes)
 
+### Fixed
+
+- Unhandled video player exceptions
+- Video stream deletion
+
+### Added
+
+- View Events by Team, Competition pages
+
 ## [0.6.4] - 2025-05-17
 
 ### Fixed

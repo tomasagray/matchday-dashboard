@@ -4,7 +4,7 @@ export const WarningMessage = (props) => {
 
     return (
         <div className="Message" style={props.style}>
-            <img src={process.env.PUBLIC_URL + '/img/icon/warning/warning_128.png'}
+            <img src={'/img/icon/warning/warning_128.png'}
                  alt="Important information" className={'warning'}/>
             <div className="Message-description-container">
                 <h1 className="Message-title">WARNING</h1>
