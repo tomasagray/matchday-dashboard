@@ -1,13 +1,13 @@
 @use "../colors";
 @use "../variables";
-@import "../mixins";
+@use "../mixins";
 
 $imageHeight: 225px;
 $posterHeight: 270px;
 $eventsPosterSize: 96px;
 
 .Competition-tile {
-  @include entity-button;
+  @include mixins.entity-button;
   height: $posterHeight;
   width: 200px;
 
@@ -19,7 +19,7 @@ $eventsPosterSize: 96px;
 }
 
 .Competition-select-tile {
-  @include entity-button;
+  @include mixins.entity-button;
   margin: 1rem .5rem;
 
   img {
@@ -36,7 +36,7 @@ $eventsPosterSize: 96px;
 
   &.selected {
     .Soft-load-container {
-      @include selected;
+      @include mixins.selected;
       overflow: hidden;
       display: flex;
       align-items: center;

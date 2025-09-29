@@ -2,7 +2,7 @@
 @use "colors";
 @use "fonts";
 @use "layers";
-@import "mixins";
+@use "mixins";
 
 
 .Accordion-header {
@@ -93,12 +93,12 @@
   position: relative;
 
   .Detail-poster {
-    @include detail-poster;
+    @include mixins.detail-poster;
   }
 
   .Detail-edit-controls {
     position: absolute;
-    @include detail-poster;
+    @include mixins.detail-poster;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -370,7 +370,7 @@
     text-overflow: ellipsis;
 
     &:after {
-      @include dropdown-arrow;
+      @include mixins.dropdown-arrow;
     }
 
     &.placeholder {
@@ -466,7 +466,7 @@
   font-size: 16px;
 
   &:disabled {
-    @include disabled-input;
+    @include mixins.disabled-input;
   }
 
   &:hover:not(:disabled) {
