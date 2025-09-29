@@ -17,127 +17,124 @@ const getNormalizedTeams = (response) => {
 }
 
 export const teamApiSlice = apiSlice.injectEndpoints({
-    endpoints: builder => {
-        return ({
-            fetchAllTeams: builder.query({
-                query: (url) => {
-                    if (url != null) return {url}
+    endpoints: builder => ({
+        fetchAllTeams: builder.query({
+            query: (url) => {
+                if (url != null) return {url}
 
-                    // compute next page
-                    let loadedTeams = store.getState().teams?.ids.length ?? DEFAULT_PAGE
-                    let page = Math.floor(loadedTeams / DEFAULT_PAGE_SIZE)
+                // compute next page
+                let loadedTeams = store.getState().teams?.ids.length ?? DEFAULT_PAGE
+                let page = Math.floor(loadedTeams / DEFAULT_PAGE_SIZE)
 
+                return {
+                    url: `/teams?page=${page}&size=${DEFAULT_PAGE_SIZE}`,
+                }
+            },
+            providesTags: [teamTag],
+            transformResponse: (response) => {
+                let {_embedded} = response
+                if (_embedded) {
+                    let normalized = getNormalizedTeams(_embedded)
+                    // todo - standardize whether returned data is wrapped in _embedded
                     return {
-                        url: `/teams?page=${page}&size=${DEFAULT_PAGE_SIZE}`,
-                    }
-                },
-                providesTags: [teamTag],
-                transformResponse: (response) => {
-                    let {_embedded} = response
-                    if (_embedded) {
-                        let normalized = getNormalizedTeams(_embedded)
-                        // todo - standardize whether returned data is wrapped in _embedded
-                        return {
-                            ...normalized,
-                            next: response['_links']?.next?.href,
-                        }
+                        ...normalized,
+                        next: response['_links']?.next?.href,
                     }
                 }
-            }),
-            fetchTeamById: builder.query({
-                query: (teamId) => `/teams/team/${teamId}`,
-                providesTags: [teamTag],
-                transformResponse: (response) => {
-                    store.dispatch(teamLoaded(response))
-                    return response
+            }
+        }),
+        fetchTeamById: builder.query({
+            query: (teamId) => `/teams/team/${teamId}`,
+            providesTags: [teamTag],
+            transformResponse: (response) => {
+                store.dispatch(teamLoaded(response))
+                return response
+            }
+        }),
+        fetchCompetitionsForTeam: builder.query({
+            query: (teamId) => `/teams/team/${teamId}/competitions`,
+            providesTags: [competitionTag],
+            transformResponse: (response) => {
+                let {_embedded} = response
+                if (_embedded) {
+                    let {competitions} = _embedded
+                    store.dispatch(competitionsLoaded(competitions))
+                    return competitionAdapter.setAll(competitionAdapter.getInitialState(), competitions)
                 }
+            }
+        }),
+        addNewTeam: builder.mutation({
+            query: (team) => ({
+                url: '/teams/team/add',
+                method: 'POST',
+                headers: JsonHeaders,
+                body: team,
             }),
-            fetchCompetitionsForTeam: builder.query({
-                query: (teamId) => `/teams/team/${teamId}/competitions`,
-                providesTags: [competitionTag],
-                transformResponse: (response) => {
-                    let {_embedded} = response
-                    if (_embedded) {
-                        let {competitions} = _embedded
-                        store.dispatch(competitionsLoaded(competitions))
-                        return competitionAdapter.setAll(competitionAdapter.getInitialState(), competitions)
-                    }
-                }
+            invalidatesTags: [teamTag, eventTag],
+            transformResponse: response => {
+                store.dispatch(teamLoaded(response))
+                return response
+            }
+        }),
+        updateTeam: builder.mutation({
+            query: (team) => ({
+                url: `/teams/team/update`,
+                method: 'PATCH',
+                headers: JsonHeaders,
+                body: team,
             }),
-            addNewTeam: builder.mutation({
-                query: (team) => ({
-                    url: '/teams/team/add',
-                    method: 'POST',
-                    headers: JsonHeaders,
-                    body: team,
-                }),
-                invalidatesTags: [teamTag, eventTag],
-                transformResponse: response => {
-                    store.dispatch(teamLoaded(response))
-                    return response
-                }
+            invalidatesTags: [teamTag, eventTag],
+        }),
+        addTeamEmblem: builder.mutation({
+            query: emblem => ({
+                url: `/teams/team/${emblem.entityId}/emblem/add`,
+                method: 'POST',
+                body: emblem.formData,
             }),
-            updateTeam: builder.mutation({
-                query: (team) => ({
-                    url: `/teams/team/update`,
-                    method: 'PATCH',
-                    headers: JsonHeaders,
-                    body: team,
-                }),
-                invalidatesTags: [teamTag, eventTag],
+            invalidatesTags: [teamTag],
+        }),
+        addTeamFanart: builder.mutation({
+            query: fanart => ({
+                url: `/teams/team/${fanart.entityId}/fanart/add`,
+                method: 'POST',
+                body: fanart.formData,
             }),
-            addTeamEmblem: builder.mutation({
-                query: emblem => ({
-                    url: `/teams/team/${emblem.entityId}/emblem/add`,
-                    method: 'POST',
-                    body: emblem.formData,
-                }),
-                invalidatesTags: [teamTag],
+            invalidatesTags: [teamTag],
+        }),
+        deleteTeamEmblem: builder.mutation({
+            query: req => ({
+                url: `/teams/team/${req.entityId}/emblem/${req.artwork.id}/remove`,
+                method: 'DELETE',
             }),
-            addTeamFanart: builder.mutation({
-                query: fanart => ({
-                    url: `/teams/team/${fanart.entityId}/fanart/add`,
-                    method: 'POST',
-                    body: fanart.formData,
-                }),
-                invalidatesTags: [teamTag],
+            invalidatesTags: [teamTag],
+            transformResponse(response) {
+                store.dispatch(updateArtworkCollection({collection: response}))
+                return response
+            }
+        }),
+        deleteTeamFanart: builder.mutation({
+            query: req => ({
+                url: `/teams/team/${req.entityId}/fanart/${req.artwork.id}/remove`,
+                method: 'DELETE',
             }),
-            deleteTeamEmblem: builder.mutation({
-                query: req => ({
-                    url: `/teams/team/${req.entityId}/emblem/${req.artwork.id}/remove`,
-                    method: 'DELETE',
-                }),
-                invalidatesTags: [teamTag],
-                transformResponse(response) {
-                    store.dispatch(updateArtworkCollection({collection: response}))
-                    return response
-                }
+            invalidatesTags: [teamTag],
+            transformResponse(response) {
+                store.dispatch(updateArtworkCollection({collection: response}))
+                return response
+            }
+        }),
+        deleteTeam: builder.mutation({
+            query: teamId => ({
+                url: `/teams/team/${teamId}/delete`,
+                method: 'DELETE',
             }),
-            deleteTeamFanart: builder.mutation({
-                query: req => ({
-                    url: `/teams/team/${req.entityId}/fanart/${req.artwork.id}/remove`,
-                    method: 'DELETE',
-                }),
-                invalidatesTags: [teamTag],
-                transformResponse(response) {
-                    store.dispatch(updateArtworkCollection({collection: response}))
-                    return response
-                }
-            }),
-            deleteTeam: builder.mutation({
-                query: teamId => ({
-                    url: `/teams/team/${teamId}/delete`,
-                    method: 'DELETE',
-                }),
-                invalidatesTags: [teamTag],
-                transformResponse: teamId => {
-                    store.dispatch(teamDeleted(teamId))
-                    return teamId
-                },
-            }),
-        })
-    }
-
+            invalidatesTags: [teamTag],
+            transformResponse: teamId => {
+                store.dispatch(teamDeleted(teamId))
+                return teamId
+            },
+        }),
+    })
 })
 
 export const {

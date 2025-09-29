@@ -11,6 +11,7 @@ export const videoStreamSlice = createSlice({
     initialState,
     reducers: {
         videoStreamUpdated: videoStreamAdapter.setOne,
+        videoStreamDeleted: videoStreamAdapter.removeOne,
     }
 })
 
@@ -18,6 +19,7 @@ export default videoStreamSlice.reducer
 
 export const {
     videoStreamUpdated,
+    videoStreamDeleted,
 } = videoStreamSlice.actions
 
 export const {

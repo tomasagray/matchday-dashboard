@@ -216,7 +216,7 @@ export const DataSourcePluginsList = () => {
                         <div>
                             <div className="section-header">
                                 <img
-                                    src={process.env.PUBLIC_URL + '/img/icon/plugins/plugins_64.png'}
+                                    src={'/img/icon/plugins/plugins_64.png'}
                                     alt="Plugins"
                                     style={{height: 'fit-content'}}
                                 />

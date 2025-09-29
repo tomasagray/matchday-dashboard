@@ -1,10 +1,6 @@
 import React, {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {
-    patternKitDeleted,
-    patternKitUpdated,
-    selectPatternKitById
-} from "../../slices/dataSourceSlice";
+import {patternKitDeleted, patternKitUpdated, selectPatternKitById} from "../../slices/dataSourceSlice";
 import {PatternKitFieldEditor} from "./PatternKitFieldEditor";
 import Modal, {Body, Footer, Header} from "../../components/Modal";
 import {CancelButton} from "../../components/controls/CancelButton";
@@ -76,7 +72,7 @@ export const PatternKitDisplay = (props) => {
                     </p>
                     <div style={{display: disabled ? 'none' : ''}}>
                         <button className={"Pattern-kit-delete-button"} onClick={onClickDeleteButton}>
-                            <img src={process.env.PUBLIC_URL + '/img/icon/delete/delete_16.png'} alt={'Delete'}/>
+                            <img src={'/img/icon/delete/delete_16.png'} alt={'Delete'}/>
                             Delete
                         </button>
                     </div>

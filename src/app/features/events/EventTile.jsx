@@ -5,7 +5,7 @@ import {SoftLoadImage} from "../../components/SoftLoadImage";
 
 export default function EventTile(props) {
 
-    const placeholderUrl = process.env.PUBLIC_URL + '/img/default_event_poster.png'
+    const placeholderUrl = '/img/default_event_poster.png'
 
     const {event} = props
     let {eventId, title, competition, homeTeam, awayTeam, date, _links: links} = event

@@ -3,7 +3,7 @@ import {SoftLoadImage} from "../../components/SoftLoadImage";
 
 export default function TeamTile(props) {
 
-    const placeholderUrl = process.env.PUBLIC_URL + '/img/default_team_emblem.png'
+    const placeholderUrl = '/img/default_team_emblem.png'
 
     // handlers
     const handleClick = (e) => {

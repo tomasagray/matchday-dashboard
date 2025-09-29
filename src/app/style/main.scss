@@ -17,7 +17,7 @@
 @use "variables";
 @use "video-player";
 
-@import "mixins";
+@use "mixins";
 
 html {
   margin: 0;
@@ -86,7 +86,7 @@ input {
   }
 
   &:disabled {
-    @include disabled-input;
+    @include mixins.disabled-input;
   }
 
   &::placeholder {

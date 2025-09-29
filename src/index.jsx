@@ -1,7 +1,7 @@
+window.global ||= window;
 import React from 'react';
 import './app/style/index.css';
 import App from './app/App';
-import reportWebVitals from './reportWebVitals';
 import store from "./app/store";
 import {Provider} from "react-redux";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
@@ -24,6 +24,9 @@ import {LoginPage} from "./app/features/login/LoginPage";
 import {SanityReportDisplay} from "./app/features/admin/SanityReportDisplay";
 import {Backup} from "./app/features/admin/Backup";
 import {About} from "./app/features/admin/About";
+import {TeamEventsPage} from "./app/features/events/TeamEventsPage";
+import {CompetitionEventsPage} from "./app/features/events/CompetitionEventsPage";
+
 
 const container = document.getElementById('root')
 const root = createRoot(container)
@@ -51,7 +54,9 @@ root.render(
                         {/* Main nav - second level */}
                         <Route path="events/event/:eventId" element={<EventDetails/>}/>
                         <Route path="competitions/competition/:competitionId" element={<CompetitionDetails/>}/>
+                        <Route path="competitions/competition/:competitionId/events" element={<CompetitionEventsPage/>}/>
                         <Route path="teams/team/:teamId" element={<TeamDetails/>}/>
+                        <Route path="teams/team/:teamId/events" element={<TeamEventsPage/>}/>
                         <Route path="data-sources/data-source/:pluginId" element={<PluginDataSourceList/>}/>
                         <Route path="file-servers/:pluginId/users" element={<FileServerUserList/>}/>
                 </Route>
@@ -60,9 +65,3 @@ root.render(
       </Provider>
   </React.StrictMode>
 )
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-// todo - decide what to do with vitals
-reportWebVitals()

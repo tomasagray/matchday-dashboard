@@ -1,5 +1,7 @@
 @use "../colors";
 @use "../buttons";
+@use "../mixins";
+
 
 $dataSourceExtBorder: 1px solid #ccc;
 $dataSourceIntBorder: 1px solid #666;
@@ -137,7 +139,7 @@ $dataSourceIntBorder: 1px solid #666;
 
 
   .Filter-by-type-button {
-    @include buttons.lower-button;
+    @include mixins.lower-button;
     background: none;
     border: none;
     color: colors.$mediumFontColor;

@@ -72,12 +72,12 @@ export const ContentBar = (props) => {
                 <div className="Content-bar-controls">
                     <button className="Content-bar-control prev" onClick={onPrevClick}
                             disabled={isPrevDisabled}>
-                        <img src={process.env.PUBLIC_URL + '/img/icon/link-arrow/link-arrow_16.png'} alt='Previous'
+                        <img src={'/img/icon/link-arrow/link-arrow_16.png'} alt='Previous'
                             style={{transform: 'scaleX(-1)'}}/>
                     </button>
                     <button className="Content-bar-control next" onClick={onNextClick}
                             disabled={isNextDisabled}>
-                        <img src={process.env.PUBLIC_URL + '/img/icon/link-arrow/link-arrow_16.png'} alt='Next' />
+                        <img src={'/img/icon/link-arrow/link-arrow_16.png'} alt='Next'/>
                     </button>
                 </div>
             </div>

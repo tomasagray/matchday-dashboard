@@ -1,8 +1,8 @@
 @use "../variables";
-@import "../mixins";
+@use "../mixins";
 
 .Team-tile {
-  @include entity-button;
+  @include mixins.entity-button;
   width: 12vw;
 
   img {

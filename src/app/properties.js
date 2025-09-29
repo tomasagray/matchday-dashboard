@@ -2,7 +2,7 @@
 import Cookies from "universal-cookie";
 import {serverAddressCookie} from "./constants";
 
-const version = process.env.REACT_APP_VERSION
+const version = import.meta.env.VITE_APP_VERSION
 const minimumServerVersion = '0.4.0'
 const apiVersion = 'v1.0'
 const apiRoot = '/api/' + apiVersion

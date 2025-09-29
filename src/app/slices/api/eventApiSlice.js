@@ -39,99 +39,99 @@ const removeVideoFileIds = (event) => {
 }
 
 export const eventApiSlice = apiSlice.injectEndpoints({
-    endpoints: builder => {
-        return ({
-            fetchAllEvents: builder.query({
-                query: (url = null, page = 0, size = 16) => {
-                    if (url !== null) {
-                        return {url}
-                    }
-                    return {
-                        url: `/events?page=${page}&size=${size}`,
-                    }
-                },
-                providesTags: [eventTag],
-                transformResponse: (response) => {
-                    return getNormalizedEvents(response)
-                },
-            }),
-            fetchMatchesForTeam: builder.query({
-                query: (teamId) => `/teams/team/${teamId}/matches`,
-                providesTags: [eventTag],
-                transformResponse: (response) => {
-                    let {_embedded: embedded} = response
-                    if (embedded) {
-                        return getNormalizedEvents(embedded)
-                    }
-                },
-            }),
-            fetchEventsForCompetition: builder.query({
-                query: (competitionId) => `/competitions/competition/${competitionId}/events`,
-                providesTags: [eventTag],
-                transformResponse: (response) => {
-                    return getNormalizedEvents(response)
+    endpoints: builder => ({
+        fetchAllEvents: builder.query({
+            query: (url = null, page = 0, size = 16) => {
+                if (url !== null) {
+                    return {url}
                 }
-            }),
-            fetchMatchById: builder.query({
-                query: (eventId) => `/matches/match/${eventId}`,
-                providesTags: [eventTag],
-                transformResponse: (response) => {
-                    store.dispatch(matchLoaded(response))
-                    return response
+                return {
+                    url: `/events?page=${page}&size=${size}`,
                 }
+            },
+            providesTags: [eventTag],
+            transformResponse: (response) => {
+                return getNormalizedEvents(response)
+            },
+        }),
+        fetchMatchesForTeam: builder.query({
+            query: (teamId) => `/teams/team/${teamId}/matches`,
+            providesTags: [eventTag],
+            transformResponse: (response) => {
+                let {_embedded: embedded} = response
+                if (embedded) {
+                    return getNormalizedEvents(embedded)
+                }
+            },
+        }),
+        fetchEventsForCompetition: builder.infiniteQuery({
+            infiniteQueryOptions: {
+                initialPageParam: 0,
+                getNextPageParam: (lastPage, allPages, lastPageParam) => lastPageParam + 1,
+            },
+            query: ({queryArg, pageParam}) => `/competitions/competition/${queryArg}/events?page=${pageParam}`,
+            providesTags: [eventTag],
+            transformResponse: (response) => getNormalizedEvents(response)
+        }),
+        fetchMatchById: builder.query({
+            query: (eventId) => `/matches/match/${eventId}`,
+            providesTags: [eventTag],
+            transformResponse: (response) => {
+                store.dispatch(matchLoaded(response))
+                return response
+            }
+        }),
+        refreshMatchArtwork: builder.mutation({
+            query: matchId => ({
+                url: `/matches/match/${matchId}/artwork/refresh`,
+                method: 'POST',
             }),
-            refreshMatchArtwork: builder.mutation({
-                query: matchId => ({
-                    url: `/matches/match/${matchId}/artwork/refresh`,
-                    method: 'POST',
-                }),
-                invalidatesTags: [eventTag],
-                transformResponse: response => {
-                    let {_links: links} = response
-                    if (links) {
-                        let {image} = links
-                        store.dispatch(artworkRefreshed(image?.href))
-                    }
-                    return response
-                },
+            invalidatesTags: [eventTag],
+            transformResponse: response => {
+                let {_links: links} = response
+                if (links) {
+                    let {image} = links
+                    store.dispatch(artworkRefreshed(image?.href))
+                }
+                return response
+            },
+        }),
+        addMatch: builder.mutation({
+            query: match => ({
+                url: '/matches/match/add',
+                method: 'POST',
+                headers: JsonHeaders,
+                body: removeVideoFileIds(match),
             }),
-            addMatch: builder.mutation({
-                query: match => ({
-                    url: '/matches/match/add',
-                    method: 'POST',
-                    headers: JsonHeaders,
-                    body: removeVideoFileIds(match),
-                }),
-                invalidatesTags: [eventTag],
+            invalidatesTags: [eventTag],
+        }),
+        updateMatch: builder.mutation({
+            query: match => ({
+                url: '/matches/match/update',
+                method: 'PATCH',
+                headers: JsonHeaders,
+                body: match,
             }),
-            updateMatch: builder.mutation({
-                query: match => ({
-                    url: '/matches/match/update',
-                    method: 'PATCH',
-                    headers: JsonHeaders,
-                    body: match,
-                }),
-                invalidatesTags: [eventTag],
+            invalidatesTags: [eventTag],
+        }),
+        deleteMatch: builder.mutation({
+            query: matchId => ({
+                url: `/matches/match/${matchId}/delete`,
+                method: 'DELETE',
             }),
-            deleteMatch: builder.mutation({
-                query: matchId => ({
-                    url: `/matches/match/${matchId}/delete`,
-                    method: 'DELETE',
-                }),
-                invalidatesTags: [eventTag, competitionTag],
-                transformResponse: matchId => {
-                    store.dispatch(matchDeleted(matchId))
-                    return matchId
-                },
-            }),
-        })
-    }
+            invalidatesTags: [eventTag, competitionTag],
+            transformResponse: matchId => {
+                store.dispatch(matchDeleted(matchId))
+                return matchId
+            },
+        }),
+    })
 })
 
 export const {
     useFetchAllEventsQuery,
     useFetchMatchesForTeamQuery,
-    useFetchEventsForCompetitionQuery,
+    useFetchEventsForCompetitionInfiniteQuery,
     useFetchMatchByIdQuery,
     useRefreshMatchArtworkMutation,
     useAddMatchMutation,

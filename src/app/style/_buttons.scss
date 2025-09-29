@@ -1,7 +1,7 @@
 @use "sass:math";
 @use "colors";
 @use "variables";
-@import "mixins";
+@use "mixins";
 
 .Add-button {
   display: flex;
@@ -45,7 +45,7 @@
 }
 
 .Cancel-button {
-  @include button;
+  @include mixins.button;
   background-color: colors.$darkFontColor;
   border: 2px solid transparent;
 
@@ -55,7 +55,7 @@
 }
 
 .Clear-button {
-  @include lower-button;
+  @include mixins.lower-button;
   opacity: .5;
   background: none;
   border: none;
@@ -86,13 +86,13 @@
 }
 
 .Delete-button {
-  @include icon-button(red);
+  @include mixins.icon-button(red);
   color: red;
   border-color: red;
 }
 
 .Download-button {
-  @include icon-button(colors.$active);
+  @include mixins.icon-button(colors.$active);
   border-color: colors.$border;
 }
 
@@ -179,7 +179,7 @@
 }
 
 .Heal-button {
-  @include icon-button(red);
+  @include mixins.icon-button(red);
 }
 
 .Link-button {
@@ -220,7 +220,7 @@
 }
 
 .OK-button {
-  @include button;
+  @include mixins.button;
   box-sizing: content-box;
   background-color: colors.$submitButton;
   font-weight: bolder;
@@ -259,21 +259,21 @@
 }
 
 .Reset-button {
-  @include icon-button(colors.$active);
+  @include mixins.icon-button(colors.$active);
 }
 
 .Save-button {
-  @include icon-button(colors.$highlight);
+  @include mixins.icon-button(colors.$highlight);
 }
 
 .Small-button {
-  @include button;
+  @include mixins.button;
   border: 2px solid #ccc;
   border-radius: 5px;
 }
 
 .Toggle-switch {
-  @include toggle-switch(variables.$sliderSize);
+  @include mixins.toggle-switch(variables.$sliderSize);
   position: relative;
   display: inline-block;
   cursor: pointer;

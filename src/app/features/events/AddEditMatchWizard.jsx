@@ -18,7 +18,7 @@ import {beganEditingVideoSource, videoSourceDialogFinished} from "../../slices/v
 import {ClearButton} from "../../components/controls/ClearButton";
 
 
-const POSTER_PLACEHOLDER = process.env.PUBLIC_URL + '/img/default_event_poster.png'
+const POSTER_PLACEHOLDER = '/img/default_event_poster.png'
 const SEASON_START_MONTH = 8;
 const SEASON_START_DAY = 1;
 

@@ -1,7 +1,7 @@
 @use "../colors";
 @use "../fonts";
 @use "../layers";
-@import "../mixins";
+@use "../mixins";
 
 
 .Edit-wizard-container {
@@ -141,7 +141,7 @@ $uploadContainerHeight: 2rem;
         }
 
         &.selected {
-          @include selected;
+          @include mixins.selected;
         }
       }
     }

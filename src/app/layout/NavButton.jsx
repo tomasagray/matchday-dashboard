@@ -12,7 +12,7 @@ export const NavButton = (props) => {
         <li>
             <Link to={props.href}>
                 <button className={"Nav-link" + (isCurrent ? ' current' : '')}>
-                    <img src={process.env.PUBLIC_URL + props.icon} alt={altText} />
+                    <img src={props.icon} alt={altText}/>
                 </button>
             </Link>
         </li>

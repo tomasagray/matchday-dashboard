@@ -14,9 +14,12 @@ import {SoftLoadImage} from "../../components/SoftLoadImage";
 import {useDispatch} from "react-redux";
 import {beginEditingTeam} from "../../slices/teamSlice";
 import {AddEditTeamWizard} from "./AddEditTeamWizard";
+import {MoreButton} from "../../components/MoreButton";
 
 
 export const TeamDetails = () => {
+
+    const MATCH_TILE_LIM = 6
 
     // handlers
     const onClickEditButton = (e) => {
@@ -27,6 +30,21 @@ export const TeamDetails = () => {
     const onHideEdit = () => {
         setEmblemHash(emblemHash + 1)
         setIsEditShown(false)
+    }
+
+    const getMatchTiles = _ => {
+        if (isMatchesSuccess && matches) {
+            let tiles = Object.values(matches.entities)
+                .slice(0, MATCH_TILE_LIM)
+                .map(match => <EventTile event={match} key={match['eventId']}/>)
+            tiles.push(
+                <Link to={`/teams/team/${teamId}/events`}>
+                    <MoreButton/>
+                </Link>
+            )
+            return tiles
+        }
+        return []
     }
 
     // state
@@ -45,7 +63,7 @@ export const TeamDetails = () => {
         error: teamError
     } = useFetchTeamByIdQuery(teamId)
     let name = team?.name
-    const posterPlaceholder = process.env.PUBLIC_URL + '/img/default_team_emblem.png'
+    const posterPlaceholder = '/img/default_team_emblem.png'
     const imageUrl = getArtworkUrl(team, 'emblem', emblemHash)
     const {
         data: matches,
@@ -82,22 +100,7 @@ export const TeamDetails = () => {
     ])
 
     // components
-    let matchTiles =
-        isMatchesSuccess && matches ?
-            Object.values(matches.entities)
-                .map(match => <EventTile event={match} key={match['eventId']}/>) :
-            []
-    if (matchTiles.length > 0 && matches?.next) {
-        matchTiles.push(
-            <Link to={"/events"}>
-                <div style={{padding: '1.5rem'}}>
-                    <div className="More-button">
-                        <img src={'/img/icon/more/more_32.png'} alt="More..."/>
-                    </div>
-                </div>
-            </Link>
-        )
-    }
+    let matchTiles = getMatchTiles()
     let competitionTiles =
         isCompetitionsLoading ?
             <CenteredSpinner/> :

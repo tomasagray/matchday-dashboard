@@ -85,7 +85,7 @@ export const ServerConnect = (props) => {
                         <button className="Connect-button" onClick={onConnectToServer} style={{marginLeft: '1rem'}}
                                 disabled={!isAddressValid || isLoading}>
                             {
-                                <img src={process.env.PUBLIC_URL + '/img/icon/link-arrow/link-arrow_64.png'}
+                                <img src={'/img/icon/link-arrow/link-arrow_64.png'}
                                      alt="Connect"/>
                             }
                         </button>

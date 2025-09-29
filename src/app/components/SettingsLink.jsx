@@ -4,7 +4,7 @@ import {Link} from "react-router-dom";
 
 export const SettingsLink = ({title = '[setting_title]', location = ''}) => {
 
-    const imgUrl = process.env.PUBLIC_URL + '/img/icon/link-arrow/link-arrow_64.png'
+    const imgUrl = '/img/icon/link-arrow/link-arrow_64.png'
 
     return (
         <Link to={location}>

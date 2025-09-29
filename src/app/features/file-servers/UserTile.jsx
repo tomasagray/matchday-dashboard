@@ -137,10 +137,10 @@ export const UserTile = (props) => {
     // components
     let logButton = loggedIn ?
         <MenuItem onClick={onUserLogout}>
-            Logout <img src={process.env.PUBLIC_URL + '/img/icon/logout/logout_32.png'} alt={'Logout'}/>
+            Logout <img src={'/img/icon/logout/logout_32.png'} alt={'Logout'}/>
         </MenuItem> :
         <MenuItem onClick={onUserLogin}>
-            Login <img src={process.env.PUBLIC_URL + '/img/icon/login/login_32.png'} alt={'Login'}/>
+            Login <img src={'/img/icon/login/login_32.png'} alt={'Login'}/>
         </MenuItem>
     let checkbox = isLoggingIn || isLoggingOut || isDeleting ?
         <SmallSpinner transform='translateY(5px) translateX(4px)'/> :
@@ -174,7 +174,7 @@ export const UserTile = (props) => {
             </Modal>
             <CookieDisplay userId={userId} show={showCookiesModal} onHide={onHideCookiesModal}/>
             <div style={{height: '100%', width: '100px'}}>
-                <img width="100px" src={process.env.PUBLIC_URL + '/img/default_avatar.png'} alt=""
+                <img width="100px" src={'/img/default_avatar.png'} alt=""
                      className="User-avatar"/>
             </div>
             <div className="User-data">
@@ -205,7 +205,13 @@ export const UserTile = (props) => {
                                 isBandwidthError ?
                                     <ErrorMessage>
                                         Remaining bandwidth unavailable:<br/>
-                                        <span>{bandwidthError}</span>
+                                        <span>
+                                            {
+                                                bandwidthError !== null && typeof bandwidthError === 'object' ?
+                                                    bandwidthError.error :
+                                                    bandwidthError
+                                            }
+                                        </span>
                                     </ErrorMessage> : null
                     }
 
@@ -217,11 +223,11 @@ export const UserTile = (props) => {
                     {logButton}
                     <MenuItem backgroundColor={'cornflowerblue'} onClick={onShowCookiesModal}>
                         Cookies...
-                        <img src={process.env.PUBLIC_URL + '/img/icon/cookies/cookies_16.png'} alt={'Cookies'}/>
+                        <img src={'/img/icon/cookies/cookies_16.png'} alt={'Cookies'}/>
                     </MenuItem>
                     <MenuItem backgroundColor={'darkred'} onClick={onShowDeleteUserConfirm}>
                         Delete
-                        <img src={process.env.PUBLIC_URL + '/img/icon/delete/delete_16.png'} alt={'Delete'}/>
+                        <img src={'/img/icon/delete/delete_16.png'} alt={'Delete'}/>
                     </MenuItem>
                 </FloatingMenu>
             </div>

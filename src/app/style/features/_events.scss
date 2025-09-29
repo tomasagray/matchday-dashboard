@@ -2,11 +2,11 @@
 @use "../fonts";
 @use "../layers";
 @use "../variables";
-@import "../mixins";
+@use "../mixins";
 
 
 .Item-poster {
-  @include poster;
+  @include mixins.poster;
   max-width: 10vw;
 }
 
@@ -19,7 +19,7 @@ $posterWidth: 500px;
 $posterHeight: calc($posterWidth / (16 / 9));
 
 .Event-tile {
-  @include entity-button;
+  @include mixins.entity-button;
   width: variables.$eventPosterWidth;
   overflow: hidden;
   padding: 1rem;
@@ -491,7 +491,7 @@ $posterHeight: calc($posterWidth / (16 / 9));
       }
 
       &.selected {
-        @include selected;
+        @include mixins.selected;
       }
     }
   }
@@ -608,5 +608,21 @@ $posterHeight: calc($posterWidth / (16 / 9));
       color: colors.$defaultFontColor;
       font-size: medium;
     }
+  }
+}
+
+.Filtered-events-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: .5rem;
+
+  img {
+    margin-right: 1rem;
+  }
+
+  p {
+    color: #888;
+    font-style: italic;
   }
 }

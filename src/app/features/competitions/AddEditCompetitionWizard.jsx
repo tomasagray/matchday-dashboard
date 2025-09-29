@@ -39,7 +39,7 @@ import {getToastMessage} from "../../utils";
 
 export const AddEditCompetitionWizard = (props) => {
 
-    const placeholderUrl = process.env.PUBLIC_URL + '/img/default_competition_poster.png'
+    const placeholderUrl = '/img/default_competition_poster.png'
 
     // wizard types
     const GENERAL = 'general'
