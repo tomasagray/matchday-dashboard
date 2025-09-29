@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] - (upcoming changes)
 
+## [0.6.5] - 2025-09-29
+
 ### Fixed
 
 - Unhandled video player exceptions
