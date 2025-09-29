@@ -24,6 +24,8 @@ import {LoginPage} from "./app/features/login/LoginPage";
 import {SanityReportDisplay} from "./app/features/admin/SanityReportDisplay";
 import {Backup} from "./app/features/admin/Backup";
 import {About} from "./app/features/admin/About";
+import {TeamEventsPage} from "./app/features/events/TeamEventsPage";
+import {CompetitionEventsPage} from "./app/features/events/CompetitionEventsPage";
 
 const container = document.getElementById('root')
 const root = createRoot(container)
@@ -51,7 +53,9 @@ root.render(
                         {/* Main nav - second level */}
                         <Route path="events/event/:eventId" element={<EventDetails/>}/>
                         <Route path="competitions/competition/:competitionId" element={<CompetitionDetails/>}/>
+                        <Route path="competitions/competition/:competitionId/events" element={<CompetitionEventsPage/>}/>
                         <Route path="teams/team/:teamId" element={<TeamDetails/>}/>
+                        <Route path="teams/team/:teamId/events" element={<TeamEventsPage/>}/>
                         <Route path="data-sources/data-source/:pluginId" element={<PluginDataSourceList/>}/>
                         <Route path="file-servers/:pluginId/users" element={<FileServerUserList/>}/>
                 </Route>

@@ -4,6 +4,7 @@
 
 $imageHeight: 225px;
 $posterHeight: 270px;
+$eventsPosterSize: 96px;
 
 .Competition-tile {
   @include entity-button;
@@ -42,4 +43,13 @@ $posterHeight: 270px;
       justify-content: center;
     }
   }
+}
+
+.Competition-events-poster {
+  width: $eventsPosterSize;
+  height: $eventsPosterSize;
+  background-position: center;
+  background-size: cover;
+  border-radius: 100%;
+  margin-right: 2rem;
 }

@@ -610,3 +610,19 @@ $posterHeight: calc($posterWidth / (16 / 9));
     }
   }
 }
+
+.Filtered-events-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: .5rem;
+
+  img {
+    margin-right: 1rem;
+  }
+
+  p {
+    color: #888;
+    font-style: italic;
+  }
+}

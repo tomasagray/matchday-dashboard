@@ -12,6 +12,7 @@ import {getToastMessage, setBackgroundImage} from "../utils";
 import {EmptyMessage} from "../components/EmptyMessage";
 import {Link} from "react-router-dom";
 import {ErrorMessage} from "../components/ErrorMessage";
+import {MoreButton} from "../components/MoreButton";
 
 export const Home = () => {
 
@@ -45,11 +46,7 @@ export const Home = () => {
     if (eventTiles.length >= 16) {
         eventTiles.push(
             <Link to={"/events"}>
-                <div style={{padding: '1.5rem'}}>
-                    <div className="More-button">
-                        <img src={'/img/icon/more/more_32.png'} alt="More..."/>
-                    </div>
-                </div>
+                <MoreButton/>
             </Link>
         )
     }
@@ -82,11 +79,7 @@ export const Home = () => {
     if (teamTiles.length >= 16) {
         teamTiles.push(
             <Link to={"/teams"}>
-                <div style={{padding: '1.5rem'}}>
-                    <div className="More-button">
-                        <img src={'/img/icon/more/more_32.png'} alt="More..."/>
-                    </div>
-                </div>
+                <MoreButton/>
             </Link>
         )
     }

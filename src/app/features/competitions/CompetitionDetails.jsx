@@ -3,7 +3,7 @@ import {Link, useParams} from "react-router-dom";
 import {useFetchCompetitionByIdQuery, useFetchTeamsForCompetitionQuery,} from "../../slices/api/competitionApiSlice";
 import {CenteredSpinner, FillSpinner} from "../../components/Spinner";
 import ContentBar from "../../components/ContentBar";
-import {useFetchEventsForCompetitionQuery} from "../../slices/api/eventApiSlice";
+import {useFetchEventsForCompetitionInfiniteQuery} from "../../slices/api/eventApiSlice";
 import EventTile from "../events/EventTile";
 import TeamTile from "../teams/TeamTile";
 import {EditButton} from "../../components/controls/EditButton";
@@ -13,9 +13,12 @@ import {beginEditingCompetition} from "../../slices/competitionSlice";
 import {useDispatch} from "react-redux";
 import {SoftLoadImage} from "../../components/SoftLoadImage";
 import {AddEditCompetitionWizard} from "./AddEditCompetitionWizard";
+import {MoreButton} from "../../components/MoreButton";
+
 
 export const CompetitionDetails = () => {
 
+    const MAX_EVENTS = 6
     const placeholderUrl = process.env.PUBLIC_URL + '/img/default_competition_poster.png'
 
     // handlers
@@ -59,8 +62,7 @@ export const CompetitionDetails = () => {
         isSuccess: isEventsSuccess,
         isError: isEventsError,
         error: eventsError
-    } = useFetchEventsForCompetitionQuery(competitionId)
-    let moreEvents = events?.next
+    } = useFetchEventsForCompetitionInfiniteQuery(competitionId)
 
     // toast messages
     useEffect(() => {
@@ -69,7 +71,7 @@ export const CompetitionDetails = () => {
             setBackgroundImage(fanartUrl)
         }
         if (isCompetitionError) {
-            let msg = `Failed to load Competition data for: ${competitionId}` + getToastMessage(competitionError);
+            let msg = `Failed to load Competition data for: ${competitionId}` + getToastMessage(competitionError)
             toast.error(msg);
         }
         if (isTeamsError) {
@@ -88,20 +90,18 @@ export const CompetitionDetails = () => {
     // components
     let eventTiles =
         isEventsSuccess && events ?
-            Object.values(events?.entities).map(event => <EventTile event={event}/>) :
+            Object.values(events?.pages[0].entities)
+                .slice(0, MAX_EVENTS)
+                .map(event => <EventTile event={event}/>) :
             []
-    // add more button
-    if (eventTiles.length > 0 && moreEvents) {
+    // add 'more' button
+    if (eventTiles.length >= MAX_EVENTS)
         eventTiles.push(
-            <Link to={"/events"}>
-                <div style={{padding: '1.5rem'}}>
-                    <div className="More-button">
-                        <img src={'/img/icon/more/more_32.png'} alt="More..."/>
-                    </div>
-                </div>
+            <Link to={`/competitions/competition/${competitionId}/events`}>
+                <MoreButton/>
             </Link>
         )
-    }
+
     let teamTiles =
         isTeamsSuccess && teams ?
             Object.values(teams.entities).map(

@@ -1,29 +1,67 @@
 import React, {useEffect, useState} from "react";
-import {useFetchAllEventsQuery} from "../../slices/api/eventApiSlice";
+import {useAddMatchMutation, useFetchAllEventsQuery} from "../../slices/api/eventApiSlice";
 import {EventsDisplay} from "./EventsDisplay";
-import {useSelector} from "react-redux";
-import {selectMatches} from "../../slices/matchSlice";
+import {useDispatch, useSelector} from "react-redux";
+import {
+    finishEditMatch,
+    selectEditedMatchForUpload,
+    selectIsEditedMatchValid,
+    selectMatches
+} from "../../slices/matchSlice";
 import {FillSpinner} from "../../components/Spinner";
 import {getToastMessage} from "../../utils";
 import {toast} from "react-toastify";
 import {useDetectElementBottom} from "../../hooks/useDetectElementBottom";
 import {ErrorMessage} from "../../components/ErrorMessage";
+import Modal, {Body, Footer, Header} from "../../components/Modal";
+import {AddEditMatchWizard} from "./AddEditMatchWizard";
+import {SaveButton} from "../../components/controls/SaveButton";
+import {CancelButton} from "../../components/controls/CancelButton";
+import {AddNewButton} from "../../components/controls/AddNewButton";
+
 
 export const LatestEventsPage = (props) => {
 
+    // handlers
+    const dispatch = useDispatch()
+    const onShowAddModal = () => setIsAddModalShown(true)
+    const onHideAddModal = () => {
+        setIsAddModalShown(false)
+        dispatch(finishEditMatch())
+    }
+    const onSaveMatch = async () => {
+        await addMatch(uploadMatch)
+        setIsAddModalShown(false)
+        dispatch(finishEditMatch())
+    }
+    // handle soft load of more events
+    useDetectElementBottom(document.getElementById('Content-stage'), () => setNext(nextUrl))
+
     let {startingUrl} = props
     let [next, setNext] = useState(startingUrl)
+
+    // hooks
     const {
         data,
         isLoading,
-        // isSuccess,
         isError,
         error
     } = useFetchAllEventsQuery(next)
+    const [
+        addMatch, {
+            isLoading: isAdding,
+            isSuccess: isAddSuccess,
+            isError: isAddError,
+            error: addError
+        }
+    ] = useAddMatchMutation()
+
+    // state
+    let [isAddModalShown, setIsAddModalShown] = useState(false)
+    let {isValid, reason} = useSelector(state => selectIsEditedMatchValid(state))
+    let uploadMatch = useSelector(state => selectEditedMatchForUpload(state))
     let nextUrl = data?.next
     let events = useSelector(state => selectMatches(state))
-    // handle soft load of more events
-    useDetectElementBottom(document.getElementById('Content-stage'), () => setNext(nextUrl))
 
     // toast messages
     useEffect(() => {
@@ -31,7 +69,14 @@ export const LatestEventsPage = (props) => {
             let msg = 'Error loading Events: ' + getToastMessage(error)
             toast.error(msg)
         }
-    }, [isError, error])
+        if (isAddSuccess) {
+            toast('Successfully added new match')
+        }
+        if (isAddError) {
+            let msg = 'Error adding new match: ' + getToastMessage(addError)
+            toast.error(msg)
+        }
+    }, [isError, error, isAddSuccess, isAddError, addError])
 
     // components
     return (
@@ -43,7 +88,42 @@ export const LatestEventsPage = (props) => {
                         <div style={{display: 'flex', alignItems: 'center', height: '100%'}}>
                             <FillSpinner/>
                         </div> :
-                        <EventsDisplay events={events}/>
+                        <>
+                            <Modal show={isAddModalShown}>
+                                <Header onHide={onHideAddModal}>
+                                    Add new Match
+                                </Header>
+                                <Body>
+                                    <AddEditMatchWizard/>
+                                </Body>
+                                <Footer>
+                                    <div className={'Wizard-footer-container'}>
+                                        {
+                                            !isValid ?
+                                                <div className={'Wizard-reason-container'}>
+                                                    <img src={'/img/icon/info/info_32.png'} alt={'Info'}/>
+                                                    <span>{reason}</span>
+                                                </div> :
+                                                null
+                                        }
+                                        <div className={'Wizard-button-container'}>
+                                            <CancelButton onClick={onHideAddModal}/>
+                                            <SaveButton
+                                                onClick={onSaveMatch}
+                                                isLoading={isAdding}
+                                                disabled={!isValid}/>
+                                        </div>
+                                    </div>
+                                </Footer>
+                            </Modal>
+                            <div>
+                                <div className={'Entity-header'}>
+                                    <h1>Events</h1>
+                                    <AddNewButton onClick={onShowAddModal}/>
+                                </div>
+                                <EventsDisplay events={events}/>
+                            </div>
+                        </>
             }
         </div>
     )
