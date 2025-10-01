@@ -1,8 +1,8 @@
 import React, {useEffect} from "react";
 import ContentBar from "../components/ContentBar";
-import {useFetchAllEventsQuery} from "../slices/api/eventApiSlice";
+import {useFetchAllEventsInfiniteQuery} from "../slices/api/eventApiSlice";
 import {useFetchAllCompetitionsQuery} from "../slices/api/competitionApiSlice";
-import {useFetchAllTeamsQuery} from "../slices/api/teamApiSlice";
+import {useFetchAllTeamsInfiniteQuery} from "../slices/api/teamApiSlice";
 import {CenteredSpinner} from "../components/Spinner";
 import EventTile from "../features/events/EventTile";
 import CompetitionTile from "../features/competitions/CompetitionTile";
@@ -23,7 +23,7 @@ export const Home = () => {
         isSuccess: isEventsSuccess,
         isError: isEventsError,
         error: eventsError
-    } = useFetchAllEventsQuery()
+    } = useFetchAllEventsInfiniteQuery()
     const {
         data: competitionsData,
         isLoading: isCompetitionsLoading,
@@ -37,7 +37,7 @@ export const Home = () => {
         isSuccess: isTeamsSuccess,
         isError: isTeamsError,
         error: teamsError
-    } = useFetchAllTeamsQuery()
+    } = useFetchAllTeamsInfiniteQuery()
 
     // item lists
     let eventTiles = (isEventsSuccess && eventsData) ?

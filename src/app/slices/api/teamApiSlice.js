@@ -2,11 +2,8 @@ import {apiSlice, competitionTag, eventTag, teamTag} from "./apiSlice";
 import {teamAdapter, teamDeleted, teamLoaded, teamsLoaded, updateArtworkCollection} from "../teamSlice";
 import store from "../../store";
 import {competitionAdapter, competitionsLoaded} from "../competitionSlice";
-import {JsonHeaders} from "../../constants";
+import {infiniteQueryOptions, JsonHeaders} from "../../constants";
 
-
-export const DEFAULT_PAGE = 0
-export const DEFAULT_PAGE_SIZE = 16
 
 const getNormalizedTeams = (response) => {
     let {teams} = response
@@ -18,18 +15,9 @@ const getNormalizedTeams = (response) => {
 
 export const teamApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => ({
-        fetchAllTeams: builder.query({
-            query: (url) => {
-                if (url != null) return {url}
-
-                // compute next page
-                let loadedTeams = store.getState().teams?.ids.length ?? DEFAULT_PAGE
-                let page = Math.floor(loadedTeams / DEFAULT_PAGE_SIZE)
-
-                return {
-                    url: `/teams?page=${page}&size=${DEFAULT_PAGE_SIZE}`,
-                }
-            },
+        fetchAllTeams: builder.infiniteQuery({
+            infiniteQueryOptions,
+            query: ({pageParam}) => `/teams?page=${pageParam}`,
             providesTags: [teamTag],
             transformResponse: (response) => {
                 let {_embedded} = response
@@ -138,7 +126,7 @@ export const teamApiSlice = apiSlice.injectEndpoints({
 })
 
 export const {
-    useFetchAllTeamsQuery,
+    useFetchAllTeamsInfiniteQuery,
     useFetchTeamByIdQuery,
     useFetchCompetitionsForTeamQuery,
     useAddNewTeamMutation,

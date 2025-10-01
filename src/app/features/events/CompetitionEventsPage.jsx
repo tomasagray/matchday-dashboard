@@ -7,7 +7,6 @@ import {getToastMessage} from "../../utils";
 import {ErrorMessage} from "../../components/ErrorMessage";
 import {FillSpinner} from "../../components/Spinner";
 import {EventsDisplay} from "./EventsDisplay";
-import {useDetectElementBottom} from "../../hooks/useDetectElementBottom";
 
 
 export const CompetitionEventsPage = () => {
@@ -15,13 +14,6 @@ export const CompetitionEventsPage = () => {
     let params = useParams()
     let {competitionId} = params
 
-    const handlePageBottom = async () => pages?.next && await fetchMoreMatches()
-
-    // hooks
-    useDetectElementBottom(
-        document.getElementById('Content-stage'),
-        () => handlePageBottom()
-    )
     const {
         data: matches,
         isLoading: isMatchesLoading,
@@ -29,16 +21,6 @@ export const CompetitionEventsPage = () => {
         error: matchesError,
         fetchNextPage: fetchMoreMatches,
     } = useFetchEventsForCompetitionInfiniteQuery(competitionId)
-
-    // TODO: move this to EventsDisplay when API endpoints have
-    //  been converted to infiniteQuery's
-    let pages = matches?.pages.reduce((prev, next) => {
-        return {
-            ids: [...prev.ids, ...next.ids],
-            entities: {...prev.entities, ...next.entities},
-            next: next.next,
-        }
-    })
 
     const {
         data: competition,
@@ -80,7 +62,7 @@ export const CompetitionEventsPage = () => {
                                     </div>
                                 </div>
                             </div>
-                            <EventsDisplay events={pages}/>
+                            <EventsDisplay events={matches} fetchMore={fetchMoreMatches}/>
                         </>
             }
         </div>

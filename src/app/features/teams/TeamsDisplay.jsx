@@ -1,12 +1,10 @@
 import React, {useEffect, useState} from "react";
-import {useFetchAllTeamsQuery} from "../../slices/api/teamApiSlice";
-import {selectAllTeams} from "../../slices/teamSlice"
+import {useFetchAllTeamsInfiniteQuery} from "../../slices/api/teamApiSlice";
 import {FillSpinner} from "../../components/Spinner";
 import TeamTile from "./TeamTile";
 import {ErrorMessage} from "../../components/ErrorMessage";
 import {getToastMessage, setBackgroundImage} from "../../utils";
 import {toast} from "react-toastify";
-import {useSelector} from "react-redux";
 import {useDetectElementBottom} from "../../hooks/useDetectElementBottom";
 import {EmptyMessage} from "../../components/EmptyMessage";
 import {AddNewButton} from "../../components/controls/AddNewButton";
@@ -16,23 +14,29 @@ import {AddEditTeamWizard} from "./AddEditTeamWizard";
 export const TeamsDisplay = () => {
 
     // handlers
-    const onShowAddModal = () => {
-        setIsAddModalShown(true)
-    }
+    const onShowAddModal = _ => setIsAddModalShown(true)
+    const handlePageBottom = async _ => teams?.next && await fetchMoreTeams()
 
     // state
     let [isAddModalShown, setIsAddModalShown] = useState(false)
-    let [next, setNext] = useState(null)
     const {
         data,
         isLoading,
         isSuccess,
         isError,
-        error
-    } = useFetchAllTeamsQuery(next)
-    const nextUrl = data?.next
-    let teams = useSelector(state => selectAllTeams(state))
-    useDetectElementBottom(document.getElementById('Content-stage'), () => setNext(nextUrl))
+        error,
+        fetchNextPage: fetchMoreTeams,
+    } = useFetchAllTeamsInfiniteQuery()
+    const teams = data?.pages.reduce((prev, next) => {
+        return {
+            ids: [...prev.ids, ...next.ids],
+            entities: {...prev.entities, ...next.entities},
+            next: next.next,
+        }
+    })
+
+    // detect end of page
+    useDetectElementBottom(document.getElementById('Content-stage'), handlePageBottom)
 
     // toast messages
     useEffect(() => {

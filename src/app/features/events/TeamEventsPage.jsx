@@ -1,6 +1,6 @@
 import React, {useEffect} from "react";
 import {useParams} from "react-router-dom";
-import {useFetchMatchesForTeamQuery} from "../../slices/api/eventApiSlice";
+import {useFetchMatchesForTeamInfiniteQuery} from "../../slices/api/eventApiSlice";
 import {getToastMessage} from "../../utils";
 import {toast} from "react-toastify";
 import {ErrorMessage} from "../../components/ErrorMessage";
@@ -19,8 +19,9 @@ export const TeamEventsPage = () => {
         data: matches,
         isLoading: isMatchesLoading,
         isError: isMatchesError,
-        error: matchesError
-    } = useFetchMatchesForTeamQuery(teamId)
+        error: matchesError,
+        fetchNextPage: fetchMoreMatches,
+    } = useFetchMatchesForTeamInfiniteQuery(teamId)
 
     const {
         data: team,
@@ -43,7 +44,7 @@ export const TeamEventsPage = () => {
             {
                 isMatchesError ?
                     <ErrorMessage>Could not load events.</ErrorMessage> :
-                    isMatchesLoading ?
+                    isMatchesLoading || isTeamLoading ?
                         <div style={{display: 'flex', alignItems: 'center', height: '100%'}}>
                             <FillSpinner/>
                         </div> :
@@ -57,7 +58,7 @@ export const TeamEventsPage = () => {
                                     </div>
                                 </div>
                             </div>
-                            <EventsDisplay events={matches}/>
+                            <EventsDisplay events={matches} fetchMore={fetchMoreMatches}/>
                         </>
             }
         </div>
