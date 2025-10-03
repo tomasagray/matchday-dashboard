@@ -1,19 +1,11 @@
-import {
-    createEntityAdapter,
-    createSelector,
-    createSlice
-} from "@reduxjs/toolkit";
-import {pluginAdapter} from "./dataSourcePluginSlice";
+import {createEntityAdapter, createSelector, createSlice} from "@reduxjs/toolkit";
 
-export const fileServerPluginAdapter = createEntityAdapter()
 
-const initialState = fileServerPluginAdapter.getInitialState({
-    selectedPlugin: null,
+const pluginAdapter = createEntityAdapter()
+
+const initialState = pluginAdapter.getInitialState({
+    selectedPluginId: null,
 })
-
-export const {
-    selectById: selectFileServerPluginById
-} = pluginAdapter.getSelectors(state => state.fileServerPlugins ?? initialState)
 
 export const fileServerPluginSlice = createSlice({
     name: 'fileServerPlugins',
@@ -21,7 +13,7 @@ export const fileServerPluginSlice = createSlice({
     reducers: {
         pluginsLoaded: pluginAdapter.setAll,
         pluginSelected: (state, action) => {
-            state.selectedPlugin = action.payload
+            state.selectedPluginId = action.payload
         }
     }
 })
@@ -33,6 +25,11 @@ export const {
 } = fileServerPluginSlice.actions
 
 export const selectSelectedPluginId = createSelector(
-    (state) => state.fileServerPlugins,
-    (state) => state.selectedPlugin
+    state => state.fileServerPlugins,
+    state => state['selectedPluginId']
+)
+
+export const selectSelectedFileServerPlugin = createSelector(
+    state => state.fileServerPlugins,
+    plugins => plugins.entities[plugins.selectedPluginId]
 )

@@ -22,7 +22,7 @@ export const TeamSelect = (props) => {
     const handleMenuBottom = async _ => teams?.next && await fetchMoreTeams()
 
     // state
-    let {selectedTeam, onSelectTeam} = props
+    let {selectedTeam, onSelectTeam, isFloatRight} = props
     let selectedRef = useRef()
     let teamsRef = useRef()
     let [isTeamMenuHidden, setIsTeamMenuHidden] = useState(true)
@@ -36,8 +36,7 @@ export const TeamSelect = (props) => {
     } = useFetchAllTeamsInfiniteQuery()
     let teams = data?.pages.reduce((prev, next) => {
         return {
-            ids: [...prev.ids, ...next.ids],
-            entities: {...prev.entities, ...next.entities},
+            teams: [...prev.teams, ...next.teams],
             next: next.next,
         }
     })
@@ -68,7 +67,7 @@ export const TeamSelect = (props) => {
                 hidden={isTeamMenuHidden}
                 onClickOutside={onHideTeamMenu}
             >
-                <div className="Team-select-menu">
+                <div className={'Team-select-menu' + (isFloatRight ? ' right' : '')}>
                     <div className="Team-select-arrow">
                         <div></div>
                     </div>
@@ -77,7 +76,7 @@ export const TeamSelect = (props) => {
                             isLoading ?
                                 <CenteredSpinner/> :
                                 isSuccess ?
-                                    Object.values(teams.entities)
+                                    Object.values(teams?.teams)
                                         .map(team => {
                                                 const isSelected = selectedTeam?.id === team?.id
                                                 const className = "Team-tile-selector" + (isSelected ? " selected" : "")

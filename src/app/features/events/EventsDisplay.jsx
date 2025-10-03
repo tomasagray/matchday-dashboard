@@ -22,8 +22,7 @@ export const EventsDisplay = (props) => {
 
     let pages = events?.pages.reduce((prev, next) => {
         return {
-            ids: [...prev.ids, ...next.ids],
-            entities: {...prev.entities, ...next.entities},
+            matches: [...prev.matches, ...next.matches],
             next: next.next,
         }
     })
@@ -33,8 +32,8 @@ export const EventsDisplay = (props) => {
     return (
         <div className={"Event-display"}>
             {
-                pages && Object.keys(pages.entities).length > 0 ?
-                    Object.values(pages.entities)
+                pages && Object.keys(pages.matches).length > 0 ?
+                    Object.values(pages.matches)
                         .sort((e1, e2) => e2.date.localeCompare(e1.date))
                         .map(event => <EventTile event={event} key={event['eventId']}/>) :
                     <EmptyMessage noun="events"/>

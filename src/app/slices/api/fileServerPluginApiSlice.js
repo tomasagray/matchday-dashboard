@@ -1,10 +1,8 @@
 import {apiSlice, fileServerPluginTag} from "./apiSlice";
-import store from "../../store";
-import {
-    fileServerPluginAdapter,
-    fileServerPluginSlice
-} from "../fileServerPluginSlice";
 import {JsonHeaders} from "../../constants";
+import {fileServerPluginSlice} from "../fileServerPluginSlice";
+import store from "../../store";
+
 
 export const fileServerPluginApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => ({
@@ -13,10 +11,17 @@ export const fileServerPluginApiSlice = apiSlice.injectEndpoints({
             providesTags: [fileServerPluginTag],
             transformResponse: (response) => {
                 let {_embedded} = response
-                let {fileservers: fileServers} = _embedded
-                store.dispatch(fileServerPluginSlice.actions.pluginsLoaded(fileServers))
-                return fileServerPluginAdapter.setAll(fileServerPluginAdapter.getInitialState(), fileServers)
+                if (_embedded) {
+                    let {fileservers: fileServers} = _embedded
+                    store.dispatch(fileServerPluginSlice.actions.pluginsLoaded(fileServers))
+                    return fileServers
+                }
+                return []
             }
+        }),
+        getFileServerPlugin: builder.query({
+            query: pluginId => `/file-servers/file-server/${pluginId}`,
+            providesTags: [fileServerPluginTag],
         }),
         enableFileServerPlugin: builder.mutation({
             query: (pluginId) => ({
@@ -39,6 +44,7 @@ export const fileServerPluginApiSlice = apiSlice.injectEndpoints({
 
 export const {
     useGetAllFileServerPluginsQuery,
+    useGetFileServerPluginQuery,
     useEnableFileServerPluginMutation,
     useDisableFileServerPluginMutation,
 } = fileServerPluginApiSlice

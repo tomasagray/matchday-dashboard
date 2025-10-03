@@ -1,7 +1,7 @@
 import {JsonHeaders} from "../../constants";
-import {dataSourcePluginSlice, pluginAdapter} from "../dataSourcePluginSlice";
-import store from "../../store";
 import {apiSlice, competitionTag, dataSourcePluginTag, eventTag, teamTag} from "./apiSlice";
+import store from "../../store";
+import {dataSourcePluginSlice} from "../dataSourcePluginSlice";
 
 const getSnapshotRequest = (refreshParams) => {
     return {
@@ -23,10 +23,17 @@ export const dataSourcePluginApiSlice = apiSlice.injectEndpoints({
             providesTags: [dataSourcePluginTag],
             transformResponse: (response) => {
                 let {_embedded} = response
-                let {data_source_plugins} = _embedded
-                store.dispatch(dataSourcePluginSlice.actions.pluginsLoaded(data_source_plugins))
-                return pluginAdapter.setAll(pluginAdapter.getInitialState(), data_source_plugins)
+                if (_embedded) {
+                    let {data_source_plugins} = _embedded
+                    store.dispatch(dataSourcePluginSlice.actions.pluginsLoaded(data_source_plugins))
+                    return data_source_plugins
+                }
+                return []
             }
+        }),
+        getDataSourcePlugin: builder.query({
+            query: pluginId => `/data-source-plugins/plugin/${pluginId}`,
+            providesTags: [dataSourcePluginTag],
         }),
         enableDataSourcePlugin: builder.mutation({
             query: pluginId => ({
@@ -73,6 +80,7 @@ export const dataSourcePluginApiSlice = apiSlice.injectEndpoints({
 
 export const {
     useGetAllDataSourcePluginsQuery,
+    useGetDataSourcePluginQuery,
     useRefreshAllDataSourcePluginsMutation,
     useEnableDataSourcePluginMutation,
     useDisableDataSourcePluginMutation,

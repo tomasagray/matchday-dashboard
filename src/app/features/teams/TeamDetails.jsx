@@ -34,7 +34,7 @@ export const TeamDetails = () => {
 
     const getMatchTiles = _ => {
         if (isMatchesSuccess && matches) {
-            let tiles = Object.values(matches.pages[0].entities)
+            let tiles = Object.values(matches?.pages[0].matches)
                 .slice(0, MATCH_TILE_LIM)
                 .map(match => <EventTile event={match} key={match['eventId']}/>)
             if (tiles.length >= MATCH_TILE_LIM)
@@ -106,7 +106,7 @@ export const TeamDetails = () => {
         isCompetitionsLoading ?
             <CenteredSpinner/> :
             isCompetitionsSuccess && competitions ?
-                Object.values(competitions.entities).map(
+                Object.values(competitions).map(
                     competition => <CompetitionTile competition={competition} key={competition.id}/>
                 ) :
                 null

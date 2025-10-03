@@ -61,7 +61,7 @@ export const CompetitionSelect = (props) => {
                         isSuccess && competitions ?
                             <div className="Entity-display Competition-select">
                                 {
-                                    Object.values(competitions.entities).map(competition => {
+                                    Object.values(competitions).map(competition => {
                                         const id = competition.id
                                         return (
                                             <CompetitionSelectTile

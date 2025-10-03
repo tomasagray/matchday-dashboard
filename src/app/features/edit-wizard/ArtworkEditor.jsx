@@ -33,7 +33,7 @@ export const ArtworkEditor = (props) => {
         }
     }
     const onUploadUrl = (e) => {
-        console.log('upload via URL', e)
+        console.log('upload Artwork via URL', e)
         // TODO: implement upload image by URL
     }
     const onClickArtwork = (artwork) => onSelectArtwork && onSelectArtwork({selectedId: artwork.id})

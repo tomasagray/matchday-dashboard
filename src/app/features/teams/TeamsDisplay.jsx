@@ -29,8 +29,7 @@ export const TeamsDisplay = () => {
     } = useFetchAllTeamsInfiniteQuery()
     const teams = data?.pages.reduce((prev, next) => {
         return {
-            ids: [...prev.ids, ...next.ids],
-            entities: {...prev.entities, ...next.entities},
+            teams: [...prev.teams, ...next.teams],
             next: next.next,
         }
     })
@@ -58,7 +57,7 @@ export const TeamsDisplay = () => {
                     <ErrorMessage>Could not load teams data.</ErrorMessage> :
                     isLoading ?
                         <FillSpinner/> :
-                        isSuccess && teams && Object.keys(teams.entities).length > 0 ?
+                        isSuccess && teams && Object.keys(teams.teams).length > 0 ?
                             <div>
                                 <div className={'Entity-header'}>
                                     <h1>Teams</h1>
@@ -66,7 +65,7 @@ export const TeamsDisplay = () => {
                                 </div>
                                 <div className={"Entity-display"}>
                                     {
-                                        Object.values(teams.entities)
+                                        Object.values(teams.teams)
                                             .sort((t1, t2) => t1.name.name.localeCompare(t2.name.name))
                                             .map(team => <TeamTile team={team} key={team.id}/>)
                                     }

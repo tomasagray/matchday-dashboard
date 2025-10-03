@@ -18,6 +18,7 @@ import {getToastMessage, setBackgroundImage} from "../../utils";
 import {LabelRefreshTool} from "./LabelRefreshTool";
 import {InfoMessage} from "../../components/InfoMessage";
 import {UrlRefreshTool} from "./UrlRefreshTool";
+import {selectSelectedPlugin} from "../../slices/dataSourcePluginSlice";
 
 const DEFAULT_LABEL = ''
 const DEFAULT_DATE = new Date()
@@ -28,21 +29,15 @@ const URL_MODE = 'url'
 export const DataSourcePluginsList = () => {
 
     // handlers
-    const onRefreshHover = () => {
-        setRefreshHover(true)
-    }
-    const onRefreshUnHover = () => {
-        setRefreshHover(false)
-    }
+    const onRefreshHover = () => setRefreshHover(true)
+    const onRefreshUnHover = () => setRefreshHover(false)
     const onShowLabelRefresh = (e) => {
         e.preventDefault()
         setRefreshMode(LABEL_MODE)
         const label = labelRef.current
         label?.focus()
     }
-    const updateRefreshLabel = (e) => {
-        setRefreshLabel(e.target.value)
-    }
+    const updateRefreshLabel = (e) => setRefreshLabel(e.target.value)
     const onShowDatePicker = (e) => {
         e.preventDefault()
         setRefreshMode(DATE_MODE)
@@ -51,10 +46,7 @@ export const DataSourcePluginsList = () => {
         e.preventDefault()
         setRefreshMode(URL_MODE)
     }
-    const onUpdateRefreshUrl = (e) => {
-        console.log('refresh URL', e.target.value)
-        setRefreshUrl(e.target.value)
-    }
+    const onUpdateRefreshUrl = (e) => setRefreshUrl(e.target.value)
     const onClearRefreshTool = () => {
         setRefreshMode(null)
         setRefreshLabel(DEFAULT_LABEL)
@@ -132,7 +124,7 @@ export const DataSourcePluginsList = () => {
     ])
 
     // state
-    const selectedPluginId = useSelector(state => state['dataSourcePlugins']['selectedPluginId'])
+    const selectedPlugin = useSelector(state => selectSelectedPlugin(state))
     let [refreshHover, setRefreshHover] = useState(false)
     let [refreshMode, setRefreshMode] = useState(null)
     let [refreshLabel, setRefreshLabel] = useState(DEFAULT_LABEL)
@@ -143,17 +135,19 @@ export const DataSourcePluginsList = () => {
     // components
     let pluginList
     if (pluginLoaded) {
-        pluginList = dataSourcePlugins.ids.map(pluginId => {
-            let active = selectedPluginId !== null && pluginId === selectedPluginId
-            return <DataSourcePluginTile key={pluginId} active={active} pluginId={pluginId}/>;
-        })
+        pluginList = dataSourcePlugins.map(plugin =>
+            <DataSourcePluginTile
+                key={plugin.id}
+                active={selectedPlugin !== null && plugin.id === selectedPlugin}
+                plugin={plugin}/>
+        )
     } else if (isPluginError) {
         pluginList = <ErrorMessage code={pluginError.status}>{pluginError.error}</ErrorMessage>
     }
 
     let pluginData
-    if (selectedPluginId && !pluginsLoading) {
-        pluginData = <PluginDetailDisplay plugin={selectedPluginId}/>
+    if (selectedPlugin && !pluginsLoading) {
+        pluginData = <PluginDetailDisplay plugin={selectedPlugin}/>
     } else if (pluginLoaded) {
         pluginData = <InfoMessage>Please select a Data Source plugin from above.</InfoMessage>
     }

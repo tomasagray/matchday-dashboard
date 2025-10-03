@@ -13,9 +13,7 @@ import {ErrorMessage} from "../../components/ErrorMessage";
 export const CompetitionsDisplay = () => {
 
     // handlers
-    const onShowAddModal = () => {
-        setIsAddModalShown(true)
-    }
+    const onShowAddModal = () => setIsAddModalShown(true)
 
     // state
     let [isAddModalShown, setIsAddModalShown] = useState(false)
@@ -56,7 +54,7 @@ export const CompetitionsDisplay = () => {
                                 </div>
                                 <div className="Entity-display">
                                     {
-                                        Object.values(competitions.entities)
+                                        Object.values(competitions)
                                             .sort((c1, c2) => c1.name.name.localeCompare(c2.name.name))
                                             .map(competition =>
                                                 <CompetitionTile competition={competition} key={competition.id}/>

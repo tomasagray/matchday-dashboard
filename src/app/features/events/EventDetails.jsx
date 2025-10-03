@@ -120,7 +120,7 @@ export const EventDetails = () => {
                 navigate('/events')
             })
             .catch(err => console.error('ERROR deleting Event', err))
-        console.log('done deleting')
+        console.log('done deleting match')
     }
     const onShowVideoSourceEdit = () => {
         setIsEditVideoSourceShown(true)

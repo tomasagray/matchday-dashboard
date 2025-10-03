@@ -9,7 +9,7 @@ export default function EventTile(props) {
 
     const {event} = props
     let {eventId, title, competition, homeTeam, awayTeam, date, _links: links} = event
-    let imageUrl = links['artwork']?.href ?? placeholderUrl
+    let imageUrl = links?.artwork.href ?? placeholderUrl
 
     const details = homeTeam ?
         <>
@@ -27,7 +27,7 @@ export default function EventTile(props) {
                 />
                 <div className="Event-details">
                     <p className={"Event-title"}>
-                        <strong style={{marginRight: '.12em'}}>{competition.name?.name}</strong>
+                        <strong style={{marginRight: '.12em'}}>{competition?.name.name}</strong>
                         <span className={"Event-title-details"}>:&nbsp;{details}</span>
                     </p>
                     <div className="Event-date">{formatDate(date)}</div>

@@ -7,7 +7,7 @@ import {
 import {FillSpinner} from "../../components/Spinner";
 import {FileServerPluginTile} from "./FileServerPluginTile";
 import {useSelector} from "react-redux";
-import {selectFileServerPluginById, selectSelectedPluginId} from "../../slices/fileServerPluginSlice";
+import {selectSelectedFileServerPlugin, selectSelectedPluginId} from "../../slices/fileServerPluginSlice";
 import {InfoMessage} from "../../components/InfoMessage";
 import {SettingsGroup} from "../../components/SettingsGroup";
 import {SettingContainer} from "../../components/SettingContainer";
@@ -72,7 +72,7 @@ export const FileServerPluginList = () => {
 
     // state
     let selectedPluginId = useSelector(state => selectSelectedPluginId(state))
-    let selectedPlugin = useSelector(state => selectFileServerPluginById(state, selectedPluginId))
+    let selectedPlugin = useSelector(state => selectSelectedFileServerPlugin(state))
 
     // components
     let toggle = selectedPlugin ?
@@ -81,7 +81,7 @@ export const FileServerPluginList = () => {
         Status()['Unchecked']
 
     let plugins = isPluginsSuccess ?
-        Object.values(fileServerPlugins.entities)
+        Object.values(fileServerPlugins)
             .map(plugin =>
                 <FileServerPluginTile pluginId={plugin.id} title={plugin.title} key={plugin.id}/>
             ) :

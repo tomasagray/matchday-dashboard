@@ -1,20 +1,17 @@
 import {apiSlice, competitionTag, eventTag} from "./apiSlice";
 import store from "../../store";
-import {artworkRefreshed, matchAdapter, matchDeleted, matchLoaded, matchSlice} from "../matchSlice";
+import {artworkRefreshed} from "../matchSlice";
 import {infiniteQueryOptions, JsonHeaders} from "../../constants";
 
 
 const getNormalizedEvents = (response) => {
     // todo - handle highlights, other types?
     let {matches, _links: links} = response
-    if (matches && matches.length > 0) {
-        store.dispatch(matchSlice.actions.matchesLoaded(matches))
-        let normalized = matchAdapter.setMany(matchAdapter.getInitialState(), matches)
-        return {
-            ...normalized,
+    return matches && matches.length > 0 ?
+        {
+            matches,
             next: links?.next?.href
-        }
-    }
+        } : []
 }
 
 const removeVideoFileIds = (event) => {
@@ -61,10 +58,6 @@ export const eventApiSlice = apiSlice.injectEndpoints({
         fetchMatchById: builder.query({
             query: (eventId) => `/matches/match/${eventId}`,
             providesTags: [eventTag],
-            transformResponse: (response) => {
-                store.dispatch(matchLoaded(response))
-                return response
-            }
         }),
         refreshMatchArtwork: builder.mutation({
             query: matchId => ({
@@ -105,10 +98,6 @@ export const eventApiSlice = apiSlice.injectEndpoints({
                 method: 'DELETE',
             }),
             invalidatesTags: [eventTag, competitionTag],
-            transformResponse: matchId => {
-                store.dispatch(matchDeleted(matchId))
-                return matchId
-            },
         }),
     })
 })

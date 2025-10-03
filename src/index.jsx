@@ -14,7 +14,7 @@ import {Alerts} from "./app/components/Alerts";
 import {Search} from "./app/layout/Search";
 import {TeamDetails} from "./app/features/teams/TeamDetails";
 import {CompetitionDetails} from "./app/features/competitions/CompetitionDetails";
-import {PluginDataSourceList} from "./app/features/datasources/PluginDataSourceList";
+import {DataSourcePluginDisplay} from "./app/features/datasource-plugins/DataSourcePluginDisplay";
 import {createRoot} from "react-dom/client";
 import {FileServerPluginList} from "./app/features/file-servers/FileServerPluginList";
 import {FileServerUserList} from "./app/features/file-servers/FileServerUserList";
@@ -57,7 +57,7 @@ root.render(
                         <Route path="competitions/competition/:competitionId/events" element={<CompetitionEventsPage/>}/>
                         <Route path="teams/team/:teamId" element={<TeamDetails/>}/>
                         <Route path="teams/team/:teamId/events" element={<TeamEventsPage/>}/>
-                        <Route path="data-sources/data-source/:pluginId" element={<PluginDataSourceList/>}/>
+                        <Route path="data-sources/data-source/:pluginId" element={<DataSourcePluginDisplay/>}/>
                         <Route path="file-servers/:pluginId/users" element={<FileServerUserList/>}/>
                 </Route>
               </Routes>
