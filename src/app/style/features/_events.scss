@@ -416,6 +416,10 @@ $posterHeight: calc($posterWidth / (16 / 9));
 
 .Team-select-wizard {
   display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin: 0 2rem;
 
   .Team-display {
     display: flex;
@@ -438,6 +442,17 @@ $posterHeight: calc($posterWidth / (16 / 9));
   position: absolute;
   top: 50px;
   left: -50px;
+
+  &.right {
+    left: revert;
+    right: 200px;
+
+    .Team-select-arrow {
+      left: revert;
+      right: -14px;
+      transform: rotate(180deg);
+    }
+  }
 
   .Team-select-arrow {
     position: absolute;
@@ -529,7 +544,10 @@ $posterHeight: calc($posterWidth / (16 / 9));
 }
 
 .Video-source-edit-form {
-  margin: -1rem 0;
+  margin: -3rem -2rem;
+  padding: 2rem 3rem;
+  height: 100%;
+  overflow-y: scroll;
 
   h3 {
     margin-bottom: 1rem;

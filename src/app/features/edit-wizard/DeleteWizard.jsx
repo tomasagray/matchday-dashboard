@@ -14,10 +14,11 @@ export const DeleteWizard = (props) => {
 
     return (
         <div className="Delete-wizard">
-            <p className="Info-message">Click below to delete '<span>{entityName}</span>'</p>
+            <p className="Info-message">Click below to delete </p>
+            <h2 style={{marginBottom: '2rem', textAlign: 'center'}}>{entityName}</h2>
             <div className="Delete-entity-display">
-                <SoftLoadImage placeholderUrl={placeholderUrl} imageUrl={imageUrl} />
-                <DeleteButton onClick={onDelete} isLoading={isDeleting} />
+                <SoftLoadImage placeholderUrl={placeholderUrl} imageUrl={imageUrl}/>
+                <DeleteButton onClick={onDelete} isLoading={isDeleting}/>
             </div>
         </div>
     )

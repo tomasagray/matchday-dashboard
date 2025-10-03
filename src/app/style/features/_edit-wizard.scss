@@ -8,11 +8,12 @@
   margin: -3rem -2rem;
   display: flex;
   flex-direction: row;
+  height: 100%;
 
   .Edit-wizard-menu {
     width: 180px;
     border-right: 1px solid rgba(100, 100, 100, .5);
-    height: 100%;
+    height: 120%;
 
     .Wizard-menu-item {
       display: flex;
@@ -47,8 +48,9 @@
   }
 
   .Edit-wizard-display {
+    display: flex;
     width: 100%;
-    height: 50vh;
+    height: 100%;
     padding: 3rem;
     overflow: auto;
 
@@ -61,6 +63,8 @@
 .General-editor {
   display: flex;
   flex-direction: column;
+  height: 100%;
+  width: 100%;
 
   .Editor-field {
     margin: .65rem 0;
@@ -77,9 +81,8 @@
 
 $uploadContainerHeight: 2rem;
 .Artwork-editor {
-  margin: -2rem;
-  height: stretch;
-  contain: content;
+  height: 100%;
+  width: 100%;
 
   .Artwork-upload-container {
     background-color: colors.$darkTransparent;
@@ -87,9 +90,6 @@ $uploadContainerHeight: 2rem;
     display: flex;
     justify-content: space-between;
     align-content: center;
-    position: fixed;
-    top: 0;
-    width: stretch;
     height: $uploadContainerHeight;
     z-index: layers.$artworkUploadContainer;
 
@@ -169,65 +169,70 @@ $uploadContainerHeight: 2rem;
   }
 }
 
-.Color-selector-container {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding: .5rem;
+.Colors-editor {
+  width: 100%;
 
-  &:not(:last-of-type) {
-    border-bottom: 1px solid colors.$border;
-  }
-
-  .Color-priority {
-    display: inline;
-    margin-right: 1rem;
-    width: 25%;
-    color: colors.$mediumFontColor;
-  }
-
-  .Color-selector {
+  .Color-selector-container {
     display: flex;
-    justify-content: space-between;
-    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    padding: .5rem;
 
-    .Clear-button {
-      display: none;
+    &:not(:last-of-type) {
+      border-bottom: 1px solid colors.$border;
     }
 
-    &:hover {
-      .Clear-button {
-        display: block;
-      }
+    .Color-priority {
+      display: inline;
+      margin-right: 1rem;
+      width: 25%;
+      color: colors.$mediumFontColor;
     }
 
-    .Color-selector-button {
-      border: 0;
-      background: none;
+    .Color-selector {
       display: flex;
-      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+
+      .Clear-button {
+        display: none;
+      }
 
       &:hover {
-        .Color-display {
-          border-color: rgba(255, 255, 255, .82);
+        .Clear-button {
+          display: block;
         }
       }
 
-      .Color-display {
-        border: 2px solid transparent;
-        border-radius: 100%;
-        width: 2rem;
-        height: 2rem;
-        margin-right: 1rem;
-      }
+      .Color-selector-button {
+        border: 0;
+        background: none;
+        display: flex;
+        align-items: center;
 
-      .Color-name {
-        font-family: fonts.$technical;
-        font-size: large;
+        &:hover {
+          .Color-display {
+            border-color: rgba(255, 255, 255, .82);
+          }
+        }
+
+        .Color-display {
+          border: 2px solid transparent;
+          border-radius: 100%;
+          width: 2rem;
+          height: 2rem;
+          margin-right: 1rem;
+        }
+
+        .Color-name {
+          font-family: fonts.$technical;
+          font-size: large;
+        }
       }
     }
   }
 }
+
 
 .Competition-select {
   .Competition-select-tile {
@@ -238,12 +243,14 @@ $uploadContainerHeight: 2rem;
 .Delete-wizard {
   display: flex;
   flex-direction: column;
-  width: fit-content;
+  justify-content: center;
+  width: 100%;
 
   .Info-message {
     color: #aaa;
     width: 100%;
     margin-bottom: 2rem;
+    text-align: center;
 
     span {
       font-weight: bold;
@@ -257,7 +264,7 @@ $uploadContainerHeight: 2rem;
     flex-direction: column;
 
     .Soft-load-container {
-      width: 300px;
+      width: 250px;
       margin-bottom: 1rem;
     }
 
