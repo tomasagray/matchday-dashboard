@@ -30,7 +30,7 @@ export const Backup = () => {
             downloadData(json, filename)
             toast('Downloaded dehydrated System Image to: ' + filename)
         })
-        console.log('done dehydrating')
+        console.log('done dehydrating system')
     }
     const onUploadSystemImage = (e) => {
         let file = e.target.files[0]

@@ -1,9 +1,5 @@
-import {createEntityAdapter, createSelector, createSlice} from "@reduxjs/toolkit";
+import {createSelector, createSlice} from "@reduxjs/toolkit";
 
-
-export const matchAdapter = createEntityAdapter({
-    selectId: match => match['eventId']
-})
 
 const editedMatch = {
     competition: null,
@@ -15,17 +11,12 @@ const editedMatch = {
     fileSources: [],
 }
 
-const initialState = matchAdapter.getInitialState({
-    editedMatch,
-})
+const initialState = {editedMatch}
 
 export const matchSlice = createSlice({
     name: 'matches',
     initialState,
     reducers: {
-        matchesLoaded: matchAdapter.setMany,
-        matchLoaded: matchAdapter.setOne,
-        matchDeleted: matchAdapter.removeOne,
         beginEditMatch: (state, action) => {
             let {payload: event} = action
             return {
@@ -100,8 +91,6 @@ export const matchSlice = createSlice({
 export default matchSlice.reducer
 
 export const {
-    matchLoaded,
-    matchDeleted,
     beginEditMatch,
     updateEditedMatch,
     artworkRefreshed,
@@ -109,11 +98,6 @@ export const {
     deleteVideoSource,
     finishEditMatch,
 } = matchSlice.actions
-
-export const selectMatches = createSelector(
-    state => state.events,
-    state => state
-)
 
 export const selectEditedMatch = createSelector(
     state => state.events,

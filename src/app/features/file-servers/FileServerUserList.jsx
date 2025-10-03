@@ -1,47 +1,43 @@
 import React, {useEffect, useState} from "react";
 import {UserList} from "./UserList";
 import {useParams} from "react-router-dom";
-import {
-  useGetFileServerUsersQuery
-} from "../../slices/api/fileServerUserApiSlice";
+import {useGetFileServerUsersQuery} from "../../slices/api/fileServerUserApiSlice";
 import {Spinner} from "../../components/Spinner";
-import {useDispatch, useSelector} from "react-redux";
-import {selectFileServerPluginById} from "../../slices/fileServerPluginSlice";
+import {useDispatch} from "react-redux";
 import {PluginId} from "../../components/PluginId";
-import {
-  useGetAllFileServerPluginsQuery
-} from "../../slices/api/fileServerPluginApiSlice";
+import {useGetFileServerPluginQuery} from "../../slices/api/fileServerPluginApiSlice";
 import {AddNewUserForm} from "./AddNewUserForm";
 import {newUserCleared} from "../../slices/fileServerUserSlice";
 import {getToastMessage} from "../../utils";
 import {toast} from "react-toastify";
 import {InfoMessage} from "../../components/InfoMessage";
 
+
 export const FileServerUserList = (props) => {
 
+    const params = useParams()
+    let {pluginId} = params
+
+    // handlers
     const dispatch = useDispatch()
-    const onShowAddUserModal = () => {
-        setShowAddUserModal(true)
-    }
+    const onShowAddUserModal = () => setShowAddUserModal(true)
     const onHideAddUserModal = () => {
         dispatch(newUserCleared())
         setShowAddUserModal(false)
     }
 
-    const params = useParams()
-    let {pluginId} = params
-    let plugin = useSelector(state => selectFileServerPluginById(state, pluginId))
 
     // state
     let [showAddUserModal, setShowAddUserModal] = useState(false)
 
     // hooks
     let {
+        data: plugin,
         isLoading: isPluginsLoading,
         isSuccess: isPluginSuccess,
         isError: isPluginError,
         error: pluginError
-    } = useGetAllFileServerPluginsQuery()
+    } = useGetFileServerPluginQuery(pluginId)
     let {
         data: users,
         isLoading: isUsersLoading,
@@ -67,20 +63,20 @@ export const FileServerUserList = (props) => {
     let pluginTitle =
         isPluginsLoading ? <Spinner size={'24px'} text={''}/> :
             isPluginSuccess ?
-            <h1>{plugin.title}</h1> :
+                <h1>{plugin.title}</h1> :
                 null
     let pluginUserList =
         isUsersSuccess && users ?
-            <UserList users={Object.values(users.entities)} showLoginModal={onShowAddUserModal} /> :
+            <UserList users={Object.values(users.entities)} showLoginModal={onShowAddUserModal}/> :
             isUsersLoading ?
                 <div style={{margin: '5rem', display: 'flex', justifyContent: 'center'}}>
-                    <Spinner />
+                    <Spinner/>
                 </div> :
                 <InfoMessage>There are currently no users for this plugin.</InfoMessage>
 
     return (
         <div style={props.style}>
-            <AddNewUserForm pluginId={pluginId} onHide={onHideAddUserModal} isShown={showAddUserModal} />
+            <AddNewUserForm pluginId={pluginId} onHide={onHideAddUserModal} isShown={showAddUserModal}/>
 
             <div className="Banner-title">
                 {pluginTitle}

@@ -1,12 +1,10 @@
 import React, {useEffect, useState} from "react";
-import {useFetchAllTeamsQuery} from "../../slices/api/teamApiSlice";
-import {selectAllTeams} from "../../slices/teamSlice"
+import {useFetchAllTeamsInfiniteQuery} from "../../slices/api/teamApiSlice";
 import {FillSpinner} from "../../components/Spinner";
 import TeamTile from "./TeamTile";
 import {ErrorMessage} from "../../components/ErrorMessage";
 import {getToastMessage, setBackgroundImage} from "../../utils";
 import {toast} from "react-toastify";
-import {useSelector} from "react-redux";
 import {useDetectElementBottom} from "../../hooks/useDetectElementBottom";
 import {EmptyMessage} from "../../components/EmptyMessage";
 import {AddNewButton} from "../../components/controls/AddNewButton";
@@ -16,23 +14,28 @@ import {AddEditTeamWizard} from "./AddEditTeamWizard";
 export const TeamsDisplay = () => {
 
     // handlers
-    const onShowAddModal = () => {
-        setIsAddModalShown(true)
-    }
+    const onShowAddModal = _ => setIsAddModalShown(true)
+    const handlePageBottom = async _ => teams?.next && await fetchMoreTeams()
 
     // state
     let [isAddModalShown, setIsAddModalShown] = useState(false)
-    let [next, setNext] = useState(null)
     const {
         data,
         isLoading,
         isSuccess,
         isError,
-        error
-    } = useFetchAllTeamsQuery(next)
-    const nextUrl = data?.next
-    let teams = useSelector(state => selectAllTeams(state))
-    useDetectElementBottom(document.getElementById('Content-stage'), () => setNext(nextUrl))
+        error,
+        fetchNextPage: fetchMoreTeams,
+    } = useFetchAllTeamsInfiniteQuery()
+    const teams = data?.pages.reduce((prev, next) => {
+        return {
+            teams: [...prev.teams, ...next.teams],
+            next: next.next,
+        }
+    })
+
+    // detect end of page
+    useDetectElementBottom(document.getElementById('Content-stage'), handlePageBottom)
 
     // toast messages
     useEffect(() => {
@@ -54,7 +57,7 @@ export const TeamsDisplay = () => {
                     <ErrorMessage>Could not load teams data.</ErrorMessage> :
                     isLoading ?
                         <FillSpinner/> :
-                        isSuccess && teams && Object.keys(teams.entities).length > 0 ?
+                        isSuccess && teams && Object.keys(teams.teams).length > 0 ?
                             <div>
                                 <div className={'Entity-header'}>
                                     <h1>Teams</h1>
@@ -62,7 +65,7 @@ export const TeamsDisplay = () => {
                                 </div>
                                 <div className={"Entity-display"}>
                                     {
-                                        Object.values(teams.entities)
+                                        Object.values(teams.teams)
                                             .sort((t1, t2) => t1.name.name.localeCompare(t2.name.name))
                                             .map(team => <TeamTile team={team} key={team.id}/>)
                                     }

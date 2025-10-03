@@ -1,17 +1,11 @@
 import React, {useEffect, useState} from "react";
-import {useAddMatchMutation, useFetchAllEventsQuery} from "../../slices/api/eventApiSlice";
+import {useAddMatchMutation, useFetchAllEventsInfiniteQuery} from "../../slices/api/eventApiSlice";
 import {EventsDisplay} from "./EventsDisplay";
 import {useDispatch, useSelector} from "react-redux";
-import {
-    finishEditMatch,
-    selectEditedMatchForUpload,
-    selectIsEditedMatchValid,
-    selectMatches
-} from "../../slices/matchSlice";
+import {finishEditMatch, selectEditedMatchForUpload, selectIsEditedMatchValid} from "../../slices/matchSlice";
 import {FillSpinner} from "../../components/Spinner";
 import {getToastMessage} from "../../utils";
 import {toast} from "react-toastify";
-import {useDetectElementBottom} from "../../hooks/useDetectElementBottom";
 import {ErrorMessage} from "../../components/ErrorMessage";
 import Modal, {Body, Footer, Header} from "../../components/Modal";
 import {AddEditMatchWizard} from "./AddEditMatchWizard";
@@ -20,7 +14,7 @@ import {CancelButton} from "../../components/controls/CancelButton";
 import {AddNewButton} from "../../components/controls/AddNewButton";
 
 
-export const LatestEventsPage = (props) => {
+export const LatestEventsPage = () => {
 
     // handlers
     const dispatch = useDispatch()
@@ -34,19 +28,15 @@ export const LatestEventsPage = (props) => {
         setIsAddModalShown(false)
         dispatch(finishEditMatch())
     }
-    // handle soft load of more events
-    useDetectElementBottom(document.getElementById('Content-stage'), () => setNext(nextUrl))
-
-    let {startingUrl} = props
-    let [next, setNext] = useState(startingUrl)
 
     // hooks
     const {
-        data,
+        data: events,
         isLoading,
         isError,
-        error
-    } = useFetchAllEventsQuery(next)
+        error,
+        fetchNextPage: fetchMoreEvents,
+    } = useFetchAllEventsInfiniteQuery()
     const [
         addMatch, {
             isLoading: isAdding,
@@ -60,8 +50,6 @@ export const LatestEventsPage = (props) => {
     let [isAddModalShown, setIsAddModalShown] = useState(false)
     let {isValid, reason} = useSelector(state => selectIsEditedMatchValid(state))
     let uploadMatch = useSelector(state => selectEditedMatchForUpload(state))
-    let nextUrl = data?.next
-    let events = useSelector(state => selectMatches(state))
 
     // toast messages
     useEffect(() => {
@@ -121,7 +109,7 @@ export const LatestEventsPage = (props) => {
                                     <h1>Events</h1>
                                     <AddNewButton onClick={onShowAddModal}/>
                                 </div>
-                                <EventsDisplay events={events}/>
+                                <EventsDisplay events={events} fetchMore={fetchMoreEvents}/>
                             </div>
                         </>
             }

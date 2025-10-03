@@ -7,8 +7,7 @@ $dataSourceExtBorder: 1px solid #ccc;
 $dataSourceIntBorder: 1px solid #666;
 
 .Data-source-display {
-
-  padding: 1rem 2rem;
+  width: 100%;
 
   & > div {
     margin: 1rem 0;
@@ -168,13 +167,17 @@ $dataSourceIntBorder: 1px solid #666;
   }
 }
 
+.Pattern-kit-pattern {
+  width: 30rem;
+}
+
 .Pattern-kit {
   margin-bottom: 1.5rem;
   padding: 1rem;
   background-color: rgba(0, 0, 0, .15);
 
   input[type=text] {
-    width: fit-content;
+    width: 60rem;
     max-width: 65vw;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -247,7 +250,9 @@ $dataSourceIntBorder: 1px solid #666;
 }
 
 .Add-pattern-kit-form {
-  width: 100%;
   margin: 0;
+  height: 100%;
+  width: 100%;
+  overflow-y: scroll;
 }
 

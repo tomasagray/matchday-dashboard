@@ -1,18 +1,17 @@
 import {Status, ToggleSwitch} from "../../components/controls/ToggleSwitch";
 import React, {useEffect} from "react";
-import {useSelector} from "react-redux";
 import {
     useDisableDataSourcePluginMutation,
     useEnableDataSourcePluginMutation
 } from "../../slices/api/dataSourcePluginApiSlice";
-import {selectDataSourcePluginById} from "../../slices/dataSourcePluginSlice";
 import {SettingContainer} from "../../components/SettingContainer";
 import {SettingsGroup} from "../../components/SettingsGroup";
 import {SettingsLink} from "../../components/SettingsLink";
 import {toast} from "react-toastify";
 import {getToastMessage} from "../../utils";
 
-export const PluginDetailDisplay = () => {
+
+export const PluginDetailDisplay = (props) => {
 
     const onEnabledToggle = () => {
         if (plugin && !enableIsLoading && !disableIsLoading) {
@@ -23,6 +22,8 @@ export const PluginDetailDisplay = () => {
             }
         }
     }
+
+    // hooks
     const [enablePlugin, {
         isLoading: enableIsLoading,
         isError: isEnableError,
@@ -33,19 +34,17 @@ export const PluginDetailDisplay = () => {
         isError: isDisableError,
         error: disableError
     }] = useDisableDataSourcePluginMutation()
-    const selectedPluginId = useSelector(state => state.dataSourcePlugins.selectedPluginId)
-    const plugin = useSelector(state => selectDataSourcePluginById(state, selectedPluginId))
+
+    // state
+    let {plugin} = props
     let toggle = Status()['Unchecked']
 
     // handle toggle switch rendering
     if (enableIsLoading || disableIsLoading) {
         toggle = Status()['Transitioning']
     } else if (plugin) {
-        if (plugin.enabled) {
-            toggle = Status()['Checked']
-        } else {
-            toggle = Status()['Unchecked']
-        }
+        if (plugin.enabled) toggle = Status()['Checked']
+        else toggle = Status()['Unchecked']
     }
 
     // error message toast

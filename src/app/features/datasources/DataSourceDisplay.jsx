@@ -103,9 +103,7 @@ export const DataSourceDisplay = (props) => {
     const DEFAULT_FIELD_SIZE = 25
     const dispatch = useDispatch()
 
-    const toggleIsShown = () => {
-        setIsShown(!isShown)
-    }
+    const toggleIsShown = () => setIsShown(!isShown)
     // save/reset data source modal
     const onBaseUriValChanged = (e) => {
         let baseUriVal = e.target.value
@@ -115,15 +113,9 @@ export const DataSourceDisplay = (props) => {
         }
         dispatch(dataSourceUpdated({id: dataSourceId, changes: updatedDataSource}))
     }
-    const onSetSelectedPatternKitType = (e, type) => {
-        setSelectedType(type)
-    }
-    const onShowResetWarning = () => {
-        setShowResetModal(true)
-    }
-    const onCloseResetWarning = () => {
-        setShowResetModal(false)
-    }
+    const onSetSelectedPatternKitType = (e, type) => setSelectedType(type)
+    const onShowResetWarning = () => setShowResetModal(true)
+    const onCloseResetWarning = () => setShowResetModal(false)
     const onResetDataSource = () => {
         dispatch(dataSourceReset({dataSourceId: dataSourceId}))
         setIsEditable(false)
@@ -132,10 +124,9 @@ export const DataSourceDisplay = (props) => {
     const onSaveDataSource = async () => {
         console.log('updating data source', dataSource.dataSourceId)
         await updateDataSource(dataSource)
-        console.log('... updated')
+        console.log('... data source updated')
         setIsEditable(false)
     }
-
     // type submenu
     const onShowPatternKitTypeMenu = (e) => {
         e.preventDefault()
@@ -145,7 +136,6 @@ export const DataSourceDisplay = (props) => {
         e.preventDefault()
         setSelectedType('')
     }
-
     // add pattern kit modal
     const onShowAddPatternKitModal = (e) => {
         e.preventDefault()
@@ -193,9 +183,7 @@ export const DataSourceDisplay = (props) => {
         setShowDeleteDataSourceModal(true)
         setEditMenuHidden(true)
     }
-    const onHideDeleteDataSourceModal = () => {
-        setShowDeleteDataSourceModal(false)
-    }
+    const onHideDeleteDataSourceModal = () => setShowDeleteDataSourceModal(false)
     const onDeleteDataSource = async () => {
         console.log('deleting data source with ID:', dataSourceId)
         await deleteDataSource(dataSourceId)

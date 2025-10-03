@@ -43,12 +43,8 @@ export const AddNewUserForm = (props) => {
         setCookieFileData(new Blob())
     }
     const onSaveNewUser = async () => {
-        console.log('loginMode', loginMode)
-        if (loginMode === USER_PASSWORD_MODE) {
-            await onLoginUser()
-        } else {
-            await onUploadUserCredentials()
-        }
+        if (loginMode === USER_PASSWORD_MODE) await onLoginUser()
+        else await onUploadUserCredentials()
     }
     const onLoginUser = async () => {
         let user = {
@@ -61,7 +57,7 @@ export const AddNewUserForm = (props) => {
         onHide()
     }
     const onUploadUserCredentials = async () => {
-        console.log('uploading credentials...')
+        console.log('uploading user credentials...')
         let formData = new FormData()
         formData.append('username', username.value)
         formData.append('serverId', pluginId)
@@ -86,7 +82,7 @@ export const AddNewUserForm = (props) => {
         error: uploadError
     }] = useUploadCredentialsMutation()
 
-    // toast messages
+// toast messages
     useEffect(() => {
         if (isLoginSuccess || isUploadSuccess) {
             toast(`User ${username.value} logged in successfully`)

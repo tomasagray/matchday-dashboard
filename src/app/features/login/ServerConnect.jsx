@@ -45,15 +45,12 @@ export const ServerConnect = (props) => {
 
 
     useEffect(() => {
-        if (isLoading) {
-            console.log('loading...')
-        }
+        const minVersion = properties.minimumServerVersion
         if (isSuccess) {
-            console.log('server responded', data)
-            if (compareVersions(data.version, properties.minimumServerVersion) >= 0) {
+            if (compareVersions(data.version, minVersion) >= 0) {
                 console.log('version is sufficient', data.version)
             } else {
-                console.error('version sucks!', data.version)
+                toast.error(`Server version [${data.version}] is insufficient! Requires at least ${minVersion}`)
             }
             onConnect && onConnect(serverAddress)
         }

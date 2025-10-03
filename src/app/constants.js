@@ -4,3 +4,8 @@ export const JsonHeaders = {
 }
 
 export const serverAddressCookie = '__Server-address'
+
+export const infiniteQueryOptions = {
+    initialPageParam: 0,
+    getNextPageParam: (lastPage, allPages, lastPageParam) => lastPageParam + 1,
+}

@@ -14,17 +14,12 @@ export const editedCompetition = {
     synonyms: [],
     newSynonym: {},
 }
-export const initialState = competitionAdapter.getInitialState({
-    editedCompetition,
-})
+export const initialState = {editedCompetition}
 
 export const competitionSlice = createSlice({
     name: 'competitions',
     initialState,
     reducers: {
-        allCompetitionsLoaded: competitionAdapter.setAll,
-        competitionsLoaded: competitionAdapter.setMany,
-        competitionLoaded: competitionAdapter.setOne,
         beginEditingCompetition: (state, action) => {
             let {payload} = action
             let {competition} = payload
@@ -182,9 +177,6 @@ export const competitionSlice = createSlice({
 })
 
 export const {
-    allCompetitionsLoaded,
-    competitionsLoaded,
-    competitionLoaded,
     beginEditingCompetition,
     editCompetitionTitle,
     editNewSynonym,

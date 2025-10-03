@@ -117,7 +117,7 @@ export const AddEditCompetitionWizard = (props) => {
                 onShowHideDeleteConfirm()
                 onHideWizard(true)
             })
-        console.log('done deleting')
+        console.log('done deleting competition')
     }
 
     // state
@@ -315,7 +315,7 @@ export const AddEditCompetitionWizard = (props) => {
                     </span>
                 </Header>
                 <Body>
-                    <div style={{display: 'flex', justifyContent: 'center'}}>
+                    <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%'}}>
                         <WarningMessage>
                             <span style={{color: '#888'}}>
                                 Are you <strong>sure</strong> you want to delete the Competition: <br/>

@@ -118,16 +118,14 @@ export const Settings = () => {
             editSettings({field: BACKUP_LOCATION, value})
         )
     }
-    const onResetSettings = () => {
-        dispatch(loadSettings(settings))
-    }
-    const onSaveSettings = () => {
+    const onResetSettings = () => dispatch(loadSettings(settings))
+    const onSaveSettings = async () => {
         console.log('updating settings...', uploadSettings)
-        updateSettings(uploadSettings)
-        console.log('done updating')
+        await updateSettings(uploadSettings)
+        console.log('done updating settings')
     }
     const onChangeLogLevel = (e, level) => {
-        console.log('setting log level...', level)
+        console.log('setting log level to:', level)
         let logLevel = {
             configuredLevel: level
         }

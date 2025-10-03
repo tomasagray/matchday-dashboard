@@ -76,9 +76,7 @@ export const AddEditMatchWizard = (props) => {
 
     // handlers
     const dispatch = useDispatch()
-    const onSelectEditWizard = (wizard) => () => {
-        setSelectedWizard(wizard)
-    }
+    const onSelectEditWizard = (wizard) => () => setSelectedWizard(wizard)
     const onSelectDate = (date) => {
         // set date
         let formattedDate = formatDateTime(date)
@@ -87,7 +85,6 @@ export const AddEditMatchWizard = (props) => {
         // set season
         let season = computeSeason(formattedDate)
         dispatch(updateEditedMatch({field: 'season', value: season}))
-        console.log('smaller year', season['startYear'] % 100)
     }
     const onEditFixture = (e) => {
         let fixture = {
@@ -95,23 +92,18 @@ export const AddEditMatchWizard = (props) => {
         }
         dispatch(updateEditedMatch({field: 'fixture', value: fixture}))
     }
-    const onSelectCompetition = (competition) => () => {
-        dispatch(updateEditedMatch({field: 'competition', value: competition}))
-    }
-    const onSelectHomeTeam = (team) => {
-        dispatch(updateEditedMatch({field: 'homeTeam', value: team}))
-    }
-    const onSelectAwayTeam = (team) => {
-        dispatch(updateEditedMatch({field: 'awayTeam', value: team}))
-    }
+    const onSelectCompetition = (competition) => () => dispatch(updateEditedMatch({
+        field: 'competition',
+        value: competition
+    }))
+    const onSelectHomeTeam = (team) => dispatch(updateEditedMatch({field: 'homeTeam', value: team}))
+    const onSelectAwayTeam = (team) => dispatch(updateEditedMatch({field: 'awayTeam', value: team}))
     const onRefreshArtwork = async () => {
         if (!isArtworkRefreshing) {
             await refreshArtwork(eventId)
         }
     }
-    const onAddVideoSource = () => {
-        setIsAddVideoShown(true)
-    }
+    const onAddVideoSource = () => setIsAddVideoShown(true)
     const onHideAddVideoSource = () => {
         setIsAddVideoShown(false)
         dispatch(videoSourceDialogFinished())
@@ -120,9 +112,7 @@ export const AddEditMatchWizard = (props) => {
         dispatch(beganEditingVideoSource(source))
         setIsAddVideoShown(true)
     }
-    const onDeleteVideoSource = (source) => {
-        dispatch(deleteVideoSource(source))
-    }
+    const onDeleteVideoSource = (source) => dispatch(deleteVideoSource(source))
 
     // state
     let {eventId, onDelete} = props
@@ -224,6 +214,7 @@ export const AddEditMatchWizard = (props) => {
                         selectedTeam={editedMatch?.awayTeam}
                         onSelectTeam={onSelectAwayTeam}
                         key="Away-team-select"
+                        isFloatRight={true}
                     />
                 </div>
             </div>,

@@ -1,8 +1,7 @@
-import {createEntityAdapter, createSelector, createSlice} from "@reduxjs/toolkit";
+import {createSelector, createSlice} from "@reduxjs/toolkit";
 import {formatArtworkData, getUploadArtwork, updateSelectedArtwork} from "../utils";
 
 
-export const teamAdapter = createEntityAdapter()
 // white
 const DEFAULT_COLOR = {
     hsl: {
@@ -35,18 +34,12 @@ const editedTeam = {
     },
 }
 
-export const initialState = teamAdapter.getInitialState({
-    editedTeam,
-})
+export const initialState = {editedTeam}
 
 export const teamSlice = createSlice({
     name: 'teams',
     initialState,
     reducers: {
-        allTeamsLoaded: teamAdapter.setAll,
-        teamsLoaded: teamAdapter.setMany,
-        teamLoaded: teamAdapter.setOne,
-        teamDeleted: teamAdapter.removeOne,
         beginEditingTeam: (state, action) => {
             let {payload} = action
             let {team} = payload
@@ -124,7 +117,6 @@ export const teamSlice = createSlice({
         deleteTeamSynonym: (state, action) => {
             let {payload} = action
             let {synonym} = payload
-            console.log('deleting synonym', synonym)
             // get a mutable copy
             const existingSynonyms = [...state.editedTeam.name.synonyms]
             let newSynonyms = existingSynonyms.filter(syn => syn.name !== synonym.name)
@@ -248,9 +240,6 @@ export const teamSlice = createSlice({
 })
 
 export const {
-    teamsLoaded,
-    teamLoaded,
-    teamDeleted,
     beginEditingTeam,
     editTeamTitle,
     editNewSynonym,

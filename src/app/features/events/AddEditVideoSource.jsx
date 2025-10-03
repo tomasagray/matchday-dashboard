@@ -46,12 +46,8 @@ export const AddEditVideoSource = (props) => {
         let value = e.target.value
         dispatch(editedVideoSourceUpdated({field, value}))
     }
-    const onSelectResolution = (e, value) => {
-        dispatch(editedVideoSourceUpdated({field: 'resolution', value}))
-    }
-    const onSelectAudioChannels = (e, value) => {
-        dispatch(editedVideoSourceUpdated({field: 'audioChannels', value}))
-    }
+    const onSelectResolution = (e, value) => dispatch(editedVideoSourceUpdated({field: 'resolution', value}))
+    const onSelectAudioChannels = (e, value) => dispatch(editedVideoSourceUpdated({field: 'audioChannels', value}))
     const onSaveVideoSource = async () => {
         if (eventId === undefined || eventId === null) {
             // we're editing a new Match...

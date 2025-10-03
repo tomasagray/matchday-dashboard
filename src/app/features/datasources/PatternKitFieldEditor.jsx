@@ -26,7 +26,7 @@ export const PatternKitFieldEditor = (props) => {
         padding: '1rem 0',
     }
     const helpMessage =
-        <div style={{display: 'flex', justifyContent: 'center', padding: '2rem', width: '100%'}}>
+        <div style={{display: 'flex', justifyContent: 'center', padding: '2rem'}}>
             <InfoMessage>Select a type from above</InfoMessage>
         </div>
 
@@ -73,7 +73,9 @@ export const PatternKitFieldEditor = (props) => {
                                             fieldHandler={onFieldChange} key={field[0]}/>
                     ) :
                 <tr>
-                    <td colSpan={2}> {helpMessage} </td>
+                    <td colSpan={2}>
+                        {helpMessage}
+                    </td>
                 </tr>
             editor = (
                 <>

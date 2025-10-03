@@ -1,55 +1,33 @@
 import {apiSlice, competitionTag, eventTag, teamTag} from "./apiSlice";
-import {teamAdapter, teamDeleted, teamLoaded, teamsLoaded, updateArtworkCollection} from "../teamSlice";
+import {updateArtworkCollection} from "../teamSlice";
 import store from "../../store";
-import {competitionAdapter, competitionsLoaded} from "../competitionSlice";
-import {JsonHeaders} from "../../constants";
+import {infiniteQueryOptions, JsonHeaders} from "../../constants";
 
 
-export const DEFAULT_PAGE = 0
-export const DEFAULT_PAGE_SIZE = 16
-
-const getNormalizedTeams = (response) => {
-    let {teams} = response
-    if (teams && teams.length > 0) {
-        store.dispatch(teamsLoaded(teams))
-        return teamAdapter.setMany(teamAdapter.getInitialState(), teams)
+export const getNormalizedTeams = (response) => {
+    let {_embedded: embedded, _links: links} = response
+    if (embedded) {
+        let {teams} = embedded
+        let next = links?.next
+        return {
+            teams,
+            next: next?.href,
+        }
     }
+    return {}
 }
 
 export const teamApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => ({
-        fetchAllTeams: builder.query({
-            query: (url) => {
-                if (url != null) return {url}
-
-                // compute next page
-                let loadedTeams = store.getState().teams?.ids.length ?? DEFAULT_PAGE
-                let page = Math.floor(loadedTeams / DEFAULT_PAGE_SIZE)
-
-                return {
-                    url: `/teams?page=${page}&size=${DEFAULT_PAGE_SIZE}`,
-                }
-            },
+        fetchAllTeams: builder.infiniteQuery({
+            infiniteQueryOptions,
+            query: ({pageParam}) => `/teams?page=${pageParam}`,
             providesTags: [teamTag],
-            transformResponse: (response) => {
-                let {_embedded} = response
-                if (_embedded) {
-                    let normalized = getNormalizedTeams(_embedded)
-                    // todo - standardize whether returned data is wrapped in _embedded
-                    return {
-                        ...normalized,
-                        next: response['_links']?.next?.href,
-                    }
-                }
-            }
+            transformResponse: (response) => getNormalizedTeams(response)
         }),
         fetchTeamById: builder.query({
             query: (teamId) => `/teams/team/${teamId}`,
             providesTags: [teamTag],
-            transformResponse: (response) => {
-                store.dispatch(teamLoaded(response))
-                return response
-            }
         }),
         fetchCompetitionsForTeam: builder.query({
             query: (teamId) => `/teams/team/${teamId}/competitions`,
@@ -58,9 +36,9 @@ export const teamApiSlice = apiSlice.injectEndpoints({
                 let {_embedded} = response
                 if (_embedded) {
                     let {competitions} = _embedded
-                    store.dispatch(competitionsLoaded(competitions))
-                    return competitionAdapter.setAll(competitionAdapter.getInitialState(), competitions)
+                    return competitions
                 }
+                return []
             }
         }),
         addNewTeam: builder.mutation({
@@ -71,10 +49,7 @@ export const teamApiSlice = apiSlice.injectEndpoints({
                 body: team,
             }),
             invalidatesTags: [teamTag, eventTag],
-            transformResponse: response => {
-                store.dispatch(teamLoaded(response))
-                return response
-            }
+            transformResponse: response => getNormalizedTeams(response)
         }),
         updateTeam: builder.mutation({
             query: (team) => ({
@@ -130,7 +105,8 @@ export const teamApiSlice = apiSlice.injectEndpoints({
             }),
             invalidatesTags: [teamTag],
             transformResponse: teamId => {
-                store.dispatch(teamDeleted(teamId))
+                console.log('team deleted', teamId)
+                // TODO: handle further?
                 return teamId
             },
         }),
@@ -138,7 +114,7 @@ export const teamApiSlice = apiSlice.injectEndpoints({
 })
 
 export const {
-    useFetchAllTeamsQuery,
+    useFetchAllTeamsInfiniteQuery,
     useFetchTeamByIdQuery,
     useFetchCompetitionsForTeamQuery,
     useAddNewTeamMutation,

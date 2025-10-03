@@ -90,7 +90,7 @@ export const VideoSourceDisplay = (props) => {
         console.log('deleting all video data for video source...', eventId, videoSourceId)
         setIsConfirmDelVideoShown(false)
         await deleteStreams({videoSourceId})
-        console.log('... done deleting.')
+        console.log('... done deleting video source')
     }
 
     // state
@@ -163,11 +163,11 @@ export const VideoSourceDisplay = (props) => {
     useEffect(() => {
         if (isKillAllSuccess) {
             toast('Successfully stopped all streams for: ' + videoSourceId)
-            console.log('kill all response', killAllResponse)
+            console.log('kill all streams response:', killAllResponse)
         }
         if (isDeleteAllSuccess) {
             toast('Successfully deleted all streams for: ' + videoSourceId)
-            console.log('delete all response', deleteStreamsData)
+            console.log('delete all streams response:', deleteStreamsData)
         }
         if (isSourceDeleted) {
             toast('Video Source successfully deleted')

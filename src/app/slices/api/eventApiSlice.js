@@ -1,20 +1,17 @@
 import {apiSlice, competitionTag, eventTag} from "./apiSlice";
 import store from "../../store";
-import {artworkRefreshed, matchAdapter, matchDeleted, matchLoaded, matchSlice} from "../matchSlice";
-import {JsonHeaders} from "../../constants";
+import {artworkRefreshed} from "../matchSlice";
+import {infiniteQueryOptions, JsonHeaders} from "../../constants";
 
 
 const getNormalizedEvents = (response) => {
     // todo - handle highlights, other types?
     let {matches, _links: links} = response
-    if (matches && matches.length > 0) {
-        store.dispatch(matchSlice.actions.matchesLoaded(matches))
-        let normalized = matchAdapter.setMany(matchAdapter.getInitialState(), matches)
-        return {
-            ...normalized,
+    return matches && matches.length > 0 ?
+        {
+            matches,
             next: links?.next?.href
-        }
-    }
+        } : []
 }
 
 const removeVideoFileIds = (event) => {
@@ -40,35 +37,20 @@ const removeVideoFileIds = (event) => {
 
 export const eventApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => ({
-        fetchAllEvents: builder.query({
-            query: (url = null, page = 0, size = 16) => {
-                if (url !== null) {
-                    return {url}
-                }
-                return {
-                    url: `/events?page=${page}&size=${size}`,
-                }
-            },
+        fetchAllEvents: builder.infiniteQuery({
+            infiniteQueryOptions,
+            query: ({pageParam}) => `/events?page=${pageParam}`,
             providesTags: [eventTag],
-            transformResponse: (response) => {
-                return getNormalizedEvents(response)
-            },
+            transformResponse: (response) => getNormalizedEvents(response),
         }),
-        fetchMatchesForTeam: builder.query({
-            query: (teamId) => `/teams/team/${teamId}/matches`,
+        fetchMatchesForTeam: builder.infiniteQuery({
+            infiniteQueryOptions,
+            query: ({queryArg, pageParam}) => `/teams/team/${queryArg}/matches?page=${pageParam}`,
             providesTags: [eventTag],
-            transformResponse: (response) => {
-                let {_embedded: embedded} = response
-                if (embedded) {
-                    return getNormalizedEvents(embedded)
-                }
-            },
+            transformResponse: (response) => getNormalizedEvents(response),
         }),
         fetchEventsForCompetition: builder.infiniteQuery({
-            infiniteQueryOptions: {
-                initialPageParam: 0,
-                getNextPageParam: (lastPage, allPages, lastPageParam) => lastPageParam + 1,
-            },
+            infiniteQueryOptions,
             query: ({queryArg, pageParam}) => `/competitions/competition/${queryArg}/events?page=${pageParam}`,
             providesTags: [eventTag],
             transformResponse: (response) => getNormalizedEvents(response)
@@ -76,10 +58,6 @@ export const eventApiSlice = apiSlice.injectEndpoints({
         fetchMatchById: builder.query({
             query: (eventId) => `/matches/match/${eventId}`,
             providesTags: [eventTag],
-            transformResponse: (response) => {
-                store.dispatch(matchLoaded(response))
-                return response
-            }
         }),
         refreshMatchArtwork: builder.mutation({
             query: matchId => ({
@@ -120,17 +98,13 @@ export const eventApiSlice = apiSlice.injectEndpoints({
                 method: 'DELETE',
             }),
             invalidatesTags: [eventTag, competitionTag],
-            transformResponse: matchId => {
-                store.dispatch(matchDeleted(matchId))
-                return matchId
-            },
         }),
     })
 })
 
 export const {
-    useFetchAllEventsQuery,
-    useFetchMatchesForTeamQuery,
+    useFetchAllEventsInfiniteQuery,
+    useFetchMatchesForTeamInfiniteQuery,
     useFetchEventsForCompetitionInfiniteQuery,
     useFetchMatchByIdQuery,
     useRefreshMatchArtworkMutation,

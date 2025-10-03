@@ -1,10 +1,9 @@
 import React, {useEffect} from "react";
 import ContentBar from "../components/ContentBar";
-import {useFetchAllEventsQuery} from "../slices/api/eventApiSlice";
+import {useFetchAllEventsInfiniteQuery} from "../slices/api/eventApiSlice";
 import {useFetchAllCompetitionsQuery} from "../slices/api/competitionApiSlice";
-import {useFetchAllTeamsQuery} from "../slices/api/teamApiSlice";
+import {useFetchAllTeamsInfiniteQuery} from "../slices/api/teamApiSlice";
 import {CenteredSpinner} from "../components/Spinner";
-import EventTile from "../features/events/EventTile";
 import CompetitionTile from "../features/competitions/CompetitionTile";
 import TeamTile from "../features/teams/TeamTile";
 import {toast} from "react-toastify";
@@ -13,6 +12,7 @@ import {EmptyMessage} from "../components/EmptyMessage";
 import {Link} from "react-router-dom";
 import {ErrorMessage} from "../components/ErrorMessage";
 import {MoreButton} from "../components/MoreButton";
+import EventTile from "../features/events/EventTile";
 
 export const Home = () => {
 
@@ -23,7 +23,7 @@ export const Home = () => {
         isSuccess: isEventsSuccess,
         isError: isEventsError,
         error: eventsError
-    } = useFetchAllEventsQuery()
+    } = useFetchAllEventsInfiniteQuery()
     const {
         data: competitionsData,
         isLoading: isCompetitionsLoading,
@@ -37,11 +37,11 @@ export const Home = () => {
         isSuccess: isTeamsSuccess,
         isError: isTeamsError,
         error: teamsError
-    } = useFetchAllTeamsQuery()
+    } = useFetchAllTeamsInfiniteQuery()
 
     // item lists
     let eventTiles = (isEventsSuccess && eventsData) ?
-        Object.values(eventsData.entities).map(event => <EventTile event={event}/>) :
+        Object.values(eventsData?.pages[0].matches).map(event => <EventTile event={event}/>) :
         []
     if (eventTiles.length >= 16) {
         eventTiles.push(
@@ -60,7 +60,7 @@ export const Home = () => {
                     <EmptyMessage noun="events"/>
 
     let competitionTiles = (isCompetitionsSuccess && competitionsData) ?
-        Object.values(competitionsData.entities)
+        Object.values(competitionsData)
             .map(competition => <CompetitionTile competition={competition}/>) :
         []
     let competitionsList =
@@ -73,7 +73,7 @@ export const Home = () => {
                     <EmptyMessage noun="competitions"/>;
 
     let teamTiles = (isTeamsSuccess && teamsData) ?
-        Object.values(teamsData.entities)
+        Object.values(teamsData?.pages[0].teams)
             .map(team => <TeamTile team={team}/>) :
         []
     if (teamTiles.length >= 16) {

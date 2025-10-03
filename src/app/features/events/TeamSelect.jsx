@@ -1,14 +1,12 @@
 import React, {useEffect, useRef, useState} from "react";
 import TeamTile from "../teams/TeamTile";
-import {useFetchAllTeamsQuery} from "../../slices/api/teamApiSlice";
+import {useFetchAllTeamsInfiniteQuery} from "../../slices/api/teamApiSlice";
 import {CenteredSpinner} from "../../components/Spinner";
 import {ErrorMessage} from "../../components/ErrorMessage";
 import {getToastMessage} from "../../utils";
 import {toast} from "react-toastify";
 import {FloatingMenu} from "../../components/FloatingMenu";
 import {useDetectElementBottom} from "../../hooks/useDetectElementBottom";
-import {useSelector} from "react-redux";
-import {selectAllTeams} from "../../slices/teamSlice";
 
 export const TeamSelect = (props) => {
 
@@ -19,29 +17,31 @@ export const TeamSelect = (props) => {
             setIsTeamMenuHidden(true)
         }
     }
-    const onShowTeamMenu = () => {
-        setIsTeamMenuHidden(!isTeamMenuHidden)
-    }
-    const onHideTeamMenu = () => {
-        setIsTeamMenuHidden(true)
-    }
+    const onShowTeamMenu = _ => setIsTeamMenuHidden(!isTeamMenuHidden)
+    const onHideTeamMenu = _ => setIsTeamMenuHidden(true)
+    const handleMenuBottom = async _ => teams?.next && await fetchMoreTeams()
 
     // state
-    let {selectedTeam, onSelectTeam} = props
-    let [next, setNext] = useState(null)
-    let teamsList = useSelector(state => selectAllTeams(state))
+    let {selectedTeam, onSelectTeam, isFloatRight} = props
+    let selectedRef = useRef()
+    let teamsRef = useRef()
     let [isTeamMenuHidden, setIsTeamMenuHidden] = useState(true)
     let {
-        data: teams,
+        data,
         isLoading,
         isSuccess,
         isError,
-        error
-    } = useFetchAllTeamsQuery(next)
-    let nextUrl = teams?.next
-    let selectedRef = useRef()
-    let teamsRef = useRef()
-    useDetectElementBottom(teamsRef.current, () => setNext(nextUrl))
+        error,
+        fetchNextPage: fetchMoreTeams,
+    } = useFetchAllTeamsInfiniteQuery()
+    let teams = data?.pages.reduce((prev, next) => {
+        return {
+            teams: [...prev.teams, ...next.teams],
+            next: next.next,
+        }
+    })
+
+    useDetectElementBottom(teamsRef.current, handleMenuBottom)
 
     // toast messages
     useEffect(() => {
@@ -67,7 +67,7 @@ export const TeamSelect = (props) => {
                 hidden={isTeamMenuHidden}
                 onClickOutside={onHideTeamMenu}
             >
-                <div className="Team-select-menu">
+                <div className={'Team-select-menu' + (isFloatRight ? ' right' : '')}>
                     <div className="Team-select-arrow">
                         <div></div>
                     </div>
@@ -76,7 +76,7 @@ export const TeamSelect = (props) => {
                             isLoading ?
                                 <CenteredSpinner/> :
                                 isSuccess ?
-                                    Object.values(teamsList.entities)
+                                    Object.values(teams?.teams)
                                         .map(team => {
                                                 const isSelected = selectedTeam?.id === team?.id
                                                 const className = "Team-tile-selector" + (isSelected ? " selected" : "")

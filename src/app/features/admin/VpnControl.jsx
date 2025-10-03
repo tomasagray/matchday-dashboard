@@ -16,17 +16,17 @@ export const VpnControl = (props) => {
     const onConnectVpn = async () => {
         console.log('connecting VPN...')
         await connectVpn()
-        console.log('connected')
+        console.log('VPN connected')
     }
     const onReconnectVpn = async () => {
         console.log('reconnecting VPN...')
         await reconnectVpn()
-        console.log('reconnected')
+        console.log('VPN reconnected')
     }
     const onDisconnectVpn = async () => {
         console.log('disconnecting VPN...')
         await disconnectVpn()
-        console.log('disconnected')
+        console.log('VPN disconnected')
     }
 
     // state

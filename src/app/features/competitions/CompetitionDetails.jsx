@@ -90,7 +90,7 @@ export const CompetitionDetails = () => {
     // components
     let eventTiles =
         isEventsSuccess && events ?
-            Object.values(events?.pages[0].entities)
+            Object.values(events?.pages[0].matches)
                 .slice(0, MAX_EVENTS)
                 .map(event => <EventTile event={event}/>) :
             []
@@ -104,7 +104,7 @@ export const CompetitionDetails = () => {
 
     let teamTiles =
         isTeamsSuccess && teams ?
-            Object.values(teams.entities).map(
+            Object.values(teams?.teams).map(
                 team => <TeamTile team={team} key={team.id}/>
             ) : []
 

@@ -46,17 +46,17 @@ export const AddDataSourceForm = (props) => {
     }
     const onClearJson = () => {
         dispatch(newDataSourceUpdated({field: 'dataSourceJson', value: {}}))
-        setJsonData(new Blob())
+        setJsonData(new Blob(['']))
     }
     const onSaveNewDataSource = async () => {
         // transform form data into DataSource
         if (jsonData.size > 0) {
             let dataSource = await getJsonFileData()
-            console.log('saving:', dataSource.dataSourceId)
+            console.log('saving data source:', dataSource.dataSourceId)
             await addDataSource(dataSource)
         } else {
             let dataSource = getFormData()
-            console.log('saving:', dataSource)
+            console.log('saving data source:', dataSource)
             await addDataSource(dataSource)
         }
         dispatch(clearNewDataSource({}))
@@ -124,14 +124,12 @@ export const AddDataSourceForm = (props) => {
     let newDataSource = useSelector(state => selectNewDataSource(state))
     let {type, title, baseUri, dataSourceJson} = newDataSource
     let isFormValid = useSelector(state => selectIsNewDataSourceValid(state))
-    let [jsonData, setJsonData] = useState(new Blob())
+    let [jsonData, setJsonData] = useState(new Blob(['']))
     let selectedValue
     let templateOptions = []
-    for (let i = 0; i < templates?.length ?? 0; i++) {
+    for (let i = 0; i < templates?.length; i++) {
         let template = templates[i]
-        if (template.type === type.value) {
-            selectedValue = template.type
-        }
+        if (template.type === type.value) selectedValue = template.type
         templateOptions.push(
             <Option value={template.type} key={template.id}>{template.name}</Option>
         )

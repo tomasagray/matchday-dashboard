@@ -1,27 +1,24 @@
 import React, {useEffect, useState} from 'react'
 import {useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {selectDataSourcePluginById} from "../../slices/dataSourcePluginSlice";
-import {useGetAllDataSourcePluginsQuery} from "../../slices/api/dataSourcePluginApiSlice";
+import {useGetAllDataSourcePluginsQuery, useGetDataSourcePluginQuery} from "../../slices/api/dataSourcePluginApiSlice";
 import {PluginId} from "../../components/PluginId";
 import {Spinner} from "../../components/Spinner";
-import {AddDataSourceForm} from "./AddDataSourceForm";
+import {AddDataSourceForm} from "../datasources/AddDataSourceForm";
 import {clearNewDataSource} from "../../slices/dataSourceSlice";
-import {DataSourceList} from "./DataSourceList";
+import {DataSourceList} from "../datasources/DataSourceList";
 import {toast} from "react-toastify";
 import {getToastMessage} from "../../utils";
 
-export const PluginDataSourceList = () => {
+
+export const DataSourcePluginDisplay = () => {
 
     const dispatch = useDispatch()
-    const onAddDataSource = () => {
-        setShowAddDataSourceModal(true)
-    }
+    const onAddDataSource = () => setShowAddDataSourceModal(true)
     const onHideAddDataSourceModal = () => {
         dispatch(clearNewDataSource({}))
         setShowAddDataSourceModal(false)
     }
-
 
     const params = useParams()
     let {pluginId} = params
@@ -29,18 +26,15 @@ export const PluginDataSourceList = () => {
 
     // ensure data is loaded into store
     let {
+        data: plugin,
         isLoading: pluginLoading,
         isSuccess: pluginSuccess,
         isFetching: isPluginRefetching,
         isError: isPluginError,
         error: pluginError
-    } = useGetAllDataSourcePluginsQuery()
-    let plugin = useSelector(state => {
-        if (pluginSuccess) {
-            return selectDataSourcePluginById(state, pluginId)
-        }
-    })
+    } = useGetDataSourcePluginQuery(pluginId)
 
+    // state
 
     useEffect(() => {
         if (isPluginError) {
@@ -54,14 +48,11 @@ export const PluginDataSourceList = () => {
     ])
 
 
-    let pluginTitle
     let isDataFetching = pluginLoading || isPluginRefetching;
-    if (pluginSuccess) {
-        pluginTitle = <h1>{plugin.title}</h1>
-    }
-    if (isDataFetching) {
-        pluginTitle = <Spinner size={'32px'} text={''}/>
-    }
+    let pluginTitle = pluginSuccess ?
+        <h1>{plugin.title}</h1> :
+        isDataFetching ? <Spinner size={'32px'} text={''}/> :
+            ''
 
     return (
         <>

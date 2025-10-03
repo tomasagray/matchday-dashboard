@@ -21,15 +21,10 @@ export const AddPatternKitForm = (props) => {
 
     const patternKitTypeElement = 'pattern-kit-type'
 
-    const dispatch = useDispatch()
-    
     // handlers
-    const onSelectType = (e, template) => {
-        dispatch(newPatternKitTypeSelected(template))
-    }
-    const onChangePattern = (value) => {
-        dispatch(newPatternKitUpdated({field: 'pattern', value}))
-    }
+    const dispatch = useDispatch()
+    const onSelectType = (e, template) => dispatch(newPatternKitTypeSelected(template))
+    const onChangePattern = (value) => dispatch(newPatternKitUpdated({field: 'pattern', value}))
     const onChangeField = (e, fields) => {
         let valid = validateFields(fields, type.value)
         dispatch(newPatternKitFieldsUpdated({fields, valid}))
@@ -40,7 +35,7 @@ export const AddPatternKitForm = (props) => {
     let {dataSourceType, dataSourceId} = props
     let newPatternKit = useSelector(state => selectNewPatternKit(state))
     let {type, pattern, fields} = newPatternKit
-    
+
     // hook
     let {
         data: patternKitTemplate,
@@ -57,7 +52,7 @@ export const AddPatternKitForm = (props) => {
             toast.error(msg)
         }
     }, [dataSourceType, isError, error])
-    
+
     // components
     if (isLoading) {
         typeOptions.push(
@@ -83,13 +78,11 @@ export const AddPatternKitForm = (props) => {
             <Spinner/> :
             type.value !== 'placeholder' ?
                 <PatternKitFieldEditor type={type.value?.type} pattern={pattern.value} fields={fields.value}
-                                       patternHandler={onChangePattern} fieldHandler={onChangeField} /> :
-                <div style={{padding: '2rem'}}>
-                    <InfoMessage>Please select a type from above.</InfoMessage>
-                </div>
+                                       patternHandler={onChangePattern} fieldHandler={onChangeField}/> :
+                <InfoMessage>Please select a type from above.</InfoMessage>
 
     return (
-        <form>
+        <form style={{height: '100%', width: '100%'}}>
             <div className={"Add-pattern-kit-form"}>
                 <div style={{display: 'flex'}}>
                     <h3 style={{paddingRight: '5.25rem'}}>Type</h3>
@@ -99,7 +92,7 @@ export const AddPatternKitForm = (props) => {
                         {typeOptions}
                     </Select>
                 </div>
-                <div>
+                <div style={{display: 'flex', justifyContent: 'center', flexDirection: 'column'}}>
                     {editor}
                 </div>
             </div>

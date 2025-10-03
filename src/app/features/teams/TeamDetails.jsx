@@ -2,7 +2,7 @@ import ContentBar from "../../components/ContentBar";
 import {Link, useParams} from "react-router-dom";
 import {useFetchCompetitionsForTeamQuery, useFetchTeamByIdQuery} from "../../slices/api/teamApiSlice";
 import {CenteredSpinner, FillSpinner} from "../../components/Spinner";
-import {useFetchMatchesForTeamQuery} from "../../slices/api/eventApiSlice";
+import {useFetchMatchesForTeamInfiniteQuery} from "../../slices/api/eventApiSlice";
 import EventTile from "../events/EventTile";
 import CompetitionTile from "../competitions/CompetitionTile";
 import {EditButton} from "../../components/controls/EditButton";
@@ -34,14 +34,15 @@ export const TeamDetails = () => {
 
     const getMatchTiles = _ => {
         if (isMatchesSuccess && matches) {
-            let tiles = Object.values(matches.entities)
+            let tiles = Object.values(matches?.pages[0].matches)
                 .slice(0, MATCH_TILE_LIM)
                 .map(match => <EventTile event={match} key={match['eventId']}/>)
-            tiles.push(
-                <Link to={`/teams/team/${teamId}/events`}>
-                    <MoreButton/>
-                </Link>
-            )
+            if (tiles.length >= MATCH_TILE_LIM)
+                tiles.push(
+                    <Link to={`/teams/team/${teamId}/events`}>
+                        <MoreButton/>
+                    </Link>
+                )
             return tiles
         }
         return []
@@ -71,7 +72,7 @@ export const TeamDetails = () => {
         isSuccess: isMatchesSuccess,
         isError: isMatchesError,
         error: matchesError
-    } = useFetchMatchesForTeamQuery(teamId)
+    } = useFetchMatchesForTeamInfiniteQuery(teamId)
     const {
         data: competitions,
         isLoading: isCompetitionsLoading,
@@ -105,7 +106,7 @@ export const TeamDetails = () => {
         isCompetitionsLoading ?
             <CenteredSpinner/> :
             isCompetitionsSuccess && competitions ?
-                Object.values(competitions.entities).map(
+                Object.values(competitions).map(
                     competition => <CompetitionTile competition={competition} key={competition.id}/>
                 ) :
                 null
