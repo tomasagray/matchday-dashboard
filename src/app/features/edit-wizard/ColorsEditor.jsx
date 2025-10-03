@@ -5,15 +5,9 @@ import {ColorSelector} from "./ColorSelector";
 export const ColorsEditor = (props) => {
 
     // handlers
-    const onClickColorSelect = (color, priority) => {
-        onSelectColor && onSelectColor(color, priority)
-    }
-    const onClickAddColorButton = () => {
-        onAddColor && onAddColor()
-    }
-    const onClickDeleteColor = (priority) => {
-        onDeleteColor && onDeleteColor(priority)
-    }
+    const onClickColorSelect = (color, priority) => onSelectColor && onSelectColor(color, priority)
+    const onClickAddColorButton = () => onAddColor && onAddColor()
+    const onClickDeleteColor = (priority) => onDeleteColor && onDeleteColor(priority)
 
     // state
     let {colors, onSelectColor, onAddColor, onDeleteColor} = props

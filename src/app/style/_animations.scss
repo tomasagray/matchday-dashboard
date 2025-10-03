@@ -30,9 +30,11 @@
 
 @keyframes contractAccordion {
   from {
+    height: revert;
     max-height: variables.$accordionHeight;
   }
   to {
+    height: 0;
     max-height: 0;
   }
 }

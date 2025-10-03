@@ -17,7 +17,7 @@ export const EditWizard = (props) => {
 export const EditWizardMenu = (props) => {
 
     return (
-        <div>
+        <div style={{display: 'flex', height: '120%'}}>
             <ul className="Edit-wizard-menu">
                 {props.children}
             </ul>

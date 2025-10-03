@@ -54,11 +54,12 @@
   flex-wrap: wrap;
   position: relative;
   max-height: 0;
+  width: 100%;
   overflow: auto;
   animation: contractAccordion .4s;
 
   &.displayed {
-    max-height: variables.$accordionHeight;
+    max-height: revert;
     animation: expandAccordion .4s;
   }
 }
@@ -277,8 +278,10 @@
 
     .Dialog {
       margin: 5rem;
-      width: 50%;
-      height: 75%;
+      min-width: 50%;
+      width: 60rem;
+      max-height: 50rem;
+      height: 50%;
       background-color: colors.$appBg;
       border: 1px solid colors.$border;
       border-radius: .4rem;
@@ -296,8 +299,8 @@
 
     .Modal-body {
       padding: 3rem 2rem;
-      height: 50vh;
-      overflow: auto;
+      height: 30vh;
+      overflow: hidden;
     }
 
     .Modal-footer {
