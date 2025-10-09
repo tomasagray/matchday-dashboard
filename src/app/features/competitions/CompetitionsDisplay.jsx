@@ -13,7 +13,8 @@ import {ErrorMessage} from "../../components/ErrorMessage";
 export const CompetitionsDisplay = () => {
 
     // handlers
-    const onShowAddModal = () => setIsAddModalShown(true)
+    const onShowAddModal = _ => setIsAddModalShown(true)
+    const onHideAddModal = _ => setIsAddModalShown(false)
 
     // state
     let [isAddModalShown, setIsAddModalShown] = useState(false)
@@ -29,9 +30,8 @@ export const CompetitionsDisplay = () => {
 
     // toast messages
     useEffect(() => {
-        if (isError) {
+        if (isError)
             toast.error('Failed to load Competitions: ' + getToastMessage(error))
-        }
     }, [error, isError])
 
     setBackgroundImage('none')
@@ -39,7 +39,7 @@ export const CompetitionsDisplay = () => {
         <>
             <AddEditCompetitionWizard
                 isShown={isAddModalShown}
-                setIsShown={setIsAddModalShown}
+                onHideWizard={onHideAddModal}
             />
             {
                 isError ?
