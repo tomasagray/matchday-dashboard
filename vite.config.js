@@ -13,9 +13,10 @@ export default defineConfig({
         open: false,      // Open the browser on server start
         cors: true,
         allowedHosts: [
-            'hal9000',
             'localhost',
             '192.168.0.239',
+            'hal9000',
+            "react.dev.hal9000",
         ],
     },
 

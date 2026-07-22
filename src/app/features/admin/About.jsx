@@ -1,16 +1,14 @@
-import React, {useState} from "react";
+import React from "react";
 import {useAppInfoQuery} from "../../slices/api/adminApiSlice";
 import {CenteredSpinner} from "../../components/Spinner";
 import {ErrorMessage} from "../../components/ErrorMessage";
 import properties from "../../properties";
-import {VpnControl} from "./VpnControl";
-import {StompSessionProvider} from "react-stomp-hooks";
 import {setBackgroundImage} from "../../utils";
 
 
 export const About = () => {
 
-    const version = properties.version
+    const dashVersion = properties.version
     const baseUrl = properties.baseUrl
     const {
         data,
@@ -18,11 +16,10 @@ export const About = () => {
         isSuccess,
         error,
     } = useAppInfoQuery()
-    let [ipAddress, setIpAddress] = useState('?.?.?.?')
 
     setBackgroundImage('none')
     return (
-        <StompSessionProvider url={properties.websocketUrl}>
+        <>
             <h1>About</h1>
             <div className="About-description">
                 <img src="/img/logo/logo_64.png" alt="Matchday"/>
@@ -42,7 +39,7 @@ export const About = () => {
                                 <tbody>
                                 <tr>
                                     <td>Dashboard version</td>
-                                    <td>{version}</td>
+                                    <td>{dashVersion}</td>
                                 </tr>
                                 <tr>
                                     <td>Server version</td>
@@ -62,19 +59,13 @@ export const About = () => {
                                 </tr>
                                 <tr>
                                     <td>Server IP Address</td>
-                                    <td>{ipAddress}</td>
-                                </tr>
-                                <tr>
-                                    <td>VPN status</td>
-                                    <td>
-                                        <VpnControl onUpdate={setIpAddress}/>
-                                    </td>
+                                    <td>{data.ipAddress}</td>
                                 </tr>
                                 </tbody>
                             </table>
                         </div> :
                         <ErrorMessage code={error.status}>{error.error}</ErrorMessage>
             }
-        </StompSessionProvider>
+        </>
     )
 }
