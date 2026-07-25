@@ -7,13 +7,12 @@
 
 .Accordion-header {
   position: relative;
-  margin: .5rem 0;
-  padding: 1rem;
-  width: 100%;
+  padding: 1rem 1.5rem;
 
   display: flex;
   align-items: center;
-  border-radius: 5px;
+  justify-content: space-between;
+  border-radius: 10px;
 
   color: colors.$lightFontColor;
   text-align: left;
@@ -47,6 +46,15 @@
       animation: rotate45 .2s;
     }
   }
+
+  .Datasource-icon {
+    margin-right: 1rem;
+  }
+
+  .Datasource-id {
+    font-size: small;
+    color: colors.$mediumFontColor;
+  }
 }
 
 .Accordion-display {
@@ -56,11 +64,14 @@
   max-height: 0;
   width: 100%;
   overflow: auto;
-  animation: contractAccordion .4s;
 
   &.displayed {
     max-height: revert;
-    animation: expandAccordion .4s;
+    animation: expandAccordion .5s forwards;
+  }
+
+  &.closing {
+    animation: contractAccordion .5s forwards;
   }
 }
 
@@ -298,6 +309,9 @@
     }
 
     .Modal-body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
       padding: 3rem 2rem;
       height: 30vh;
       overflow: hidden;
@@ -335,6 +349,8 @@
 
 .Select {
   border: 1px solid #888;
+  border-radius: 5px;
+
   padding: .1em;
   width: 12rem;
   display: inline-block;
@@ -382,6 +398,7 @@
   }
 
   & .Floating-menu {
+    border-radius: 0 0 10px 10px;
     background-color: colors.$appBg;
     width: 100%;
     max-height: 30vh;
@@ -390,7 +407,7 @@
     z-index: layers.$floatingMenu;
 
     & > ul > div:not(:last-of-type) {
-      border-bottom: 1px dashed #666;
+      border-bottom: 1px solid rgba(80, 80, 80, .5);
     }
   }
 

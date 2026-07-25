@@ -1790,7 +1790,12 @@ option:hover {
 }
 
 .Data-source-display {
-  width: 100%;
+  width: 95%;
+  padding: 2rem;
+  margin-top: -2rem;
+  margin-bottom: 3rem;
+  background-color: rgba(30, 30, 30, 0.2);
+  border-radius: 10px;
 }
 .Data-source-display > div {
   margin: 1rem 0;
@@ -1830,16 +1835,24 @@ option:hover {
 }
 
 .Data-source-table {
+  margin: 2rem 0 6rem;
+  width: 100%;
   border-collapse: collapse;
-  margin: 2rem 0;
+}
+.Data-source-table tr:last-child td {
+  border-bottom: none;
 }
 .Data-source-table td {
-  padding: 1.25rem;
-  background-color: rgba(0, 0, 0, 0.1);
+  width: 15%;
+  padding: 0.75rem;
+  border-bottom: 1px solid rgba(160, 160, 160, 0.3);
+  color: #ccc;
+  background-color: rgba(75, 75, 75, 0.15);
 }
 .Data-source-table td:nth-of-type(2n+2) {
-  background-color: rgba(0, 0, 0, 0.15);
-  color: #ccc;
+  width: 85%;
+  background: none;
+  border-left: 1px solid rgba(160, 160, 160, 0.3);
 }
 
 .Type-header-container {
@@ -1863,6 +1876,9 @@ option:hover {
 
 .Pattern-kit-display {
   overflow: hidden;
+}
+.Pattern-kit-display:not(:last-of-type) {
+  margin-bottom: 4rem;
 }
 .Pattern-kit-display .Pattern-kit-type {
   display: flex;
@@ -1897,30 +1913,17 @@ option:hover {
   margin-bottom: 0.5rem;
   padding: 0.5rem 1rem;
   background-color: rgba(100, 100, 100, 0.5);
+  border-radius: 5px;
+}
+.Pattern-kit-type-header button {
+  color: #ccc;
 }
 .Pattern-kit-type-header .Filter-by-type-button {
-  transform: translateY(3px);
   background: none;
   border: none;
-  color: #aaa;
+  color: #ccc;
   font-size: medium;
   padding: 0;
-  border-bottom: 1px solid transparent;
-}
-.Pattern-kit-type-header .Filter-by-type-button:hover {
-  border-color: #888;
-}
-.Pattern-kit-type-header .Filter-by-type-button img {
-  height: 11px;
-  transform: rotate(90deg);
-  margin-left: 1em;
-  filter: opacity(80);
-}
-.Pattern-kit-type-header .Filter-by-type-button img.flipped {
-  transform: rotate(-90deg);
-}
-.Pattern-kit-type-header .Filter-by-type-button img:hover {
-  filter: none;
 }
 
 .Pattern-kit-pattern {
@@ -1928,9 +1931,9 @@ option:hover {
 }
 
 .Pattern-kit {
-  margin-bottom: 1.5rem;
   padding: 1rem;
   background-color: rgba(0, 0, 0, 0.15);
+  border-radius: 5px;
 }
 .Pattern-kit input[type=text] {
   width: 60rem;
@@ -1941,10 +1944,15 @@ option:hover {
 .Pattern-kit .Pattern-kit-header {
   display: flex;
   align-items: center;
-  border-bottom: 1px dashed #888;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(60, 60, 60, 0.5);
+  padding: 0.3rem;
 }
 .Pattern-kit .Pattern-kit-header > * {
   margin-right: 3rem;
+}
+.Pattern-kit .Pattern-kit-header strong {
+  margin-right: 0.5rem;
 }
 .Pattern-kit .Pattern-kit-header .Pattern-kit-delete-button {
   display: flex;
@@ -1973,10 +1981,14 @@ option:hover {
   width: 15vw;
 }
 .Field-list .Field-name-heading > th {
+  color: #ccc;
   font-size: large;
   text-align: left;
   padding: 0.4rem 0;
-  border-bottom: 1px dashed #777;
+  border-bottom: 1px solid rgba(60, 60, 60, 0.5);
+}
+.Field-list .Field-name-heading > th span {
+  margin-left: 0.3rem;
 }
 .Field-list tbody tr:hover td:nth-of-type(2n+1) {
   background-color: rgba(160, 160, 160, 0.15);
@@ -2154,12 +2166,11 @@ option:hover {
 
 .Accordion-header {
   position: relative;
-  margin: 0.5rem 0;
-  padding: 1rem;
-  width: 100%;
+  padding: 1rem 1.5rem;
   display: flex;
   align-items: center;
-  border-radius: 5px;
+  justify-content: space-between;
+  border-radius: 10px;
   color: #ccc;
   text-align: left;
   font-size: medium;
@@ -2187,6 +2198,13 @@ option:hover {
   rotate: 45deg;
   animation: rotate45 0.2s;
 }
+.Accordion-header .Datasource-icon {
+  margin-right: 1rem;
+}
+.Accordion-header .Datasource-id {
+  font-size: small;
+  color: #aaa;
+}
 
 .Accordion-display {
   display: flex;
@@ -2195,11 +2213,13 @@ option:hover {
   max-height: 0;
   width: 100%;
   overflow: auto;
-  animation: contractAccordion 0.4s;
 }
 .Accordion-display.displayed {
   max-height: revert;
-  animation: expandAccordion 0.4s;
+  animation: expandAccordion 0.5s forwards;
+}
+.Accordion-display.closing {
+  animation: contractAccordion 0.5s forwards;
 }
 
 .Banner-title > h1 {
@@ -2411,6 +2431,9 @@ option:hover {
   padding: 1rem;
 }
 .Modal-container .Modal .Modal-body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   padding: 3rem 2rem;
   height: 30vh;
   overflow: hidden;
@@ -2442,6 +2465,7 @@ option:hover {
 
 .Select {
   border: 1px solid #888;
+  border-radius: 5px;
   padding: 0.1em;
   width: 12rem;
   display: inline-block;
@@ -2488,6 +2512,7 @@ option:hover {
   color: #666;
 }
 .Select .Floating-menu {
+  border-radius: 0 0 10px 10px;
   background-color: #282c34;
   width: 100%;
   max-height: 30vh;
@@ -2496,7 +2521,7 @@ option:hover {
   z-index: 110;
 }
 .Select .Floating-menu > ul > div:not(:last-of-type) {
-  border-bottom: 1px dashed #666;
+  border-bottom: 1px solid rgba(80, 80, 80, 0.5);
 }
 .Select .Select-option {
   padding: 0.8rem 0.6rem;

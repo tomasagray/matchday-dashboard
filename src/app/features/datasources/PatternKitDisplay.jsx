@@ -58,18 +58,19 @@ export const PatternKitDisplay = (props) => {
                 </Body>
                 <Footer>
                     <CancelButton onClick={onHideDeleteConfirmModal}/>
-                    <DeleteButton onClick={deletePatternKit} />
+                    <DeleteButton onClick={deletePatternKit}/>
                 </Footer>
             </Modal>
-
             <div className="Pattern-kit" key={patternKitId}>
                 <div className={"Pattern-kit-header"}>
-                    <p>
-                        <strong>PKID</strong> : <span style={{color: '#ccc'}}>{patternKitId}</span>
-                    </p>
-                    <p>
-                        <strong>Type</strong> : <span style={{color: '#ccc'}}>{type}</span>
-                    </p>
+                    <div style={{display: 'flex', alignItems: 'center'}}>
+                        <p style={{marginRight: '3rem'}}>
+                            <strong>PKID</strong> <span style={{color: '#ccc'}}>{patternKitId}</span>
+                        </p>
+                        <p>
+                            <strong>Type</strong> <span style={{color: '#ccc'}}>{type}</span>
+                        </p>
+                    </div>
                     <div style={{display: disabled ? 'none' : ''}}>
                         <button className={"Pattern-kit-delete-button"} onClick={onClickDeleteButton}>
                             <img src={'/img/icon/delete/delete_16.png'} alt={'Delete'}/>

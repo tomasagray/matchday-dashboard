@@ -10,8 +10,8 @@ export const ErrorMessage = (props) => {
                  alt="ERROR" className={"error"}/>
             <div className="Message-description-container">
                 <h1 className="Message-title">ERROR</h1>
-                <p className="Message-description">{children}</p>
-                <p className="Message-code">{code}</p>
+                <div className="Message-description">{children}</div>
+                <div className="Message-code">{code}</div>
             </div>
         </div>
     )

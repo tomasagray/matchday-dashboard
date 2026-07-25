@@ -5,9 +5,16 @@
 
 $dataSourceExtBorder: 1px solid #ccc;
 $dataSourceIntBorder: 1px solid #666;
+$headerBorder: 1px solid rgba(60, 60, 60, .5);
 
 .Data-source-display {
-  width: 100%;
+  width: 95%;
+  padding: 2rem;
+  margin-top: -2rem;
+  margin-bottom: 3rem;
+
+  background-color: rgba(30, 30, 30, .2);
+  border-radius: 10px;
 
   & > div {
     margin: 1rem 0;
@@ -54,16 +61,27 @@ $dataSourceIntBorder: 1px solid #666;
 }
 
 .Data-source-table {
+  margin: 2rem 0 6rem;
+  width: 100%;
   border-collapse: collapse;
-  margin: 2rem 0;
+
+  tr:last-child {
+    td {
+      border-bottom: none;
+    }
+  }
 
   td {
-    padding: 1.25rem;
-    background-color: colors.$dataSourceOdd;
+    width: 15%;
+    padding: .75rem;
+    border-bottom: 1px solid colors.$lightTransparent;
+    color: #ccc;
+    background-color: colors.$dataSourceEven;
 
     &:nth-of-type(2n+2) {
-      background-color: colors.$dataSourceEven;
-      color: #ccc;
+      width: 85%;
+      background: none;
+      border-left: 1px solid colors.$lightTransparent;
     }
   }
 }
@@ -92,6 +110,10 @@ $dataSourceIntBorder: 1px solid #666;
 
 .Pattern-kit-display {
   overflow: hidden;
+
+  &:not(:last-of-type) {
+    margin-bottom: 4rem;
+  }
 
   .Pattern-kit-type {
     display: flex;
@@ -135,35 +157,18 @@ $dataSourceIntBorder: 1px solid #666;
   margin-bottom: .5rem;
   padding: .5rem 1rem;
   background-color: rgba(100, 100, 100, .5);
+  border-radius: 5px;
 
+  button {
+    color: colors.$lightFontColor;
+  }
 
   .Filter-by-type-button {
-    @include mixins.lower-button;
     background: none;
     border: none;
-    color: colors.$mediumFontColor;
+    color: colors.$lightFontColor;
     font-size: medium;
     padding: 0;
-    border-bottom: 1px solid transparent;
-
-    &:hover {
-      border-color: #888;
-    }
-
-    img {
-      height: 11px;
-      transform: rotate(90deg);
-      margin-left: 1em;
-      filter: opacity(80);
-
-      &.flipped {
-        transform: rotate(-90deg);
-      }
-
-      &:hover {
-        filter: none;
-      }
-    }
   }
 }
 
@@ -172,9 +177,10 @@ $dataSourceIntBorder: 1px solid #666;
 }
 
 .Pattern-kit {
-  margin-bottom: 1.5rem;
   padding: 1rem;
   background-color: rgba(0, 0, 0, .15);
+  border-radius: 5px;
+
 
   input[type=text] {
     width: 60rem;
@@ -186,10 +192,16 @@ $dataSourceIntBorder: 1px solid #666;
   .Pattern-kit-header {
     display: flex;
     align-items: center;
-    border-bottom: 1px dashed #888;
+    justify-content: space-between;
+    border-bottom: $headerBorder;
+    padding: .3rem;
 
     & > * {
       margin-right: 3rem;
+    }
+
+    strong {
+      margin-right: .5rem;
     }
 
     .Pattern-kit-delete-button {
@@ -225,10 +237,15 @@ $dataSourceIntBorder: 1px solid #666;
   }
 
   .Field-name-heading > th {
+    color: colors.$lightFontColor;
     font-size: large;
     text-align: left;
     padding: .4rem 0;
-    border-bottom: 1px dashed #777;
+    border-bottom: $headerBorder;
+
+    span {
+      margin-left: .3rem;
+    }
   }
 
   tbody {
