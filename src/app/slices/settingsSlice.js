@@ -1,5 +1,6 @@
 import {createSelector, createSlice} from "@reduxjs/toolkit";
 import {settingsTag} from "./api/apiSlice";
+import {Status} from "../components/controls/ToggleSwitch";
 
 
 export const REFRESH_DATASOURCES = '/tasks/refresh_datasources'
@@ -11,8 +12,9 @@ export const ARTWORK_LOCATION = '/filesystem/artwork/storage_location'
 export const LOG_FILE = '/filesystem/log_location'
 export const FFMPEG_BASE_ARGS = '/plugin/ffmpeg/ffmpeg/base-args'
 export const FFMPEG_ADD_ARGS = '/plugin/ffmpeg/ffmpeg/additional-args'
-export const VPN_HEARTBEAT = '/tasks/vpn_heartbeat'
 export const UNPROTECTED_IP = '/system/network/address/unprotected'
+export const VPN_HEARTBEAT = '/tasks/vpn_heartbeat'
+export const VPN_AUTOSTART = '/vpn/autostart/enabled'
 
 
 const editedSettings = {
@@ -150,4 +152,11 @@ export const selectUploadSettings = createSelector(
             settings: state
         }
     }
+)
+
+export const selectAutostartEnabled = createSelector(
+    selectEditedSettings,
+    settings =>
+        settings[VPN_AUTOSTART] && settings[VPN_AUTOSTART].data ?
+            Status()['Checked'] : Status()['UnChecked']
 )

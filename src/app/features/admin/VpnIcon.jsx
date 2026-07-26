@@ -3,15 +3,12 @@ import {SmallSpinner} from "../../components/Spinner";
 
 export const VpnIcon = (props) => {
 
-    let {isInFlight, isConnected, isError, vpnServer} = props
-
     const VpnError = () => {
         return (<>
             <img alt="VPN connection error" src="/img/icon/error/error_32.png"/>
             <span style={{textAlign: 'center'}}>Connection error!</span>
         </>)
     }
-
     const VpnConnectionIcon = () => {
         return (<>
             <img alt="Connected" src="/img/icon/vpn/vpn_32.png"/>
@@ -21,10 +18,14 @@ export const VpnIcon = (props) => {
         </>)
     }
 
+    // state
+    let {isInFlight, isConnected, isError} = props
+
+
     if (isInFlight) {
         return (
             <div className="Vpn-icon">
-                <SmallSpinner size={'24px'}/>
+                <SmallSpinner size={'32px'}/>
             </div>
         )
     }
@@ -36,9 +37,6 @@ export const VpnIcon = (props) => {
                     isError ? <VpnError/> : <VpnConnectionIcon/>
                 }
             </div>
-            <span className="Vpn-server">
-                {vpnServer}
-            </span>
         </div>
     )
 }

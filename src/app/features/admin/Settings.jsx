@@ -12,21 +12,26 @@ import {useDispatch, useSelector} from "react-redux";
 import {
     addFFmpegAdditionalArg,
     addNewFFmpegBaseArg,
-    ARTWORK_LOCATION,
-    BACKUP_LOCATION, deleteFFmpegAdditionalArg,
+    deleteFFmpegAdditionalArg,
     deleteFFmpegBaseArg,
-    editSettings, FFMPEG_ADD_ARGS,
-    FFMPEG_BASE_ARGS,
+    editSettings,
     loadSettings,
-    LOG_FILE, moveFFmpegAdditionalArg, moveFFmpegBaseArg,
-    PRUNE_VIDEOS,
-    REFRESH_DATASOURCES,
+    moveFFmpegAdditionalArg,
+    moveFFmpegBaseArg,
     selectEditedSettings,
     selectUploadSettings,
+    ARTWORK_LOCATION,
+    BACKUP_LOCATION,
+    FFMPEG_ADD_ARGS,
+    FFMPEG_BASE_ARGS,
+    LOG_FILE,
+    PRUNE_VIDEOS,
+    REFRESH_DATASOURCES,
     UNPROTECTED_IP,
     VIDEO_EXPIRE_DAYS,
     VIDEO_LOCATION,
-    VPN_HEARTBEAT
+    VPN_HEARTBEAT,
+    VPN_AUTOSTART, selectAutostartEnabled
 } from "../../slices/settingsSlice";
 import {ApplicationSetting} from "./ApplicationSetting";
 import {CenteredSpinner, FillSpinner} from "../../components/Spinner";
@@ -38,6 +43,7 @@ import Select from "../../components/controls/Select";
 import {Option} from "../../components/controls/Option";
 import {TagField} from "../../components/controls/TagField";
 import {Tag} from "../../components/controls/Tag";
+import {ToggleSwitch} from "../../components/controls/ToggleSwitch";
 
 const getCronDescription = (cron) => {
     try {
@@ -163,6 +169,14 @@ export const Settings = () => {
             editSettings({field: UNPROTECTED_IP, value})
         )
     }
+    const onToggleAutoStart = () => {
+        let isEnabled = editedSettings[VPN_AUTOSTART].data
+        let value = {
+            ...settings[VPN_AUTOSTART],
+            data: !isEnabled
+        }
+        dispatch(editSettings({field: VPN_AUTOSTART, value}))
+    }
 
     // hooks
     const dispatch = useDispatch()
@@ -234,6 +248,7 @@ export const Settings = () => {
 
     let isInFlight = isLoading || isUpdating
     let isLogLevelInFlight = isLoadingLogLevel || isSettingLogLevel
+    let autoStartEnabled = useSelector(state => selectAutostartEnabled(state))
 
     setBackgroundImage('none')
     return (
@@ -397,7 +412,16 @@ export const Settings = () => {
                                                     </div>
                                                 </div>
                                                 <div className="App-settings-group">
-                                                    <h3>VPN</h3>
+                                                    <div style={{display: 'flex', justifyContent: 'space-between'}}>
+                                                        <h3>VPN</h3>
+                                                        <div style={{display: 'flex'}}>
+                                                            <span style={{marginRight: '1rem'}}>Auto-start</span>
+                                                            <ToggleSwitch
+                                                                status={autoStartEnabled}
+                                                                onclick={onToggleAutoStart}
+                                                            />
+                                                        </div>
+                                                    </div>
                                                     <div className="App-setting-container">
                                                         <ApplicationSetting
                                                             type="text"

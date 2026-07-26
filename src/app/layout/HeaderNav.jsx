@@ -6,6 +6,9 @@ import Modal, {Footer, Header} from "../components/Modal";
 import {CancelButton} from "../components/controls/CancelButton";
 import Cookies from "universal-cookie";
 import {serverAddressCookie} from "../constants";
+import properties from "../properties";
+import {StompSessionProvider} from "react-stomp-hooks";
+import {VpnControl} from "../features/admin/VpnControl";
 
 export const HeaderNav = () => {
 
@@ -33,73 +36,76 @@ export const HeaderNav = () => {
     let [isLogoutModalShown, setIsLogoutModalShown] = useState(false)
 
     return (
-        <header className="App-header">
-            <nav className="Main-nav">
-                <div className="Home-wrapper">
-                    <Link to="/">
-                        <button className="Home-button Nav-link">
-                            <img src={LOGO} alt="Matchday Dashboard" className="Home-button-img"
-                                 id="home-button"/>
-                        </button>
-                    </Link>
-                    <div className="Search-tool">
-                        <form>
-                            <input type="text" id="q" name="q" maxLength={250}/>
-                            <button type="submit">
-                                <img src={'/img/icon/search/search_32.png'} alt={"Search"}/>
+        <StompSessionProvider url={properties.websocketUrl}>
+            <header className="App-header">
+                <nav className="Main-nav">
+                    <div className="Home-wrapper">
+                        <Link to="/">
+                            <button className="Home-button Nav-link">
+                                <img src={LOGO} alt="Matchday Dashboard" className="Home-button-img"
+                                     id="home-button"/>
                             </button>
-                        </form>
-                    </div>
-                </div>
-                <div className="Admin-nav-menu-wrapper">
-                    <ul className="Admin-nav-menu">
-                        {/* todo: implement alerts/notifications */}
-                        <li style={{display: 'none'}}>
-                            <Link to="/alerts">
-                                <button className="Nav-link">
-                                    <img src={'/img/icon/alerts/alerts_64.png'} alt="Alerts"/>
+                        </Link>
+                        <div className="Search-tool">
+                            <form>
+                                <input type="text" id="q" name="q" maxLength={250}/>
+                                <button type="submit">
+                                    <img src={'/img/icon/search/search_32.png'} alt={"Search"}/>
                                 </button>
-                            </Link>
-                        </li>
-                        <li>
-                            <button onClick={setAdminMenuVisible} className="Nav-link">
-                                <img src={'/img/icon/avatar/avatar_64.png'} alt="User menu"/>
-                            </button>
-                            <FloatingMenu
-                                className='User-menu-wrapper'
-                                hidden={isMenuHidden}
-                                onClickOutside={setAdminMenuHidden}>
-                                <Link to="/settings">
-                                    <MenuItem onClick={setAdminMenuHidden}>Settings</MenuItem>
+                            </form>
+                        </div>
+                    </div>
+                    <div className="Admin-nav-menu-wrapper">
+                        <VpnControl/>
+                        <ul className="Admin-nav-menu">
+                            {/* todo: implement alerts/notifications */}
+                            <li style={{display: 'none'}}>
+                                <Link to="/alerts">
+                                    <button className="Nav-link">
+                                        <img src={'/img/icon/alerts/alerts_64.png'} alt="Alerts"/>
+                                    </button>
                                 </Link>
-                                <Link to="/sanity-report">
-                                    <MenuItem onClick={setAdminMenuHidden}>Sanity Report</MenuItem>
-                                </Link>
-                                <Link to="/backup">
-                                    <MenuItem onClick={setAdminMenuHidden}>Backup</MenuItem>
-                                </Link>
-                                <Link to="/about">
-                                    <MenuItem onClick={setAdminMenuHidden}>About</MenuItem>
-                                </Link>
-                                <MenuItem onClick={onShowLogoutModal}>
-                                    Sign out
-                                </MenuItem>
-                            </FloatingMenu>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-            <Modal show={isLogoutModalShown}>
-                <Header onHide={() => setIsLogoutModalShown(false)}>
-                    Sign out?
-                </Header>
-                <Footer>
-                    <CancelButton onClick={() => setIsLogoutModalShown(false)}/>
-                    <button className="Small-button" onClick={onLogout}>
-                        Sign out
-                    </button>
-                </Footer>
-            </Modal>
-        </header>
+                            </li>
+                            <li>
+                                <button onClick={setAdminMenuVisible} className="Nav-link">
+                                    <img src={'/img/icon/avatar/avatar_64.png'} alt="User menu"/>
+                                </button>
+                                <FloatingMenu
+                                    className='User-menu-wrapper'
+                                    hidden={isMenuHidden}
+                                    onClickOutside={setAdminMenuHidden}>
+                                    <Link to="/settings">
+                                        <MenuItem onClick={setAdminMenuHidden}>Settings</MenuItem>
+                                    </Link>
+                                    <Link to="/sanity-report">
+                                        <MenuItem onClick={setAdminMenuHidden}>Sanity Report</MenuItem>
+                                    </Link>
+                                    <Link to="/backup">
+                                        <MenuItem onClick={setAdminMenuHidden}>Backup</MenuItem>
+                                    </Link>
+                                    <Link to="/about">
+                                        <MenuItem onClick={setAdminMenuHidden}>About</MenuItem>
+                                    </Link>
+                                    <MenuItem onClick={onShowLogoutModal}>
+                                        Sign out
+                                    </MenuItem>
+                                </FloatingMenu>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+                <Modal show={isLogoutModalShown}>
+                    <Header onHide={() => setIsLogoutModalShown(false)}>
+                        Sign out?
+                    </Header>
+                    <Footer>
+                        <CancelButton onClick={() => setIsLogoutModalShown(false)}/>
+                        <button className="Small-button" onClick={onLogout}>
+                            Sign out
+                        </button>
+                    </Footer>
+                </Modal>
+            </header>
+        </StompSessionProvider>
     )
 }

@@ -4,15 +4,15 @@ export const vpnApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => {
         return ({
             connectVpn: builder.mutation({
-                query: () => ({
-                    url: '/admin/vpn/start',
+                query: (server) => ({
+                    url: (server != null ? `/admin/vpn/start?server=${server}` : '/admin/vpn/start'),
                     method: 'POST'
                 }),
                 invalidatesTags: [vpnStatusTag, infoTag]
             }),
             reconnectVpn: builder.mutation({
-                query: () => ({
-                    url: '/admin/vpn/restart',
+                query: (server) => ({
+                    url: (server != null ? `/admin/vpn/restart?server=${server}` : '/admin/vpn/restart'),
                     method: 'POST'
                 }),
                 invalidatesTags: [vpnStatusTag, infoTag]

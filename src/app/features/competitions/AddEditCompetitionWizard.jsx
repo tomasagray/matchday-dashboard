@@ -50,41 +50,24 @@ export const AddEditCompetitionWizard = (props) => {
     // handlers
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const onHide = () => {
+    const onHide = _ => {
         onHideWizard && onHideWizard()
+        dispatch(finishEditingCompetition())
     }
-    const onSelectWizard = (wizard) => () => {
-        setSelectedWizard(wizard)
-    }
-    const onEditTitle = (title) => {
-        dispatch(editCompetitionTitle({title}))
-    }
-    const onEditSynonym = (newSynonym) => {
-        dispatch(editNewSynonym({newSynonym}))
-    }
-    const onAddSynonym = (synonym) => {
-        dispatch(addCompetitionSynonym({
+    const onSelectWizard = (wizard) => () => setSelectedWizard(wizard)
+    const onEditTitle = (title) => dispatch(editCompetitionTitle({title}))
+    const onEditSynonym = (newSynonym) => dispatch(editNewSynonym({newSynonym}))
+    const onAddSynonym = (synonym) => dispatch(addCompetitionSynonym({
             synonym: {
                 name: synonym,
             }
         }))
-    }
-    const onDeleteSynonym = (synonym) => {
-        dispatch(deleteCompetitionSynonym({synonym}))
-    }
-    const onSelectCountry = (country) => {
-        dispatch(setCompetitionCountry({country}))
-    }
-    const onUploadArtwork = (artwork) => {
-        dispatch(uploadArtwork({artwork}))
-    }
-    const onSelectEmblem = (selection) => {
-        dispatch(selectArtwork({selection, role: 'emblem'}))
-    }
-    const onSelectFanart = (selection) => {
-        dispatch(selectArtwork({selection, role: 'fanart'}))
-    }
-    const onSaveEdits = async () => {
+    const onDeleteSynonym = (synonym) => dispatch(deleteCompetitionSynonym({synonym}))
+    const onSelectCountry = (country) => dispatch(setCompetitionCountry({country}))
+    const onUploadArtwork = (artwork) => dispatch(uploadArtwork({artwork}))
+    const onSelectEmblem = (selection) => dispatch(selectArtwork({selection, role: 'emblem'}))
+    const onSelectFanart = (selection) => dispatch(selectArtwork({selection, role: 'fanart'}))
+    const onSaveEdits = async _ => {
         if (isAddNew) {
             await addNewCompetition(uploadCompetition)
         } else {
@@ -93,18 +76,16 @@ export const AddEditCompetitionWizard = (props) => {
         onHide && onHide()
         dispatch(finishEditingCompetition())
     }
-    const onDeleteCompetition = () => {
+    const onDeleteCompetition = _ => {
         onHideWizard(false)
         onShowHideDeleteConfirm()
     }
-    const onShowHideDeleteConfirm = () => {
-        setIsDeleteConfirmShown(!isDeleteConfirmShown)
-    }
-    const onCancelDeleteCompetition = () => {
+    const onShowHideDeleteConfirm = _ => setIsDeleteConfirmShown(!isDeleteConfirmShown)
+    const onCancelDeleteCompetition = _ => {
         onShowHideDeleteConfirm()
         onHideWizard(true)
     }
-    const onConfirmDeleteCompetition = async () => {
+    const onConfirmDeleteCompetition = async _ => {
         console.log('deleting competition...')
         await deleteCompetition(competitionId)
             .unwrap()

@@ -60,6 +60,9 @@
 
 .Settings-save-dialog {
   display: flex;
+  position: fixed;
+  right: 5rem;
+  bottom: 5rem;
 }
 
 .Settings-input {
@@ -165,12 +168,13 @@
   display: flex;
   align-items: center;
   justify-content: space-evenly;
+  height: -webkit-fill-available;
+  margin-right: 1rem;
 
   .Vpn-icon {
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    width: 10rem;
     margin-right: 1rem;
 
     .icon {
@@ -192,12 +196,13 @@
         font-weight: normal;
       }
     }
-
-    .Vpn-server {
-      font-size: x-small;
-      font-style: italic;
-      color: colors.$darkFontColor;
-      margin-left: 1rem;
-    }
   }
+}
+
+.Vpn-server {
+  font-size: small;
+  font-style: italic;
+  color: colors.$darkFontColor;
+  margin-right: 1rem;
+  margin-left: .5rem;
 }
