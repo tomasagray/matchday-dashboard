@@ -58,7 +58,14 @@ export const dataSourceApiSlice = apiSlice.injectEndpoints({
                     method: 'DELETE',
                 }),
                 invalidatesTags: [dataSourceTag]
-            })
+            }),
+            toggleDataSource: builder.mutation({
+                query: q => ({
+                    url: `/data-sources/data-source/${q.id}/status?enabled=${q.enabled}`,
+                    method: 'PATCH',
+                }),
+                invalidatesTags: [dataSourceTag]
+            }),
         }
     }
 })
@@ -68,4 +75,5 @@ export const {
     useAddDataSourceMutation,
     useUpdateDataSourceMutation,
     useDeleteDataSourceMutation,
+    useToggleDataSourceMutation,
 } = dataSourceApiSlice

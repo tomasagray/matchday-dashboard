@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import {useParams} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
-import {useGetAllDataSourcePluginsQuery, useGetDataSourcePluginQuery} from "../../slices/api/dataSourcePluginApiSlice";
+import {useDispatch} from "react-redux";
+import {useGetDataSourcePluginQuery} from "../../slices/api/dataSourcePluginApiSlice";
 import {PluginId} from "../../components/PluginId";
 import {Spinner} from "../../components/Spinner";
 import {AddDataSourceForm} from "../datasources/AddDataSourceForm";
@@ -68,7 +68,10 @@ export const DataSourcePluginDisplay = () => {
                         </div>
                         <div style={{display: 'flex', justifyContent: 'space-between'}}>
                             <h2>Data Sources</h2>
-                            <button onClick={onAddDataSource} className="Small-button" disabled={isDataFetching}>
+                            <button className="Small-button"
+                                    style={{margin: 0}}
+                                    onClick={onAddDataSource}
+                                    disabled={isDataFetching}>
                                 Add Data Source...
                             </button>
                         </div>

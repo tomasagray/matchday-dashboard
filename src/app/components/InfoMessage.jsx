@@ -8,7 +8,7 @@ export const InfoMessage = (props) => {
                  alt="Important information" className={'info'}/>
             <div className="Message-description-container">
                 <h1 className="Message-title">INFO</h1>
-                <p className="Message-description">{props.children}</p>
+                <div className="Message-description">{props.children}</div>
             </div>
         </div>
     )
