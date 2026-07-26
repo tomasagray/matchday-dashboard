@@ -7,12 +7,17 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased] - (upcoming changes)
 
-## [0.6.7] - 2026-06-25
+## [0.6.8] - 2026-07-25
+
+### Fixed
+
+- Datasource, PatternKit editing
+
+## [0.6.7] - 2026-07-25
 
 ### Fixed
 
 - VPN display
-- Datasource, PatternKit editing
 - Styling improvements
 - Updated dependencies, improved linting
 
