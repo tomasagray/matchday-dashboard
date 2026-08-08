@@ -15,6 +15,8 @@ export const FFMPEG_ADD_ARGS = '/plugin/ffmpeg/ffmpeg/additional-args'
 export const UNPROTECTED_IP = '/system/network/address/unprotected'
 export const VPN_HEARTBEAT = '/tasks/vpn_heartbeat'
 export const VPN_AUTOSTART = '/vpn/autostart/enabled'
+export const FLARESOLVERR_URL = '/system/services/flaresolverr/url'
+export const FLARESOLVERR_TIMEOUT = '/system/services/flaresolverr/max-timeout'
 
 
 const editedSettings = {
@@ -27,8 +29,11 @@ const editedSettings = {
     [LOG_FILE]: null,
     [FFMPEG_BASE_ARGS]: null,
     [FFMPEG_ADD_ARGS]: null,
-    [VPN_HEARTBEAT]: null,
     [UNPROTECTED_IP]: null,
+    [VPN_HEARTBEAT]: null,
+    [VPN_AUTOSTART]: null,
+    [FLARESOLVERR_URL]: null,
+    [FLARESOLVERR_TIMEOUT]: null,
 }
 
 const addFFmpegArgument = (state, action, args) => {
