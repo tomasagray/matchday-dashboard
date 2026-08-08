@@ -27,6 +27,7 @@ export const {
 export const selectSelectedPlugin = createSelector(
     state => state.dataSourcePlugins,
     plugins => {
+        console.log('selected ds plugin', plugins)
         const pluginId = plugins.selectedPluginId
         return plugins.entities[pluginId]
     }

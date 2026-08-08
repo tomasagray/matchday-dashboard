@@ -31,7 +31,7 @@ import {
     VIDEO_EXPIRE_DAYS,
     VIDEO_LOCATION,
     VPN_HEARTBEAT,
-    VPN_AUTOSTART, selectAutostartEnabled
+    VPN_AUTOSTART, selectAutostartEnabled, FLARESOLVERR_URL, FLARESOLVERR_TIMEOUT
 } from "../../slices/settingsSlice";
 import {ApplicationSetting} from "./ApplicationSetting";
 import {CenteredSpinner, FillSpinner} from "../../components/Spinner";
@@ -176,6 +176,20 @@ export const Settings = () => {
             data: !isEnabled
         }
         dispatch(editSettings({field: VPN_AUTOSTART, value}))
+    }
+    const onUpdateFlaresolverrUrl = (e) => {
+        let value = {
+            ...settings[FLARESOLVERR_URL],
+            data: e.target.value
+        }
+        dispatch(editSettings({field: FLARESOLVERR_URL, value}))
+    }
+    const onUpdateFlaresolverrTimeout = (e) => {
+        let value = {
+            ...settings[FLARESOLVERR_TIMEOUT],
+            data: e.target.value
+        }
+        dispatch(editSettings({field: FLARESOLVERR_TIMEOUT, value}))
     }
 
     // hooks
@@ -441,6 +455,25 @@ export const Settings = () => {
                                                             original={settings[UNPROTECTED_IP]?.data}
                                                             current={editedSettings[UNPROTECTED_IP]?.data}
                                                             onChange={onUpdateUnprotectedIp}/>
+                                                    </div>
+                                                </div>
+                                                <div className="App-settings-group">
+                                                    <h3>Flaresolverr</h3>
+                                                    <div className="App-setting-container">
+                                                        <ApplicationSetting
+                                                            type="text"
+                                                            title="Flaresolverr URL"
+                                                            disabled={isInFlight}
+                                                            original={settings[FLARESOLVERR_URL]?.data}
+                                                            current={editedSettings[FLARESOLVERR_URL]?.data}
+                                                            onChange={onUpdateFlaresolverrUrl}/>
+                                                        <ApplicationSetting
+                                                            type="number"
+                                                            title="Max Timeout"
+                                                            disabled={isInFlight}
+                                                            original={settings[FLARESOLVERR_TIMEOUT]?.data}
+                                                            current={editedSettings[FLARESOLVERR_TIMEOUT]?.data}
+                                                            onChange={onUpdateFlaresolverrTimeout}/>
                                                     </div>
                                                 </div>
                                             </> :

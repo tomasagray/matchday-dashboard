@@ -16,6 +16,7 @@ import {OKButton} from "../../components/controls/OKButton";
 import {
     useDeleteDataSourceMutation,
     useToggleDataSourceMutation,
+    useToggleFlaredMutation,
     useUpdateDataSourceMutation
 } from "../../slices/api/dataSourceApiSlice";
 import {AddPatternKitForm} from "./AddPatternKitForm";
@@ -153,7 +154,12 @@ export const DataSourceDisplay = (props) => {
     const onEnabledChange = async () => {
         console.log(`Setting Datasource [${dataSourceId}] to`, isDataSourceEnabled ? 'disabled' : 'enabled')
         await toggleDataSource({id: dataSourceId, enabled: !isDataSourceEnabled})
-        console.log('Datasource [', dataSourceId, '] set to', isToggleSuccess ? 'enabled' : 'disabled')
+        console.log('Datasource [', dataSourceId, '] set to', isDataSourceEnabled ? 'enabled' : 'disabled')
+    }
+    const onToggleFlaresolverr = async () => {
+        console.log(`Setting Flaresolverr protection for Datasource [${dataSourceId}] to`, isFlared ? 'disabled' : 'enabled')
+        await toggleFlared({id: dataSourceId, flared: !isFlared})
+        console.log('Datasource [', dataSourceId, '] Flaresolverr protection set to', isFlared ? 'enabled' : 'disabled')
     }
     const onBaseUriValChanged = (e) => {
         let baseUriVal = e.target.value
@@ -266,6 +272,7 @@ export const DataSourceDisplay = (props) => {
         patternKits,
         linkSelector,
         enabled: isDataSourceEnabled,
+        flared: isFlared,
     } = dataSource
     let isModified = cleanDataSource !== dataSource
     let type = getClassName(clazz)
@@ -292,10 +299,14 @@ export const DataSourceDisplay = (props) => {
     }] = useDeleteDataSourceMutation()
     const [toggleDataSource, {
         isLoading: isToggling,
-        isSuccess: isToggleSuccess,
         isError: isToggleError,
         error: toggleError
     }] = useToggleDataSourceMutation()
+    const [toggleFlared, {
+        isLoading: isFlaring,
+        isError: isFlaredError,
+        error: flaredError
+    }] = useToggleFlaredMutation()
 
     // toast messages
     useEffect(() => {
@@ -321,17 +332,23 @@ export const DataSourceDisplay = (props) => {
             let msg = 'Could not enable/disable data source: ' + getToastMessage(toggleError)
             toast.error(msg)
         }
+        if (isFlaredError) {
+            let msg = 'Could not enable/disable Flaresolverr for data source: ' + getToastMessage(flaredError)
+            toast.error(msg)
+        }
     }, [
-        deleteError,
-        isDeleteError,
         isDeleteSuccess,
+        isUpdateSuccess,
+        isDeleteError,
         isTemplateError,
         isUpdateError,
-        isUpdateSuccess,
         isToggleError,
+        isFlaredError,
+        deleteError,
         templateError,
         updateError,
         toggleError,
+        flaredError,
     ])
 
     // state
@@ -396,15 +413,34 @@ export const DataSourceDisplay = (props) => {
         </> :
         // not editing.
         <>
-            <div style={{display: 'flex', alignItems: 'center'}}>
-                <span style={{marginRight: '1rem'}}>Enabled</span>
-                <ToggleSwitch
-                    status={
-                        isToggling ? Status().Loading :
-                            isDataSourceEnabled ? Status().Checked : Status().Unchecked
-                    }
-                    onclick={onEnabledChange}
-                />
+            <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                width: 300,
+                minWidth: '50%'
+            }}>
+                <div style={{display: 'flex', alignItems: 'center'}}>
+                    <span style={{marginRight: '1rem'}}>Enabled</span>
+                    <ToggleSwitch
+                        status={
+                            isToggling ? Status().Loading :
+                                isDataSourceEnabled ? Status().Checked : Status().Unchecked
+                        }
+                        onclick={onEnabledChange}
+                    />
+                </div>
+                <div style={{display: 'flex', alignItems: 'center', marginRight: '1rem'}}>
+                    <span style={{marginRight: '1rem'}}>Use Flaresolverr</span>
+                    <ToggleSwitch
+                        status={
+                            isFlaring ? Status().Loading :
+                                isFlared ? Status().Checked : Status().Unchecked
+                        }
+                        onclick={onToggleFlaresolverr}
+                    />
+                </div>
+
             </div>
             <div id={"data-source-edit-menu"} style={{float: 'right'}}>
                 <button onClick={onMenuButtonClick} className="Edit-menu-button">&#8942;</button>

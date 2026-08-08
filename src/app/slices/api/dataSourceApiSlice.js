@@ -66,6 +66,13 @@ export const dataSourceApiSlice = apiSlice.injectEndpoints({
                 }),
                 invalidatesTags: [dataSourceTag]
             }),
+            toggleFlared: builder.mutation({
+                query: q => ({
+                    url: `/data-sources/data-source/${q.id}/use-flaresolverr?enabled=${q.flared}`,
+                    method: 'PATCH',
+                }),
+                invalidatesTags: [dataSourceTag]
+            }),
         }
     }
 })
@@ -76,4 +83,5 @@ export const {
     useUpdateDataSourceMutation,
     useDeleteDataSourceMutation,
     useToggleDataSourceMutation,
+    useToggleFlaredMutation,
 } = dataSourceApiSlice
