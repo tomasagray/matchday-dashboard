@@ -7,6 +7,12 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased] - (upcoming changes)
 
+## [0.6.9] - 2026-08-07
+
+### Added
+
+- Toggle Use Flaresolverr for each Data Source
+
 ## [0.6.8] - 2026-07-25
 
 ### Fixed
